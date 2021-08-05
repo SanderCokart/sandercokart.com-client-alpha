@@ -1,0 +1,24 @@
+.login {
+  display: grid;
+  place-items: center;
+  height: inherit;
+
+  form {
+    display: grid;
+    grid-auto-flow: row;
+    grid-gap: 30px;
+    width: 300px;
+
+    div {
+      display: flex;
+      flex-direction: column;
+
+      &:last-child {
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        gap: 20px;
+      }
+    }
+  }
+}
