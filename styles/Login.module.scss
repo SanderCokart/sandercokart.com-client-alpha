@@ -2,23 +2,47 @@
   display: grid;
   place-items: center;
   height: inherit;
+}
 
-  form {
-    display: grid;
-    grid-auto-flow: row;
-    grid-gap: 30px;
-    width: 300px;
+.form {
+  width: 400px;
+  height: 400px;
+  background-color: #eee;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-    div {
-      display: flex;
-      flex-direction: column;
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 
-      &:last-child {
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
-        gap: 20px;
-      }
+  div {
+    label {
+      font-size: 1.5rem;
+    }
+
+    input {
+      font-size: 2rem;
     }
   }
+}
+
+.formControl {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+.remember {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
 }
