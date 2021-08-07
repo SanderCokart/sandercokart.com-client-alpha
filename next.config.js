@@ -11,7 +11,8 @@ module.exports = {
     ];
   },
   env: {
-    API_URL: 'api.localhost:8000'
+    API_URL: 'http://localhost:8000/',
+
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
