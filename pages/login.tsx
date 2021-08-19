@@ -1,8 +1,10 @@
-import {LoginCredentials, useAuth} from '@/providers/AuthProvider';
+import type {LoginCredentials} from '@/providers/AuthProvider';
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/Login.module.scss';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {ChangeEvent, FC, FormEvent, useState} from 'react';
+import type {ChangeEvent, FC, FormEvent} from 'react';
+import {useState} from 'react';
 
 export const Login: FC = () => {
   const [credentials, setCredentials] = useState<LoginCredentials>({
