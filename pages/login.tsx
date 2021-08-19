@@ -45,15 +45,15 @@ export const Login: FC = () => {
           <div className={styles.inputs}>
             <div className={styles.formControl}>
               <label htmlFor="email">Email</label>
-              <input id="email" type="email" onChange={onChange}/>
+              <input id="email" name="email" type="email" onChange={onChange}/>
             </div>
             <div className={styles.formControl}>
               <label htmlFor="password">Password</label>
-              <input id="password" type="password" onChange={onChange}/>
+              <input id="password" name="password" type="password" onChange={onChange}/>
             </div>
             <div className={styles.remember}>
               <label htmlFor="remember_me">Remember me</label>
-              <input id="remember_me" type="checkbox" onChange={onChange}/>
+              <input id="remember_me" name="remember_me" type="checkbox" onChange={onChange}/>
             </div>
             <div>
               <button type="submit">Submit</button>
