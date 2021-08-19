@@ -1,6 +1,7 @@
 import styles from '@/styles/CreateAccount.module.scss';
 import {useApi} from 'providers/ApiProvider';
-import {ChangeEvent, FC, FormEvent, useState} from 'react';
+import type {ChangeEvent, FC, FormEvent} from 'react';
+import {useState} from 'react';
 
 
 export const CreateAccount: FC = () => {
