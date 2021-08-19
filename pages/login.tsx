@@ -21,7 +21,7 @@ export const Login: FC = () => {
     setCredentials((prevState) => {
       return ({
         ...prevState,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.name === 'remember_me' ? e.target.checked : e.target.value
       });
     });
   };
@@ -31,7 +31,7 @@ export const Login: FC = () => {
     login(credentials).then(({status}) => {
       if (status === 200) {
         if (query?.type === 'verify_email')
-          return router.push({pathname: '/verify-email', query});
+          return router.push({pathname: '/account/email/verify', query});
         return router.push('/dashboard');
       }
     });
