@@ -1,5 +1,7 @@
-import axios, {AxiosInstance} from 'axios';
-import {createContext, FC, useContext, useEffect} from 'react';
+import type {AxiosInstance} from 'axios';
+import axios from 'axios';
+import type {FC} from 'react';
+import {createContext, useContext, useEffect} from 'react';
 
 export const ApiContext = createContext({} as AxiosInstance);
 
