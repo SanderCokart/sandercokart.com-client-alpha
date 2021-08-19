@@ -1,5 +1,6 @@
 import {useApi} from '@/providers/ApiProvider';
-import {createContext, FC, useContext, useEffect, useState} from 'react';
+import type {FC} from 'react';
+import {createContext, useContext, useEffect, useState} from 'react';
 
 export interface ForgotPassword {
   email: string;
