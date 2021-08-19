@@ -1,3 +1,4 @@
+import RouteProtector from '@/components/RouteProtector';
 import AuthProvider from '@/providers/AuthProvider';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
@@ -11,7 +12,9 @@ function MyApp({Component, pageProps}: AppProps) {
   return (
       <ApiProvider>
         <AuthProvider>
-          <Component {...pageProps} />
+          <RouteProtector>
+            <Component {...pageProps} />
+          </RouteProtector>
         </AuthProvider>
       </ApiProvider>
   );
