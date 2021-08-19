@@ -79,7 +79,7 @@ export const AuthProvider: FC = ({children}) => {
   useEffect(() => {
     api.get('/check')
         .then(({data, status}) => {
-          sS({user: data.user, loading: false});
+          sS({user: data, loading: false});
         })
         .catch(() => {
           sS({loading: false});
