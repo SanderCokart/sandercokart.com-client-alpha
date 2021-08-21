@@ -32,7 +32,7 @@ export const Login: FC = () => {
       if (status === 200) {
         if (query?.type === 'verify_email')
           return router.push({pathname: '/account/email/verify', query});
-        return router.push('/dashboard');
+        return router.push('/blog/recent');
       }
     });
   };
