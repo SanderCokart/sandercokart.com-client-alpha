@@ -61,7 +61,7 @@ export const Login: FC = () => {
           </div>
 
           <div className={styles.links}>
-            <Link href="/password/forgot">
+            <Link href="/account/password/forgot">
               <a>Forgot password?</a>
             </Link>
             <Link href="/account/create">

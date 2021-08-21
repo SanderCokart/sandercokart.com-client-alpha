@@ -54,7 +54,7 @@ export const AuthProvider: FC = ({children}) => {
   };
 
   const login = (credentials: LoginCredentials) => {
-    return api.post('/login', credentials)
+    return api.post('/account/login', credentials)
         .then(({data, status}) => {
           sS({user: data.user, loading: false});
           return {status};
@@ -66,7 +66,8 @@ export const AuthProvider: FC = ({children}) => {
   };
 
   const logout = () => {
-    api.post('/logout')
+    sS({loading: true});
+    api.post('/account/logout')
         .then(({status}) => {
           if (status === 200)
             sS({loading: false, user: null});
@@ -77,9 +78,9 @@ export const AuthProvider: FC = ({children}) => {
   };
 
   useEffect(() => {
-    api.get('/check')
+    api.get('/account/check')
         .then(({data, status}) => {
-          sS({user: data, loading: false});
+          sS({user: data.user, loading: false});
         })
         .catch(() => {
           sS({loading: false});

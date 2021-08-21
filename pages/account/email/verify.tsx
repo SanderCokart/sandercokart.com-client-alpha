@@ -20,7 +20,7 @@ export const VerifyEmail: FC = () => {
 
   useEffect(() => {
     if (isReady && user?.email_verified_at) {
-      api.get(`/email/verify/${userQuery}/${hash}?expires=${expires}&signature=${signature}`)
+      api.get(`/account/email/verify/${userQuery}/${hash}?expires=${expires}&signature=${signature}`)
           .then((res) => {
             if (res.status === 200) timeOutAction();
           })

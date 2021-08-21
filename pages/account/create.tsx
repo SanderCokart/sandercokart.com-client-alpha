@@ -16,7 +16,7 @@ export const CreateAccount: FC = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    api.post('/register', form).then(({status, data}) => {
+    api.post('/account/register', form).then(({status, data}) => {
       if (status === 200)
         console.log(data);
     });
