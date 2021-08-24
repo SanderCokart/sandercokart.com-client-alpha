@@ -8,7 +8,7 @@ import {useState} from 'react';
 export const PasswordReset: FC = () => {
   const api = useApi();
   const router = useRouter();
-  const {query} = router;
+  const {query} = router; //token and email
 
   const [form, setForm] = useState({
     password: '',
