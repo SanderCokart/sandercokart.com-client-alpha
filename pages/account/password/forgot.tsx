@@ -1,4 +1,5 @@
 import {useApi} from '@/providers/ApiProvider';
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/PasswordForgot.module.scss';
 import Head from 'next/head';
 import type {ChangeEvent, FC, FormEvent} from 'react';
@@ -6,19 +7,14 @@ import {useState} from 'react';
 
 export const PasswordForgot: FC = () => {
   const api = useApi();
+  const {requestPasswordReset} = useAuth();
 
   const [email, setEmail] = useState('');
 
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    api.post('/account/password/forgot', {email})
-        .then(res => {
-          console.log(res.data);
-        })
-        .catch(err => {
-          console.error(err);
-        });
+    requestPasswordReset(email);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
