@@ -32,8 +32,10 @@ interface AuthState {
 }
 
 interface AuthContext extends AuthState {
-  login: (credentials: LoginCredentials) => Promise<{ status: number }>
-  logout: () => void
+  login: (credentials: LoginCredentials) => void;
+  logout: () => void;
+  requestPasswordReset: (email?: string) => void;
+  requestEmailChange: (email?: string) => void;
 }
 
 export const AuthContext = createContext({} as AuthContext);
@@ -77,6 +79,26 @@ export const AuthProvider: FC = ({children}) => {
         });
   };
 
+  const requestPasswordReset = (email = state.user?.email) => {
+    return api.post('/account/password/request', {email})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  };
+
+  const requestEmailChange = (email = state.user?.email) => {
+    return api.post('/account/email/request', {email})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  };
+
   useEffect(() => {
     api.get('/account/check')
         .then(({data, status}) => {
@@ -88,7 +110,14 @@ export const AuthProvider: FC = ({children}) => {
   }, []);
 
   return (
-      <AuthContext.Provider value={{...state, loggedIn: !!state.user, login, logout}}>
+      <AuthContext.Provider value={{
+        ...state,
+        loggedIn: !!state.user,
+        login,
+        logout,
+        requestPasswordReset,
+        requestEmailChange
+      }}>
         {children}
       </AuthContext.Provider>
   );
