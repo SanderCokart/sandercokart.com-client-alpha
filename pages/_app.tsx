@@ -4,7 +4,7 @@ import {library} from '@fortawesome/fontawesome-svg-core';
 import {faSpinner} from '@fortawesome/free-solid-svg-icons';
 import type {AppProps} from 'next/app';
 import ApiProvider from 'providers/ApiProvider';
-import '../styles/globals.css';
+import '@/styles/globals.scss';
 
 library.add(...[faSpinner]);
 
