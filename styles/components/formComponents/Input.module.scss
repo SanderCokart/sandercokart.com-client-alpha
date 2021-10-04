@@ -1,0 +1,37 @@
+.formControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+
+  .labelStandalone {
+    margin-bottom: 4px;
+  }
+
+ @import "formControlError";
+
+  .iconContainer {
+    .prependIcon {
+
+    }
+
+    .prependIconPadding {
+
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      position: relative;
+    }
+
+    .appendIcon {
+
+    }
+
+    .appendIconPadding {
+
+    }
+  }
+}
+

@@ -1,0 +1,11 @@
+.formControl {
+  display: flex;
+  flex-direction: column;
+
+  .labelStandalone {
+    margin-bottom: 4px;
+  }
+
+ @import "formControlError";
+}
+

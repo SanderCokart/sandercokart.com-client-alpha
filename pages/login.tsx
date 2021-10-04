@@ -1,76 +1,84 @@
-import type {LoginCredentials} from '@/providers/AuthProvider';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/Login.module.scss';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import type {ChangeEvent, FC, FormEvent} from 'react';
-import {useState} from 'react';
+import type {FC} from 'react';
+import {Form, Formik, FormikValues} from 'Formik';
+import * as yup from 'yup';
+import Checkbox from '@/components/formComponents/Checkbox';
+import Input from '@/components/formComponents/Input';
+
+type Credentials = {
+    email: string;
+    password: string;
+    remember_me: boolean;
+};
 
 export const Login: FC = () => {
-  const [credentials, setCredentials] = useState<LoginCredentials>({
-    email: '',
-    password: '',
-    remember_me: false
-  });
 
-  const router = useRouter();
-  const {login} = useAuth();
-  const {query} = router;
+    const router = useRouter();
+    const { login } = useAuth();
+    const { query } = router;
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCredentials((prevState) => {
-      return ({
-        ...prevState,
-        [e.target.name]: e.target.name === 'remember_me' ? e.target.checked : e.target.value
-      });
+    const loginSchema = yup.object().shape({
+        email: yup.string().email().required(),
+        password: yup.string().min(6).max(50).required(),
+        remember_me: yup.boolean().required()
     });
-  };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    login(credentials).then(({status}) => {
-      if (status === 200) {
-        if (query?.type === 'verify_email')
-          return router.push({pathname: '/account/email/verify', query});
-        return router.push('/blog/recent');
-      }
-    });
-  };
+    const initialValues = {
+        email: '',
+        password: '',
+        remember_me: false
+    };
 
+    const onSubmit = (values: FormikValues) => {
+        console.log(values);
+    };
 
-  return (
-      <div className={styles.login}>
-        <form noValidate className={styles.form} onSubmit={onSubmit}>
+    // document.documentElement.dataset.theme = 'light';
 
-          <div className={styles.inputs}>
-            <div className={styles.formControl}>
-              <label htmlFor="email">Email</label>
-              <input id="email" name="email" type="email" onChange={onChange}/>
-            </div>
-            <div className={styles.formControl}>
-              <label htmlFor="password">Password</label>
-              <input id="password" name="password" type="password" onChange={onChange}/>
-            </div>
-            <div className={styles.remember}>
-              <label htmlFor="remember_me">Remember me</label>
-              <input id="remember_me" name="remember_me" type="checkbox" onChange={onChange}/>
-            </div>
-            <div>
-              <button type="submit">Submit</button>
-            </div>
-          </div>
+    const options = [
+        { key: 'Option 1', value: 'option1' },
+        { key: 'Option 2', value: 'option2' },
+        { key: 'Option 3', value: 'option3' }
+    ];
 
-          <div className={styles.links}>
-            <Link href="/account/password/forgot">
-              <a>Forgot password?</a>
-            </Link>
-            <Link href="/account/create">
-              <a>Don't have an account yet?</a>
-            </Link>
-          </div>
-        </form>
-      </div>
-  );
+    return (
+        <Formik
+            initialValues={initialValues}
+            validationSchema={loginSchema}
+            onSubmit={onSubmit}>
+            <Form noValidate className={styles.form}>
+                <div>
+                    <header>
+                        <h1>Login</h1>
+                    </header>
+
+                    <main>
+                        <Input name="email" placeholder="Type you email address" prependIcon={['fas', 'envelope']}
+                               type="email"/>
+                        <Input label="Password" name="password" placeholder="Type your password"
+                               prependIcon={['fas', 'lock']} type="password"/>
+                        <Checkbox label="Remember me" name="remember_me"/>
+                        <button type="submit">Submit</button>
+                    </main>
+                </div>
+
+                <footer>
+                    <div className={styles.links}>
+                        <Link href="/account/password/forgot">
+                            <a>Forgot password?</a>
+                        </Link>
+                        <Link href="/account/create">
+                            <a>Don't have an account yet?</a>
+                        </Link>
+                    </div>
+                </footer>
+
+            </Form>
+        </Formik>
+    );
 };
 
 export default Login;

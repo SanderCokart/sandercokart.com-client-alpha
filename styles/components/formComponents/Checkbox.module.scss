@@ -1,0 +1,67 @@
+.formControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .labelStandalone {
+    margin-bottom: 4px;
+  }
+
+  .labelWrapper {
+    position: relative;
+    padding-left: 24px;
+
+    .checkmark {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      border-radius: 4px;
+      background-color: #eee;
+      overflow: hidden;
+
+      &::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        background-color: var(--accent);
+        transform: scale(0);
+        transition: var(--transition-time) ease transform;
+      }
+
+      svg {
+        transition: var(--transition-time) ease transform;
+        transform: scale(0);
+        width: 70%;
+        height: 70%;
+      }
+    }
+
+    input {
+      display: none;
+
+      &:checked ~ .checkmark {
+
+        &::before {
+          transform: scale(1) rotate(360deg);
+        }
+
+        svg {
+          transform: scale(1) rotate(360deg);
+        }
+      }
+    }
+  }
+
+ @import "formControlError";
+}
+
+
