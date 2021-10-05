@@ -1,8 +1,4 @@
 .formControl {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-
   .labelStandalone {
     margin-bottom: 4px;
   }
@@ -61,7 +57,7 @@
     }
   }
 
- @import "formControlError";
+  @import "formControlError";
 }
 
 
