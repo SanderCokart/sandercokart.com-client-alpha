@@ -26,6 +26,7 @@ export interface InputProps extends InputHTMLAttributes<any> {
     placeholder?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
+    type?: 'password' | 'email' | 'text';
 }
 
 export interface RadioProps {

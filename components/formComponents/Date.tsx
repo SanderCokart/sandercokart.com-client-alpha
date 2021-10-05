@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {ErrorMessage, Field} from 'Formik';
+import {ErrorMessage, Field} from 'formik';
 import type {DatePickerProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Date.module.scss';
 import CustomInput from '@/components/formComponents/CustomInput';

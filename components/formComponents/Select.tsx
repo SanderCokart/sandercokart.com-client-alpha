@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {ErrorMessage} from 'Formik';
+import {ErrorMessage} from 'formik';
 import {SelectProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Select.module.scss';
 import CustomInput from '@/components/formComponents/CustomInput';

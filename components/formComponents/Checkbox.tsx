@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {ErrorMessage, Field} from 'Formik';
+import {ErrorMessage, Field} from 'formik';
 import type {CheckBoxProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Checkbox.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

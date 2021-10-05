@@ -1,20 +1,27 @@
-.createAccount {
-  display: grid;
-  place-items: center;
-  height: inherit;
+.form {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  form {
+  header {
+    margin-bottom: 8px;
+  }
+
+
+  main {
     display: flex;
     flex-direction: column;
-    width: 400px;
-    gap: 20px;
+    gap: 24px;
 
-    div {
-      display: flex;
-      flex-direction: column;
-
-      input {
-      }
+    button {
+      width: 100%;
+      background-color: var(--accent);
+      color: #eee;
+      padding: 8px;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: bolder;
     }
   }
 }

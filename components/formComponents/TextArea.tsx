@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {ErrorMessage} from 'Formik';
+import {ErrorMessage} from 'formik';
 import {TextAreaProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/TextArea.module.scss';
 import CustomInput from '@/components/formComponents/CustomInput';

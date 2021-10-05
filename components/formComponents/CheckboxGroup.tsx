@@ -1,6 +1,6 @@
 import type {FC} from 'react';
 import {Fragment} from 'react';
-import {ErrorMessage, Field, FieldAttributes} from 'Formik';
+import {ErrorMessage, Field, FieldAttributes} from 'formik';
 import {CheckBoxGroupProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/CheckboxGroup.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

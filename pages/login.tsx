@@ -3,16 +3,10 @@ import styles from '@/styles/Login.module.scss';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import {Form, Formik, FormikValues} from 'Formik';
+import {Form, Formik, FormikValues} from 'formik';
 import * as yup from 'yup';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
-
-type Credentials = {
-    email: string;
-    password: string;
-    remember_me: boolean;
-};
 
 export const Login: FC = () => {
 
