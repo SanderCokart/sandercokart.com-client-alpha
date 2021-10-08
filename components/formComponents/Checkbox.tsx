@@ -13,9 +13,6 @@ export const Input: FC<CheckBoxProps> = (props) => {
                     <FontAwesomeIcon icon={['fas', 'check']}/>
                 </div>
             </label>
-            <div className={styles.formControlError}>
-                <ErrorMessage name={props.name}/>
-            </div>
         </div>
     );
 };

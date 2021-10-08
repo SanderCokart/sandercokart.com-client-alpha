@@ -1,10 +1,23 @@
+@import 'mixins';
+
 :root {
-  --bg: hsl(0, 0%, 13%);
-  --text: hsl(0, 0%, 93%);
-  --text-invert: hsl(0, 0%, 7%);
-  --accent: hsl(0, 96%, 48%);
-  --highlight: hsl(0, 0%, 100%);
-  --highlight-hover: hsl(0, 0%, 100%);
+  --bg: hsl(0, 0%, 20%);
+  --bg-contrast-text: hsl(0, 0%, 93%);
+  --bg-sec: hsl(0, 0%, 93%);
+  --bg-sec-contrast-text: hsl(0, 0%, 10%);
+
+  --acc: hsl(0, 96%, 48%);
+  --acc-disabled: hsl(0, 96%, 10%);
+  --acc-disabled-contrast-text: hsl(0, 0%, 50%);
+  --acc-haf: hsl(0, 96%, 38%);
+  --acc-contrast-text: hsl(0, 0%, 100%);
+
+  //--bg: hsl(0, 0%, 13%);
+  //--text: hsl(0, 0%, 93%);
+  //--text-invert: hsl(0, 0%, 7%);
+  //--accent: hsl(0, 96%, 48%);
+  //--highlight: hsl(0, 0%, 100%);
+  //--highlight-hover: hsl(0, 0%, 100%);
 
   --error: hsl(0, 100%, 42%);
   --success: hsl(145, 100%, 39%);
@@ -16,10 +29,7 @@
 
   &[data-theme="light"] {
     --bg: hsl(0, 0%, 100%);
-    --text: hsl(0, 0%, 7%);
-    --text-invert: hsl(0, 0%, 93%);
-    --highlight: hsla(0, 96%, 48%, .5);
-    --highlight-hover: hsl(0, 0%, 100%);
+    --bg-contrast-text: hsl(0, 0%, 10%);
   }
 }
 
@@ -30,8 +40,8 @@ body,
   height: 100%;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
+  background: var(--bg);
+  color: var(--bg-contrast-text);
 }
 
 a {

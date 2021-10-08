@@ -10,6 +10,7 @@
 
   .labelStandalone {
     margin-bottom: 4px;
+    font-weight: bolder;
   }
 
   .labelWrapper {
@@ -37,7 +38,7 @@
         content: "";
         width: 100%;
         height: 100%;
-        background-color: var(--accent);
+        background-color: var(--acc);
         transform: scale(0);
         transition: var(--transition-time) ease transform;
       }

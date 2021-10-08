@@ -3,35 +3,13 @@
   flex-direction: column;
   width: 100%;
 
-
   .labelStandalone {
     margin-bottom: 4px;
+    display: inline-block;
+    width: auto;
+    font-weight: bolder;
   }
 
- @import "formControlError";
-
-  .iconContainer {
-    .prependIcon {
-
-    }
-
-    .prependIconPadding {
-
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      position: relative;
-    }
-
-    .appendIcon {
-
-    }
-
-    .appendIconPadding {
-
-    }
-  }
+  @import "formControlError";
 }
 

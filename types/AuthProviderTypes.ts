@@ -1,3 +1,5 @@
+import {bool} from 'yup';
+
 export interface ForgotPasswordType {
     email: string;
 }
@@ -24,12 +26,16 @@ export type UserType = {
 export interface AuthStateType {
     user?: UserType | null;
     loggedIn?: boolean;
+    isVerified?: boolean;
     loading?: boolean;
+    justVerified?: boolean;
 }
 
 export interface AuthContextType extends AuthStateType {
-    login: (credentials: LoginCredentialsType) => void;
-    logout: () => void;
-    requestPasswordReset: (email?: string) => void;
-    requestEmailChange: (email?: string) => void;
+    login: (credentials: LoginCredentialsType) => Promise<{ status: number }>;
+    logout: () => Promise<{ status: number }>;
+    requestPasswordReset: (email?: string) => Promise<{ status: number }>;
+    requestEmailChange: (email?: string) => Promise<{ status: number }>;
+    oS: (override: AuthStateType) => void;
+    check: () => Promise<{ status: number }>;
 }

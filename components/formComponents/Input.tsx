@@ -10,12 +10,14 @@ export const Input: FC<InputProps> = (props) => {
 
     return (
         <div className={styles.formControl}>
-            {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <Field appendIcon={appendIcon} as={CustomInput} name={name} prependIcon={prependIcon} type={type}
-                   {...rest}
-                   id={name}/>
-            <div className={styles.formControlError}>
-                <ErrorMessage name={name}/>
+            <div>
+                {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
+                <div className={styles.formControlError}>
+                    <ErrorMessage component="div" name={name}/>
+                </div>
+                <Field appendIcon={appendIcon} as={CustomInput} name={name} prependIcon={prependIcon} type={type}
+                       {...rest}
+                       id={name}/>
             </div>
         </div>
     );

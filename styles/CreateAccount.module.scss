@@ -16,12 +16,19 @@
 
     button {
       width: 100%;
-      background-color: var(--accent);
+      background-color: var(--acc);
       color: #eee;
       padding: 8px;
       border: none;
       border-radius: var(--radius);
       font-weight: bolder;
+      cursor: pointer;
+
+      &:disabled {
+        background: var(--acc-disabled);
+        color: var(--acc-disabled-contrast-text);
+        pointer-events: none;
+      }
     }
   }
 }

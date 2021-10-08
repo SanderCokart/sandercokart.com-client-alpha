@@ -26,31 +26,44 @@
     height: inherit;
     padding: 8px;
     outline: none;
-  }
-
-  input {
+    transition: background-color var(--transition-time) ease;
+    background-color: hsl(0, 0%, 93%);
     border: none;
     font-size: 1rem;
     z-index: 1;
-    line-height: 2rem;
+
+    &:not(textarea) {
+      line-height: 2rem;
+    }
+
+
+    &:active, &:focus ~ .line {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    &:hover, &:active, &:focus {
+      background-color: hsl(0, 0%, 100%);
+    }
 
     &::-webkit-calendar-picker-indicator {
       opacity: 0;
     }
   }
 
+  textarea ~ .line {
+    bottom: 4px;
+  }
+
   .line {
-    background-color: var(--accent);
+    background-color: var(--acc);
     width: 100%;
     height: 4px;
     transition: transform var(--transition-time) ease;
     transform: scaleX(0);
     transform-origin: right;
-  }
-
-  input:hover, input:active, input:focus ~ .line {
-    transform: scaleX(1);
-    transform-origin: left;
+    position: absolute;
+    bottom: 0;
   }
 
   .appendIcon {

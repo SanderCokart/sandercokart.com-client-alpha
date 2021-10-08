@@ -1,6 +1,7 @@
 import styles from '@/styles/CreateAccount.module.scss';
 import {useApi} from 'providers/ApiProvider';
 import type {FC} from 'react';
+import {useState} from 'react';
 import {Form, Formik, FormikValues} from 'formik';
 import Input from '@/components/formComponents/Input';
 import * as yup from 'yup';
@@ -11,11 +12,17 @@ export const CreateAccount: FC = () => {
     const api = useApi();
     const router = useRouter();
 
+    const [submitted, setSubmitted] = useState(false);
+    const timeout = 5000;
 
     const onSubmit = (values: FormikValues) => {
         api.post('/account/register', values).then(({ status, data }) => {
-            if (status === 200)
-                router.push('/login');
+            if (status === 200) {
+                setSubmitted(true);
+                setTimeout((params) => {
+                    router.push('/login');
+                }, timeout);
+            }
         });
     };
 
@@ -25,6 +32,7 @@ export const CreateAccount: FC = () => {
         password: '',
         password_confirmation: ''
     };
+
 
     const registerSchema = yup.object().shape({
         name: yup.string().required('This field is required'),
@@ -38,24 +46,35 @@ export const CreateAccount: FC = () => {
 
     return (
         <Formik initialValues={initialValues} validationSchema={registerSchema} onSubmit={onSubmit}>
-            <Form noValidate className={styles.form}>
-                <div>
-                    <header>
-                        <h1>Register</h1>
-                    </header>
-                    <main>
-                        <Input label="Full name" name="name" placeholder="Type your full name"
-                               prependIcon={['fas', 'user']}/>
-                        <Input name="email" placeholder="Type you email address" prependIcon={['fas', 'envelope']}
-                               type="email"/>
-                        <Input label="Password" name="password" placeholder="Type your password"
-                               prependIcon={['fas', 'lock']} type="password"/>
-                        <Input label="Password" name="password_confirmation" placeholder="Type your password again"
-                               prependIcon={['fas', 'lock']} type="password"/>
-                        <button type="submit">Submit</button>
-                    </main>
-                </div>
-            </Form>
+            {({ isValid, dirty, values }) => {
+                return submitted ? (
+                    <div>
+                        <h1>Please verify your email! We sent you an email at {values.email} </h1>
+                        <p>You will be sent back to the login page in {timeout / 1000} seconds</p>
+                    </div>
+                ) : (
+                    <Form noValidate className={styles.form}>
+                        <div>
+                            <header>
+                                <h1>Register</h1>
+                            </header>
+                            <main>
+                                <Input label="Full name" name="name" placeholder="Type your full name"
+                                       prependIcon={['fas', 'user']}/>
+                                <Input name="email" placeholder="Type you email address"
+                                       prependIcon={['fas', 'envelope']}
+                                       type="email"/>
+                                <Input label="Password" name="password" placeholder="Type your password"
+                                       prependIcon={['fas', 'lock']} type="password"/>
+                                <Input label="Password" name="password_confirmation"
+                                       placeholder="Type your password again"
+                                       prependIcon={['fas', 'lock']} type="password"/>
+                                <button disabled={!dirty || !isValid} type="submit">Submit</button>
+                            </main>
+                        </div>
+                    </Form>
+                );
+            }}
         </Formik>
     );
 };

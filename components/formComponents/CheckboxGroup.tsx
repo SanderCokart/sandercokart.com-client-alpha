@@ -36,9 +36,6 @@ export const CheckboxGroup: FC<CheckBoxGroupProps> = (props) => {
                     }
                 </Field>
             </div>
-            <div className={styles.formControlError}>
-                <ErrorMessage name={name}/>
-            </div>
         </div>
     );
 };

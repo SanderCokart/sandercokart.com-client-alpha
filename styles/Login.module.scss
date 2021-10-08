@@ -1,43 +1,80 @@
-.form {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+@import "mixins";
 
-  header {
-    margin-bottom: 8px;
-  }
 
-  main {
+.login {
+  .form {
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    justify-content: space-between;
 
-    button {
-      width: 100%;
-      background-color: var(--accent);
-      color: #eee;
-      padding: 8px;
-      border: none;
-      border-radius: var(--radius);
-      font-weight: bolder;
+    header {
+      margin-bottom: 8px;
     }
-  }
 
-  footer {
-    .links {
+    main {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      gap: 24px;
 
-      a {
-        color: #eee;
+      button {
+        width: 100%;
+        background-color: var(--acc);
+        color: var(--acc-contrast-text);
         padding: 8px;
         border: none;
+        border-radius: var(--radius);
         font-weight: bolder;
-        text-align: center;
-        margin: 0 auto;
+        cursor: pointer;
+        transition: background-color ease var(--transition-time);
+
+
+        &:disabled {
+          background: var(--acc-disabled);
+          color: var(--acc-disabled-contrast-text);
+          pointer-events: none;
+        }
+
+        &:hover, &:active, &:focus {
+          background-color: var(--acc-haf);
+
+        }
       }
+    }
+
+    footer {
+      .links {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        a {
+          color: #eee;
+          padding: 8px;
+          border: none;
+          font-weight: bolder;
+          text-align: center;
+          margin: 0 auto;
+          transition: color ease var(--transition-time);
+
+          &:hover, &:active, &:focus {
+            color: var(--acc)
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@include up($md) {
+  .login {
+    height: 100%;
+    display: flex;
+
+    .form {
+      width: 500px;
+      margin: auto;
     }
   }
 }
