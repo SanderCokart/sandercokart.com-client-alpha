@@ -10,14 +10,13 @@ const VerifyEmail: FC = () => {
     const router = useRouter();
     const api = useApi();
     const { loggedIn, isVerified, justVerified, check, oS } = useAuth();
-    console.log(router.query);
     const { query: { user, hash, type, signature, expires }, isReady } = router;
 
     const timeout = 5000;
 
     useEffect(() => {
         if (loggedIn && !isVerified && isReady) {
-            api.get(`/account/email/verify/${user}/${hash}?expires=${expires}&type=${type}&signature=${signature}`).then(() => {
+            api.get(`/account/email/verify/${user}/${hash}`, { params: { expires, type, signature } }).then(() => {
                 check();
                 oS({ justVerified: true });
             });

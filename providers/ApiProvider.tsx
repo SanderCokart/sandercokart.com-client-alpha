@@ -15,7 +15,7 @@ export const ApiProvider: FC = ({ children }) => {
 
     useEffect(() => {
         axiosInstance.get('/sanctum/csrf-cookie')
-            .catch(() => {
+            .catch((err) => {
                 alert('Could not get CSRF cookie!');
             });
     }, []);

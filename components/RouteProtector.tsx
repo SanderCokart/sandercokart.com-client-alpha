@@ -3,7 +3,7 @@ import type {FC} from 'react';
 export const RouteProtector: FC = ({ children }) => {
     // const { loggedIn, loading } = useAuth();
     // const router = useRouter();
-    //
+    //z
     // const redirectIfLoggedIn = ['/account/create', '/account/password/forgot', '/account/password/reset'];
     // const requireAuth = ['/account'];
     //

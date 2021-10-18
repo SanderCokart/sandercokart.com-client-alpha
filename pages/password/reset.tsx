@@ -1,5 +1,5 @@
 import {useApi} from '@/providers/ApiProvider';
-import styles from '@/styles/PasswordReset.module.scss';
+import styles from '@/styles/account/PasswordReset.module.scss';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
 import type {ChangeEvent, FC, FormEvent} from 'react';
@@ -27,7 +27,7 @@ export const PasswordReset: FC = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    api.patch('/account/password/reset', form)
+    api.patch('/password/reset', form)
         .then(res => {
           console.log(res.data);
         })

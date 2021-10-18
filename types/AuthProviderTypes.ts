@@ -1,5 +1,3 @@
-import {bool} from 'yup';
-
 export interface ForgotPasswordType {
     email: string;
 }
@@ -14,7 +12,7 @@ export interface RegisterCredentialsType extends LoginCredentialsType {
     name: string;
 }
 
-export type UserType = {
+export interface UserType {
     id: number;
     name: string;
     email: string;
@@ -23,19 +21,26 @@ export type UserType = {
     updated_at: string;
 }
 
-export interface AuthStateType {
-    user?: UserType | null;
-    loggedIn?: boolean;
-    isVerified?: boolean;
-    loading?: boolean;
-    justVerified?: boolean;
+export interface AuthContextInitialProps {
+    user: UserType | null;
+    loggedIn: boolean;
+    isVerified: boolean;
+    loading: boolean;
+    justVerified: boolean;
+    login?: (credentials: LoginCredentialsType) => Promise<{ status: number }>;
+    logout?: () => Promise<{ status: number }>;
+    requestPasswordReset?: (email?: string) => Promise<{ status: number }>;
+    requestEmailChange?: (email?: string) => Promise<{ status: number }>;
+    oS?: (override: Partial<AuthContextInitialProps>) => void;
+    check?: () => Promise<{ status: number }>;
 }
 
-export interface AuthContextType extends AuthStateType {
+export interface AuthContextProps extends AuthContextInitialProps {
+    user: UserType;
     login: (credentials: LoginCredentialsType) => Promise<{ status: number }>;
     logout: () => Promise<{ status: number }>;
     requestPasswordReset: (email?: string) => Promise<{ status: number }>;
     requestEmailChange: (email?: string) => Promise<{ status: number }>;
-    oS: (override: AuthStateType) => void;
+    oS: (override: Partial<AuthContextInitialProps>) => void;
     check: () => Promise<{ status: number }>;
 }

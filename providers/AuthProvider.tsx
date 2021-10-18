@@ -1,32 +1,42 @@
 import {useApi} from '@/providers/ApiProvider';
 import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
-import type {AuthContextType, AuthStateType, LoginCredentialsType} from '@/types/AuthProviderTypes';
+import type {AuthContextInitialProps, LoginCredentialsType} from '@/types/AuthProviderTypes';
+import {AuthContextProps} from '@/types/AuthProviderTypes';
 
-export const AuthContext = createContext({} as AuthContextType);
+const defaultState = {
+    user: null,
+    loading: true,
+    justVerified: false,
+    loggedIn: false,
+    isVerified: false
+};
 
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext<AuthContextInitialProps>(defaultState);
+
+export const useAuth = () => useContext(AuthContext) as AuthContextProps;
 
 export const AuthProvider: FC = ({ children }) => {
     const api = useApi();
 
-    const [state, setState] = useState<AuthStateType>({
+    const [state, setState] = useState<AuthContextInitialProps>({
         user: null,
         loading: true,
         justVerified: false,
-        loggedIn: false
+        loggedIn: false,
+        isVerified: false
     });
 
-    const oS = (override: AuthStateType): void => {
+    const oS = (override: Partial<AuthContextInitialProps>): void => {
         setState(prevState => {
             return { ...prevState, ...override };
         });
     };
 
     const login = (credentials: LoginCredentialsType) => {
-        return api.post('/account/login', credentials)
+        return api.post('/login', credentials)
             .then(({ data: { user }, status }) => {
-                oS({ user: user, loading: false });
+                oS({ user, loading: false });
                 return { status };
             })
             .catch(({ status }) => {
@@ -49,7 +59,7 @@ export const AuthProvider: FC = ({ children }) => {
     };
 
     const requestPasswordReset = (email = state.user?.email) => {
-        return api.post('/account/password/request', { email })
+        return api.post('/password/request', { email })
             .then(({ status }) => {
                 return { status };
             })
@@ -58,18 +68,18 @@ export const AuthProvider: FC = ({ children }) => {
             });
     };
 
-    const requestEmailChange = (email = state.user?.email) => {
-        return api.post('/account/email/request', { email })
-            .then(({ status }) => {
-                return { status };
-            })
-            .catch(({ response: { status } }) => {
-                return { status };
-            });
-    };
+    // const requestEmailChange = (email = state.user?.email) => {
+    //     return api.post('/account/email/request', { email })
+    //         .then(({ status }) => {
+    //             return { status };
+    //         })
+    //         .catch(({ response: { status } }) => {
+    //             return { status };
+    //         });
+    // };
 
     const check = () => {
-        return api.get('/account/check')
+        return api.get('/check')
             .then(({ data, status }) => {
                 oS({ user: data.user, loading: false });
                 return { status };
@@ -92,7 +102,7 @@ export const AuthProvider: FC = ({ children }) => {
             login,
             logout,
             requestPasswordReset,
-            requestEmailChange,
+            // requestEmailChange,
             oS,
             check
         }}>

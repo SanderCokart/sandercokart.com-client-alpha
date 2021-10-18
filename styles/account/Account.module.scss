@@ -1,0 +1,40 @@
+.account {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .form {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    header {
+      margin-bottom: 8px;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      button {
+        width: 100%;
+        background-color: var(--acc);
+        color: #eee;
+        padding: 8px;
+        border: none;
+        border-radius: var(--radius);
+        font-weight: bolder;
+        cursor: pointer;
+
+        &:disabled {
+          background: var(--acc-disabled);
+          color: var(--acc-disabled-contrast-text);
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}
+

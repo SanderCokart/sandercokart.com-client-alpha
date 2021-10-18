@@ -12,7 +12,7 @@ module.exports = {
     ]
   },
   env: {
-    API_URL: 'http://localhost/',
+    API_URL: 'http://192.168.2.160',
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]

@@ -32,11 +32,14 @@ export const Login: FC = () => {
             if (status === 200)
                 switch (type) {
                     case 'verify': {
-                        router.push({ pathname: `/account/email/verify/${user}/${hash}?expires=${expires}&${type}&${signature}` });
+                        router.push({
+                            pathname: `/account/email/verify/${user}/${hash}`,
+                            query: { expires, type, signature }
+                        });
                         break;
                     }
                     default: {
-                        router.replace('/blog/recent');
+                        router.push('/blog/recent');
                         return;
                     }
                 }
@@ -58,10 +61,10 @@ export const Login: FC = () => {
                                 <h1>Login</h1>
                             </header>
                             <main>
-                                <Input label="E-Mail" name="email" placeholder="Type you email address"
+                                <Input autoComplete="email" label="E-Mail" name="email" placeholder="Type you email address"
                                        prependIcon={['fas', 'envelope']}
                                        type="email"/>
-                                <Input label="Password" name="password" placeholder="Type your password"
+                                <Input autoComplete="current-password" label="Password" name="password" placeholder="Type your password"
                                        prependIcon={['fas', 'lock']} type="password"/>
                                 <Checkbox label="Remember me" name="remember_me"/>
                                 <button disabled={!dirty || !isValid} type="submit">Submit</button>
@@ -70,10 +73,10 @@ export const Login: FC = () => {
 
                         <footer>
                             <div className={styles.links}>
-                                <Link href="/account/password/forgot">
+                                <Link href="/password/forgot">
                                     <a>Forgot password?</a>
                                 </Link>
-                                <Link href="/account/create">
+                                <Link href="/register">
                                     <a>Don't have an account yet?</a>
                                 </Link>
                             </div>

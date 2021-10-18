@@ -1,6 +1,6 @@
 import {useApi} from '@/providers/ApiProvider';
 import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/PasswordForgot.module.scss';
+import styles from '@/styles/account/PasswordForgot.module.scss';
 import Head from 'next/head';
 import type {ChangeEvent, FC, FormEvent} from 'react';
 import {useState} from 'react';

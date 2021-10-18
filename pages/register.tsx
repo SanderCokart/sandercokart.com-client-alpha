@@ -1,5 +1,5 @@
-import styles from '@/styles/CreateAccount.module.scss';
-import {useApi} from 'providers/ApiProvider';
+import styles from '@/styles/account/CreateAccount.module.scss';
+import {useApi} from '@/providers/ApiProvider';
 import type {FC} from 'react';
 import {useState} from 'react';
 import {Form, Formik, FormikValues} from 'formik';
@@ -16,7 +16,7 @@ export const CreateAccount: FC = () => {
     const timeout = 5000;
 
     const onSubmit = (values: FormikValues) => {
-        api.post('/account/register', values).then(({ status, data }) => {
+        api.post('/register', values).then(({ status, data }) => {
             if (status === 200) {
                 setSubmitted(true);
                 setTimeout((params) => {
@@ -59,14 +59,15 @@ export const CreateAccount: FC = () => {
                                 <h1>Register</h1>
                             </header>
                             <main>
-                                <Input label="Full name" name="name" placeholder="Type your full name"
+                                <Input autoComplete="name" label="Full name" name="name"
+                                       placeholder="Type your full name"
                                        prependIcon={['fas', 'user']}/>
-                                <Input name="email" placeholder="Type you email address"
+                                <Input autoComplete="email" name="email" placeholder="Type you email address"
                                        prependIcon={['fas', 'envelope']}
                                        type="email"/>
-                                <Input label="Password" name="password" placeholder="Type your password"
+                                <Input autoComplete="new-password" label="Password" name="password" placeholder="Type your password"
                                        prependIcon={['fas', 'lock']} type="password"/>
-                                <Input label="Password" name="password_confirmation"
+                                <Input autoComplete="new-password" label="Password" name="password_confirmation"
                                        placeholder="Type your password again"
                                        prependIcon={['fas', 'lock']} type="password"/>
                                 <button disabled={!dirty || !isValid} type="submit">Submit</button>
