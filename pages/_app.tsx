@@ -1,4 +1,3 @@
-import RouteProtector from '@/components/RouteProtector';
 import AuthProvider from '@/providers/AuthProvider';
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {faCalendar, faCheck, faEnvelope, faLock, faSpinner, faUser} from '@fortawesome/free-solid-svg-icons';
@@ -15,9 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ApiProvider>
             <AuthProvider>
                 <LoadingProvider>
-                    <RouteProtector>
-                        <Component {...pageProps} />
-                    </RouteProtector>
+                    <Component {...pageProps} />
                 </LoadingProvider>
             </AuthProvider>
         </ApiProvider>

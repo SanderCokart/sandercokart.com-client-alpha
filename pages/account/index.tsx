@@ -7,6 +7,7 @@ import {useApi} from '@/providers/ApiProvider';
 import {useRouter} from 'next/router';
 import Checkbox from '@/components/formComponents/Checkbox';
 import * as yup from 'yup';
+import Loader from '@/components/Loader';
 
 interface PasswordType {
     current_password: string,
@@ -20,9 +21,14 @@ interface EmailType {
 }
 
 export const Account: FC = () => {
-    const { logout, isVerified, user: { email, id: userId } } = useAuth();
+    const { logout, isVerified, user } = useAuth();
     const router = useRouter();
     const api = useApi();
+
+    if (!user) {
+        router.replace('/login');
+        return <Loader/>;
+    }
 
     const initialValuesPassword: PasswordType = {
         current_password: '',
@@ -32,7 +38,7 @@ export const Account: FC = () => {
     };
 
     const initialValuesEmail: EmailType = {
-        email: email
+        email: user?.email
     };
 
     const onLogout = () => {
@@ -50,7 +56,7 @@ export const Account: FC = () => {
 
     const onEmailSubmit = async (values: EmailType) => {
         try {
-            const { data } = await api.patch(`/account/email/change/${userId}`, values);
+            const { data } = await api.patch(`/account/email/change/${user?.id}`, values);
         } catch (err) {
             console.error(err);
         }
@@ -71,7 +77,8 @@ export const Account: FC = () => {
 
     return (
         <div className={styles.account}>
-            <Formik initialValues={initialValuesPassword} validationSchema={passwordSchema} onSubmit={onPasswordSubmit}>
+            <Formik initialValues={initialValuesPassword} validationSchema={passwordSchema}
+                    onSubmit={onPasswordSubmit}>
                 <PasswordForm/>
             </Formik>
 

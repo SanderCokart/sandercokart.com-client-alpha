@@ -1,5 +1,5 @@
 import type {FC} from 'react';
-import {createContext, useEffect, useState} from 'react';
+import {createContext, useContext, useEffect, useState} from 'react';
 import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 
@@ -9,6 +9,8 @@ interface LoadingContext {
 }
 
 const LoadingContext = createContext({} as LoadingContext);
+
+export const useLoader = () => useContext(LoadingContext);
 
 const LoadingProvider: FC = ({ children }) => {
 
