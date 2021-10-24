@@ -1,0 +1,17 @@
+    return (
+        <MDXRemote {...source}/>
+    );
+
+    export const getStaticProps: GetStaticProps = async () => {
+
+        try {
+            const { data } = await axios.get(process.env.API_URL + '/posts');
+            const source = await serialize(data[0].markdown);
+
+            return { props: { source } };
+        } catch (err) {
+            throw Error(err);
+        }
+    };
+
+    export const Recent: FC<{ source: MDXRemoteSerializeResult }> = ({ source }) => {
