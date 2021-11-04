@@ -1,50 +1,50 @@
-import {useApi} from '@/providers/ApiProvider';
-import {useAuth} from '@/providers/AuthProvider';
+import Input from '@/components/formComponents/Input';
+import {handler, useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/account/PasswordForgot.module.scss';
-import Head from 'next/head';
-import type {ChangeEvent, FC, FormEvent} from 'react';
-import {useState} from 'react';
+import {PasswordForgotPayload} from '@/types/AuthProviderTypes';
+import {Form, Formik, useFormikContext} from 'formik';
+import type {FC} from 'react';
+import * as yup from 'yup';
 
 export const PasswordForgot: FC = () => {
-  const api = useApi();
-  const {requestPasswordReset} = useAuth();
+    const api = useApi();
 
-  const [email, setEmail] = useState('');
+    const requestPasswordReset = async (formValues: PasswordForgotPayload) => {
+        await handler(api.post('/password/request', formValues));
+    };
 
+    const forgotSchema = yup.object().shape({
+        email: yup.string().email().required('This field is required')
+    });
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    requestPasswordReset(email);
-  };
+    const initialValues = { email: '' };
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  return (
-      <div className={styles.outerContainer}>
-        <Head>
-          <title>Forgot Password - sandercokart.com</title>
-          <meta content="Reset your password" name="description"/>
-        </Head>
-
-        <div className={styles.innerContainer}>
-          <header>
-            <h1>Forgot your password?</h1>
-          </header>
-
-          <main>
-            <form noValidate onSubmit={onSubmit}>
-              <label>
-                E-Mail
-                <input name="email" type="email" value={email} onChange={onChange}/>
-              </label>
-              <button type="submit">Request new password</button>
-            </form>
-          </main>
+    return (
+        <div className={styles.forgot}>
+            <Formik initialValues={initialValues}
+                    validationSchema={forgotSchema}
+                    onSubmit={requestPasswordReset}>
+                <ForgotForm/>
+            </Formik>
         </div>
-      </div>
-  );
+    );
+};
+
+const ForgotForm: FC = () => {
+    const { isValid, dirty } = useFormikContext();
+    return (
+        <Form noValidate className={styles.form}>
+            <header className={styles.header}>
+                <h1>Forgot Password</h1>
+            </header>
+            <main className={styles.main}>
+                <Input name="email" placeholder="Enter your email..."/>
+                <button className={styles.submitButton} disabled={!dirty || !isValid} type="submit">Request new
+                    password
+                </button>
+            </main>
+        </Form>
+    );
 };
 
 export default PasswordForgot;

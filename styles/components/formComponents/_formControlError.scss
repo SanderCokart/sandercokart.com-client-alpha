@@ -1,11 +1,10 @@
 .formControlError {
   color: var(--error);
   font-weight: bolder;
-  min-height: 21px;
   text-shadow: hsla(0, 0%, 0%, .5) 0 0 4px;
   display: inline-block;
 
-  div {
+  span {
     &::before {
       white-space: pre;
       content: " - ";

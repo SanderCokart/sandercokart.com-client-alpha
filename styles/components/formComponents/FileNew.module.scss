@@ -1,0 +1,198 @@
+//@import "../../mixins";
+//
+//.view {
+//  height: 50vh;
+//  width: 100%;
+//  border: solid var(--info) 4px;
+//  transition: border ease var(--transition-time);
+//  overflow-y: auto;
+//
+//  &.highlight {
+//    border-color: var(--success);
+//  }
+//
+//  .dropbox {
+//    height: 100%;
+//    width: 100%;
+//    display: flex;
+//    justify-content: center;
+//    align-items: center;
+//    flex-direction: column;
+//
+//    .text {
+//      position: absolute;
+//      font-weight: bolder;
+//      font-size: 2rem;
+//      pointer-events: none;
+//      user-select: none;
+//      -moz-user-select: none;
+//      -webkit-user-select: none;
+//      -ms-user-select: none;
+//    }
+//
+//    .input {
+//      width: 100%;
+//      height: 100%;
+//      background-color: transparent;
+//      outline: none;
+//      color: transparent;
+//      cursor: pointer;
+//
+//      &::-webkit-file-upload-button {
+//        display: none;
+//      }
+//    }
+//  }
+//
+//  .tableContainer {
+//    padding: 0 16px;
+//
+//    .table {
+//      border-collapse: separate;
+//      border-spacing: 0 16px;
+//      width: 100%;
+//      height: auto;
+//
+//      .colGroup {
+//        :nth-child(1) {
+//          width: 100px;
+//        }
+//
+//        :nth-child(2) {
+//          width: auto;
+//        }
+//
+//        :nth-child(3) {
+//          width: 10%;
+//        }
+//
+//        :nth-child(4) {
+//          width: 10%;
+//        }
+//
+//        :nth-child(4) {
+//          width: 20%;
+//        }
+//      }
+//
+//      thead {
+//        tr {
+//
+//          .fileName, .fileSize, .fileStatus, .fileActions, .filePreview {
+//
+//          }
+//
+//          .filePreview {
+//            text-align: left;
+//          }
+//
+//          .fileName {
+//            text-align: left;
+//          }
+//
+//          .fileSize {
+//            text-align: center;
+//          }
+//
+//          .fileActions {
+//            text-align: right;
+//          }
+//        }
+//      }
+//
+//      tbody {
+//        tr {
+//          border-bottom: 4px var(--info) solid;
+//
+//          .fileName, .fileSize, .fileStatus, .fileActions, .filePreview {
+//            height: 50px;
+//          }
+//
+//          .filePreview {
+//            text-align: left;
+//            position: relative;
+//            display: inline-block;
+//
+//            .image {
+//              cursor: pointer;
+//              object-fit: contain;
+//              width: 100%;
+//              height: 100%;
+//              -webkit-tap-highlight-color: transparent;
+//            }
+//
+//            .spinner {
+//              animation: rotateAnimation 1000ms linear infinite;
+//            }
+//
+//            @keyframes rotateAnimation {
+//              to {
+//                transform: rotate(360deg);
+//              }
+//            }
+//          }
+//
+//          .fileName {
+//            text-align: left;
+//            text-overflow: ellipsis;
+//            white-space: nowrap;
+//            overflow-x: hidden;
+//            max-width: 0;
+//          }
+//
+//          .fileSize {
+//            text-align: center;
+//          }
+//
+//          .fileActions {
+//            text-align: right;
+//            display: flex;
+//            justify-content: flex-end;
+//            align-items: center;
+//
+//            .deleteButton {
+//              background-color: transparent;
+//              outline: none;
+//              border: none;
+//              color: var(--bg-contrast-text);
+//              cursor: pointer;
+//
+//
+//              &:hover {
+//                color: var(--error)
+//              }
+//            }
+//          }
+//        }
+//      }
+//    }
+//  }
+//
+//  .previewContainer {
+//    position: fixed;
+//    background-color: #000a;
+//    top: 0;
+//    bottom: 0;
+//    left: 0;
+//    right: 0;
+//    display: flex;
+//
+//    .preview {
+//      width: 100%;
+//      height: 100%;
+//      margin: auto;
+//      display: flex;
+//      padding: 16px;
+//
+//      .previewImage {
+//        object-fit: contain;
+//        margin: auto;
+//        width: 100%;
+//        height: 100%;
+//      }
+//    }
+//  }
+//}
+//
+//
+

@@ -1,0 +1,54 @@
+.fileItem {
+  flex: 1;
+  min-width: 250px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #aa0; */
+  position: relative;
+
+  .control {
+    position: relative;
+    display: inline-block;
+    flex: 1;
+
+    .file {
+      display: block;
+      height: 250px;
+      width: 100%;
+      object-fit: contain;
+    }
+
+    .actionsContainer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+
+      .action {
+        border-radius: 50%;
+        clip-path: circle();
+        font-size: 20px;
+        height: 50px;
+        width: 50px;
+        background-color: #000a;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        transition: ease 250ms;
+        color: white;
+
+        &:hover {
+          background-color: #fff;
+          color: black;
+          transform: scale(1.2);
+          z-index: 2;
+        }
+      }
+    }
+  }
+}

@@ -1,17 +1,3 @@
-export interface ForgotPasswordType {
-    email: string;
-}
-
-export interface LoginCredentialsType extends ForgotPasswordType {
-    password: string;
-    remember_me: boolean;
-}
-
-export interface RegisterCredentialsType extends LoginCredentialsType {
-    password_confirmation: string;
-    name: string;
-}
-
 export interface UserType {
     id: number;
     name: string;
@@ -21,26 +7,57 @@ export interface UserType {
     updated_at: string;
 }
 
+export interface LoginPayload {
+    email: string;
+    password: string;
+    remember_me: boolean;
+}
+
+export interface RegisterPayload {
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}
+
+export interface PasswordForgotPayload {
+    email: string;
+}
+
+export interface PasswordResetPayload {
+    password: string,
+    password_confirmation: string,
+}
+
+export interface PasswordChangePayload {
+    current_password: string,
+    password: string,
+    password_confirmation: string,
+    sign_out_everywhere: boolean,
+}
+
+export interface EmailChangePayload {
+    email: string;
+}
+
+export interface EmailCompromisedPayload {
+    password: string,
+    password_confirmation: string
+}
+
 export interface AuthContextInitialProps {
     user: UserType | null;
     loggedIn: boolean;
     isVerified: boolean;
     loading: boolean;
     justVerified: boolean;
-    login?: (credentials: LoginCredentialsType) => Promise<{ status: number }>;
+    login?: (credentials: LoginPayload) => Promise<{ status: number }>;
     logout?: () => Promise<{ status: number }>;
-    requestPasswordReset?: (email?: string) => Promise<{ status: number }>;
-    requestEmailChange?: (email?: string) => Promise<{ status: number }>;
-    oS?: (override: Partial<AuthContextInitialProps>) => void;
     check?: () => Promise<{ status: number }>;
 }
 
 export interface AuthContextProps extends AuthContextInitialProps {
-    user: UserType;
-    login: (credentials: LoginCredentialsType) => Promise<{ status: number }>;
+    login: (credentials: LoginPayload) => Promise<{ status: number }>;
     logout: () => Promise<{ status: number }>;
-    requestPasswordReset: (email?: string) => Promise<{ status: number }>;
-    requestEmailChange: (email?: string) => Promise<{ status: number }>;
-    oS: (override: Partial<AuthContextInitialProps>) => void;
     check: () => Promise<{ status: number }>;
 }

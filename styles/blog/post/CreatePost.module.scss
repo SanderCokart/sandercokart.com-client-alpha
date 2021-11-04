@@ -4,17 +4,16 @@
   flex-direction: column;
   justify-content: space-between;
 
-  header {
+  .header {
     margin-bottom: 8px;
   }
 
-
-  main {
+  .main {
     display: flex;
     flex-direction: column;
     gap: 24px;
 
-    button {
+    .submitButton {
       width: 100%;
       background-color: var(--acc);
       color: #eee;

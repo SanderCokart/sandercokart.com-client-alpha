@@ -1,23 +1,38 @@
-import type {FC} from 'react';
-import {ErrorMessage} from 'formik';
-import {SelectProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Select.module.scss';
-import CustomInput from '@/components/formComponents/CustomInput';
+import type {SelectProps} from '@/types/FormControlTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {forwardRef} from 'react';
 
 
-export const Select: FC<SelectProps> = (props) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(props, ref) {
+    const {
+        name, prependIcon, appendIcon, label,
+        id = name,
+        error,
+        children,
+        ...rest
+    } = props;
 
-    const { prependIcon, appendIcon, name, label, options, ...rest } = props;
+    const selectClassName = `${styles.select} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
 
     return (
         <div className={styles.formControl}>
-            {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <CustomInput appendIcon={appendIcon} as="select" options={options} prependIcon={prependIcon}/>
-            <div className={styles.formControlError}>
-                <ErrorMessage name={name}/>
+            <div>
+                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
+                <div className={styles.formControlError}>
+                    {error && <span>{error.message}</span>}
+                </div>
+
+                <div className={styles.iconContainer}>
+                    {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                    <select {...rest} ref={ref} className={selectClassName} name={name}>
+                        {children}
+                    </select>
+                    {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                </div>
             </div>
         </div>
     );
-};
+});
 
 export default Select;

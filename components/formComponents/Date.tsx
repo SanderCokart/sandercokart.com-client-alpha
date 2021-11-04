@@ -1,23 +1,41 @@
-import type {FC} from 'react';
-import {ErrorMessage, Field} from 'formik';
-import type {DatePickerProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Date.module.scss';
-import CustomInput from '@/components/formComponents/CustomInput';
+import type {DateProps} from '@/types/FormControlTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {forwardRef} from 'react';
 
-const Date: FC<DatePickerProps> = (props) => {
-    const { name, label, type = 'date', appendIcon = ['fas', 'calendar'], prependIcon = 'date', ...rest } = props;
+
+const Date = forwardRef<HTMLInputElement, DateProps>(function Date(props, ref) {
+    const {
+        name, prependIcon, appendIcon  = ['fas', 'calendar'], label,
+        id = name,
+        error,
+        type = 'date',
+        ...rest
+    } = props;
+
+    const dateClassName = `${styles.date} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
+
     return (
         <div className={styles.formControl}>
-            {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <div className={styles.iconContainer}>
-                <Field {...rest} appendIcon={appendIcon} as={CustomInput} id={name} name={name}
-                       prependIcon={prependIcon} type={type}/>
-            </div>
-            <div className={styles.formControlError}>
-                <ErrorMessage name={name}/>
+            <div>
+                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
+
+                {error &&
+                <div className={styles.formControlError}>
+                    <span>{error.message}</span>
+                </div>
+                }
+
+                <div className={styles.iconContainer}>
+                    {prependIcon &&
+                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                    <input {...rest} ref={ref} className={dateClassName} id={id} name={name} type={type}/>
+                    {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                    <div className={styles.line}/>
+                </div>
             </div>
         </div>
     );
-};
+});
 
 export default Date;

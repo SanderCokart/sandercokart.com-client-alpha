@@ -30,9 +30,9 @@ const ChangePassword: FC = () => {
         password_confirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('This field is required')
     });
 
-    const onSubmit = (values: ChangePasswordForm) => {
+    const onSubmit = (formValues: ChangePasswordForm) => {
         try {
-            api.patch(`/password/compromised/${user}/${token}`, values);
+            api.patch(`/password/compromised/${user}/${token}`, formValues);
         } catch (err) {
             console.error(err);
         }

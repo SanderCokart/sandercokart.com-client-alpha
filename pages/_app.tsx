@@ -1,15 +1,27 @@
 import AuthProvider from '@/providers/AuthProvider';
+import LoadingProvider from '@/providers/LoadingProvider';
+import '@/styles/globals.scss';
 import {library} from '@fortawesome/fontawesome-svg-core';
-import {faCalendar, faCheck, faEnvelope, faLock, faSpinner, faUser} from '@fortawesome/free-solid-svg-icons';
+import {
+    faCalendar,
+    faCheck,
+    faEnvelope,
+    faFileImage,
+    faLock,
+    faPlus,
+    faSpinner,
+    faTimes,
+    faTrash,
+    faUser
+} from '@fortawesome/free-solid-svg-icons';
 import type {AppProps} from 'next/app';
 import ApiProvider from 'providers/ApiProvider';
-import '@/styles/globals.scss';
-import LoadingProvider from '@/providers/LoadingProvider';
 
 
-library.add(...[faSpinner, faEnvelope, faLock, faCheck, faCalendar, faUser]);
+library.add(...[faSpinner, faEnvelope, faLock, faCheck, faCalendar, faUser, faTimes, faPlus, faFileImage, faTrash]);
 
 function MyApp({ Component, pageProps }: AppProps) {
+
     return (
         <ApiProvider>
             <AuthProvider>
