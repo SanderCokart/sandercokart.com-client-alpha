@@ -1,0 +1,197 @@
+@import "../../mixins";
+
+.formControl {
+  display: flex;
+  flex-direction: column;
+  min-height: 25vh;
+  height: 50vh;
+
+  @include up($sm) {
+    height: 600px;
+  }
+
+  .inputContainer {
+    position: relative;
+    height: 100%;
+
+    input {
+      /*HIDE BUTTON AND TEXT*/
+      color: transparent;
+
+      &::-webkit-file-upload-button {
+        display: none;
+      }
+
+      /*HIDE BUTTON AND TEXT*/
+      cursor: pointer;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+    }
+
+    .hoverContainer {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border: var(--bg-contrast-text) solid 4px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    input:hover ~ .hoverContainer {
+      border-color: var(--acc);
+      background-color: var(--acc-trans);
+    }
+
+    /*FileTextContainer*/
+    .hoverContainer {
+      &.highlight {
+        .fileTextContainer {
+          .letGo {
+            opacity: initial;
+            transform: none;
+          }
+
+          .tabletAndUp, .phone {
+            opacity: 0;
+            transform: scale(0);
+          }
+        }
+      }
+
+      .fileTextContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+
+        text-transform: uppercase;
+        font-size: 2rem;
+        text-align: center;
+        font-weight: bolder;
+
+
+        .letGo {
+          position: absolute;
+          opacity: 0;
+          transform: scale(0);
+          font-size: 2em;
+
+          transition: transform var(--transition-time) ease,
+          opacity var(--transition-time) ease,
+        }
+
+        .tabletAndUp, .phone {
+          transition: transform var(--transition-time) ease,
+          opacity var(--transition-time) ease,
+        }
+
+        /*TabletAndUp*/
+        .tabletAndUp {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          span {
+
+          }
+        }
+
+        /*TabletAndUp*/
+        /*Phone*/
+        .phone {
+          span {
+
+          }
+        }
+
+        /*Phone*/
+      }
+    }
+
+    /*FileTextContainer*/
+
+    /*ImagePreview*/
+    .imageGrid {
+      width: inherit;
+      height: inherit;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: scroll;
+      pointer-events: all;
+
+      .imageWrapper {
+        position: relative;
+        pointer-events: all;
+        width: 100%;
+        height: 100%;
+        @include up($sm) {
+          width: 50%;
+          height: 100%;
+        }
+        //height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+
+        .closeButton {
+          pointer-events: all;
+          cursor: pointer;
+          border-radius: 50%;
+          overflow: hidden;
+          clip-path: circle();
+          background-color: #fffb;
+          border: none;
+          outline: none;
+          font-size: 1.5em;
+          color: #fffb;
+          padding: 16px;
+
+          &:hover {
+            color: #fff
+          }
+        }
+      }
+    }
+
+    /*ImagePreview*/
+
+  }
+
+  .addMore {
+    cursor: pointer;
+    font-size: 1.5em;
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    clip-path: circle();
+
+    overflow: hidden;
+    border: none;
+    outline: none;
+
+    background-color: #fffb;
+    color: #fffb;
+    padding: 16px;
+  }
+
+  .addMoreContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+
+
+

@@ -8,16 +8,16 @@
     flex-direction: column;
     justify-content: space-between;
 
-    header {
+    .header {
       margin-bottom: 8px;
     }
 
-    main {
+    .main {
       display: flex;
       flex-direction: column;
       gap: 24px;
 
-      button {
+      .submitButton {
         width: 100%;
         background-color: var(--acc);
         color: var(--acc-contrast-text);
@@ -42,13 +42,13 @@
       }
     }
 
-    footer {
+    .footer {
       .links {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
-        a {
+        .link {
           color: #eee;
           padding: 8px;
           border: none;
@@ -67,7 +67,7 @@
 }
 
 
-@include up($md) {
+@include up($sm) {
   .login {
     height: 100%;
     display: flex;

@@ -1,9 +1,9 @@
-import type {FC} from 'react';
-import {Form, Formik, useFormikContext} from 'formik';
-import styles from '@/styles/account/password/ChangePassword.module.scss';
 import Input from '@/components/formComponents/Input';
-import {useRouter} from 'next/router';
 import {useApi} from '@/providers/ApiProvider';
+import styles from '@/styles/account/password/ChangePassword.module.scss';
+import {Form, Formik, useFormikContext} from 'formik';
+import {useRouter} from 'next/router';
+import type {FC} from 'react';
 import * as yup from 'yup';
 
 const ChangePassword: FC = () => {
@@ -49,16 +49,20 @@ const ChangeEmailAndPasswordForm: FC = () => {
     return (
         <Form className={styles.form}>
             <div>
-                <header>
+                <header className={styles.header}>
                     <h1>Change password & Email</h1>
                 </header>
-                <main>
-                    <Input autoComplete="email" label="Email" name="email" placeholder="Type your email address" type="email"/>
-                    <Input autoComplete="new-password" label="New password" name="password" placeholder="Type your new password" type="password"/>
+                <main className={styles.main}>
+                    <Input autoComplete="email" label="Email" name="email" placeholder="Type your email address"
+                           type="email"/>
+                    <Input autoComplete="new-password" label="New password" name="password"
+                           placeholder="Type your new password" type="password"/>
                     <Input autoComplete="new-password" label="Confirm password" name="password_confirmation"
                            placeholder="Type your new password again"
                            type="password"/>
-                    <button disabled={!dirty || !isValid} type="submit">Submit</button>
+                    <button className={styles.submitButton} disabled={!dirty || !isValid} type="submit">
+                        Submit
+                    </button>
                 </main>
             </div>
         </Form>

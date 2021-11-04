@@ -1,36 +1,28 @@
-import type {FC} from 'react';
-import {useEffect} from 'react';
-import {useRouter} from 'next/router';
+import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/account/email/VerifyEmail.module.scss';
-import Loader from '@/components/Loader';
-import {useApi} from '@/providers/ApiProvider';
+import {useRouter} from 'next/router';
+import type {FC} from 'react';
+import {useEffect} from 'react';
 
 const VerifyEmail: FC = () => {
+    const { loggedIn, isVerified, justVerified, verifyEmail } = useAuth();
     const router = useRouter();
-    const api = useApi();
-    const { loggedIn, isVerified, justVerified, check, oS } = useAuth();
-    const { query: { user, hash, type, signature, expires }, isReady } = router;
 
     const timeout = 5000;
 
     useEffect(() => {
-        if (loggedIn && !isVerified && isReady) {
-            api.get(`/account/email/verify/${user}/${hash}`, { params: { expires, type, signature } }).then(() => {
-                check();
-                oS({ justVerified: true });
-            });
-        }
-    }, [isVerified]);
+        loggedIn && verifyEmail();
+    }, []);
 
     if (!loggedIn) {
         setTimeout(() => {
-            console.log(router.query);
-            router.push({
+            router.replace({
                 pathname: '/login',
                 query: router.query
             });
-        }, timeout);
+        }, 5000);
+
         return (
             <div className={styles.container}>
                 <div className={styles.box}>

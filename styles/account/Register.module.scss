@@ -1,7 +1,6 @@
-@import "mixins";
+@import "../mixins";
 
-
-.forgot {
+.register {
   .form {
     padding: 16px;
     display: flex;
@@ -20,33 +19,25 @@
       .submitButton {
         width: 100%;
         background-color: var(--acc);
-        color: var(--acc-contrast-text);
+        color: #eee;
         padding: 8px;
         border: none;
         border-radius: var(--radius);
         font-weight: bolder;
         cursor: pointer;
-        transition: background-color ease var(--transition-time);
-
 
         &:disabled {
           background: var(--acc-disabled);
           color: var(--acc-disabled-contrast-text);
           pointer-events: none;
         }
-
-        &:hover, &:active, &:focus {
-          background-color: var(--acc-haf);
-
-        }
       }
     }
   }
 }
 
-
 @include up($sm) {
-  .forgot {
+  .register {
     height: 100%;
     display: flex;
 

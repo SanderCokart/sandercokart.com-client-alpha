@@ -1,21 +1,22 @@
-import styles from '@/styles/account/CreateAccount.module.scss';
+import Input from '@/components/formComponents/Input';
 import {useApi} from '@/providers/ApiProvider';
+import styles from '@/styles/account/Register.module.scss';
+import {RegisterPayload} from '@/types/AuthProviderTypes';
+import {Form, Formik, useFormikContext} from 'formik';
+import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useState} from 'react';
-import {Form, Formik, FormikValues} from 'formik';
-import Input from '@/components/formComponents/Input';
 import * as yup from 'yup';
-import {useRouter} from 'next/router';
 
+const timeout = 5000;
 
 export const CreateAccount: FC = () => {
     const api = useApi();
     const router = useRouter();
 
     const [submitted, setSubmitted] = useState(false);
-    const timeout = 5000;
 
-    const onSubmit = (values: FormikValues) => {
+    const onSubmit = (values: RegisterPayload) => {
         api.post('/register', values).then(({ status, data }) => {
             if (status === 200) {
                 setSubmitted(true);
@@ -26,7 +27,7 @@ export const CreateAccount: FC = () => {
         });
     };
 
-    const initialValues = {
+    const initialValues: RegisterPayload = {
         name: '',
         email: '',
         password: '',
@@ -45,39 +46,51 @@ export const CreateAccount: FC = () => {
     });
 
     return (
+        <div className={styles.register}>
         <Formik initialValues={initialValues} validationSchema={registerSchema} onSubmit={onSubmit}>
-            {({ isValid, dirty, values }) => {
-                return submitted ? (
-                    <div>
-                        <h1>Please verify your email! We sent you an email at {values.email} </h1>
-                        <p>You will be sent back to the login page in {timeout / 1000} seconds</p>
-                    </div>
-                ) : (
-                    <Form noValidate className={styles.form}>
-                        <div>
-                            <header>
-                                <h1>Register</h1>
-                            </header>
-                            <main>
-                                <Input autoComplete="name" label="Full name" name="name"
-                                       placeholder="Type your full name"
-                                       prependIcon={['fas', 'user']}/>
-                                <Input autoComplete="email" name="email" placeholder="Type you email address"
-                                       prependIcon={['fas', 'envelope']}
-                                       type="email"/>
-                                <Input autoComplete="new-password" label="Password" name="password" placeholder="Type your password"
-                                       prependIcon={['fas', 'lock']} type="password"/>
-                                <Input autoComplete="new-password" label="Password" name="password_confirmation"
-                                       placeholder="Type your password again"
-                                       prependIcon={['fas', 'lock']} type="password"/>
-                                <button disabled={!dirty || !isValid} type="submit">Submit</button>
-                            </main>
-                        </div>
-                    </Form>
-                );
-            }}
+            {submitted ? <EmailSend/> : <RegisterForm/>}
         </Formik>
+        </div>
     );
 };
 
 export default CreateAccount;
+
+
+const RegisterForm: FC = () => {
+    const { isValid, dirty } = useFormikContext();
+    return (
+        <Form noValidate className={styles.form}>
+            <header className={styles.header}>
+                <h1>Register</h1>
+            </header>
+            <main className={styles.main}>
+                <Input autoComplete="name" label="Full name" name="name"
+                       placeholder="Type your full name"
+                       prependIcon={['fas', 'user']}/>
+                <Input autoComplete="email" name="email" placeholder="Type you email address"
+                       prependIcon={['fas', 'envelope']}
+                       type="email"/>
+                <Input autoComplete="new-password" label="Password" name="password"
+                       placeholder="Type your password"
+                       prependIcon={['fas', 'lock']} type="password"/>
+                <Input autoComplete="new-password" label="Password" name="password_confirmation"
+                       placeholder="Type your password again"
+                       prependIcon={['fas', 'lock']} type="password"/>
+                <button className={styles.submitButton} disabled={!dirty || !isValid} type="submit">
+                    Submit
+                </button>
+            </main>
+        </Form>
+    );
+};
+
+const EmailSend: FC = () => {
+    const { values }: { values: RegisterPayload } = useFormikContext();
+    return (
+        <div>
+            <h1>Please verify your email! We sent you an email at {values.email} </h1>
+            <p>You will be sent back to the login page in {timeout / 1000} seconds</p>
+        </div>
+    );
+};

@@ -1,27 +1,17 @@
-import {useAuth} from '@/providers/AuthProvider';
-import type {FC} from 'react';
-import {Form, Formik, useFormikContext} from 'formik';
-import Input from '@/components/formComponents/Input';
-import styles from '@/styles/account/Account.module.scss';
-import {useApi} from '@/providers/ApiProvider';
-import {useRouter} from 'next/router';
 import Checkbox from '@/components/formComponents/Checkbox';
-import * as yup from 'yup';
+import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
-
-interface PasswordType {
-    current_password: string,
-    password: string,
-    password_confirmation: string,
-    sign_out_everywhere: boolean,
-}
-
-interface EmailType {
-    email: string;
-}
+import {useApi} from '@/providers/ApiProvider';
+import {useAuth} from '@/providers/AuthProvider';
+import styles from '@/styles/account/Account.module.scss';
+import {ChangeEmailPayload, ChangePasswordPayload} from '@/types/AuthProviderTypes';
+import {Form, Formik, useFormikContext} from 'formik';
+import {useRouter} from 'next/router';
+import type {FC} from 'react';
+import * as yup from 'yup';
 
 export const Account: FC = () => {
-    const { logout, isVerified, user } = useAuth();
+    const { logout, isVerified, user, changePassword, changeEmail } = useAuth();
     const router = useRouter();
     const api = useApi();
 
@@ -30,36 +20,21 @@ export const Account: FC = () => {
         return <Loader/>;
     }
 
-    const initialValuesPassword: PasswordType = {
+    const initialValuesPassword: ChangePasswordPayload = {
         current_password: '',
         password: '',
         password_confirmation: '',
         sign_out_everywhere: true
     };
 
-    const initialValuesEmail: EmailType = {
+    const initialValuesEmail: ChangeEmailPayload = {
         email: user?.email
     };
 
-    const onLogout = () => {
-        logout();
-        router.push('/blog/recent');
-    };
-
-    const onPasswordSubmit = async (values: PasswordType) => {
-        try {
-            const { data } = await api.patch('/account/password/change', values);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    const onEmailSubmit = async (values: EmailType) => {
-        try {
-            const { data } = await api.patch(`/account/email/change/${user?.id}`, values);
-        } catch (err) {
-            console.error(err);
-        }
+    const onLogout = async () => {
+        const { status } = await logout();
+        console.log(status);
+        status === 200 && router.push('/blog/recent');
     };
 
     const passwordSchema = yup.object().shape({
@@ -77,15 +52,16 @@ export const Account: FC = () => {
 
     return (
         <div className={styles.account}>
-            <Formik initialValues={initialValuesPassword} validationSchema={passwordSchema}
-                    onSubmit={onPasswordSubmit}>
+            <Formik initialValues={initialValuesPassword} validationSchema={passwordSchema} onSubmit={changePassword}>
                 <PasswordForm/>
             </Formik>
 
-            <Formik initialValues={initialValuesEmail} validationSchema={emailSchema} onSubmit={onEmailSubmit}>
+            <Formik initialValues={initialValuesEmail} validationSchema={emailSchema} onSubmit={changeEmail}>
                 <EmailForm/>
             </Formik>
-            <button onClick={onLogout}>logout</button>
+            <div className={styles.actions}>
+                <button className={styles.logoutButton} onClick={onLogout}>logout</button>
+            </div>
         </div>
     );
 };
@@ -95,23 +71,21 @@ const PasswordForm: FC = () => {
 
     return (
         <Form className={styles.form}>
-            <div>
-                <header>
-                    <h1>Change password</h1>
-                </header>
-                <main>
-                    <Input autoComplete="current-password" label="Current password" name="current_password"
-                           placeholder="Type your current password"
-                           type="password"/>
-                    <Input autoComplete="new-password" label="New password" name="password"
-                           placeholder="Type your new password" type="password"/>
-                    <Input autoComplete="new-password" label="Confirm password" name="password_confirmation"
-                           placeholder="Type your new password again"
-                           type="password"/>
-                    <Checkbox label="Sign out on all other devices" name="sign_out_everywhere"/>
-                    <button disabled={!dirty || !isValid} type="submit">Submit</button>
-                </main>
-            </div>
+            <header className={styles.header}>
+                <h1>Change password</h1>
+            </header>
+            <main className={styles.main}>
+                <Input autoComplete="current-password" label="Current password" name="current_password"
+                       placeholder="Type your current password"
+                       type="password"/>
+                <Input autoComplete="new-password" label="New password" name="password"
+                       placeholder="Type your new password" type="password"/>
+                <Input autoComplete="new-password" label="Confirm password" name="password_confirmation"
+                       placeholder="Type your new password again"
+                       type="password"/>
+                <Checkbox label="Sign out on all other devices" name="sign_out_everywhere"/>
+                <button disabled={!dirty || !isValid} type="submit">Submit</button>
+            </main>
         </Form>
     );
 };
@@ -121,15 +95,13 @@ const EmailForm: FC = () => {
 
     return (
         <Form className={styles.form}>
-            <div>
-                <header>
-                    <h1>Change email</h1>
-                </header>
-                <main>
-                    <Input autoComplete="email" label="Email" name="email"/>
-                    <button disabled={!dirty || !isValid} type="submit">Submit</button>
-                </main>
-            </div>
+            <header className={styles.header}>
+                <h1>Change email</h1>
+            </header>
+            <main className={styles.main}>
+                <Input autoComplete="email" label="Email" name="email"/>
+                <button disabled={!dirty || !isValid} type="submit">Submit</button>
+            </main>
         </Form>
     );
 };
