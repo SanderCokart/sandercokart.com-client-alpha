@@ -1,7 +1,7 @@
-import {ChangeEvent, FC} from 'react';
-import {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import styles from '@/styles/components/formComponents/CustomInput.module.scss';
+import {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {ChangeEvent, FC} from 'react';
 
 const CustomInput: FC<{ prependIcon?: [IconPrefix, IconName], appendIcon?: [IconPrefix, IconName], type?: 'text' | 'number' | 'date' | 'datetime-local' | 'week' | 'time', as?: 'select' | 'input' | 'textarea'; options?: Array<{ key: string, value: string }> }> = (props) => {
     const { prependIcon, appendIcon, type = 'text', as = 'input', options = [], ...rest } = props;
@@ -21,7 +21,7 @@ const CustomInput: FC<{ prependIcon?: [IconPrefix, IconName], appendIcon?: [Icon
     };
 
     const autoGrow = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        e.target.style.height = "auto";
+        e.target.style.height = 'auto';
         e.target.style.height = e.target.scrollHeight + 'px';
     };
 

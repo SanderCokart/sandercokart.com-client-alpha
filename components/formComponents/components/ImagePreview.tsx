@@ -6,8 +6,6 @@ import type {FC} from 'react';
 const ImagePreview: FC<{ images: File[] }> = (props) => {
     const { images } = props;
 
-    console.log(images);
-
     return (
         <div className={styles.imageGrid}>
             {

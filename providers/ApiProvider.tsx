@@ -9,7 +9,7 @@ export const useApi = () => useContext(ApiContext);
 
 export const ApiProvider: FC = ({ children }) => {
     const axiosInstance = axios.create({
-        baseURL: process.env.API_URL,
+        baseURL: process.env.NEXT_PUBLIC_API_URL,
         withCredentials: true
     });
 

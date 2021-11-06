@@ -16,8 +16,8 @@ export const CreateAccount: FC = () => {
 
     const [submitted, setSubmitted] = useState(false);
 
-    const onSubmit = (values: RegisterPayload) => {
-        api.post('/register', values).then(({ status, data }) => {
+    const onSubmit = (formValues: RegisterPayload) => {
+        api.post('/register', formValues).then(({ status, data }) => {
             if (status === 200) {
                 setSubmitted(true);
                 setTimeout((params) => {

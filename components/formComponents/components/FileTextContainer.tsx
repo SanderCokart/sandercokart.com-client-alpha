@@ -5,9 +5,6 @@ import useMediaQuery from '../../../hooks/useMediaQuery';
 const FileTextContainer: FC<{ letGo?: boolean }> = ({ letGo = false }) => {
     const matches = useMediaQuery({ from: 'sm', option: 'down' });
 
-    console.log(matches);
-
-
     return (
         <div className={styles.fileTextContainer}>
             <div className={styles.letGo}>

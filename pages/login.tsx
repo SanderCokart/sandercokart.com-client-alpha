@@ -27,8 +27,8 @@ export const Login: FC = () => {
         remember_me: false
     };
 
-    const onSubmit = (values: LoginPayload) => {
-        login(values).then(({ status }) => {
+    const onSubmit = (formValues: LoginPayload) => {
+        login(formValues).then(({ status }) => {
             if (status === 200)
                 switch (type) {
                     case 'verify': {

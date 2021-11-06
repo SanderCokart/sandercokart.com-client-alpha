@@ -1,17 +1,18 @@
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
-import {useApi} from '@/providers/ApiProvider';
+import {handler, useApi} from '@/providers/ApiProvider';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/account/Account.module.scss';
-import {ChangeEmailPayload, ChangePasswordPayload} from '@/types/AuthProviderTypes';
+import {EmailChangePayload, PasswordChangePayload} from '@/types/AuthProviderTypes';
 import {Form, Formik, useFormikContext} from 'formik';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import * as yup from 'yup';
 
 export const Account: FC = () => {
-    const { logout, isVerified, user, changePassword, changeEmail } = useAuth();
+    const { isVerified, user } = useAuth();
+    const { logout } = useAuth();
     const router = useRouter();
     const api = useApi();
 
@@ -20,20 +21,19 @@ export const Account: FC = () => {
         return <Loader/>;
     }
 
-    const initialValuesPassword: ChangePasswordPayload = {
+    const initialValuesPassword: PasswordChangePayload = {
         current_password: '',
         password: '',
         password_confirmation: '',
         sign_out_everywhere: true
     };
 
-    const initialValuesEmail: ChangeEmailPayload = {
+    const initialValuesEmail: EmailChangePayload = {
         email: user?.email
     };
 
     const onLogout = async () => {
         const { status } = await logout();
-        console.log(status);
         status === 200 && router.push('/blog/recent');
     };
 
@@ -49,6 +49,14 @@ export const Account: FC = () => {
     const emailSchema = yup.object().shape({
         email: yup.string().email().required()
     });
+
+    const changeEmail = async (formValues: EmailChangePayload) => {
+        await handler(api.patch(`/account/email/change/${user?.id}`, formValues));
+    };
+
+    const changePassword = async (formValues: PasswordChangePayload) => {
+        await handler(api.patch('/account/password/change', formValues));
+    };
 
     return (
         <div className={styles.account}>

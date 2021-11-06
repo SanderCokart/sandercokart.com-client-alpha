@@ -1,6 +1,8 @@
 import Input from '@/components/formComponents/Input';
+import {handler, useApi} from '@/providers/ApiProvider';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/account/PasswordReset.module.scss';
+import {PasswordResetPayload} from '@/types/AuthProviderTypes';
 import {Form, Formik, useFormikContext} from 'formik';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
@@ -9,7 +11,7 @@ import * as yup from 'yup';
 export const PasswordReset: FC = () => {
     const router = useRouter();
     const { query } = router; //token and email
-    const { resetPassword } = useAuth();
+    const api = useApi();
 
     const initialValues = {
         password: '',
@@ -23,6 +25,10 @@ export const PasswordReset: FC = () => {
         ),
         password_confirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('This field is required')
     });
+
+    const resetPassword = async (formValues: PasswordResetPayload) => {
+        await handler(api.patch('/password/reset', formValues, { params: query }));
+    };
 
     return (
         <div className={styles.reset}>

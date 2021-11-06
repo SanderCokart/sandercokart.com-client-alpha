@@ -1,5 +1,10 @@
-export interface ForgotPasswordPayload {
+export interface UserType {
+    id: number;
+    name: string;
     email: string;
+    email_verified_at: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface LoginPayload {
@@ -15,29 +20,29 @@ export interface RegisterPayload {
     password_confirmation: string;
 }
 
-export interface ResetPasswordPayload {
+export interface PasswordForgotPayload {
+    email: string;
+}
+
+export interface PasswordResetPayload {
     password: string,
     password_confirmation: string,
 }
 
-export interface ChangePasswordPayload {
+export interface PasswordChangePayload {
     current_password: string,
     password: string,
     password_confirmation: string,
     sign_out_everywhere: boolean,
 }
 
-export interface ChangeEmailPayload {
+export interface EmailChangePayload {
     email: string;
 }
 
-export interface UserType {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string;
-    created_at: string;
-    updated_at: string;
+export interface EmailCompromisedPayload {
+    password: string,
+    password_confirmation: string
 }
 
 export interface AuthContextInitialProps {
@@ -48,21 +53,11 @@ export interface AuthContextInitialProps {
     justVerified: boolean;
     login?: (credentials: LoginPayload) => Promise<{ status: number }>;
     logout?: () => Promise<{ status: number }>;
-    requestPasswordReset?: (payload: { email: string }) => Promise<{ status: number }>;
     check?: () => Promise<{ status: number }>;
-    changePassword?: (values: ChangePasswordPayload) => Promise<{ status: number }>;
-    changeEmail?: (values: ChangeEmailPayload) => Promise<{ status: number }>;
-    verifyEmail?: () => Promise<{ status: number }>;
-    resetPassword?: (payload: ResetPasswordPayload) => Promise<{ status: number }>;
 }
 
 export interface AuthContextProps extends AuthContextInitialProps {
     login: (credentials: LoginPayload) => Promise<{ status: number }>;
     logout: () => Promise<{ status: number }>;
-    requestPasswordReset: (payload: ForgotPasswordPayload) => Promise<{ status: number }>;
     check: () => Promise<{ status: number }>;
-    changePassword: (values: ChangePasswordPayload) => Promise<{ status: number }>;
-    changeEmail: (values: ChangeEmailPayload) => Promise<{ status: number }>;
-    verifyEmail: () => Promise<{ status: number }>;
-    resetPassword: (payload: ResetPasswordPayload) => Promise<{ status: number }>;
 }

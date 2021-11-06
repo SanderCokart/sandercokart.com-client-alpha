@@ -1,6 +1,7 @@
 import Input from '@/components/formComponents/Input';
-import {useApi} from '@/providers/ApiProvider';
+import {handler, useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/account/password/ChangePassword.module.scss';
+import {EmailCompromisedPayload} from '@/types/AuthProviderTypes';
 import {Form, Formik, useFormikContext} from 'formik';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
@@ -26,12 +27,8 @@ const ChangePassword: FC = () => {
         password_confirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('This field is required')
     });
 
-    const onSubmit = async (values: { password: string, password_confirmation: string }) => {
-        try {
-            const { data, status } = await api.patch(`/email/compromised/${user}/${token}`, values);
-        } catch (err) {
-            console.error(err);
-        }
+    const onSubmit = async (formValues: EmailCompromisedPayload) => {
+        await handler(api.patch(`/email/compromised/${user}/${token}`, formValues));
     };
 
     return (
