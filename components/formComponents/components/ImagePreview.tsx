@@ -23,7 +23,7 @@ const ImagePreview: FC<{ images: File[] }> = (props) => {
                     );
                 })
             }
-            <div className={styles.addMoreContainer}>
+            <div className={styles.imageWrapper}>
                 <div className={styles.addMore}>
                     <FontAwesomeIcon icon={['fas', 'plus']}/>
                 </div>

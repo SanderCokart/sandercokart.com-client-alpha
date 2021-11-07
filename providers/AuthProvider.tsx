@@ -46,8 +46,8 @@ export const AuthProvider: FC = ({ children }) => {
 
 
     const check = useCallback(async () => {
-        const { data: { user }, status } = await handler(api.get('/check'));
-        setState(prev => ({ ...prev, user: status === 200 ? user : null, loading: false }));
+        const { data, status, error } = await handler(api.get('/check'));
+        setState(prev => ({ ...prev, user: status === 200 ? data?.user : null, loading: false }));
         return { status };
     }, [api]);
 

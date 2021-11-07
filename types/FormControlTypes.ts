@@ -46,7 +46,6 @@ export interface SelectProps {
     label?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
-    options: Array<{ key: string, value: string }>;
 }
 
 

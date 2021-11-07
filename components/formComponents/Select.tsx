@@ -1,21 +1,36 @@
-import type {FC} from 'react';
-import {ErrorMessage} from 'formik';
-import {SelectProps} from '@/types/FormControlTypes';
 import styles from '@/styles/components/formComponents/Select.module.scss';
-import CustomInput from '@/components/formComponents/CustomInput';
+import {SelectProps} from '@/types/FormControlTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {ErrorMessage, Field, FieldProps} from 'formik';
+import type {FC} from 'react';
 
 
 export const Select: FC<SelectProps> = (props) => {
 
-    const { prependIcon, appendIcon, name, label, options, ...rest } = props;
+    const { prependIcon, appendIcon, name, label, children, ...rest } = props;
+
+    const selectClassName = `${styles.input} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
 
     return (
         <div className={styles.formControl}>
             {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <CustomInput appendIcon={appendIcon} as="select" options={options} prependIcon={prependIcon}/>
             <div className={styles.formControlError}>
-                <ErrorMessage name={name}/>
+                <ErrorMessage component="span" name={name}/>
             </div>
+            <Field name={name} {...rest}>
+                {(fieldProps: FieldProps) => {
+                    const { field } = fieldProps;
+                    return (
+                        <div className={styles.iconContainer}>
+                            {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                            <select className={selectClassName} {...field}>
+                                {children}
+                            </select>
+                            {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                        </div>
+                    );
+                }}
+            </Field>
         </div>
     );
 };

@@ -39,8 +39,7 @@ export default CreatePostPage;
 
 
 function CreatePostForm() {
-    const { isValid, dirty, values } = useFormikContext();
-    console.log(values);
+    const { isValid, dirty } = useFormikContext();
     return (
         <Form noValidate className={styles.form}>
             <div>

@@ -45,12 +45,8 @@ const File: FC<FileProps> = (props) => {
                 </div>
             </div>
 
-            <div className={styles.addMore}>
-                <FontAwesomeIcon icon={['fas', 'plus']}/>
-            </div>
-
             <div className={styles.formControlError}>
-                <ErrorMessage component="div" name={name}/>
+                <ErrorMessage component="span" name={name}/>
             </div>
         </div>
     );
