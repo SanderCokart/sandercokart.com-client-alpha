@@ -1,7 +1,7 @@
-import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import TextArea from '@/components/formComponents/TextArea';
 import styles from '@/styles/blog/post/CreatePost.module.scss';
+import File from '@/components/formComponents/File'
 import {Form, Formik, useFormikContext} from 'formik';
 import * as yup from 'yup';
 
@@ -49,7 +49,7 @@ function CreatePostForm() {
                 <main className={styles.main}>
                     <Input label="Title" name="title" placeholder="My Phone Review..."/>
                     <TextArea label="Markdown" name="markdown"/>
-                    <File multiple name="banner_image"/>
+                    <File name="banner_image"/>
                     <button className={styles.submitButton} disabled={!isValid || !dirty} type="submit">submit</button>
                 </main>
             </div>

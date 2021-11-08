@@ -6,17 +6,19 @@ import {
     faCalendar,
     faCheck,
     faEnvelope,
+    faFileImage,
     faLock,
     faPlus,
     faSpinner,
     faTimes,
+    faTrash,
     faUser
 } from '@fortawesome/free-solid-svg-icons';
 import type {AppProps} from 'next/app';
 import ApiProvider from 'providers/ApiProvider';
 
 
-library.add(...[faSpinner, faEnvelope, faLock, faCheck, faCalendar, faUser, faTimes,faPlus]);
+library.add(...[faSpinner, faEnvelope, faLock, faCheck, faCalendar, faUser, faTimes, faPlus, faFileImage, faTrash]);
 
 function MyApp({ Component, pageProps }: AppProps) {
 

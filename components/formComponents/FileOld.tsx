@@ -2,13 +2,12 @@ import FileTextContainer from '@/components/formComponents/components/FileTextCo
 import ImagePreview from '@/components/formComponents/components/ImagePreview';
 import styles from '@/styles/components/formComponents/File.module.scss';
 import {FileProps} from '@/types/FormControlTypes';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {ErrorMessage, useFormikContext} from 'formik';
 import type {ChangeEvent, DragEvent, FC} from 'react';
 import {useRef, useState} from 'react';
 
 
-const File: FC<FileProps> = (props) => {
+const FileOld: FC<FileProps> = (props) => {
     const hoverContainer = useRef<HTMLDivElement>(null);
     const { name, multiple = false, ...rest } = props;
     const { setFieldValue, values } = useFormikContext<{ [name: string]: File[] }>();
@@ -52,5 +51,5 @@ const File: FC<FileProps> = (props) => {
     );
 };
 
-export default File;
+export default FileOld;
 
