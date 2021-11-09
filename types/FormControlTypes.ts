@@ -1,57 +1,59 @@
 import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
-import type {InputHTMLAttributes, TextareaHTMLAttributes} from 'react';
+import type {InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes} from 'react';
+import {ErrorOption} from 'react-hook-form';
 
-export interface CheckBoxProps {
-    name: string;
+type Options = Array<{ label: string, value: string }>
+
+export interface CheckBoxProps extends InputHTMLAttributes<any> {
     label: string;
+    error: ErrorOption;
 }
 
-export interface CheckBoxGroupProps {
-    name: string;
+export interface CheckBoxGroupProps extends InputHTMLAttributes<any> {
     label?: string;
-    options: Array<{ key: string, value: string }>;
+    options: Options;
+    error: ErrorOption;
 }
 
-export interface DatePickerProps {
-    name: string;
+export interface DateProps extends InputHTMLAttributes<any> {
     label?: string;
     type?: 'date' | 'datetime-local' | 'week' | 'time';
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
+    error: ErrorOption;
 }
 
 export interface InputProps extends InputHTMLAttributes<any> {
-    name: string;
     label?: string;
     placeholder?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
-    type?: 'password' | 'email' | 'text' | 'file';
+    type?: 'password' | 'email' | 'text';
+    error: ErrorOption;
 }
 
 export interface FileProps extends InputHTMLAttributes<any> {
-    name: string;
     placeholder?: string;
     multiple?: boolean;
 }
 
-export interface RadioProps {
-    name: string;
+export interface RadioProps extends InputHTMLAttributes<any> {
     label?: string;
-    options: Array<{ key: string, value: string }>;
+    options: Options;
+    error: ErrorOption;
 }
 
-export interface SelectProps {
-    name: string;
+export interface SelectProps extends SelectHTMLAttributes<any> {
     label?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
+    error: ErrorOption;
 }
 
 
 export interface TextAreaProps extends TextareaHTMLAttributes<any> {
-    name: string;
     label?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
+    error: ErrorOption;
 }

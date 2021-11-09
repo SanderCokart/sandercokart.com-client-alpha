@@ -122,7 +122,7 @@
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <Languages>
         <language minSize="18" name="Style Sheets" />
-        <language minSize="57" name="TypeScript" />
+        <language minSize="65" name="TypeScript" />
       </Languages>
     </inspection_tool>
     <inspection_tool class="DynamicallyGeneratedCodeJS" enabled="false" level="WARNING" enabled_by_default="false" />

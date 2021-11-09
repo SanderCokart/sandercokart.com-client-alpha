@@ -1,6 +1,4 @@
 .formControl {
-  display: flex;
-  flex-direction: column;
   width: 100%;
 
   .optionsContainer {
@@ -10,6 +8,8 @@
 
   .labelStandalone {
     margin-bottom: 4px;
+    display: inline-block;
+    width: auto;
     font-weight: bolder;
   }
 
@@ -66,5 +66,7 @@
       }
     }
   }
+
+  @import 'formControlError';
 }
 
