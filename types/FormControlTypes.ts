@@ -24,16 +24,16 @@ export interface DateProps extends InputHTMLAttributes<any> {
 }
 
 export interface InputProps extends InputHTMLAttributes<any> {
+    name: string;
     label?: string;
     placeholder?: string;
     prependIcon?: [IconPrefix, IconName];
     appendIcon?: [IconPrefix, IconName];
     type?: 'password' | 'email' | 'text';
-    error: ErrorOption;
 }
 
 export interface FileProps extends InputHTMLAttributes<any> {
-    placeholder?: string;
+    name: string;
     multiple?: boolean;
 }
 

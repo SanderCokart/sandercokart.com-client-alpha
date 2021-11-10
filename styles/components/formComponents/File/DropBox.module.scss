@@ -1,0 +1,19 @@
+.dropbox {
+  flex: 1;
+  /*HIDE*/
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+
+  color: transparent;
+  /*HIDE*/
+
+  border: solid var(--info) 4px;
+  display: block;
+  outline: none;
+  cursor: pointer;
+
+  &.highlight {
+    border-color: var(--success);
+  }
+}

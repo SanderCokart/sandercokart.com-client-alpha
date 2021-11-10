@@ -1,0 +1,12 @@
+.fileGrid {
+  flex: 1;
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+
+  img {
+    margin: auto;
+    height: 100%;
+    object-fit: contain;
+  }
+}

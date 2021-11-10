@@ -1,0 +1,7 @@
+.formControl {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  border: solid var(--info) 4px;
+  gap: 16px;
+}
