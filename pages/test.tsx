@@ -1,5 +1,5 @@
-import File from '@/components/hookFormComponents/File';
-import Input from '@/components/hookFormComponents/Input';
+import File from '@/components/formComponents/File';
+import Input from '@/components/formComponents/Input';
 import {yupResolver} from '@hookform/resolvers/yup';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -23,8 +23,6 @@ const Test: FC = () => {
         value: 'value3'
     }];
 
-    console.log(methods.getValues());
-
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -41,7 +39,7 @@ const Test: FC = () => {
                 {/*</Select>*/}
                 {/*<TextArea {...register('textarea')} error={errors['textarea']}/>*/}
                 {/*<Date {...register('date')} error={errors['date']} type="time"/>*/}
-                <File name="file"/>
+                <File multiple name="file"/>
                 <button type="submit">Submit</button>
             </form>
         </FormProvider>

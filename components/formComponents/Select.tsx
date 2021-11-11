@@ -1,38 +1,38 @@
 import styles from '@/styles/components/formComponents/Select.module.scss';
-import {SelectProps} from '@/types/FormControlTypes';
+import type {SelectProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {ErrorMessage, Field, FieldProps} from 'formik';
-import type {FC} from 'react';
+import {forwardRef} from 'react';
 
 
-export const Select: FC<SelectProps> = (props) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(props, ref) {
+    const {
+        name, prependIcon, appendIcon, label,
+        id = name,
+        error,
+        children,
+        ...rest
+    } = props;
 
-    const { prependIcon, appendIcon, name, label, children, ...rest } = props;
-
-    const selectClassName = `${styles.input} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
+    const selectClassName = `${styles.select} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
 
     return (
         <div className={styles.formControl}>
-            {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <div className={styles.formControlError}>
-                <ErrorMessage component="span" name={name}/>
+            <div>
+                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
+                <div className={styles.formControlError}>
+                    {error && <span>{error.message}</span>}
+                </div>
+
+                <div className={styles.iconContainer}>
+                    {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                    <select {...rest} ref={ref} className={selectClassName} name={name}>
+                        {children}
+                    </select>
+                    {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                </div>
             </div>
-            <Field name={name} {...rest}>
-                {(fieldProps: FieldProps) => {
-                    const { field } = fieldProps;
-                    return (
-                        <div className={styles.iconContainer}>
-                            {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                            <select className={selectClassName} {...field}>
-                                {children}
-                            </select>
-                            {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
-                        </div>
-                    );
-                }}
-            </Field>
         </div>
     );
-};
+});
 
 export default Select;

@@ -1,31 +1,21 @@
 import styles from '@/styles/components/formComponents/TextArea.module.scss';
-import {TextAreaProps} from '@/types/FormControlTypes';
+import type {TextAreaProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {ErrorMessage, Field, FieldProps} from 'formik';
-import type {FC} from 'react';
-import {ChangeEvent} from 'react';
-
-const TextArea: FC<TextAreaProps> = (props) => {
-
-    const { appendIcon, prependIcon, name, label, ...rest } = props;
+import type {ChangeEvent} from 'react';
+import {forwardRef} from 'react';
 
 
-    const textAreaClassName = () => {
-        let className = styles.textarea;
+const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextArea(props, ref) {
+    const {
+        name, prependIcon, appendIcon, label,
+        id = name,
+        error,
+        ...rest
+    } = props;
+    const textareaClassName = `${styles.textarea} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
 
-        if (prependIcon) {
-            className += ` ${styles.prependIconPadding}`;
-        }
-
-        if (appendIcon) {
-            className += ` ${styles.appendIconPadding}`;
-        }
-
-        return className;
-    };
 
     const autoGrow = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        console.log('hi');
         e.target.style.height = 'auto';
         e.target.style.height = e.target.scrollHeight + 'px';
     };
@@ -33,30 +23,25 @@ const TextArea: FC<TextAreaProps> = (props) => {
     return (
         <div className={styles.formControl}>
             <div>
-                {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
+                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
+
+                {error &&
                 <div className={styles.formControlError}>
-                    <ErrorMessage component="span" name={name}/>
+                    <span>{error.message}</span>
                 </div>
-                <Field name={name} {...rest} >
-                    {(fieldProps: FieldProps) => {
-                        const { field } = fieldProps;
-                        const { onChange, ...rest } = field;
-                        return (
-                            <div className={styles.iconContainer}>
-                                {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                                <textarea  {...rest} className={textAreaClassName()} onChange={e => {
-                                    onChange(e);
-                                    autoGrow(e);
-                                }}/>
-                                {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
-                                <div className={styles.line}/>
-                            </div>
-                        );
-                    }}
-                </Field>
+                }
+
+                <div className={styles.iconContainer}>
+                    {prependIcon &&
+                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                    <textarea {...rest} ref={ref} className={textareaClassName} id={id} name={name}
+                              onChange={autoGrow}/>
+                    {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                    <div className={styles.line}/>
+                </div>
             </div>
         </div>
     );
-};
+});
 
 export default TextArea;
