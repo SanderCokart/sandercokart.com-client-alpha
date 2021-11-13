@@ -1,21 +1,24 @@
 import styles from '@/styles/components/formComponents/Checkbox.module.scss';
 import type {CheckBoxProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {forwardRef} from 'react';
+import {FC} from 'react';
+import {useFormContext} from 'react-hook-form';
 
 
-const Checkbox = forwardRef<HTMLInputElement, CheckBoxProps>(function Checkbox(props, ref) {
+const Checkbox: FC<CheckBoxProps> = (props) => {
     const {
         name, label,
         id = name,
-        error,
         ...rest
     } = props;
+
+    const { register, formState: { errors: { [name]: error } } } = useFormContext();
+
 
     return (
         <div className={styles.formControl}>
             <label className={styles.labelWrapper} htmlFor={props.name}>{props.label}
-                <input {...rest} ref={ref} id={id} name={name} type="checkbox"/>
+                <input {...rest} {...register(name)} id={id} name={name} type="checkbox"/>
                 <div className={styles.checkmark}>
                     <FontAwesomeIcon icon={['fas', 'check']}/>
                 </div>
@@ -25,6 +28,6 @@ const Checkbox = forwardRef<HTMLInputElement, CheckBoxProps>(function Checkbox(p
             </div>
         </div>
     );
-});
+};
 
 export default Checkbox;

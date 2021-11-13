@@ -30,7 +30,7 @@ export const ApiProvider: FC = ({ children }) => {
 export const handler = async (promise: AxiosPromise): Promise<{ data: any | null, status: number, error: Error | AxiosError | null }> => {
     try {
         const { data, status } = await promise;
-        return { data: status === 200 ? data : null, status, error: null };
+        return { data: status >= 200 && status <= 300 ? data : null, status, error: null };
     } catch (err) {
         const { response: { status } } = err;
         console.error(err);

@@ -1,3 +1,4 @@
+import {handler, useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/components/formComponents/File/DropBox.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {ChangeEvent, FC} from 'react';
@@ -6,7 +7,8 @@ import {useFormContext} from 'react-hook-form';
 
 const DropBox: FC<FileProps> = (props) => {
     const { name } = props;
-    const { setValue } = useFormContext();
+    const api = useApi();
+    const { setValue, getValues } = useFormContext();
     const inputElement = useRef<HTMLInputElement | null>(null);
 
     const onDrop = () => {
@@ -23,9 +25,18 @@ const DropBox: FC<FileProps> = (props) => {
         return Array.from(fileList);
     };
 
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files)
-            setValue(name, transformFileList(e.target.files));
+    const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        const newFiles = Array.from(e.target.files ?? []);
+
+        for (const file of newFiles) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const { data, status } = await (handler(api.post('/files', formData)));
+
+            const currentFiles = getValues(name);
+            setValue(name, [...currentFiles, data]);
+        }
     };
 
     return (

@@ -10,7 +10,11 @@ const Test: FC = () => {
         resolver: yupResolver(Yup.object().shape({
             input: Yup.string().min(8).required()
         })),
-        mode: 'all'
+        mode: 'all',
+        defaultValues: {
+            file: [],
+            input: ''
+        }
     });
 
 

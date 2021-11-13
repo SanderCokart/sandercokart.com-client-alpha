@@ -86,7 +86,7 @@ export default Recent;
 
 export const getStaticProps: GetStaticProps = async () => {
     try {
-        const { data: initialData } = await axios.get(process.env.API_URL + '/posts?perPage=5');
+        const { data: initialData } = await axios.get(process.env.NEXT_PUBLIC_API_URL + '/posts?perPage=5');
 
         return {
             props: { initialData }

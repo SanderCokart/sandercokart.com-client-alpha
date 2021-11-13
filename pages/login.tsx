@@ -3,11 +3,12 @@ import Input from '@/components/formComponents/Input';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/Login.module.scss';
 import type {LoginPayload} from '@/types/AuthProviderTypes';
-import {Form, Formik, useFormikContext} from 'formik';
+import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import * as yup from 'yup';
+import {FormProvider, useForm} from 'react-hook-form';
+import * as Yup from 'yup';
 
 export const Login: FC = () => {
 
@@ -15,17 +16,19 @@ export const Login: FC = () => {
     const { login } = useAuth();
     const { query: { user, hash, type, signature, expires } } = router;
 
-    const loginSchema = yup.object().shape({
-        email: yup.string().email().required('This field is required'),
-        password: yup.string().min(6).max(50).required('This field is required'),
-        remember_me: yup.boolean().required('This field is required')
+    const methods = useForm({
+        resolver: yupResolver(Yup.object().shape({
+            email: Yup.string().email().required('This field is required'),
+            password: Yup.string().min(6).max(50).required('This field is required'),
+            remember_me: Yup.boolean().required('This field is required')
+        })),
+        mode: 'all',
+        defaultValues: {
+            email: '',
+            password: '',
+            remember_me: false
+        }
     });
-
-    const initialValues = {
-        email: '',
-        password: '',
-        remember_me: false
-    };
 
     const onSubmit = (formValues: LoginPayload) => {
         login(formValues).then(({ status }) => {
@@ -46,50 +49,41 @@ export const Login: FC = () => {
         });
     };
 
+    const { formState: { isValid, isDirty } } = methods;
+
     return (
         <div className={styles.login}>
-            <Formik
-                initialValues={initialValues}
-                validationSchema={loginSchema}
-                onSubmit={onSubmit}>
-                <LoginForm/>
-            </Formik>
+            <FormProvider {...methods}>
+                <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
+                    <header className={styles.header}>
+                        <h1>Login</h1>
+                    </header>
+                    <main className={styles.main}>
+                        <Input autoComplete="email" label="E-Mail" name="email" placeholder="Type you email address"
+                               prependIcon={['fas', 'envelope']}
+                               type="email"/>
+                        <Input autoComplete="current-password" label="Password" name="password"
+                               placeholder="Type your password"
+                               prependIcon={['fas', 'lock']} type="password"/>
+                        <Checkbox label="Remember me" name="remember_me"/>
+                        <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">Submit
+                        </button>
+                    </main>
+
+                    <footer className={styles.footer}>
+                        <div className={styles.links}>
+                            <Link href="/password/forgot">
+                                <a className={styles.link}>Forgot password?</a>
+                            </Link>
+                            <Link href="/register">
+                                <a className={styles.link}>Don't have an account yet?</a>
+                            </Link>
+                        </div>
+                    </footer>
+
+                </form>
+            </FormProvider>
         </div>
-    );
-};
-
-
-const LoginForm: FC = () => {
-    const { isValid, dirty } = useFormikContext();
-
-    return (
-        <Form noValidate className={styles.form}>
-            <header className={styles.header}>
-                <h1>Login</h1>
-            </header>
-            <main className={styles.main}>
-                <Input autoComplete="email" label="E-Mail" name="email" placeholder="Type you email address"
-                       prependIcon={['fas', 'envelope']}
-                       type="email"/>
-                <Input autoComplete="current-password" label="Password" name="password"
-                       placeholder="Type your password"
-                       prependIcon={['fas', 'lock']} type="password"/>
-                <Checkbox label="Remember me" name="remember_me"/>
-                <button className={styles.submitButton} disabled={!dirty || !isValid} type="submit">Submit</button>
-            </main>
-
-            <footer className={styles.footer}>
-                <div className={styles.links}>
-                    <Link href="/password/forgot">
-                        <a className={styles.link}>Forgot password?</a>
-                    </Link>
-                    <Link href="/register">
-                        <a className={styles.link}>Don't have an account yet?</a>
-                    </Link>
-                </div>
-            </footer>
-
-        </Form>
     );
 };
 

@@ -5,8 +5,8 @@ import {ErrorOption} from 'react-hook-form';
 type Options = Array<{ label: string, value: string }>
 
 export interface CheckBoxProps extends InputHTMLAttributes<any> {
+    name: string;
     label: string;
-    error: ErrorOption;
 }
 
 export interface CheckBoxGroupProps extends InputHTMLAttributes<any> {
