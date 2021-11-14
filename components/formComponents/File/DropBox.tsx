@@ -21,10 +21,6 @@ const DropBox: FC<FileProps> = (props) => {
         inputElement?.current?.classList.remove(styles.highlight);
     };
 
-    const transformFileList = (fileList: FileList): File[] => {
-        return Array.from(fileList);
-    };
-
     const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const newFiles = Array.from(e.target.files ?? []);
 

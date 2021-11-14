@@ -1,35 +1,22 @@
+import type {File} from '@/components/formComponents/File/index';
+import {handler, useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/components/formComponents/File/FileItem.module.scss';
+import type {FileProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {FC} from 'react';
+import {useFormContext} from 'react-hook-form';
 
-interface PublicFile {
-    created_at: string;
-    id: number;
-    mime_type: string;
-    original_name: string;
-    relative_path: string;
-    updated_at: string;
-    public_url: string;
-    private_url: null;
-}
 
-interface PrivateFile {
-    created_at: string;
-    id: number;
-    mime_type: string;
-    original_name: string;
-    relative_path: string;
-    updated_at: string;
-    private_url: string;
-    public_url: null;
-}
+const FileItem: FC<{ file: File } & FileProps> = (props) => {
+    const { setValue, getValues, formState: { isSubmitted } } = useFormContext();
+    const api = useApi();
 
-const FileItem: FC<{ onDelete: (file: File, index: number) => void, file: PublicFile | PrivateFile, index: number }> = (props) => {
-    const onDelete = () => {
-        // props.onDelete(props.file, props.file.id);
+    const onDelete = async () => {
+        const { data, status } = await (handler(api.delete(`/files/${props.file.id}`)));
+        setValue(props.name, getValues(props.name).filter((file: File) => file.id !== props.file.id));
     };
 
-    const url = props.file.private_url ? `${process.env.NEXT_PUBLIC_API_URL}${props.file.private_url}` : props.file.public_url ?? '';
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/files/${props.file.id}`;
 
     return (
         <div className={styles.fileItem}>
