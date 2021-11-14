@@ -2,6 +2,7 @@ import {useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/blog/Recent.module.scss';
 import axios, {AxiosResponse} from 'axios';
 import type {GetStaticProps} from 'next';
+import Image from 'next/image';
 import type {FC} from 'react';
 import {useState} from 'react';
 
@@ -20,14 +21,22 @@ interface User {
     name: string;
 }
 
+interface BannerImage {
+    id: number,
+    original_name: string;
+    relative_url?: string;
+    created_at: string;
+}
+
 interface Post {
     id: number;
-    author_id: number;
     title: string;
     markdown: string;
     created_at: string;
     updated_at: string;
+    slug: string;
     user: User;
+    banner_image: BannerImage | null;
 }
 
 interface Links {
@@ -52,6 +61,8 @@ interface Props {
 export const Recent: FC<Props> = (props) => {
     const api = useApi();
 
+    console.log(props.initialData.posts[0]);
+
     const [state, setState] = useState({ ...props.initialData });
     const [loading, setLoading] = useState(false);
 
@@ -70,12 +81,21 @@ export const Recent: FC<Props> = (props) => {
 
     return (
         <div className={styles.posts}>
+
             {state.posts.map(post => (
                 <div key={post.id} className={styles.post}>
-                    <h1>{post.title}</h1>
-                    <h1>{post.id}</h1>
+                    <figure className={styles.figure}>
+                        <Image alt="banner" layout="fill" objectFit="cover"
+                               src={`${process.env.NEXT_PUBLIC_API_URL}/${post.banner_image?.relative_url}`}/>
+                        <figcaption className={styles.caption}>
+                            <h1 className={styles.title}>{post.title}</h1>
+                            <p className={styles.excerpt}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Distinctio, nostrum. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, quod!</p>
+                        </figcaption>
+                    </figure>
                 </div>
             ))}
+
             <button style={{ position: 'fixed', bottom: 0 }} onClick={getMorePosts}>get more</button>
         </div>
     );

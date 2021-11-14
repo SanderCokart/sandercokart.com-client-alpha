@@ -24,15 +24,17 @@ const DropBox: FC<FileProps> = (props) => {
     const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const newFiles = Array.from(e.target.files ?? []);
 
-        for (const file of newFiles) {
-            const formData = new FormData();
-            formData.append('file', file);
-
-            const { data, status } = await (handler(api.post('/files', formData)));
-
+        // for (const file of newFiles) {
+        //     const formData = new FormData();
+        //     formData.append('file', file);
+        //
+        //     const { data, status } = await (handler(api.post('/files', formData)));
+        //
+        //     const currentFiles = getValues(name);
+        //     setValue(name, [...currentFiles, data]);
+        // }
             const currentFiles = getValues(name);
-            setValue(name, [...currentFiles, data]);
-        }
+            setValue(name, [...currentFiles, ...newFiles]);
     };
 
     return (

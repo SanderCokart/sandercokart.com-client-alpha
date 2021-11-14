@@ -20,6 +20,25 @@
       object-fit: contain;
     }
 
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--bg-contrast-text);
+
+      svg {
+        animation: rotateAnimation 1s infinite linear;
+        display: block;
+        font-size: 4rem;
+      }
+    }
+
+    @keyframes rotateAnimation {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     .actionsContainer {
       position: absolute;
       top: 50%;
