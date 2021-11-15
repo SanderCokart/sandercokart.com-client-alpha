@@ -1,6 +1,5 @@
 import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import type {InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes} from 'react';
-import {ErrorOption} from 'react-hook-form';
 
 type Options = Array<{ label: string, value: string }>
 
@@ -10,25 +9,25 @@ export interface CheckBoxProps extends InputHTMLAttributes<any> {
 }
 
 export interface CheckBoxGroupProps extends InputHTMLAttributes<any> {
+    name: string;
     label?: string;
     options: Options;
-    error: ErrorOption;
 }
 
 export interface DateProps extends InputHTMLAttributes<any> {
+    name: string;
     label?: string;
     type?: 'date' | 'datetime-local' | 'week' | 'time';
-    prependIcon?: [IconPrefix, IconName];
-    appendIcon?: [IconPrefix, IconName];
-    error: ErrorOption;
+    prependIcon?: FontAwesomeIcon;
+    appendIcon?: FontAwesomeIcon;
 }
 
 export interface InputProps extends InputHTMLAttributes<any> {
     name: string;
     label?: string;
     placeholder?: string;
-    prependIcon?: [IconPrefix, IconName];
-    appendIcon?: [IconPrefix, IconName];
+    prependIcon?: FontAwesomeIcon;
+    appendIcon?: FontAwesomeIcon;
     type?: 'password' | 'email' | 'text';
 }
 
@@ -38,22 +37,24 @@ export interface FileProps extends InputHTMLAttributes<any> {
 }
 
 export interface RadioProps extends InputHTMLAttributes<any> {
+    name: string;
     label?: string;
     options: Options;
-    error: ErrorOption;
 }
 
 export interface SelectProps extends SelectHTMLAttributes<any> {
+    name: string;
     label?: string;
-    prependIcon?: [IconPrefix, IconName];
-    appendIcon?: [IconPrefix, IconName];
-    error: ErrorOption;
+    prependIcon?: FontAwesomeIcon;
+    appendIcon?: FontAwesomeIcon;
 }
 
 
 export interface TextAreaProps extends TextareaHTMLAttributes<any> {
+    name: string;
     label?: string;
-    prependIcon?: [IconPrefix, IconName];
-    appendIcon?: [IconPrefix, IconName];
-    error: ErrorOption;
+    prependIcon?: FontAwesomeIcon;
+    appendIcon?: FontAwesomeIcon;
 }
+
+export type FontAwesomeIcon = [IconPrefix, IconName] | IconName

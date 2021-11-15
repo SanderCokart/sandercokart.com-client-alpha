@@ -4,7 +4,7 @@ import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/account/email/VerifyEmail.module.scss';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import {useCallback, useEffect} from 'react';
+import {useEffect} from 'react';
 
 const VerifyEmail: FC = () => {
     const { loggedIn, isVerified, justVerified } = useAuth();

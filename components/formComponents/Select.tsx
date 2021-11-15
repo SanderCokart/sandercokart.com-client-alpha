@@ -2,18 +2,20 @@ import styles from '@/styles/components/formComponents/Select.module.scss';
 import type {SelectProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {forwardRef} from 'react';
+import {useFormContext} from 'react-hook-form';
 
 
 const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(props, ref) {
     const {
         name, prependIcon, appendIcon, label,
         id = name,
-        error,
         children,
         ...rest
     } = props;
 
-    const selectClassName = `${styles.select} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
+    const { register, formState: { errors: { [name]: error } } } = useFormContext();
+
+    const selectClassName = `${styles.select} ${prependIcon ? styles.prependIconPadding : ''} ${appendIcon ? styles.appendIconPadding : ''}`;
 
     return (
         <div className={styles.formControl}>
@@ -25,7 +27,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(props,
 
                 <div className={styles.iconContainer}>
                     {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                    <select {...rest} ref={ref} className={selectClassName} name={name}>
+                    <select {...rest} {...register(name)} className={selectClassName} name={name}>
                         {children}
                     </select>
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}

@@ -14,8 +14,6 @@ export const Login: FC = () => {
 
     const router = useRouter();
     const { login } = useAuth();
-    const { query: { user, hash, type, signature, expires } } = router;
-
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required('This field is required'),
@@ -30,26 +28,28 @@ export const Login: FC = () => {
         }
     });
 
-    const onSubmit = (formValues: LoginPayload) => {
-        login(formValues).then(({ status }) => {
-            if (status === 200)
-                switch (type) {
-                    case 'verify': {
-                        router.push({
-                            pathname: `/account/email/verify/${user}/${hash}`,
-                            query: { expires, type, signature }
-                        });
-                        break;
-                    }
-                    default: {
-                        router.push('/blog/recent');
-                        return;
-                    }
+    const { query: { user, hash, type, signature, expires } } = router;
+    const { formState: { isValid, isDirty } } = methods;
+
+    const onSubmit = async (formValues: LoginPayload) => {
+        const { status } = await login(formValues);
+        if (status === 200) {
+            switch (type) {
+                case 'verify': {
+                    router.push({
+                        pathname: `/account/email/verify/${user}/${hash}`,
+                        query: { expires, type, signature }
+                    });
+                    break;
                 }
-        });
+                default: {
+                    router.push('/blog/recent');
+                    return;
+                }
+            }
+        }
     };
 
-    const { formState: { isValid, isDirty } } = methods;
 
     return (
         <div className={styles.login}>

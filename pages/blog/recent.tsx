@@ -21,7 +21,7 @@ interface User {
     name: string;
 }
 
-interface BannerImage {
+interface Banner {
     id: number,
     original_name: string;
     relative_url?: string;
@@ -36,7 +36,7 @@ interface Post {
     updated_at: string;
     slug: string;
     user: User;
-    banner_image: BannerImage | null;
+    banner: Banner | null;
 }
 
 interface Links {
@@ -85,12 +85,17 @@ export const Recent: FC<Props> = (props) => {
             {state.posts.map(post => (
                 <div key={post.id} className={styles.post}>
                     <figure className={styles.figure}>
+
+                        {post.banner &&
                         <Image alt="banner" layout="fill" objectFit="cover"
-                               src={`${process.env.NEXT_PUBLIC_API_URL}/${post.banner_image?.relative_url}`}/>
+                               src={`${process.env.NEXT_PUBLIC_API_URL}/${post.banner?.relative_url}`}/>
+                        }
+
                         <figcaption className={styles.caption}>
                             <h1 className={styles.title}>{post.title}</h1>
                             <p className={styles.excerpt}>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                Distinctio, nostrum. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, quod!</p>
+                                Distinctio, nostrum. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae,
+                                quod!</p>
                         </figcaption>
                     </figure>
                 </div>

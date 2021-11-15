@@ -14,7 +14,7 @@ const Input: FC<InputProps> = (props) => {
 
     const { register, formState: { errors: { [name]: error } } } = useFormContext();
 
-    const inputClassName = `${styles.input} ${prependIcon ? styles.prependIconPadding : '' && appendIcon ? styles.appendIconPadding : ''}`;
+    const inputClassName = `${styles.input} ${prependIcon ? styles.prependIconPadding : ''} ${appendIcon ? styles.appendIconPadding : ''}`;
 
     return (
         <div className={styles.formControl}>

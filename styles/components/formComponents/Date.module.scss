@@ -13,40 +13,6 @@
     color: #111;
     width: 100%;
 
-    .prependIcon {
-      position: absolute;
-      top: 46%;
-      transform: translateY(-50%);
-      left: 14px;
-      pointer-events: none;
-      user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      -webkit-user-select: none;
-      z-index: 2;
-    }
-
-    .prependIconPadding {
-      padding-left: 30px;
-    }
-
-    .appendIcon {
-      position: absolute;
-      top: 46%;
-      transform: translateY(-50%);
-      right: 14px;
-      pointer-events: none;
-      z-index: 2;
-      user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      -webkit-user-select: none;
-    }
-
-    .appendIconPadding {
-      padding-right: 30px;
-    }
-
     .date {
       width: inherit;
       height: inherit;
@@ -71,6 +37,40 @@
       &::-webkit-calendar-picker-indicator {
         opacity: 0;
       }
+    }
+
+    .prependIcon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 14px;
+      pointer-events: none;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+      z-index: 2;
+    }
+
+    .prependIconPadding {
+      padding-left: 35px;
+    }
+
+    .appendIcon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 14px;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .appendIconPadding {
+      padding-right: 30px;
     }
 
     .line {

@@ -14,9 +14,26 @@
     color: #111;
     width: 100%;
 
+    .select {
+      width: inherit;
+      height: inherit;
+      padding: 8px;
+      outline: none;
+      transition: background-color var(--transition-time) ease;
+      background-color: hsl(0, 0%, 93%);
+      border: none;
+      font-size: 1rem;
+      z-index: 1;
+      line-height: 2rem;
+
+      &:hover, &:active, &:focus {
+        background-color: hsl(0, 0%, 100%);
+      }
+    }
+
     .prependIcon {
       position: absolute;
-      top: 46%;
+      top: 50%;
       transform: translateY(-50%);
       left: 14px;
       pointer-events: none;
@@ -33,7 +50,7 @@
 
     .appendIcon {
       position: absolute;
-      top: 46%;
+      top: 50%;
       transform: translateY(-50%);
       right: 14px;
       pointer-events: none;
@@ -46,23 +63,6 @@
 
     .appendIconPadding {
       padding-right: 30px;
-    }
-
-    .select {
-      width: inherit;
-      height: inherit;
-      padding: 8px;
-      outline: none;
-      transition: background-color var(--transition-time) ease;
-      background-color: hsl(0, 0%, 93%);
-      border: none;
-      font-size: 1rem;
-      z-index: 1;
-      line-height: 2rem;
-
-      &:hover, &:active, &:focus {
-        background-color: hsl(0, 0%, 100%);
-      }
     }
   }
 

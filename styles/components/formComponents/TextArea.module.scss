@@ -17,19 +17,6 @@
     color: #111;
     width: 100%;
 
-    .prependIcon {
-      position: absolute;
-      top: 46%;
-      transform: translateY(-50%);
-      left: 14px;
-      pointer-events: none;
-      user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      -webkit-user-select: none;
-      z-index: 2;
-    }
-
     .textarea {
       width: inherit;
       height: inherit;
@@ -44,14 +31,6 @@
       max-height: 50vh;
       resize: none;
       overflow: hidden;
-
-      &.appendIconPadding {
-        padding-right: 40px;
-      }
-
-      &.prependIconPadding {
-        padding-left: 40px;
-      }
 
       &:active, &:focus ~ .line {
         transform: scaleX(1);
@@ -69,6 +48,41 @@
       & ~ .line {
         bottom: 4px;
       }
+    }
+
+    .prependIcon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 14px;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .prependIconPadding {
+      padding-left: 40px;
+    }
+
+
+    .appendIcon {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 14px;
+      pointer-events: none;
+      z-index: 2;
+      user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .appendIconPadding {
+      padding-right: 40px;
     }
 
     .line {

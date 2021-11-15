@@ -2,6 +2,7 @@ import styles from '@/styles/components/formComponents/CheckboxGroup.module.scss
 import type {CheckBoxGroupProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {forwardRef, Fragment} from 'react';
+import {useFormContext} from 'react-hook-form';
 
 
 const CheckboxGroup = forwardRef<HTMLInputElement, CheckBoxGroupProps>(function CheckboxGroup(props, ref) {
@@ -9,9 +10,10 @@ const CheckboxGroup = forwardRef<HTMLInputElement, CheckBoxGroupProps>(function 
         name, label,
         id = name,
         options,
-        error,
         ...rest
     } = props;
+
+    const { register, formState: { errors: { [name]: error } } } = useFormContext();
 
     return (
         <div className={styles.formControl}>
@@ -27,7 +29,7 @@ const CheckboxGroup = forwardRef<HTMLInputElement, CheckBoxGroupProps>(function 
                                 <label className={styles.labelWrapper} htmlFor={`${name} ${option.value}`}>
                                     {option.label}
                                     <input {...rest}
-                                           ref={ref}
+                                           {...register(name)}
                                            id={`${id} ${option.value}`}
                                            name={name}
                                            type="checkbox"

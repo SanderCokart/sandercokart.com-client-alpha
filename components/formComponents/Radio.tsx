@@ -2,16 +2,19 @@ import styles from '@/styles/components/formComponents/Radio.module.scss';
 import type {RadioProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {forwardRef, Fragment} from 'react';
+import {useFormContext} from 'react-hook-form';
 
 
 const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref) {
     const {
         name, label,
         id = name,
-        error,
         options,
         ...rest
     } = props;
+
+    const { register, formState: { errors: { [name]: error } } } = useFormContext();
+
     return (
         <div className={styles.formControl}>
             <div>
@@ -26,7 +29,7 @@ const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref
                                 <label className={styles.labelWrapper} htmlFor={`${name} ${option.value}`}>
                                     {option.label}
                                     <input {...rest}
-                                           ref={ref}
+                                           {...register(name)}
                                            id={`${id} ${option.value}`}
                                            name={name}
                                            type="radio"

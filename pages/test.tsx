@@ -1,5 +1,11 @@
+import Checkbox from '@/components/formComponents/Checkbox';
+import CheckboxGroup from '@/components/formComponents/CheckboxGroup';
+import Date from '@/components/formComponents/Date';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
+import Radio from '@/components/formComponents/Radio';
+import Select from '@/components/formComponents/Select';
+import TextArea from '@/components/formComponents/TextArea';
 import {yupResolver} from '@hookform/resolvers/yup';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -31,18 +37,16 @@ const Test: FC = () => {
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <Input label="name" name="input"/>
-                {/*<Checkbox error={errors['checkbox']} {...register('checkbox')} label="checkbox"/>*/}
-                {/*<CheckboxGroup label="Pick something" {...register('checkboxGroup')} error={errors['checkboxGroup']}*/}
-                {/*               options={options}/>*/}
-                {/*<Radio label="Pick something" {...register('radio')} error={errors['radio']}*/}
-                {/*       options={options}/>*/}
-                {/*<Select {...register('select')} error={errors['select']} label="Select Label">*/}
-                {/*    <option value="option1">Option 1</option>*/}
-                {/*    <option value="option2">Option 2</option>*/}
-                {/*    <option value="option3">Option 3</option>*/}
-                {/*</Select>*/}
-                {/*<TextArea {...register('textarea')} error={errors['textarea']}/>*/}
-                {/*<Date {...register('date')} error={errors['date']} type="time"/>*/}
+                <Checkbox label="checkbox" name="checkbox"/>
+                <CheckboxGroup label="Pick something" name="checkbox_group" options={options}/>
+                <Radio label="Pick something" name="radio" options={options}/>
+                <Select label="Select Label" name="select" prependIcon={['fas', 'spinner']}>
+                    <option value="option1">Option 1</option>
+                    <option value="option2">Option 2</option>
+                    <option value="option3">Option 3</option>
+                </Select>
+                <TextArea name="textarea"/>
+                <Date name="date" prependIcon="spinner" type="date"/>
                 <File multiple name="file"/>
                 <button type="submit">Submit</button>
             </form>
