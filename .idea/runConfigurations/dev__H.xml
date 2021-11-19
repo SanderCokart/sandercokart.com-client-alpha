@@ -5,7 +5,7 @@
     <scripts>
       <script value="dev" />
     </scripts>
-    <arguments value="-H 192.168.2.15" />
+    <arguments value="-H 192.168.2.160" />
     <node-interpreter value="project" />
     <envs />
     <method v="2" />

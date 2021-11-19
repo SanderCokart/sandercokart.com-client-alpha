@@ -1,7 +1,7 @@
 import Loader from '@/components/Loader';
 import {handler, useApi} from '@/providers/ApiProvider';
 import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/account/email/VerifyEmail.module.scss';
+import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';

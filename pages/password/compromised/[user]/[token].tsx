@@ -1,6 +1,6 @@
 import type {FC} from 'react';
 import {Form, Formik, useFormikContext} from 'formik';
-import styles from '@/styles/account/password/ChangePassword.module.scss';
+import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import Input from '@/components/formComponents/Input';
 import {useRouter} from 'next/router';
 import {useApi} from '@/providers/ApiProvider';

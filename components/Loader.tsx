@@ -1,4 +1,4 @@
-import styles from '@/styles/Loader.module.scss';
+import styles from '@/styles/components/Loader.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {FC} from 'react';
 

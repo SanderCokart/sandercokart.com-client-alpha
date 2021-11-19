@@ -1,6 +1,6 @@
 import Input from '@/components/formComponents/Input';
 import {handler, useApi} from '@/providers/ApiProvider';
-import styles from '@/styles/account/PasswordReset.module.scss';
+import styles from '@/styles/pages/account/PasswordReset.module.scss';
 import {PasswordResetPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';

@@ -1,5 +1,5 @@
 import {useApi} from '@/providers/ApiProvider';
-import styles from '@/styles/blog/Recent.module.scss';
+import styles from '@/styles/pages/blog/Recent.module.scss';
 import axios, {AxiosResponse} from 'axios';
 import type {GetStaticProps} from 'next';
 import Image from 'next/image';

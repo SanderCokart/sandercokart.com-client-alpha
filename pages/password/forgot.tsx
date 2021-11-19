@@ -1,6 +1,6 @@
 import Input from '@/components/formComponents/Input';
 import {handler, useApi} from '@/providers/ApiProvider';
-import styles from '@/styles/account/PasswordForgot.module.scss';
+import styles from '@/styles/pages/account/PasswordForgot.module.scss';
 import {PasswordForgotPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import type {FC} from 'react';

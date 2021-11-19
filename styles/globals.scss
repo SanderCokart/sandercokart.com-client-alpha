@@ -9,6 +9,8 @@
   --bg-trans: hsla(0, 0%, 20%, .1);
   --bg-sec-trans: hsla(0, 0%, 93%, .1);
 
+  --trans-bg: hsla(0, 0%, 0%, .9);
+
   --acc: hsl(0, 96%, 48%);
   --acc-trans: hsla(0, 96%, 48%, .1);
   --acc-disabled: hsl(0, 96%, 10%);
@@ -31,6 +33,7 @@
   --radius: 16px;
   --transition-time: 200ms;
 
+  /*TODO*/
   &[data-theme="light"] {
     --bg: hsl(0, 0%, 100%);
     --bg-contrast-text: hsl(0, 0%, 10%);

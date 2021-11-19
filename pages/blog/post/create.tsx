@@ -1,6 +1,6 @@
 import Input from '@/components/formComponents/Input';
 import TextArea from '@/components/formComponents/TextArea';
-import styles from '@/styles/blog/post/CreatePost.module.scss';
+import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import File from '@/components/formComponents/File'
 import {Form, Formik, useFormikContext} from 'formik';
 import * as yup from 'yup';

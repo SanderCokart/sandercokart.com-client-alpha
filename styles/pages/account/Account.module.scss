@@ -1,7 +1,7 @@
-@import "mixins";
+@import "../../mixins";
 
 
-.login {
+.account {
   .form {
     padding: 16px;
     display: flex;
@@ -64,17 +64,43 @@
       }
     }
   }
+
+
+  .actions {
+
+    .logoutButton {
+      width: 100%;
+      background-color: var(--acc);
+      color: var(--acc-contrast-text);
+      padding: 8px;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: bolder;
+      cursor: pointer;
+      transition: background-color ease var(--transition-time);
+
+
+      &:disabled {
+        background: var(--acc-disabled);
+        color: var(--acc-disabled-contrast-text);
+        pointer-events: none;
+      }
+
+      &:hover, &:active, &:focus {
+        background-color: var(--acc-haf);
+
+      }
+    }
+  }
 }
 
 
 @include up($sm) {
-  .login {
-    height: 100%;
+  .account {
+    width: 500px;
+    margin: auto;
     display: flex;
+    flex-direction: column;
 
-    .form {
-      width: 500px;
-      margin: auto;
-    }
   }
 }

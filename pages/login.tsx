@@ -1,7 +1,7 @@
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/Login.module.scss';
+import styles from '@/styles/pages/Login.module.scss';
 import type {LoginPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';

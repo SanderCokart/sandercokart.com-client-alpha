@@ -1,6 +1,6 @@
 import Input from '@/components/formComponents/Input';
 import {handler, useApi} from '@/providers/ApiProvider';
-import styles from '@/styles/account/password/ChangePassword.module.scss';
+import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import type {EmailCompromisedPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';

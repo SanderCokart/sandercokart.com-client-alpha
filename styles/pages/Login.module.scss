@@ -1,10 +1,7 @@
-@import "../../mixins";
+@import "styles/mixins";
 
-.changePassword {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
 
+.login {
   .form {
     padding: 16px;
     display: flex;
@@ -23,25 +20,55 @@
       .submitButton {
         width: 100%;
         background-color: var(--acc);
-        color: #eee;
+        color: var(--acc-contrast-text);
         padding: 8px;
         border: none;
         border-radius: var(--radius);
         font-weight: bolder;
         cursor: pointer;
+        transition: background-color ease var(--transition-time);
+
 
         &:disabled {
           background: var(--acc-disabled);
           color: var(--acc-disabled-contrast-text);
           pointer-events: none;
         }
+
+        &:hover, &:active, &:focus {
+          background-color: var(--acc-haf);
+
+        }
+      }
+    }
+
+    .footer {
+      .links {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .link {
+          color: #eee;
+          padding: 8px;
+          border: none;
+          font-weight: bolder;
+          text-align: center;
+          margin: 0 auto;
+          transition: color ease var(--transition-time);
+
+          &:hover, &:active, &:focus {
+            color: var(--acc)
+          }
+        }
       }
     }
   }
 }
 
-@include up($md) {
-  .changePassword {
+
+@include up($sm) {
+  .login {
     height: 100%;
     display: flex;
 
