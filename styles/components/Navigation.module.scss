@@ -4,6 +4,8 @@
   right: 0;
   top: 0;
   left: 0;
+  z-index: 2;
+  pointer-events: none;
 }
 
 @mixin hidden() {
@@ -29,6 +31,7 @@
   transition: background-color ease var(--transition-time);
 
   button, a {
+    pointer-events: all;
     position: absolute;
     @include rootLocation;
     background-color: transparent;
