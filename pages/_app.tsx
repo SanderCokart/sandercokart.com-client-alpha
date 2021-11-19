@@ -1,4 +1,4 @@
-import Navigation from '@/components/Navigation';
+import NewNavigation from '@/components/Navigation';
 import AuthProvider from '@/providers/AuthProvider';
 import LoadingProvider from '@/providers/LoadingProvider';
 import '@/styles/globals.scss';
@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ApiProvider>
             <AuthProvider>
                 <LoadingProvider>
-                    <Navigation/>
+                    <NewNavigation/>
                     <Component {...pageProps} />
                 </LoadingProvider>
             </AuthProvider>

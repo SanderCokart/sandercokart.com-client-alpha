@@ -1,131 +1,150 @@
+@mixin hidden() {
+  opacity: 0;
+  pointer-events: none;
+  span {
+    opacity: 0;
+  }
+}
+
+@mixin show() {
+  opacity: 1;
+  pointer-events: auto;
+  span {
+    opacity: 1;
+  }
+}
+
+@mixin startPos() {
+  bottom: 80px;
+  left: 50%;
+}
+
 .fixed {
   position: fixed;
   bottom: 0;
   right: 0;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 400;
   pointer-events: none;
-}
-
-@mixin hidden() {
-  opacity: 0;
-  pointer-events: none;
-}
-
-@mixin show() {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-@mixin rootLocation() {
-  bottom: 100px;
-  left: 50%;
 }
 
 .relative {
   position: relative;
   height: 100%;
   width: 100%;
-  background-color: #0000;
-  transition: background-color ease var(--transition-time);
-
-  button, a {
-    pointer-events: all;
-    position: absolute;
-    @include rootLocation;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    width: 40px;
-    line-height: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 40px;
-    transform: translate(-50%, -50%);
-    transition: all 100ms ease;
-    color: var(--bg-contrast-text);
-    gap: 10px;
-    font-size: 1rem;
-    -webkit-tap-highlight-color: transparent;
-
-    svg {
-      font-size: 2rem;
-    }
-  }
-}
-
-
-.compassOptions > button, .compassOptions > a {
-  @include hidden;
-}
-
-.showCompassOptions > button, .showCompassOptions > a {
-  @include show;
-
-  &[data-name="settings"] {
-    bottom: 200px;
-    left: 10%;
-  }
-
-  &[data-name="portfolio"] {
-    bottom: 200px;
-    left: 30%;
-  }
-
-  &[data-name="blog"] {
-    bottom: 200px;
-    left: 50%;
-  }
-
-  &[data-name="gallery"] {
-    bottom: 200px;
-    left: 70%;
-  }
-
-  &[data-name="contact"] {
-    bottom: 200px;
-    left: 90%;
-  }
-}
-
-.blogOptions > button, .blogOptions > a {
-  @include hidden;
-}
-
-.showBlogOptions > button, .showBlogOptions > a {
-  @include show;
-
-  &[data-name="recent"] {
-    bottom: 200px;
-    left: 40%;
-  }
-
-  &[data-name="search"] {
-    bottom: 200px;
-    left: 60%;
-  }
-}
-
-.focus {
-  bottom: 100px !important;
-  left: 50% !important;
-
-  span {
-    display: none !important;
-  }
-}
-
-.unfocus {
-  bottom: 100px !important;
-  left: 50% !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }
 
 .backdrop {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #0000;
+  z-index: -1;
+}
+
+.focus ~ .backdrop {
   background-color: var(--trans-bg);
+}
+
+.navContainer {
+  @include hidden;
+  transition: all ease 250ms;
+}
+
+.navItem {
+  /*cleanup*/
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  line-height: 50%;
+  /*position*/
+  position: absolute;
+  @include startPos;
+  transform: translate(-50%, -50%);
+  /*size*/
+  width: 40px;
+  height: 40px;
+  /*flex*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  /*font*/
+  font-size: 1rem;
+  color: var(--bg-contrast-text);
+  /*misc*/
+  transition: all 100ms ease;
+  -webkit-tap-highlight-color: transparent;
+
+  svg {
+    font-size: 2rem;
+  }
+}
+
+.relative > .navItem {
+  pointer-events: auto;
+
+  &.focus {
+    @include show;
+    @include startPos;
+  }
+
+  &.removeFocus {
+    @include hidden;
+    @include startPos;
+  }
+}
+
+.focus ~ .navContainer {
+  @include show;
+
+  [data-name="settings"] {
+    bottom: 160px;
+    left: 10%;
+  }
+
+  [data-name="portfolio"] {
+    bottom: 160px;
+    left: 30%;
+  }
+
+  [data-name="blog"] {
+    bottom: 160px;
+    left: 50%;
+  }
+
+  [data-name="recent"] {
+    bottom: 160px;
+    left: 40%;
+  }
+
+  [data-name="search"] {
+    bottom: 160px;
+    left: 60%;
+  }
+
+  [data-name="gallery"] {
+    bottom: 160px;
+    left: 70%;
+  }
+
+  [data-name="contact"] {
+    bottom: 160px;
+    left: 90%;
+  }
+
+  .focus {
+    @include show;
+    @include startPos;
+  }
+
+  .removeFocus {
+    @include hidden;
+    @include startPos;
+  }
 }
