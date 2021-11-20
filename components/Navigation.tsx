@@ -54,7 +54,7 @@ const Navigation: FC = () => {
                         <button ref={blogNav} className={styles.navItem} data-name="blog" onClick={openBlogNav}>
                             <FontAwesomeIcon icon="rss"/><span>Blog</span>
                         </button>
-                        <div className={styles.navContainer}>
+                        <div className={styles.blogContainer}>
                             <Link href="/blog/recent">
                                 <a className={styles.navItem} data-name="recent" onClick={navigate}>
                                     <FontAwesomeIcon icon="history"/><span>Recent</span>
@@ -63,6 +63,11 @@ const Navigation: FC = () => {
                             <Link href="/blog/search">
                                 <a className={styles.navItem} data-name="search" onClick={navigate}>
                                     <FontAwesomeIcon icon="search"/><span>Search</span>
+                                </a>
+                            </Link>
+                            <Link href="/blog/post/create">
+                                <a className={styles.navItem} data-name="create" onClick={navigate}>
+                                    <FontAwesomeIcon icon="plus"/><span>Create</span>
                                 </a>
                             </Link>
                         </div>

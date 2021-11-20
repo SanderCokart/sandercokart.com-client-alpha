@@ -1,7 +1,7 @@
 @mixin hidden() {
   opacity: 0;
   pointer-events: none;
-  span {
+  & > a > span, & > button > span {
     opacity: 0;
   }
 }
@@ -9,7 +9,7 @@
 @mixin show() {
   opacity: 1;
   pointer-events: auto;
-  span {
+  & > a > span, & > button > span {
     opacity: 1;
   }
 }
@@ -49,8 +49,10 @@
   background-color: var(--trans-bg);
 }
 
-.navContainer {
+.navContainer, .blogContainer {
   @include hidden;
+  width: 100%;
+  height: 100%;
   transition: all ease 250ms;
 }
 
@@ -118,15 +120,25 @@
     left: 50%;
   }
 
-  [data-name="recent"] {
-    bottom: 160px;
-    left: 40%;
+  .focus ~ .blogContainer {
+    @include show;
+
+    [data-name="recent"] {
+      bottom: 160px;
+      left: 40%;
+    }
+
+    [data-name="search"] {
+      bottom: 160px;
+      left: 60%;
+    }
+
+    [data-name="create"] {
+      bottom: 240px;
+      left: 80%;
+    }
   }
 
-  [data-name="search"] {
-    bottom: 160px;
-    left: 60%;
-  }
 
   [data-name="gallery"] {
     bottom: 160px;
@@ -141,6 +153,10 @@
   .focus {
     @include show;
     @include startPos;
+
+    span {
+      opacity: 0;
+    }
   }
 
   .removeFocus {

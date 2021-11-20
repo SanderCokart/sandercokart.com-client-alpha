@@ -8,6 +8,11 @@ module.exports = {
                 source: '/',
                 destination: '/blog/recent',
                 permanent: true
+            },
+            {
+                source: '/blog',
+                destination: '/blog/recent',
+                permanent: true
             }
         ];
     },
