@@ -1,7 +1,7 @@
 import type {FC} from 'react';
 import styles from '@/styles/pages/404.module.scss';
 
-const Page404:FC = () => {
+const Page404:FC = (props) => {
     return (
         <div className={styles.flex}>
             <h1 className={styles.errorCode}>404</h1>

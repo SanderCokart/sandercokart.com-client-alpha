@@ -15,7 +15,6 @@
     "@hookform/resolvers": "^2.8.3",
     "axios": "^0.21.1",
     "filesize": "^8.0.6",
-    "formik": "^2.2.9",
     "next": "11.0.1",
     "next-mdx-remote": "^3.0.6",
     "react": "^17.0.2",
