@@ -1,3 +1,4 @@
+import Error from '@/components/Error';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import {handler, useApi} from '@/providers/ApiProvider';
@@ -5,17 +6,16 @@ import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/Account.module.scss';
 import {EmailChangePayload, PasswordChangePayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
-import Error from 'next/error';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
 export const Account: FC = () => {
-    const { isVerified, logout, user } = useAuth();
+    const { isVerified, logout, loggedIn } = useAuth();
     const router = useRouter();
 
-    if (!user) {
+    if (!loggedIn) {
         return <Error statusCode={404}/>;
     }
 

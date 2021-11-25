@@ -3,7 +3,9 @@ import {
     faCheck,
     faCog,
     faCompass,
+    faCompress,
     faEnvelope,
+    faExpand,
     faFileImage,
     faHistory,
     faImages,
@@ -15,7 +17,10 @@ import {
     faSpinner,
     faTimes,
     faTrash,
-    faUser
+    faUser,
+    faUserLock,
+    faWindowMaximize,
+    faWindowMinimize
 } from '@fortawesome/free-solid-svg-icons';
 
 export default [
@@ -35,5 +40,10 @@ export default [
     faTrash,
     faUser,
     faPortrait,
-    faSearch
+    faSearch,
+    faUserLock,
+    faWindowMaximize,
+    faWindowMinimize,
+    faCompress,
+    faExpand
 ];

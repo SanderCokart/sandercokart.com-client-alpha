@@ -62,6 +62,7 @@ $navTransitionTime: 100ms;
 .navItem {
   /*cleanup*/
   background-color: transparent;
+  user-select: none;
   border: none;
   outline: none;
   cursor: pointer;
@@ -120,7 +121,7 @@ $navTransitionTime: 100ms;
 .focus ~ .navContainer {
   @include show;
 
-  [data-name="settings"] {
+  [data-name="settings"], [data-name="login"] {
     bottom: calc(15% + 80px);
     right: 90%;
   }

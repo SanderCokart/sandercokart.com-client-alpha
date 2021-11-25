@@ -14,7 +14,6 @@ const FileCarousel: FC<FileProps> = (props) => {
     return (
         <div className={styles.filesContainer}>
             {!!files.length && [...files]?.map((file, index) => {
-
                 return <FileItem {...props} key={index} file={file} index={index}/>;
             })}
         </div>

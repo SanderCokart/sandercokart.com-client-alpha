@@ -1,3 +1,4 @@
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
@@ -5,6 +6,7 @@ import type {FC} from 'react';
 import {useRef} from 'react';
 
 const Navigation: FC = () => {
+        const { loggedIn } = useAuth();
         const compassNav = useRef<null | HTMLButtonElement>(null);
         const blogNav = useRef<null | HTMLButtonElement>(null);
 
@@ -40,11 +42,20 @@ const Navigation: FC = () => {
                     </button>
 
                     <div className={styles.navContainer}>
-                        <Link href="/settings">
-                            <a className={styles.navItem} data-name="settings" onClick={navigate}>
-                                <FontAwesomeIcon icon="cog"/><span>Settings</span>
-                            </a>
-                        </Link>
+                        {loggedIn ? (
+                            <Link href="/settings">
+                                <a className={styles.navItem} data-name="settings" onClick={navigate}>
+                                    <FontAwesomeIcon icon="cog"/><span>Settings</span>
+                                </a>
+                            </Link>
+                        ) : (
+                            <Link href="/login">
+                                <a className={styles.navItem} data-name="login" onClick={navigate}>
+                                    <FontAwesomeIcon icon="user-lock"/><span>Login</span>
+                                </a>
+                            </Link>
+                        )}
+
                         <Link href="/portfolio">
                             <a className={styles.navItem} data-name="portfolio" onClick={navigate}>
                                 <FontAwesomeIcon icon="portrait"/><span>Portfolio</span>
