@@ -1,22 +1,19 @@
 import Error from '@/components/Error';
 import File from '@/components/formComponents/File';
-import Input from '@/components/formComponents/Input';
-import TextArea from '@/components/formComponents/TextArea';
+import PostForm from '@/components/pages/blog/post/create/PostForm';
+import PostPreview from '@/components/pages/blog/post/create/PostPreview';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote';
+import 'easymde/dist/easymde.min.css';
+import {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import type {FC} from 'react';
 import {useState} from 'react';
-import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import useMediaQuery from '../../../hooks/useMediaQuery';
 
-interface CreatePostPayload {
-    title: string;
-    markdown: string;
-    bannerImage: File | undefined;
-}
+
 
 interface CompilerPayload {
     error: CompilerError | null;
@@ -91,9 +88,6 @@ const CreatePostPage: FC = () => {
                          mdxSource={state.mdxSource}/>}
                  </div>
              )
-                // : state.showPreview ? state.error ? <PostPreview mdxSource={state.mdxSource}/> : <div
-                //                         className={styles.error}>{state.error?}</div>
-                //                     : <PostForm/>
                   :
              (
                  <div>
@@ -109,46 +103,5 @@ const CreatePostPage: FC = () => {
     );
 };
 
-const PostForm: FC = () => {
-    const { formState: { isValid, isDirty }, handleSubmit } = useFormContext();
-
-    const onSubmit = (formValues: CreatePostPayload) => {
-        console.log(formValues);
-    };
-
-
-    return (
-        <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-            <header className={styles.header}>
-                <h1>Create Post</h1>
-            </header>
-            <main className={styles.main}>
-                <Input label="Title" name="title" placeholder="My Phone Review..."/>
-                <Input label="Excerpt" name="excerpt" placeholder="In this post I'll be going over a few things such as..."/>
-                <TextArea label="Markdown" name="markdown"/>
-                <File name="banner_image"/>
-                <button className={styles.submitButton} disabled={!isValid || !isDirty} type="submit">submit
-                </button>
-            </main>
-        </form>
-    );
-};
-
-const PostPreview: FC<{ mdxSource: MDXRemoteSerializeResult | null }> = ({ mdxSource }) => {
-    const { watch } = useFormContext();
-    const title = watch('title');
-    if (mdxSource)
-        return (
-            <div className={styles.preview}>
-                <h1>{title}</h1>
-                <MDXRemote {...mdxSource}/>
-            </div>
-        );
-    else return (
-        <div className={styles.waiting}>
-            <h1>Waiting for compiler</h1>
-        </div>
-    );
-};
 
 export default CreatePostPage;
