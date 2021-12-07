@@ -17,10 +17,6 @@ interface AdvancedMediaQuery {
     to: keyof Sizes;
 }
 
-// "(max-width: 700px)" //query example for in
-// var x = window.matchMedia("(max-width: 700px)")
-
-
 const sizes: Sizes = {
     xs: '0px',
     sm: '600px',
@@ -33,7 +29,7 @@ function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: '
     const getQuery = () => {
         switch (options.option) {
             case 'down':
-                return `all and (min-width: ${sizes[options.from]})`;
+                return `all and (max-width: ${sizes[options.from]})`;
             case 'between':
                 return `all and (min-width: ${sizes[options.from]}) and (max-width: ${options.to})`;
             default:
@@ -54,11 +50,6 @@ function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: '
     });
 
     return matches;
-};
-
-// const useMediaQuery: BasicMediaQuery | AdvancedMediaQuery = (from, option, to) => {
-//
-//     return matches;
-// };
+}
 
 export default useMediaQuery;

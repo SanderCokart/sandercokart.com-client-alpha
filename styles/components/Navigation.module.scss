@@ -21,7 +21,7 @@ $navTransitionTime: 100ms;
   right: 50%;
 }
 
-.fixed {
+.mobile {
   position: fixed;
   bottom: 0;
   right: 0;
@@ -29,154 +29,214 @@ $navTransitionTime: 100ms;
   left: 0;
   z-index: 400;
   pointer-events: none;
-}
 
-.relative {
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
+  .relative {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
 
-.backdrop {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  background-color: #0000;
-  z-index: -1;
-  transition: background-color $navTransitionTime ease;
-}
+  .backdrop {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #0000;
+    z-index: -1;
+    transition: background-color $navTransitionTime ease;
+  }
 
-.focus ~ .backdrop {
-  background-color: var(--trans-bg);
-}
+  .focus ~ .backdrop {
+    background-color: var(--trans-bg);
+  }
 
-.navContainer, .blogContainer {
-  @include hidden;
-  width: 100%;
-  height: 100%;
-  transition: all ease $navTransitionTime;
-}
+  .compassContainer, .blogContainer {
+    @include hidden;
+    width: 100%;
+    height: 100%;
+    transition: all ease $navTransitionTime;
+  }
 
-.navItem {
-  /*cleanup*/
-  background-color: transparent;
-  user-select: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  line-height: 50%;
-  /*position*/
-  position: absolute;
-  @include startPos;
-  transform: translate(50%, 50%);
-  /*size*/
-  width: 40px;
-  height: 40px;
-  /*flex*/
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  /*font*/
-  font-size: 1rem;
-  color: var(--bg-contrast-text);
-  /*misc*/
-  transition: all $navTransitionTime ease;
-  -webkit-tap-highlight-color: transparent;
+  .navItem {
+    /*cleanup*/
+    background-color: transparent;
+    user-select: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    line-height: 50%;
+    /*position*/
+    position: absolute;
+    @include startPos;
+    transform: translate(50%, 50%);
+    /*size*/
+    width: 40px;
+    height: 40px;
+    /*flex*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    /*font*/
+    font-size: 1rem;
+    color: var(--bg-contrast-text);
+    /*misc*/
+    transition: all $navTransitionTime ease;
+    -webkit-tap-highlight-color: transparent;
 
-  &:nth-child(1).focus {
-    animation-name: rotate;
-    animation-duration: 1s;
-    animation-timing-function: ease;
-    animation-iteration-count: infinite;
-    @keyframes rotate {
-      to {
-        transform: translate(50%, 50%) rotate(360deg);
+    span {
+      text-transform: capitalize;
+    }
+
+    &:nth-child(1).focus {
+      animation-name: rotate;
+      animation-duration: 1s;
+      animation-timing-function: ease;
+      animation-iteration-count: infinite;
+      @keyframes rotate {
+        to {
+          transform: translate(50%, 50%) rotate(360deg);
+        }
       }
+    }
+
+    svg {
+      font-size: 2rem;
     }
   }
 
-  svg {
-    font-size: 2rem;
-  }
-}
+  .relative > .navItem {
+    pointer-events: auto;
 
-.relative > .navItem {
-  pointer-events: auto;
+    &.focus {
+      @include show;
+      @include startPos;
+    }
 
-  &.focus {
-    @include show;
-    @include startPos;
-  }
-
-  &.removeFocus {
-    @include hidden;
-    @include startPos;
-  }
-}
-
-.focus ~ .navContainer {
-  @include show;
-
-  [data-name="settings"], [data-name="login"] {
-    bottom: calc(15% + 80px);
-    right: 90%;
+    &.removeFocus {
+      @include hidden;
+      @include startPos;
+    }
   }
 
-  [data-name="portfolio"] {
-    bottom: calc(15% + 80px);
-    right: 70%;
-  }
-
-  [data-name="blog"] {
-    bottom: calc(15% + 80px);
-    right: 50%;
-  }
-
-  .focus ~ .blogContainer {
+  .focus ~ .compassContainer {
     @include show;
 
-    [data-name="recent"] {
+    [data-name="settings"], [data-name="login"] {
+      bottom: calc(15% + 80px);
+      right: 90%;
+    }
+
+    [data-name="portfolio"] {
+      bottom: calc(15% + 80px);
+      right: 70%;
+    }
+
+    [data-name="blog"] {
       bottom: calc(15% + 80px);
       right: 50%;
     }
 
-    [data-name="search"] {
+    .focus ~ .blogContainer {
+      @include show;
+
+      [data-name="recent"] {
+        bottom: calc(15% + 80px);
+        right: 50%;
+      }
+
+      [data-name="search"] {
+        bottom: calc(15% + 80px);
+        right: calc(50% + 80px);
+      }
+
+      [data-name="create"] {
+        bottom: calc(15% + 160px);
+        right: calc(50% + 80px);
+      }
+    }
+
+
+    [data-name="gallery"] {
       bottom: calc(15% + 80px);
-      right: calc(50% + 80px);
+      right: 30%;
     }
 
-    [data-name="create"] {
-      bottom: calc(15% + 160px);
-      right: calc(50% + 80px);
+    [data-name="contact"] {
+      bottom: calc(15% + 80px);
+      right: 10%;
+    }
+
+    .focus {
+      @include show;
+      @include startPos;
+
+      span {
+        opacity: 0;
+      }
+    }
+
+    .removeFocus {
+      @include hidden;
+      @include startPos;
+    }
+  }
+}
+
+.desktop {
+  position: sticky;
+  background-color: #111;
+
+  button.navItem {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    color: var(--bg-contrast-text);
+  }
+
+  .compassContainer, .blogContainer {
+    display: flex;
+    list-style: none;
+    justify-content: stretch;
+    width: 100%;
+
+    .navItem {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color var(--transition-time) ease;
+
+      span {
+        text-transform: capitalize;
+        font-size: 1.25rem;
+      }
+
+      svg {
+        font-size: 1.25rem;
+      }
+
+      &:hover {
+        background-color: var(--acc);
+      }
+    }
+
+    button.navItem, .navItem a {
+      padding: 8px 24px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
     }
   }
 
-
-  [data-name="gallery"] {
-    bottom: calc(15% + 80px);
-    right: 30%;
-  }
-
-  [data-name="contact"] {
-    bottom: calc(15% + 80px);
-    right: 10%;
-  }
-
-  .focus {
-    @include show;
-    @include startPos;
-
-    span {
-      opacity: 0;
-    }
-  }
-
-  .removeFocus {
-    @include hidden;
-    @include startPos;
+  .blogContainer {
+    flex-direction: column;
+    display: none;
   }
 }

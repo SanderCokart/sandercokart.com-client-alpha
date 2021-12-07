@@ -24,5 +24,13 @@ module.exports = {
     },
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
+    },
+    webpack(config) {
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            fs: false
+        };
+
+        return config;
     }
 };

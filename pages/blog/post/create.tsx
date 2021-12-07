@@ -1,37 +1,20 @@
 import Error from '@/components/Error';
-import PostForm from '@/components/pages/blog/post/create/PostForm';
-import PostPreview from '@/components/pages/blog/post/create/PostPreview';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import {yupResolver} from '@hookform/resolvers/yup';
 import 'easymde/dist/easymde.min.css';
-import {MDXRemoteSerializeResult} from 'next-mdx-remote';
-import type {FC} from 'react';
-import {useState} from 'react';
+import dynamic from 'next/dynamic';
+import type {ComponentType, FC, RefAttributes} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
+import {SimpleMDEReactProps} from 'react-simplemde-editor';
 import * as Yup from 'yup';
+import MDEOptions from '../../../data/MDEOptions';
 import useMediaQuery from '../../../hooks/useMediaQuery';
 
-
-interface CompilerPayload {
-    error: CompilerError | null;
-    mdxSource: MDXRemoteSerializeResult | null;
-}
-
-interface CompilerError {
-    code: string;
-    loc: { line: number, column: number };
-    pos: number;
-    reasonCode: string;
-}
-
-interface State {
-    mdxSource: MDXRemoteSerializeResult | null;
-    showPreview: boolean;
-    error: CompilerError | null;
-}
-
 const CreatePostPage: FC = () => {
+    const SimpleMDE = dynamic(() => import('react-simplemde-editor'));
+
     const { loggedIn } = useAuth();
     const mdUp = useMediaQuery({ from: 'md', option: 'up' });
     const methods = useForm({
@@ -49,40 +32,27 @@ const CreatePostPage: FC = () => {
             banner_image: []
         }
     });
-    const [state, setState] = useState<State>({
-        mdxSource: null,
-        showPreview: false,
-        error: null
-    });
+    const [simpleMdeInstance, setMdeInstance] = useState<SimpleMDEReactProps | null>(null);
+    const getMdeInstanceCallback = useCallback((SimpleMDE) => {
+        setMdeInstance(SimpleMDE);
+    }, []);
 
-    const compile = async () => {
-        const res = await fetch('/api/compile', { method: 'POST', body: methods.getValues('markdown') });
-        return res.json();
-    };
-
-    const compilePreview = async () => {
-        if (mdUp) {
-            const { mdxSource, error }: CompilerPayload = await compile();
-            setState(prev => ({ ...prev, mdxSource, error }));
-        } else {
-            if (!state.showPreview) {
-                const { mdxSource, error } = await compile();
-                setState(prev => ({ ...prev, error, mdxSource, showPreview: !prev.showPreview }));
-            } else setState(prev => ({ ...prev, showPreview: !prev.showPreview }));
-        }
-    };
+    useEffect(() => {
+        simpleMdeInstance &&
+        console.info('Hey I\'m editor instance!', simpleMdeInstance);
+    }, [simpleMdeInstance]);
 
     if (!loggedIn) {
         return <Error statusCode={401} title="Unauthorized"/>;
     }
 
+
+
     return (
         <FormProvider {...methods}>
-            {mdUp ? <DesktopView state={state}/>
+            {mdUp ? <DesktopView Editor={SimpleMDE}/>
                   :
-             <MobileView state={state}/>}
-
-            <button onClick={compilePreview}>{mdUp ? 'Compile preview' : 'Toggle preview'}</button>
+             <MobileView Editor={SimpleMDE}/>}
         </FormProvider>
     );
 };
@@ -90,23 +60,19 @@ const CreatePostPage: FC = () => {
 
 export default CreatePostPage;
 
-const DesktopView: FC<{ state: State }> = ({ state }) => {
+const DesktopView: FC<{ Editor: ComponentType<SimpleMDEReactProps & RefAttributes<HTMLDivElement>> }> = ({ Editor }) => {
     return (
         <div className={styles.desktop}>
-            <PostForm/>
-            {state.error ? <div className={styles.error}>{state.error.reasonCode}</div> : <PostPreview
-                mdxSource={state.mdxSource}/>}
+            <Editor options={MDEOptions} style={{ backgroundColor: 'white' }}/>
         </div>
     );
 };
 
 
-const MobileView: FC<{ state: State }> = ({ state }) => {
+const MobileView: FC<{ Editor: ComponentType<SimpleMDEReactProps & RefAttributes<HTMLDivElement>> }> = ({ Editor }) => {
     return (
-        <div>
-            {!state.showPreview ? <PostForm/>
-                                : state.error ? <div className={styles.error}>{state.error.reasonCode}</div>
-                                              : <PostPreview mdxSource={state.mdxSource}/>}
+        <div className={styles.mobile}>
+            <Editor options={MDEOptions} style={{ backgroundColor: 'white' }}/>
         </div>
     );
 };

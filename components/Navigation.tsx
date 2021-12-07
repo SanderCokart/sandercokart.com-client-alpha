@@ -1,16 +1,19 @@
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
+import {NavigationChildren, NavigationType} from '@/types/DataTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import type {FC} from 'react';
-import {useRef} from 'react';
+import type {FC, MouseEvent} from 'react';
+import {Fragment, useRef} from 'react';
+import useMediaQuery from '../hooks/useMediaQuery';
 
 const Navigation: FC = () => {
         const { loggedIn } = useAuth();
         const compassNav = useRef<null | HTMLButtonElement>(null);
         const blogNav = useRef<null | HTMLButtonElement>(null);
+        const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
 
-        const openNav = () => {
+        const openCompassNav = () => {
             compassNav.current?.classList.toggle(styles.focus);
         };
 
@@ -24,6 +27,10 @@ const Navigation: FC = () => {
                 });
         };
 
+        const openBlogDropDown = (e: MouseEvent<HTMLButtonElement>) => {
+
+        };
+
         const navigate = () => {
             blogNav.current?.classList.remove(styles.focus);
             compassNav.current?.classList.remove(styles.removeFocus, styles.focus);
@@ -34,72 +41,113 @@ const Navigation: FC = () => {
                 });
         };
 
-        return (
-            <div className={styles.fixed}>
+        const navigationData: NavigationType = [
+            {
+                name: 'compass', icon: 'compass', type: 'container', ref: compassNav, onClick: openCompassNav, children: [
+                    {
+                        name: loggedIn ? 'settings' : 'login',
+                        icon: loggedIn ? 'cog' : 'user-lock',
+                        href: loggedIn ? '/settings' : '/login',
+                        type: 'item',
+                        onClick: navigate
+                    },
+                    { name: 'portfolio', icon: 'portrait', href: '/portfolio', type: 'item', onClick: navigate },
+                    {
+                        name: 'blog',
+                        icon: 'rss',
+                        type: 'container',
+                        ref: blogNav,
+                        onClick: isMobile ? openBlogNav : openBlogDropDown,
+                        children: [
+                            { name: 'recent', icon: 'portrait', href: '/blog/recent', type: 'item', onClick: navigate },
+                            { name: 'search', icon: 'search', href: '/blog/search', type: 'item', onClick: navigate },
+                            ...(loggedIn ? [{
+                                name: 'create',
+                                icon: 'plus',
+                                href: '/blog/post/create',
+                                type: 'item',
+                                onClick: navigate
+                            }] : []) as NavigationType
+                        ]
+                    },
+                    { name: 'gallery', icon: 'images', href: '/gallery', type: 'item', onClick: navigate },
+                    { name: 'contact', icon: 'envelope', href: '/contact', type: 'item', onClick: navigate }
+                ]
+            }
+        ];
+
+        const mapMobileNavigation = (entries: NavigationType | NavigationChildren): any => {
+            return entries.map(entry => {
+                if (entry && entry.type === 'container') {
+                    return (
+                        <Fragment key={entry.name}>
+                            <button ref={entry.ref} className={styles.navItem} data-name={entry.name}
+                                    onClick={entry.onClick}>
+                                <FontAwesomeIcon icon={entry.icon}/>
+                                {entry.name !== 'compass' && <span>{entry.name}</span>}
+                            </button>
+                            <ul className={styles[`${entry.name}Container`]}>{mapMobileNavigation(entry.children)}</ul>
+                        </Fragment>
+                    );
+                } else if (entry && entry.type === 'item') {
+                    return (
+                        <li key={entry.name}>
+                            <Link href={entry.href}>
+                                <a className={styles.navItem} data-name={entry.name} onClick={entry.onClick}>
+                                    <FontAwesomeIcon icon={entry.icon}/><span>{entry.name}</span>
+                                </a>
+                            </Link>
+                        </li>
+                    );
+                }
+            });
+
+        };
+        const mapDesktopNavigation = (entries: NavigationType | NavigationChildren): any => {
+            return entries.filter(entry => entry.name !== 'compass').map(entry => {
+                if (entry.type === 'container') {
+                    return (
+                        <Fragment key={entry.name}>
+                            <button ref={entry.ref} className={styles.navItem} data-name={entry.name}
+                                    onClick={entry.onClick}>
+                                <FontAwesomeIcon icon={entry.icon}/>
+                                <span>{entry.name}</span>
+                            </button>
+                            <ul className={styles[`${entry.name}Container`]}>{mapDesktopNavigation(entry.children)}</ul>
+                        </Fragment>
+                    );
+                } else if (entry.type === 'item') {
+                    return (
+                        <li key={entry.name} className={styles.navItem}>
+                            <Link href={entry.href}>
+                                <a data-name={entry.name} onClick={entry.onClick}>
+                                    <FontAwesomeIcon icon={entry.icon}/><span>{entry.name}</span>
+                                </a>
+                            </Link>
+                        </li>
+                    );
+                }
+            });
+
+        };
+
+        const Mobile = () => (
+            <nav className={styles.mobile}>
                 <div className={styles.relative}>
-                    <button ref={compassNav} className={styles.navItem} onClick={openNav}>
-                        <FontAwesomeIcon icon="compass"/>
-                    </button>
-
-                    <div className={styles.navContainer}>
-                        {loggedIn ? (
-                            <Link href="/settings">
-                                <a className={styles.navItem} data-name="settings" onClick={navigate}>
-                                    <FontAwesomeIcon icon="cog"/><span>Settings</span>
-                                </a>
-                            </Link>
-                        ) : (
-                            <Link href="/login">
-                                <a className={styles.navItem} data-name="login" onClick={navigate}>
-                                    <FontAwesomeIcon icon="user-lock"/><span>Login</span>
-                                </a>
-                            </Link>
-                        )}
-
-                        <Link href="/portfolio">
-                            <a className={styles.navItem} data-name="portfolio" onClick={navigate}>
-                                <FontAwesomeIcon icon="portrait"/><span>Portfolio</span>
-                            </a>
-                        </Link>
-
-                        <button ref={blogNav} className={styles.navItem} data-name="blog" onClick={openBlogNav}>
-                            <FontAwesomeIcon icon="rss"/><span>Blog</span>
-                        </button>
-                        <div className={styles.blogContainer}>
-                            <Link href="/blog/recent">
-                                <a className={styles.navItem} data-name="recent" onClick={navigate}>
-                                    <FontAwesomeIcon icon="history"/><span>Recent</span>
-                                </a>
-                            </Link>
-                            <Link href="/blog/search">
-                                <a className={styles.navItem} data-name="search" onClick={navigate}>
-                                    <FontAwesomeIcon icon="search"/><span>Search</span>
-                                </a>
-                            </Link>
-                            <Link href="/blog/post/create">
-                                <a className={styles.navItem} data-name="create" onClick={navigate}>
-                                    <FontAwesomeIcon icon="plus"/><span>Create</span>
-                                </a>
-                            </Link>
-                        </div>
-
-                        <Link href="/gallery">
-                            <a className={styles.navItem} data-name="gallery" onClick={navigate}>
-                                <FontAwesomeIcon icon="images"/><span>Gallery</span>
-                            </a>
-                        </Link>
-                        <Link href="/contact">
-                            <a className={styles.navItem} data-name="contact" onClick={navigate}>
-                                <FontAwesomeIcon icon="envelope"/><span>Contact</span>
-                            </a>
-                        </Link>
-                    </div>
-
+                    {mapMobileNavigation(navigationData)}
                     <div className={styles.backdrop}/>
-
                 </div>
-            </div>
+            </nav>
         );
+
+        const Desktop = () => (
+            <nav className={styles.desktop}>
+                {mapDesktopNavigation(navigationData)}
+            </nav>
+        );
+
+        if (isMobile) return <Mobile/>;
+        else return <Desktop/>;
     }
 ;
 

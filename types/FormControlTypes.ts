@@ -1,4 +1,4 @@
-import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
+import {FontAwesomeIcon} from '@/types/CustomTypes';
 import type {InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes} from 'react';
 
 type Options = Array<{ label: string, value: string }>
@@ -56,5 +56,3 @@ export interface TextAreaProps extends TextareaHTMLAttributes<any> {
     prependIcon?: FontAwesomeIcon;
     appendIcon?: FontAwesomeIcon;
 }
-
-export type FontAwesomeIcon = [IconPrefix, IconName] | IconName
