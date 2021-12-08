@@ -186,57 +186,11 @@ $navTransitionTime: 100ms;
 }
 
 .desktop {
+  background-color: #222;
+  display: flex;
+  align-items: baseline;
+  padding: .5rem;
+  gap: 1rem;
   position: sticky;
-  background-color: #111;
-
-  button.navItem {
-    background-color: transparent;
-    outline: none;
-    border: none;
-    font-size: 1rem;
-    color: var(--bg-contrast-text);
-  }
-
-  .compassContainer, .blogContainer {
-    display: flex;
-    list-style: none;
-    justify-content: stretch;
-    width: 100%;
-
-    .navItem {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: background-color var(--transition-time) ease;
-
-      span {
-        text-transform: capitalize;
-        font-size: 1.25rem;
-      }
-
-      svg {
-        font-size: 1.25rem;
-      }
-
-      &:hover {
-        background-color: var(--acc);
-      }
-    }
-
-    button.navItem, .navItem a {
-      padding: 8px 24px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-  }
-
-  .blogContainer {
-    flex-direction: column;
-    display: none;
-  }
 }
+

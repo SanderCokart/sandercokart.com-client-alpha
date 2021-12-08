@@ -76,9 +76,9 @@ const Navigation: FC = () => {
             }
         ];
 
-        const mapMobileNavigation = (entries: NavigationType | NavigationChildren): any => {
+        const mapMobileNavigation = (entries: NavigationType | NavigationChildren) => {
             return entries.map(entry => {
-                if (entry && entry.type === 'container') {
+                if (entry.type === 'container') {
                     return (
                         <Fragment key={entry.name}>
                             <button ref={entry.ref} className={styles.navItem} data-name={entry.name}
@@ -89,7 +89,7 @@ const Navigation: FC = () => {
                             <ul className={styles[`${entry.name}Container`]}>{mapMobileNavigation(entry.children)}</ul>
                         </Fragment>
                     );
-                } else if (entry && entry.type === 'item') {
+                } else if (entry.type === 'item') {
                     return (
                         <li key={entry.name}>
                             <Link href={entry.href}>
@@ -103,17 +103,26 @@ const Navigation: FC = () => {
             });
 
         };
-        const mapDesktopNavigation = (entries: NavigationType | NavigationChildren): any => {
-            return entries.filter(entry => entry.name !== 'compass').map(entry => {
+        const mapDesktopNavigation = (entries: NavigationType | NavigationChildren) => {
+            return entries.map(entry => {
                 if (entry.type === 'container') {
                     return (
                         <Fragment key={entry.name}>
-                            <button ref={entry.ref} className={styles.navItem} data-name={entry.name}
-                                    onClick={entry.onClick}>
-                                <FontAwesomeIcon icon={entry.icon}/>
-                                <span>{entry.name}</span>
-                            </button>
-                            <ul className={styles[`${entry.name}Container`]}>{mapDesktopNavigation(entry.children)}</ul>
+                            {
+                                entry.name === 'compass' ?
+                                <ul className={styles.compassContainer}>{mapDesktopNavigation(entry.children)}</ul>
+                                                         :
+                                <>
+                                    <div className={styles.dropdown}>
+                                        <button className={styles.navItem}>
+                                            <FontAwesomeIcon icon={entry.icon}/>
+                                            <span>{entry.name}</span>
+                                        </button>
+                                        <ul className={styles.dropdown}>{mapDesktopNavigation(entry.children)}</ul>
+                                    </div>
+                                </>
+
+                            }
                         </Fragment>
                     );
                 } else if (entry.type === 'item') {
@@ -128,7 +137,6 @@ const Navigation: FC = () => {
                     );
                 }
             });
-
         };
 
         const Mobile = () => (
@@ -146,8 +154,7 @@ const Navigation: FC = () => {
             </nav>
         );
 
-        if (isMobile) return <Mobile/>;
-        else return <Desktop/>;
+        return isMobile ? <Mobile/> : <Desktop/>;
     }
 ;
 
