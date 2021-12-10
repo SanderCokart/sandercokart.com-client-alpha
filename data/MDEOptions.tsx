@@ -17,7 +17,7 @@ const scope = {
 };
 
 export default {
-    toolbar: [],
+    toolbar: ['side-by-side'],
     sideBySideFullscreen: true,
     previewRender: (markdownPlaintext, previewElement) => {
         try {

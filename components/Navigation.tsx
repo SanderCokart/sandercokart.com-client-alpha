@@ -27,9 +27,6 @@ const Navigation: FC = () => {
                 });
         };
 
-        const openBlogDropDown = (e: MouseEvent<HTMLButtonElement>) => {
-
-        };
 
         const navigate = () => {
             blogNav.current?.classList.remove(styles.focus);
@@ -39,6 +36,11 @@ const Navigation: FC = () => {
                     if (item !== blogNav.current && item !== blogNav.current?.nextElementSibling)
                         item.classList.remove(styles.removeFocus);
                 });
+        };
+
+        const activateDropdownMenu = (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+            e.currentTarget.classList.toggle(styles.active);
+            e.currentTarget.nextElementSibling?.classList.toggle(styles.active);
         };
 
         const navigationData: NavigationType = [
@@ -57,7 +59,7 @@ const Navigation: FC = () => {
                         icon: 'rss',
                         type: 'container',
                         ref: blogNav,
-                        onClick: isMobile ? openBlogNav : openBlogDropDown,
+                        onClick: openBlogNav,
                         children: [
                             { name: 'recent', icon: 'portrait', href: '/blog/recent', type: 'item', onClick: navigate },
                             { name: 'search', icon: 'search', href: '/blog/search', type: 'item', onClick: navigate },
@@ -101,8 +103,8 @@ const Navigation: FC = () => {
                     );
                 }
             });
-
         };
+
         const mapDesktopNavigation = (entries: NavigationType | NavigationChildren) => {
             return entries.map(entry => {
                 if (entry.type === 'container') {
@@ -110,26 +112,24 @@ const Navigation: FC = () => {
                         <Fragment key={entry.name}>
                             {
                                 entry.name === 'compass' ?
-                                <ul className={styles.compassContainer}>{mapDesktopNavigation(entry.children)}</ul>
+                                <ul className={styles.firstRow}>{mapDesktopNavigation(entry.children)}</ul>
                                                          :
-                                <>
-                                    <div className={styles.dropdown}>
-                                        <button className={styles.navItem}>
-                                            <FontAwesomeIcon icon={entry.icon}/>
-                                            <span>{entry.name}</span>
-                                        </button>
-                                        <ul className={styles.dropdown}>{mapDesktopNavigation(entry.children)}</ul>
-                                    </div>
-                                </>
+                                <li className={styles.dropdown}>
+                                    <button onClick={activateDropdownMenu}>
+                                        <FontAwesomeIcon icon={entry.icon}/>
+                                        <span>{entry.name}</span>
+                                    </button>
+                                    <ul className={styles.dropdownMenu}>{mapDesktopNavigation(entry.children)}</ul>
+                                </li>
 
                             }
                         </Fragment>
                     );
                 } else if (entry.type === 'item') {
                     return (
-                        <li key={entry.name} className={styles.navItem}>
+                        <li key={entry.name}>
                             <Link href={entry.href}>
-                                <a data-name={entry.name} onClick={entry.onClick}>
+                                <a onClick={entry.onClick}>
                                     <FontAwesomeIcon icon={entry.icon}/><span>{entry.name}</span>
                                 </a>
                             </Link>
