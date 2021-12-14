@@ -1,4 +1,7 @@
+@import "../variables";
+
 $navTransitionTime: 100ms;
+
 
 @mixin hidden() {
   opacity: 0;
@@ -23,10 +26,9 @@ $navTransitionTime: 100ms;
 
 .mobile {
   position: fixed;
-  bottom: 0;
-  right: 0;
-  top: 0;
+  bottom: 140px;
   left: 0;
+  right: 0;
   z-index: 400;
   pointer-events: none;
 
@@ -37,7 +39,7 @@ $navTransitionTime: 100ms;
   }
 
   .backdrop {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
@@ -51,7 +53,7 @@ $navTransitionTime: 100ms;
     background-color: var(--trans-bg);
   }
 
-  .compassContainer, .blogContainer {
+  .compassContainer, .libraryContainer {
     @include hidden;
     width: 100%;
     height: 100%;
@@ -85,6 +87,7 @@ $navTransitionTime: 100ms;
     /*misc*/
     transition: all $navTransitionTime ease;
     -webkit-tap-highlight-color: transparent;
+    filter: drop-shadow(0 0 0.75rem #000);
 
     span {
       text-transform: capitalize;
@@ -124,58 +127,43 @@ $navTransitionTime: 100ms;
   .focus ~ .compassContainer {
     @include show;
 
-    [data-name="settings"], [data-name="login"] {
-      bottom: calc(15% + 80px);
-      right: 90%;
-    }
-
-    [data-name="portfolio"] {
-      bottom: calc(15% + 80px);
-      right: 70%;
-    }
 
     [data-name="blog"] {
       bottom: calc(15% + 80px);
       right: 50%;
     }
 
-    .focus ~ .blogContainer {
-      @include show;
-
-      [data-name="recent"] {
-        bottom: calc(15% + 80px);
-        right: 50%;
-      }
-
-      [data-name="search"] {
-        bottom: calc(15% + 80px);
-        right: calc(50% + 80px);
-      }
-
-      [data-name="create"] {
-        bottom: calc(15% + 160px);
-        right: calc(50% + 80px);
-      }
-    }
-
-
-    [data-name="gallery"] {
+    [data-name="library"] {
       bottom: calc(15% + 80px);
       right: 30%;
     }
 
+    .focus ~ .libraryContainer {
+      @include show;
+
+      [data-name="courses"] {
+        bottom: calc(15% + 80px);
+        right: 50%;
+      }
+
+      [data-name="tips"] {
+        bottom: calc(15% + 80px);
+        right: 30%;
+      }
+    }
+
     [data-name="contact"] {
       bottom: calc(15% + 80px);
-      right: 10%;
+      right: 70%;
+    }
+
+    [data-name="settings"], [data-name="login"] {
+      right: 30%;
     }
 
     .focus {
       @include show;
       @include startPos;
-
-      span {
-        opacity: 0;
-      }
     }
 
     .removeFocus {
@@ -186,16 +174,20 @@ $navTransitionTime: 100ms;
 }
 
 nav.desktop {
-  position: relative;
+  position: fixed;
+  width: 100%;
+  top: 0;
   z-index: 800;
   background-color: var(--bg-nav);
   pointer-events: none;
+  height: 40px;
 
   ul {
     list-style: none;
   }
 
   ul:first-child {
+    height: 100%;
     display: flex;
   }
 
@@ -228,12 +220,15 @@ nav.desktop {
   .dropdownMenu {
     opacity: 0;
     position: absolute;
+    background-color: var(--bg-nav);
+    width: 100%;
 
     transition: opacity 150ms ease,
     transform 150ms ease, left 150ms ease;
   }
 
-  ul.firstRow {
+  /* first ul */
+  > ul {
     > li > a, > li > button {
       pointer-events: auto;
     }
@@ -270,4 +265,8 @@ nav.desktop {
       }
     }
   }
+}
+
+.margin {
+  margin-top: $navHeight;
 }

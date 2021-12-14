@@ -1,58 +1,7 @@
-//.form {
-//  padding: 16px;
-//  display: flex;
-//  flex-direction: column;
-//  justify-content: space-between;
-//  width: 100%;
-//
-//  .header {
-//    margin-bottom: 8px;
-//  }
-//
-//  .main {
-//    display: flex;
-//    flex-direction: column;
-//    gap: 24px;
-//
-//    .submitButton {
-//      width: 100%;
-//      background-color: var(--acc);
-//      color: #eee;
-//      padding: 8px;
-//      border: none;
-//      border-radius: var(--radius);
-//      font-weight: bolder;
-//      cursor: pointer;
-//
-//      &:disabled {
-//        background: var(--acc-disabled);
-//        color: var(--acc-disabled-contrast-text);
-//        pointer-events: none;
-//      }
-//    }
-//  }
-//}
-//
-//.desktop {
-//  display: flex;
-//}
-//
-//.preview {
-//  width: 100%;
-//}
-//
-//.waiting {
-//  width: 100%;
-//
-//  h1 {
-//    text-align: center;
-//  }
-//}
-//
-//.error {
-//  width: 100%;
-//  color: var(--error);
-//  font-weight: bolder;
-//  text-align: center;
-//  margin: 40px 0 0 0;
-//}
+.desktop {
+  //position: absolute;
+  //top: 1rem;
+  //bottom: 0;
+  //right: 0;
+  //left: 0;
+}

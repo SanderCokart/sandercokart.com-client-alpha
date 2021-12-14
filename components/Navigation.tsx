@@ -1,6 +1,7 @@
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
 import {NavigationChildren, NavigationType} from '@/types/DataTypes';
+import {DropdownProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import type {FC, MouseEvent} from 'react';
@@ -10,70 +11,88 @@ import useMediaQuery from '../hooks/useMediaQuery';
 const Navigation: FC = () => {
         const { loggedIn } = useAuth();
         const compassNav = useRef<null | HTMLButtonElement>(null);
-        const blogNav = useRef<null | HTMLButtonElement>(null);
+        const libraryNav = useRef<null | HTMLButtonElement>(null);
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
 
         const openCompassNav = () => {
             compassNav.current?.classList.toggle(styles.focus);
         };
-
-        const openBlogNav = () => {
-            blogNav.current?.classList.toggle(styles.focus);
+        const openLibraryNav = () => {
+            libraryNav.current?.classList.toggle(styles.focus);
             compassNav.current?.classList.toggle(styles.removeFocus);
             Array.from(compassNav.current?.nextElementSibling?.children ?? [])
                 .forEach(item => {
-                    if (item !== blogNav.current && item !== blogNav.current?.nextElementSibling)
+                    if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
                         item.classList.toggle(styles.removeFocus);
                 });
         };
 
-
         const navigate = () => {
-            blogNav.current?.classList.remove(styles.focus);
+            libraryNav.current?.classList.remove(styles.focus);
             compassNav.current?.classList.remove(styles.removeFocus, styles.focus);
             Array.from(compassNav.current?.nextElementSibling?.children ?? [])
                 .forEach(item => {
-                    if (item !== blogNav.current && item !== blogNav.current?.nextElementSibling)
+                    if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
                         item.classList.remove(styles.removeFocus);
                 });
         };
 
-        const activateDropdownMenu = (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-            e.currentTarget.classList.toggle(styles.active);
-            e.currentTarget.nextElementSibling?.classList.toggle(styles.active);
-        };
 
         const navigationData: NavigationType = [
             {
                 name: 'compass', icon: 'compass', type: 'container', ref: compassNav, onClick: openCompassNav, children: [
+                    (loggedIn ? {
+                                href: '/settings',
+                                icon: 'cog',
+                                name: 'settings',
+                                onClick: navigate,
+                                type: 'item'
+                            } :
+                            {
+                                href: '/login',
+                                icon: 'user-lock',
+                                name: 'login',
+                                onClick: navigate,
+                                type: 'item'
+                            }
+                    ),
                     {
-                        name: loggedIn ? 'settings' : 'login',
-                        icon: loggedIn ? 'cog' : 'user-lock',
-                        href: loggedIn ? '/settings' : '/login',
-                        type: 'item',
-                        onClick: navigate
-                    },
-                    { name: 'portfolio', icon: 'portrait', href: '/portfolio', type: 'item', onClick: navigate },
-                    {
-                        name: 'blog',
+                        href: '/blog',
                         icon: 'rss',
-                        type: 'container',
-                        ref: blogNav,
-                        onClick: openBlogNav,
-                        children: [
-                            { name: 'recent', icon: 'portrait', href: '/blog/recent', type: 'item', onClick: navigate },
-                            { name: 'search', icon: 'search', href: '/blog/search', type: 'item', onClick: navigate },
-                            ...(loggedIn ? [{
-                                name: 'create',
-                                icon: 'plus',
-                                href: '/blog/post/create',
-                                type: 'item',
-                                onClick: navigate
-                            }] : []) as NavigationType
-                        ]
+                        name: 'blog',
+                        onClick: navigate,
+                        type: 'item'
                     },
-                    { name: 'gallery', icon: 'images', href: '/gallery', type: 'item', onClick: navigate },
-                    { name: 'contact', icon: 'envelope', href: '/contact', type: 'item', onClick: navigate }
+                    {
+                        children: [
+                            {
+                                href: '/courses',
+                                icon: 'book',
+                                name: 'courses',
+                                onClick: navigate,
+                                type: 'item'
+                            },
+                            {
+                                href: '/tips',
+                                icon: 'lightbulb',
+                                name: 'tips',
+                                onClick: navigate,
+                                type: 'item'
+                            }
+                        ],
+                        icon: 'boxes',
+                        name: 'library',
+                        onClick: openLibraryNav,
+                        ref: libraryNav,
+                        type: 'container'
+                    },
+                    {
+                        href: '/contact',
+                        icon: 'envelope',
+                        name: 'contact',
+                        onClick: navigate,
+                        type: 'item'
+                    }
                 ]
             }
         ];
@@ -105,40 +124,6 @@ const Navigation: FC = () => {
             });
         };
 
-        const mapDesktopNavigation = (entries: NavigationType | NavigationChildren) => {
-            return entries.map(entry => {
-                if (entry.type === 'container') {
-                    return (
-                        <Fragment key={entry.name}>
-                            {
-                                entry.name === 'compass' ?
-                                <ul className={styles.firstRow}>{mapDesktopNavigation(entry.children)}</ul>
-                                                         :
-                                <li className={styles.dropdown}>
-                                    <button onClick={activateDropdownMenu}>
-                                        <FontAwesomeIcon icon={entry.icon}/>
-                                        <span>{entry.name}</span>
-                                    </button>
-                                    <ul className={styles.dropdownMenu}>{mapDesktopNavigation(entry.children)}</ul>
-                                </li>
-
-                            }
-                        </Fragment>
-                    );
-                } else if (entry.type === 'item') {
-                    return (
-                        <li key={entry.name}>
-                            <Link href={entry.href}>
-                                <a onClick={entry.onClick}>
-                                    <FontAwesomeIcon icon={entry.icon}/><span>{entry.name}</span>
-                                </a>
-                            </Link>
-                        </li>
-                    );
-                }
-            });
-        };
-
         const Mobile = () => (
             <nav className={styles.mobile}>
                 <div className={styles.relative}>
@@ -149,9 +134,26 @@ const Navigation: FC = () => {
         );
 
         const Desktop = () => (
-            <nav className={styles.desktop}>
-                {mapDesktopNavigation(navigationData)}
-            </nav>
+            <>
+                <nav className={styles.desktop}>
+                    <ul>
+                        <NavItem href="/blog" icon="rss" text="Blog"/>
+                        <Dropdown icon="boxes" text="Library">
+                            <NavItem href="/library/courses" icon="book" text="Courses"/>
+                            <NavItem href="/library/tips" icon="lightbulb" text="Tips"/>
+                        </Dropdown>
+
+                        {
+                            loggedIn ?
+                            <NavItem href="/settings" icon="cog" text="Settings"/>
+
+                                     :
+                            <NavItem href="/login" icon="user-lock" text="Login"/>
+                        }
+                    </ul>
+                </nav>
+                <div className={styles.margin}/>
+            </>
         );
 
         return isMobile ? <Mobile/> : <Desktop/>;
@@ -159,3 +161,29 @@ const Navigation: FC = () => {
 ;
 
 export default Navigation;
+
+const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
+    <li>
+        <Link href={href}>
+            <a>
+                <FontAwesomeIcon icon={icon}/><span>{text}</span>
+            </a>
+        </Link>
+    </li>
+);
+
+const Dropdown: FC<DropdownProps> = ({ children, text, icon }) => {
+    const activateDropdownMenu = (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        e.currentTarget.classList.toggle(styles.active);
+        e.currentTarget.nextElementSibling?.classList.toggle(styles.active);
+    };
+
+    return (
+        <li className={styles.dropdown}>
+            <button onClick={activateDropdownMenu}><FontAwesomeIcon icon={icon}/><span>{text}</span></button>
+            <ul className={styles.dropdownMenu}>
+                {children}
+            </ul>
+        </li>
+    );
+};

@@ -1,4 +1,6 @@
 import {
+    faBook,
+    faBoxes,
     faCalendar,
     faCheck,
     faCog,
@@ -9,6 +11,7 @@ import {
     faFileImage,
     faHistory,
     faImages,
+    faLightbulb,
     faLock,
     faPlus,
     faPortrait,
@@ -45,5 +48,8 @@ export default [
     faWindowMaximize,
     faWindowMinimize,
     faCompress,
-    faExpand
+    faExpand,
+    faBoxes,
+    faBook,
+    faLightbulb
 ];
