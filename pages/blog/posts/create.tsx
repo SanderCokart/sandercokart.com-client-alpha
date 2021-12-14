@@ -3,13 +3,13 @@ import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
+import {CreatePostFormValues} from '@/types/FormValueTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import 'easymde/dist/easymde.min.css';
 import dynamic from 'next/dynamic';
-import {useEffect} from 'react';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import SimpleMdeReact from 'react-simplemde-editor';
 import * as Yup from 'yup';
 import useMDEOptions from '../../../hooks/useMDEOptions';
 import useMediaQuery from '../../../hooks/useMediaQuery';
@@ -19,10 +19,10 @@ const CreatePostPage: FC = () => {
     const mdUp = useMediaQuery({ from: 'md', option: 'up' });
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
-            title: Yup.string().required('This field is required'),
-            markdown: Yup.string().required('This field is required'),
-            excerpt: Yup.string().required('This field is required'),
-            banner_image: Yup.mixed().required()
+            // title: Yup.string().required('This field is required'),
+            // markdown: Yup.string().required('This field is required'),
+            // excerpt: Yup.string().required('This field is required'),
+            // banner_image: Yup.mixed().required()
         })),
         mode: 'all',
         defaultValues: {
@@ -47,16 +47,26 @@ const CreatePostPage: FC = () => {
         return <Error statusCode={401} title="Unauthorized"/>;
     }
 
+    const { handleSubmit } = methods;
+
+
+    const submitPost = (formValues: CreatePostFormValues) => {
+        console.log(formValues);
+    };
+
 
     return (
-        <FormProvider {...methods}>
-            <main className={styles.desktop}>
-                <Input name="title"/>
-                <Input name="excerpt"/>
-                <File name="banner_image"/>
-                <Editor/>
-            </main>
-        </FormProvider>
+        <main className={styles.desktop}>
+            <FormProvider {...methods}>
+                <form onSubmit={handleSubmit(submitPost)}>
+                    <File name="banner_image"/>
+                    <Editor/>
+                    <button className={styles.submit} type="submit">
+                        <FontAwesomeIcon icon="plus"/>
+                    </button>
+                </form>
+            </FormProvider>
+        </main>
     );
 };
 

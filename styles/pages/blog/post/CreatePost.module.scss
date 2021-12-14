@@ -1,7 +1,21 @@
 .desktop {
-  //position: absolute;
-  //top: 1rem;
-  //bottom: 0;
-  //right: 0;
-  //left: 0;
+  position: relative;
+  z-index: 1000;
+}
+
+.submit {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border:none;
+  background-color: var(--acc);
+  color: var(--acc-contrast-text);
+  font-size: 2rem;
+  cursor: pointer;
 }

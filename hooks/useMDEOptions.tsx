@@ -5,7 +5,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 
 const components: { [key: string]: FC } = {
-    h1: ({ children, ...props }) => (
+    ti: ({ children, ...props }) => (
         <h1 id="editor-title-text" {...props}>
             {children}
         </h1>
@@ -23,21 +23,23 @@ const UseMdeOptions = () => {
     const { setValue } = useFormContext();
 
     useEffect(() => {
-        const titleEl = document.getElementById('editor-title-text');
-        const excerptEl = document.getElementById('editor-excerpt-text');
+        const listener = (e: KeyboardEvent) => {
+            const titleEl = document.getElementById('editor-title-text');
+            const excerptEl = document.getElementById('editor-excerpt-text');
 
-        if (titleEl)
-            titleEl?.addEventListener('change', (e) => {
-                const target = e.target as HTMLHeadingElement | HTMLParagraphElement;
-                setValue('title', target.innerText);
-            });
+            if (titleEl) setValue('title', titleEl.innerText);
+            if (excerptEl) setValue('excerpt', excerptEl.innerText);
+        };
+        document.addEventListener('keyup', listener);
+        return () => {
+            document.removeEventListener('keyup', listener);
+        };
 
-    }, []);
+    });
 
     return useMemo(() => {
         return {
-            toolbar: ['preview', 'side-by-side'],
-            sideBySideFullscreen: true,
+            // toolbar: [],
             previewRender: (markdownPlaintext, previewElement) => {
                 try {
                     return renderToStaticMarkup(
