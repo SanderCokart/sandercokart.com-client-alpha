@@ -34,7 +34,7 @@ export const Blog: FC<BlogProps> = (props) => {
 
 
             <div className={styles.banner}>
-                <Image alt="banner" layout="fill" objectFit="cover" objectPosition="80%"
+                <Image alt="banner" layout="fill" objectFit="cover" objectPosition="80% 20%"
                        src="/assets/images/banner-compressed.jpg"/>
             </div>
 

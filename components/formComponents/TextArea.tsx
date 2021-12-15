@@ -40,7 +40,7 @@ const TextArea: FC<TextAreaProps> = (props) => {
         setFullscreen(prev => !prev);
     };
 
-    const { ref, ...restOfRef } = register(name);
+    const { ref, onChange, ...restOfRef } = register(name);
 
     return (
         <div ref={formControlElement} className={styles.formControl}>
@@ -52,8 +52,7 @@ const TextArea: FC<TextAreaProps> = (props) => {
                 </div>
 
                 <div className={styles.iconContainer}>
-                    {prependIcon &&
-                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                    {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
 
                     <button className={styles.unfoldButton} type="button" onClick={toggleUnfold}>
                         <FontAwesomeIcon icon={unfolded ? 'window-minimize' : 'window-maximize'}/>
@@ -62,11 +61,20 @@ const TextArea: FC<TextAreaProps> = (props) => {
                         <FontAwesomeIcon icon={fullscreen ? 'compress' : 'expand'}/>
                     </button>
 
-                    <textarea {...rest} {...restOfRef} ref={(el) => {
-                        ref(el);
-                        textAreaElement.current = el;
-                    }} className={textareaClassName} id={id} name={name}
-                              onChange={autoGrow}/>
+                    <textarea {...rest} {...restOfRef}
+                              ref={(el) => {
+                                  ref(el);
+                                  textAreaElement.current = el;
+                              }}
+                              className={textareaClassName}
+                              id={id}
+                              name={name}
+                              onChange={(e) => {
+                                  autoGrow(e);
+                                  onChange(e);
+                              }}
+                    />
+
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
 
                     <div className={styles.line}/>

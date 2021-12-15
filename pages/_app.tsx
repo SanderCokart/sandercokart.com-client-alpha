@@ -16,13 +16,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ApiProvider>
             <AuthProvider>
                 <LoadingProvider>
-                    <Head>
-                        <meta content="height=device-height,
-                      width=device-width, initial-scale=1.0,
-                      minimum-scale=1.0, maximum-scale=1.0,
-                      user-scalable=no, target-densitydpi=device-dpi" name="viewport"/>
-                        <title>home</title>
-                    </Head>
                     <Navigation/>
                     <Component {...pageProps} />
                 </LoadingProvider>

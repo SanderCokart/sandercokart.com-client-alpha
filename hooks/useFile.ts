@@ -20,6 +20,7 @@ function useFile(fileToUpload: File, name: string, index: number) {
         formData.set('file', fileToUpload);
         const promise = (async () => {
             const { data, status } = await (handler(api.post('/files', formData)));
+            console.log(data);
             // values combo of File and ApiFileType, starts as File, must merge with ApiFileType
             const initialFilesArr = getValues(name);
             const initialFileInstance = getValues(name)[index];

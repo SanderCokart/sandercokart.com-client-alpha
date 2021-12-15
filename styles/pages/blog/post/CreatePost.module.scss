@@ -1,6 +1,10 @@
 .desktop {
-  position: relative;
-  z-index: 1000;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+  }
 }
 
 .submit {
@@ -13,9 +17,10 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border:none;
+  border: none;
   background-color: var(--acc);
   color: var(--acc-contrast-text);
   font-size: 2rem;
   cursor: pointer;
+  z-index: 1000;
 }

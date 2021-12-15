@@ -1,17 +1,12 @@
 import MDX from '@mdx-js/runtime';
 import {Options} from 'easymde';
-import {FC, useEffect, useMemo} from 'react';
+import {FC, useMemo} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 
 const components: { [key: string]: FC } = {
-    ti: ({ children, ...props }) => (
-        <h1 id="editor-title-text" {...props}>
-            {children}
-        </h1>
-    ),
-    ex: ({ children, ...props }) => (
-        <p id="editor-excerpt-text">{children}</p>
+    h1: ({ children, ...props }) => (
+        <h2 {...props}>{children}</h2>
     )
 };
 
@@ -20,22 +15,8 @@ const scope = {
 };
 
 const UseMdeOptions = () => {
-    const { setValue } = useFormContext();
-
-    useEffect(() => {
-        const listener = (e: KeyboardEvent) => {
-            const titleEl = document.getElementById('editor-title-text');
-            const excerptEl = document.getElementById('editor-excerpt-text');
-
-            if (titleEl) setValue('title', titleEl.innerText);
-            if (excerptEl) setValue('excerpt', excerptEl.innerText);
-        };
-        document.addEventListener('keyup', listener);
-        return () => {
-            document.removeEventListener('keyup', listener);
-        };
-
-    });
+    const { watch } = useFormContext();
+    const [title, excerpt] = watch(['title', 'excerpt']);
 
     return useMemo(() => {
         return {
@@ -44,6 +25,8 @@ const UseMdeOptions = () => {
                 try {
                     return renderToStaticMarkup(
                         <MDX components={components} scope={scope}>
+                            {`<h1>${title}</h1>`}
+                            {`<p>${excerpt}</p>`}
                             {markdownPlaintext}
                         </MDX>
                     );
@@ -60,7 +43,7 @@ const UseMdeOptions = () => {
             }
 
         } as Options;
-    }, []);
+    }, [title, excerpt]);
 };
 
 export default UseMdeOptions;
