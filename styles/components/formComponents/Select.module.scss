@@ -1,3 +1,5 @@
+@use '../../core';
+
 .formControl {
   display: flex;
   flex-direction: column;
@@ -19,7 +21,7 @@
       height: inherit;
       padding: 8px;
       outline: none;
-      transition: background-color var(--transition-time) ease;
+      transition: background-color core.$transitionTime ease;
       background-color: hsl(0, 0%, 93%);
       border: none;
       font-size: 1rem;

@@ -1,3 +1,5 @@
+@use '../../core';
+
 .formControl {
   display: flex;
   flex-direction: column;
@@ -40,11 +42,11 @@
         height: 100%;
         background-color: var(--acc);
         transform: scale(0);
-        transition: var(--transition-time) ease transform;
+        transition: core.$transitionTime ease transform;
       }
 
       svg {
-        transition: var(--transition-time) ease transform;
+        transition: core.$transitionTime ease transform;
         transform: scale(0);
         width: 70%;
         height: 70%;

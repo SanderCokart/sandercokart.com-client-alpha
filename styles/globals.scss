@@ -3,8 +3,10 @@
 :root {
   --bg: hsl(0, 0%, 20%);
   --bg-contrast-text: hsl(0, 0%, 93%);
+
   --bg-sec: hsl(0, 0%, 93%);
   --bg-sec-contrast-text: hsl(0, 0%, 10%);
+
   --bg-nav: hsl(0, 0%, 13%);
 
   --bg-trans: hsla(0, 0%, 20%, .1);
@@ -16,25 +18,15 @@
   --acc-trans: hsla(0, 96%, 48%, .1);
   --acc-disabled: hsl(0, 96%, 10%);
   --acc-disabled-contrast-text: hsl(0, 0%, 50%);
+  /*haf = hover,active,focus*/
   --acc-haf: hsl(0, 96%, 38%);
   --acc-contrast-text: hsl(0, 0%, 100%);
-
-  //--bg: hsl(0, 0%, 13%);
-  //--text: hsl(0, 0%, 93%);
-  //--text-invert: hsl(0, 0%, 7%);
-  //--accent: hsl(0, 96%, 48%);
-  //--highlight: hsl(0, 0%, 100%);
-  //--highlight-hover: hsl(0, 0%, 100%);
 
   --error: hsl(0, 100%, 42%);
   --success: hsl(145, 100%, 39%);
   --info: hsl(203, 100%, 46%);
   --warning: hsl(40, 100%, 50%);
 
-  --radius: 16px;
-  --transition-time: 200ms;
-
-  /*TODO*/
   &[data-theme="light"] {
     --bg: hsl(0, 0%, 100%);
     --bg-contrast-text: hsl(0, 0%, 10%);

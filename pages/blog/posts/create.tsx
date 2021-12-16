@@ -23,10 +23,10 @@ const CreatePostPage: FC = () => {
     const mdUp = useMediaQuery({ from: 'md', option: 'up' });
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
-            // title: Yup.string().required('This field is required'),
-            // markdown: Yup.string().required('This field is required'),
-            // excerpt: Yup.string().required('This field is required'),
-            // banner_image: Yup.mixed().required()
+            title: Yup.string().required('This field is required'),
+            markdown: Yup.string().required('This field is required'),
+            excerpt: Yup.string().required('This field is required'),
+            banner_image: Yup.mixed().required()
         })),
         mode: 'all',
         defaultValues: {

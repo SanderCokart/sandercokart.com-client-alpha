@@ -1,6 +1,4 @@
-@import "../variables";
-
-$navTransitionTime: 100ms;
+@use '../core';
 
 
 @mixin hidden() {
@@ -47,7 +45,7 @@ $navTransitionTime: 100ms;
     left: 0;
     background-color: #0000;
     z-index: -1;
-    transition: background-color $navTransitionTime ease;
+    transition: background-color core.$navTransitionTime ease;
   }
 
   .focus ~ .backdrop {
@@ -58,7 +56,7 @@ $navTransitionTime: 100ms;
     @include hidden;
     width: 100%;
     height: 100%;
-    transition: all ease $navTransitionTime;
+    transition: all ease core.$navTransitionTime;
   }
 
   .navItem {
@@ -86,7 +84,7 @@ $navTransitionTime: 100ms;
     font-size: 1rem;
     color: var(--bg-contrast-text);
     /*misc*/
-    transition: all $navTransitionTime ease;
+    transition: all core.$navTransitionTime ease;
     -webkit-tap-highlight-color: transparent;
     filter: drop-shadow(0 0 0.75rem #000);
 
@@ -269,5 +267,5 @@ nav.desktop {
 }
 
 .margin {
-  margin-top: $navHeight;
+  margin-top: core.$navHeight;
 }

@@ -1,4 +1,4 @@
-@import "../../mixins";
+@use '../../core';
 
 .container {
   display: flex;
@@ -15,8 +15,8 @@
   grid-template-columns: 1fr;
   grid-auto-rows: 40vh;
 
-  @include up($sm) {
-    grid-template-columns: repeat( auto-fit, minmax(300px, 1fr) );
+  @include core.up(core.$sm) {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   }
 }
 

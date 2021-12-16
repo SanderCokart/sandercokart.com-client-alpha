@@ -1,3 +1,5 @@
+@use '../../core';
+
 .formControlError {
   color: var(--error);
   font-weight: bolder;

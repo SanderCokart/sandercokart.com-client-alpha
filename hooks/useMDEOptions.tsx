@@ -1,6 +1,6 @@
 import MDX from '@mdx-js/runtime';
-import {Options} from 'easymde';
-import {FC, useMemo} from 'react';
+import EasyMDE, {Options} from 'easymde';
+import {FC, useMemo, useState} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 
@@ -15,8 +15,13 @@ const scope = {
 };
 
 const UseMdeOptions = () => {
-    const { watch } = useFormContext();
-    const [title, excerpt] = watch(['title', 'excerpt']);
+    const { getValues } = useFormContext();
+    // const [state, setState] = useState({
+    //     title: '',
+    //     excerpt: ''
+    // });
+    // const [title, excerpt] = watch(['title', 'excerpt']);
+
 
     return useMemo(() => {
         return {
@@ -25,14 +30,13 @@ const UseMdeOptions = () => {
                 try {
                     return renderToStaticMarkup(
                         <MDX components={components} scope={scope}>
-                            {`<h1>${title}</h1>`}
-                            {`<p>${excerpt}</p>`}
+                            {/*{`<h1>${title}</h1>`}*/}
+                            {/*{`<p>${excerpt}</p>`}*/}
                             {markdownPlaintext}
                         </MDX>
                     );
                 } catch (err: any) {
                     console.error(err);
-
                     return renderToStaticMarkup(
                         <div>
                             <h1>{err.name}</h1>
@@ -43,7 +47,7 @@ const UseMdeOptions = () => {
             }
 
         } as Options;
-    }, [title, excerpt]);
+    }, []);
 };
 
 export default UseMdeOptions;

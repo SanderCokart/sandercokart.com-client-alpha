@@ -1,4 +1,4 @@
-@import "../../mixins";
+@use '../../core';
 
 .register {
   .form {
@@ -36,7 +36,7 @@
   }
 }
 
-@include up($sm) {
+@include core.up(core.$sm) {
   .register {
     height: 100%;
     display: flex;

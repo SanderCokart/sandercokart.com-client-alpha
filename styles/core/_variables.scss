@@ -1,0 +1,13 @@
+$navHeight: 40px;
+
+$z-indexes: (
+        "body": 0,
+        "navigation": 200,
+        "fab": 300,
+        "backdrop": 400,
+        "model": 500,
+);
+
+$radius: 16px;
+$transitionTime: 200ms;
+$navTransitionTime: 100ms;
