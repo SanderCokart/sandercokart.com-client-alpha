@@ -1,23 +1,21 @@
-@import 'mixins';
+@use 'core';
 
 :root {
   --bg: hsl(0, 0%, 20%);
   --bg-contrast-text: hsl(0, 0%, 93%);
 
-  --bg-sec: hsl(0, 0%, 93%);
-  --bg-sec-contrast-text: hsl(0, 0%, 10%);
-
   --bg-nav: hsl(0, 0%, 13%);
+  --bg-nav-contrast-text: hsl(0, 0%, 93%);
 
-  --bg-trans: hsla(0, 0%, 20%, .1);
-  --bg-sec-trans: hsla(0, 0%, 93%, .1);
+  --scrollbar: hsl(0, 0%, 93%);
 
-  --trans-bg: hsla(0, 0%, 0%, .9);
+  --bg-trans: hsla(0, 0%, 0%, .8);
+  --bg-trans-contrast-text: hsl(0, 0%, 100%);
 
   --acc: hsl(0, 96%, 48%);
   --acc-trans: hsla(0, 96%, 48%, .1);
-  --acc-disabled: hsl(0, 96%, 10%);
-  --acc-disabled-contrast-text: hsl(0, 0%, 50%);
+  --acc-disabled: hsl(0, 0%, 40%);
+  --acc-disabled-contrast-text: hsl(0, 0%, 20%);
   /*haf = hover,active,focus*/
   --acc-haf: hsl(0, 96%, 38%);
   --acc-contrast-text: hsl(0, 0%, 100%);
@@ -29,7 +27,15 @@
 
   &[data-theme="light"] {
     --bg: hsl(0, 0%, 100%);
-    --bg-contrast-text: hsl(0, 0%, 10%);
+    --bg-contrast-text: hsl(0, 0%, 0%);
+
+    --bg-nav: hsl(0, 0%, 87%);
+    --bg-nav-contrast-text: hsl(0, 0%, 7%);
+
+    --bg-trans: hsla(0, 0%, 100%, .8);
+    --bg-trans-contrast-text: hsl(0, 0%, 0%);
+
+    --scrollbar: hsl(0, 0%, 7%);
   }
 }
 
@@ -40,7 +46,7 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--bg-sec);
+  background: var(--scrollbar);
 }
 
 /* Handle */
@@ -57,11 +63,15 @@ html,
 body,
 #__next {
   width: 100%;
-  height: 100%;
+  height: calc(100%);
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background: var(--bg);
   color: var(--bg-contrast-text);
+
+  @include core.up(core.$sm) {
+    height: calc(100% - 40px);
+  }
 }
 
 a {

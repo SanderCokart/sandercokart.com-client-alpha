@@ -1,4 +1,3 @@
-import {handler, useApi} from '@/providers/ApiProvider';
 import styles from '@/styles/components/formComponents/File/DropBox.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {ChangeEvent, FC} from 'react';
@@ -7,7 +6,6 @@ import {useFormContext} from 'react-hook-form';
 
 const DropBox: FC<FileProps> = (props) => {
     const { name } = props;
-    const api = useApi();
     const { setValue, getValues } = useFormContext();
     const inputElement = useRef<HTMLInputElement | null>(null);
 
@@ -33,9 +31,9 @@ const DropBox: FC<FileProps> = (props) => {
         //     const currentFiles = getValues(name);
         //     setValue(name, [...currentFiles, data]);
         // }
-            const currentFiles = getValues(name);
+        const currentFiles = getValues(name);
         console.log(currentFiles);
-            setValue(name, [...currentFiles, ...newFiles]);
+        setValue(name, [...currentFiles, ...newFiles]);
     };
 
     return (

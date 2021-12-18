@@ -1,5 +1,5 @@
 import MDX from '@mdx-js/runtime';
-import EasyMDE, {Options} from 'easymde';
+import {Options} from 'easymde';
 import {FC, useMemo, useState} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
@@ -16,6 +16,7 @@ const scope = {
 
 const UseMdeOptions = () => {
     const { getValues } = useFormContext();
+    const [showLineNumbers, setShowLineNumbers] = useState(false);
     // const [state, setState] = useState({
     //     title: '',
     //     excerpt: ''
@@ -25,7 +26,28 @@ const UseMdeOptions = () => {
 
     return useMemo(() => {
         return {
-            // toolbar: [],
+            lineNumbers: showLineNumbers,
+            toolbar: ['undo', 'redo', '|', 'heading-1',
+                {
+                    name: 'headers',
+                    title: 'Headers',
+                    className: 'fa fa-header',
+                    children: [
+                        'heading-1',
+                        'heading-2',
+                        'heading-3'
+                    ]
+                },
+                'heading-smaller',
+                'heading-bigger',
+                {
+                    name: 'lineNumbers',
+                    action: editor => {
+                        setShowLineNumbers(prev => !prev);
+                    },
+                    className: 'fa fa-sort',
+                    title: 'Line Numbers'
+                }],
             previewRender: (markdownPlaintext, previewElement) => {
                 try {
                     return renderToStaticMarkup(
@@ -47,7 +69,7 @@ const UseMdeOptions = () => {
             }
 
         } as Options;
-    }, []);
+    }, [showLineNumbers]);
 };
 
 export default UseMdeOptions;

@@ -9,7 +9,8 @@ const defaultState = {
     loading: true,
     justVerified: false,
     loggedIn: false,
-    isVerified: false
+    isVerified: false,
+    isAdmin: false
 };
 
 const AuthContext = createContext<AuthContextInitialProps>(defaultState);
@@ -24,7 +25,8 @@ export const AuthProvider: FC = ({ children }) => {
         loading: true,
         justVerified: false,
         loggedIn: false,
-        isVerified: false
+        isVerified: false,
+        isAdmin: false
     });
 
     const login = async (credentials: LoginPayload) => {
@@ -59,7 +61,8 @@ export const AuthProvider: FC = ({ children }) => {
         <AuthContext.Provider value={{
             ...state,
             loggedIn: !!state.user,
-            isVerified: !!state.user?.email_verified_at,
+            isAdmin: !!state.user?.roles.includes('admin'),
+            isVerified: !!state.user?.emailVerifiedAt,
             login,
             logout,
             check

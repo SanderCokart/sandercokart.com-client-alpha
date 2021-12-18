@@ -46,3 +46,17 @@ $xl: 1536px;
     @content;
   }
 }
+
+@mixin buttonReset {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: inherit;
+  outline: none;
+  text-decoration: none;
+  pointer-events: auto;
+}

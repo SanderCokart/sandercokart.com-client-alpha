@@ -2,15 +2,19 @@ import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 import {RecentPostLayoutProps} from '@/types/PropTypes';
 import Image from 'next/image';
 import type {FC} from 'react';
+import useImage from '../../../hooks/useImage';
 
-const RecentPostLayout: FC<RecentPostLayoutProps> = ({post}) => {
+const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
+    const { url } = useImage(post.banner);
+
+
     return (
         <div key={post.id} className={styles.post}>
             <figure className={styles.figure}>
 
                 {post.banner &&
                     <Image alt="banner" layout="fill" objectFit="cover"
-                           src={`${process.env.NEXT_PUBLIC_API_URL}/${post.banner?.relative_url}`}/>
+                           src={url}/>
                 }
 
                 <figcaption className={styles.caption}>

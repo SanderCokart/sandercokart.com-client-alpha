@@ -56,3 +56,10 @@ export interface TextAreaProps extends TextareaHTMLAttributes<any> {
     prependIcon?: FontAwesomeIcon;
     appendIcon?: FontAwesomeIcon;
 }
+
+export interface SwitchProps {
+    name: string;
+    label?: string;
+    icon?: FontAwesomeIcon;
+    onToggle: (state:boolean) => void;
+}

@@ -6,6 +6,7 @@ import {
     faCog,
     faCompass,
     faCompress,
+    faDatabase,
     faEnvelope,
     faExpand,
     faFileImage,
@@ -13,11 +14,14 @@ import {
     faImages,
     faLightbulb,
     faLock,
+    faMoon,
+    faPen,
     faPlus,
     faPortrait,
     faRss,
     faSearch,
     faSpinner,
+    faSun,
     faTimes,
     faTrash,
     faUser,
@@ -51,5 +55,9 @@ export default [
     faExpand,
     faBoxes,
     faBook,
-    faLightbulb
+    faLightbulb,
+    faMoon,
+    faSun,
+    faDatabase,
+    faPen
 ];

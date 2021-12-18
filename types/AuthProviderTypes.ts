@@ -1,11 +1,4 @@
-export interface UserType {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string;
-    created_at: string;
-    updated_at: string;
-}
+import {User} from '@/types/ModelTypes';
 
 export interface LoginPayload {
     email: string;
@@ -46,8 +39,9 @@ export interface EmailCompromisedPayload {
 }
 
 export interface AuthContextInitialProps {
-    user: UserType | null;
+    user: User | null;
     loggedIn: boolean;
+    isAdmin: boolean;
     isVerified: boolean;
     loading: boolean;
     justVerified: boolean;

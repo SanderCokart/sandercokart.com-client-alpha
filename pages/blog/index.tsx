@@ -31,21 +31,12 @@ export const Blog: FC<BlogProps> = (props) => {
 
     return (
         <div className={styles.container}>
-
-
             <div className={styles.banner}>
                 <Image alt="banner" layout="fill" objectFit="cover" objectPosition="80% 20%"
                        src="/assets/images/banner-compressed.jpg"/>
             </div>
 
             <div className={styles.posts}>
-                <div className={styles.create}>
-                    <Link href="/blog/posts/create">
-                        <a>
-                            <FontAwesomeIcon icon="plus"/>
-                        </a>
-                    </Link>
-                </div>
                 {state.posts.map(post => (
                     <RecentPostLayout key={post.id} post={post}/>
                 ))}

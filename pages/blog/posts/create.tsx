@@ -9,10 +9,14 @@ import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
+import MDX from '@mdx-js/runtime';
 import 'easymde/dist/easymde.min.css';
 import dynamic from 'next/dynamic';
 import type {FC} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+
+import 'react-markdown-editor-lite/lib/index.css';
 import * as Yup from 'yup';
 import useMDEOptions from '../../../hooks/useMDEOptions';
 import useMediaQuery from '../../../hooks/useMediaQuery';
@@ -37,16 +41,6 @@ const CreatePostPage: FC = () => {
         }
     });
 
-    // const [simpleMdeInstance, setMdeInstance] = useState<SimpleMDEReactProps | null>(null);
-    // const getMdeInstanceCallback = useCallback((SimpleMDE) => {
-    //     setMdeInstance(SimpleMDE);
-    // }, []);
-    //
-    // useEffect(() => {
-    //     simpleMdeInstance &&
-    //     console.info('Hey I\'m editor instance!', simpleMdeInstance);
-    // }, [simpleMdeInstance]);
-
     if (!loggedIn) {
         return <Error statusCode={401} title="Unauthorized"/>;
     }
@@ -55,18 +49,18 @@ const CreatePostPage: FC = () => {
 
     const submitPost = async (formValues: CreatePostFormValues) => {
         const { data } = await handler(api.post('/posts', formValues));
-        console.log(data);
     };
 
+    const markdown = methods.watch('markdown');
 
     return (
-        <main className={styles.desktop}>
+        <main className={mdUp ? styles.desktop : styles.mobile}>
             <FormProvider {...methods}>
                 <form onSubmit={handleSubmit(submitPost)}>
                     <Input label="Title" name="title"/>
                     <TextArea label="Excerpt" name="excerpt"/>
                     <File name="banner_image"/>
-                    <Editor/>
+                    <Preview markdown={markdown}/>
                     <button className={styles.submit} type="submit">
                         <FontAwesomeIcon icon="plus"/>
                     </button>
@@ -96,4 +90,46 @@ const Editor: FC = () => {
             <SimpleMDE options={MDEOptions} style={{ backgroundColor: 'white' }} value={value} onChange={onChange}/>
         </div>
     );
+};
+
+const Preview: FC<{ markdown: string }> = ({ markdown }) => {
+    const { watch } = useFormContext();
+    const [title, excerpt] = watch(['title', 'excerpt']);
+
+    const components: { [key: string]: FC } = {
+        h1: ({ children, ...props }) => (
+            <h2 {...props}>{children}</h2>
+        )
+    };
+
+    const scope = {
+        some: 'value'
+    };
+
+    const MdEditor = dynamic(() => import('react-markdown-editor-lite'), {
+        ssr: false
+    });
+
+    return <MdEditor renderHTML={(text) => {
+        try {
+            return renderToStaticMarkup(
+                <>
+                    <h1>{title}</h1>
+                    <p>{excerpt}</p>
+                    <MDX components={components} scope={scope}>
+                        {text}
+                    </MDX>
+                </>
+            );
+        } catch (err: any) {
+            console.error(err);
+            return renderToStaticMarkup(
+                <div>
+                    <h1>{err.name}</h1>
+                    <p>{err.message}</p>
+                </div>
+            );
+        }
+    }} style={{ height: '50vh' }}/>;
+
 };

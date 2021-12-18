@@ -1,0 +1,44 @@
+@use '../../core';
+
+.portal {
+  display: flex;
+}
+
+.main {
+
+}
+
+.nav {
+  width: 150px;
+  background: var(--bg-nav);
+  min-height: calc(100vh - 40px);
+
+  ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+}
+
+.navItem {
+  width: 100%;
+  height: 100%;
+
+  a {
+    @include core.buttonReset;
+    background: var(--bg-nav);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    transition: background core.$transitionTime ease;
+
+    &:hover {
+      background: var(--acc);
+    }
+  }
+}
+

@@ -9,6 +9,7 @@ export interface ApiFileType {
     created_at: string;
     original_name: string;
     relative_path?: string;
+    url: string;
 }
 
 const Index: FC<FileProps> = (props) => {

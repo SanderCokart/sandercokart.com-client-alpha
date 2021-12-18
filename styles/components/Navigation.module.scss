@@ -43,13 +43,12 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: #0000;
     z-index: -1;
     transition: background-color core.$navTransitionTime ease;
   }
 
   .focus ~ .backdrop {
-    background-color: var(--trans-bg);
+    background-color: var(--bg-trans);
   }
 
   .compassContainer, .libraryContainer {
@@ -82,11 +81,11 @@
     gap: 10px;
     /*font*/
     font-size: 1rem;
-    color: var(--bg-contrast-text);
+    color: var(--bg-trans-contrast-text);
     /*misc*/
     transition: all core.$navTransitionTime ease;
     -webkit-tap-highlight-color: transparent;
-    filter: drop-shadow(0 0 0.75rem #000);
+    filter: drop-shadow(0 0 0.25rem #fff);
 
     span {
       text-transform: capitalize;
@@ -126,7 +125,6 @@
   .focus ~ .compassContainer {
     @include show;
 
-
     [data-name="blog"] {
       bottom: calc(15% + 80px);
       right: 50%;
@@ -154,6 +152,11 @@
     [data-name="contact"] {
       bottom: calc(15% + 80px);
       right: 70%;
+    }
+
+    [data-name="portal"] {
+      bottom: calc(15% + 80px);
+      right: 10%;
     }
 
     [data-name="settings"], [data-name="login"] {
@@ -188,24 +191,22 @@ nav.desktop {
   ul:first-child {
     height: 100%;
     display: flex;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+    }
   }
 
   button, a {
-    background-color: var(--bg-nav);
-    border: none;
-    color: inherit;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: inherit;
-    outline: none;
-    text-decoration: none;
+    @include core.buttonReset;
+    background: var(--bg-nav);
     padding: 8px 32px;
     z-index: 1;
     position: relative;
     height: 100%;
     width: 100%;
+    font-weight: bold;
 
     &.active, &:hover {
       background-color: var(--acc);

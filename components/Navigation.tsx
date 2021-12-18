@@ -1,15 +1,14 @@
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
-import {NavigationChildren, NavigationType} from '@/types/DataTypes';
-import {DropdownProps, NavItemProps} from '@/types/PropTypes';
+import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import type {FC, MouseEvent} from 'react';
-import {Fragment, useRef} from 'react';
+import type {FC, MouseEvent, PropsWithChildren} from 'react';
+import {forwardRef, Fragment, useRef} from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
 
 const Navigation: FC = () => {
-        const { loggedIn } = useAuth();
+        const { loggedIn, isAdmin } = useAuth();
         const compassNav = useRef<null | HTMLButtonElement>(null);
         const libraryNav = useRef<null | HTMLButtonElement>(null);
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -37,97 +36,28 @@ const Navigation: FC = () => {
                 });
         };
 
-
-        const navigationData: NavigationType = [
-            {
-                name: 'compass', icon: 'compass', type: 'container', ref: compassNav, onClick: openCompassNav, children: [
-                    (loggedIn ? {
-                                href: '/settings',
-                                icon: 'cog',
-                                name: 'settings',
-                                onClick: navigate,
-                                type: 'item'
-                            } :
-                            {
-                                href: '/login',
-                                icon: 'user-lock',
-                                name: 'login',
-                                onClick: navigate,
-                                type: 'item'
-                            }
-                    ),
-                    {
-                        href: '/blog',
-                        icon: 'rss',
-                        name: 'blog',
-                        onClick: navigate,
-                        type: 'item'
-                    },
-                    {
-                        children: [
-                            {
-                                href: '/courses',
-                                icon: 'book',
-                                name: 'courses',
-                                onClick: navigate,
-                                type: 'item'
-                            },
-                            {
-                                href: '/tips',
-                                icon: 'lightbulb',
-                                name: 'tips',
-                                onClick: navigate,
-                                type: 'item'
-                            }
-                        ],
-                        icon: 'boxes',
-                        name: 'library',
-                        onClick: openLibraryNav,
-                        ref: libraryNav,
-                        type: 'container'
-                    },
-                    {
-                        href: '/contact',
-                        icon: 'envelope',
-                        name: 'contact',
-                        onClick: navigate,
-                        type: 'item'
-                    }
-                ]
-            }
-        ];
-
-        const mapMobileNavigation = (entries: NavigationType | NavigationChildren) => {
-            return entries.map(entry => {
-                if (entry.type === 'container') {
-                    return (
-                        <Fragment key={entry.name}>
-                            <button ref={entry.ref} className={styles.navItem} data-name={entry.name}
-                                    onClick={entry.onClick}>
-                                <FontAwesomeIcon icon={entry.icon}/>
-                                {entry.name !== 'compass' && <span>{entry.name}</span>}
-                            </button>
-                            <ul className={styles[`${entry.name}Container`]}>{mapMobileNavigation(entry.children)}</ul>
-                        </Fragment>
-                    );
-                } else if (entry.type === 'item') {
-                    return (
-                        <li key={entry.name}>
-                            <Link href={entry.href}>
-                                <a className={styles.navItem} data-name={entry.name} onClick={entry.onClick}>
-                                    <FontAwesomeIcon icon={entry.icon}/><span>{entry.name}</span>
-                                </a>
-                            </Link>
-                        </li>
-                    );
-                }
-            });
-        };
-
         const Mobile = () => (
             <nav className={styles.mobile}>
                 <div className={styles.relative}>
-                    {mapMobileNavigation(navigationData)}
+                    <MobileMenu ref={compassNav} icon="compass" name="compass" showSpan={false} onClick={openCompassNav}>
+                        <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
+
+                        {loggedIn ?
+                         (<MobileItem href="/settings" icon="cog" name="settings" onClick={navigate}/>)
+                                  :
+                         (<MobileItem href="/login" icon="user-lock" name="login" onClick={navigate}/>)
+                        }
+
+                        {isAdmin && (
+                            <MobileItem href="/portal" icon="database" name="portal" onClick={navigate}/>
+                        )}
+
+                        <MobileMenu ref={libraryNav} icon="boxes" name="library" onClick={openLibraryNav}>
+                            <MobileItem href="/library/courses" icon="book" name="courses" onClick={navigate}/>
+                            <MobileItem href="/library/tips" icon="lightbulb" name="tips" onClick={navigate}/>
+                        </MobileMenu>
+                        <MobileItem href="/contact" icon="envelope" name="contact" onClick={navigate}/>
+                    </MobileMenu>
                     <div className={styles.backdrop}/>
                 </div>
             </nav>
@@ -137,19 +67,26 @@ const Navigation: FC = () => {
             <>
                 <nav className={styles.desktop}>
                     <ul>
-                        <NavItem href="/blog" icon="rss" text="Blog"/>
-                        <Dropdown icon="boxes" text="Library">
-                            <NavItem href="/library/courses" icon="book" text="Courses"/>
-                            <NavItem href="/library/tips" icon="lightbulb" text="Tips"/>
-                        </Dropdown>
+                        {/*LEFT*/}
+                        <div>
+                            <NavItem href="/blog" icon="rss" text="Blog"/>
+                            <Dropdown icon="boxes" text="Library">
+                                <NavItem href="/library/courses" icon="book" text="Courses"/>
+                                <NavItem href="/library/tips" icon="lightbulb" text="Tips"/>
+                            </Dropdown>
+                        </div>
+                        {/*RIGHT*/}
+                        <div>
+                            {isAdmin && (
+                                <NavItem href="/portal" icon="database" text="Portal"/>
+                            )}
+                            {loggedIn ?
+                             <NavItem href="/settings" icon="cog" text="Settings"/>
 
-                        {
-                            loggedIn ?
-                            <NavItem href="/settings" icon="cog" text="Settings"/>
-
-                                     :
-                            <NavItem href="/login" icon="user-lock" text="Login"/>
-                        }
+                                      :
+                             <NavItem href="/login" icon="user-lock" text="Login"/>
+                            }
+                        </div>
                     </ul>
                 </nav>
                 <div className={styles.margin}/>
@@ -161,6 +98,34 @@ const Navigation: FC = () => {
 ;
 
 export default Navigation;
+
+
+const MobileMenu = forwardRef<HTMLButtonElement, PropsWithChildren<MobileMenuProps>>(function MobileMenu(props, ref) {
+    const { showSpan = true, name, onClick, icon, children } = props;
+    return (
+        <Fragment>
+            <button ref={ref} className={styles.navItem} data-name={name}
+                    onClick={onClick}>
+                <FontAwesomeIcon icon={icon}/>
+                {showSpan && <span>{name}</span>}
+            </button>
+            <ul className={styles[`${name}Container`]}>{children}</ul>
+        </Fragment>
+    );
+});
+
+const MobileItem: FC<MobileItemProps> = (props) => {
+    const { name, href, icon, onClick } = props;
+    return (
+        <li data-name={name} onClick={onClick}>
+            <Link href={href}>
+                <a className={styles.navItem} data-name={name}>
+                    <FontAwesomeIcon icon={icon}/><span>{name}</span>
+                </a>
+            </Link>
+        </li>
+    );
+};
 
 const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
     <li>

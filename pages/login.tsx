@@ -43,7 +43,7 @@ export const Login: FC = () => {
                     break;
                 }
                 default: {
-                    router.push('/blog/recent');
+                    router.push('/blog');
                     return;
                 }
             }

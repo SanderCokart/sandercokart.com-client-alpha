@@ -3,12 +3,11 @@ import {handler, useApi} from '@/providers/ApiProvider';
 import {useEffect, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 
-function useFile(fileToUpload: File, name: string, index: number) {
+function useFile(fileToUpload: File & ApiFileType, name: string, index: number) {
     const api = useApi();
     const { formState: { isSubmitted }, setValue, getValues } = useFormContext();
-    const [state, setState] = useState<{ file: null | File & Partial<ApiFileType>, url: string | null }>({
-        file: null,
-        url: null
+    const [state, setState] = useState<{ file: null | File & ApiFileType }>({
+        file: null
     });
 
     const deleteFile = async () => {
@@ -18,9 +17,9 @@ function useFile(fileToUpload: File, name: string, index: number) {
     useEffect(() => {
         const formData = new FormData();
         formData.set('file', fileToUpload);
-        const promise = (async () => {
+        (async () => {
             const { data, status } = await (handler(api.post('/files', formData)));
-            console.log(data);
+
             // values combo of File and ApiFileType, starts as File, must merge with ApiFileType
             const initialFilesArr = getValues(name);
             const initialFileInstance = getValues(name)[index];
@@ -30,21 +29,14 @@ function useFile(fileToUpload: File, name: string, index: number) {
                 initialFileInstance[newFileKey] = data[newFileKey];
             }
 
+            initialFileInstance.url = initialFileInstance?.relative_url ? `${process.env.NEXT_PUBLIC_API_URL}/${initialFileInstance.relative_url}` : `${process.env.NEXT_PUBLIC_API_URL}/files/${initialFileInstance.id}`;
+
             initialFilesArr[index] = initialFileInstance;
             setValue(name, initialFilesArr);
             setState({
-                file: initialFileInstance,
-                url: initialFileInstance?.relative_url ? `${process.env.NEXT_PUBLIC_API_URL}/${initialFileInstance.relative_url}` : `${process.env.NEXT_PUBLIC_API_URL}/files/${initialFileInstance.id}`
+                file: initialFileInstance
             });
-
-            return initialFileInstance.id;
         })();
-
-        return () => {
-            promise.then(id => {
-                if (!isSubmitted) api.delete(`/files/${id}`);
-            });
-        };
     }, []);
 
     return { ...state, deleteFile };

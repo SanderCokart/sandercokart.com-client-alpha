@@ -14,10 +14,10 @@ export interface Post {
     updated_at: string;
     slug: string;
     user: User;
-    banner: Banner | null;
+    banner: Banner;
 }
 
-interface Banner {
+export interface Banner {
     id: number,
     original_name: string;
     relative_url?: string;
@@ -25,7 +25,14 @@ interface Banner {
 }
 
 export interface User {
+    [key: string]: any;
+
     id: number;
     name: string;
+    createdAt: string;
+    updatedAt: string;
+    emailVerifiedAt: string;
+    email: string;
+    roles: Array<'guest' | 'verified' | 'admin'>;
 }
 
