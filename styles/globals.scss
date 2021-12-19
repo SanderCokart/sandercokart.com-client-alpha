@@ -63,7 +63,7 @@ html,
 body,
 #__next {
   width: 100%;
-  height: calc(100%);
+  height: 100%;
   font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background: var(--bg);
@@ -71,6 +71,15 @@ body,
 
   @include core.up(core.$sm) {
     height: calc(100% - 40px);
+  }
+}
+
+html.modalOpen {
+  body {
+    user-select: none;
+    pointer-events: none;
+    position: fixed;
+    overflow-y: scroll;
   }
 }
 

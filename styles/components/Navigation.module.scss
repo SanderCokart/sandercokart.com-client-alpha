@@ -1,35 +1,129 @@
 @use '../core';
 
-
-@mixin hidden() {
-  opacity: 0;
+.desktop {
   pointer-events: none;
-  & > a > span, & > button > span {
+  background: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
+  position: fixed;
+  font-weight: bold;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  ul {
+    list-style: none;
+  }
+
+  /*first row*/
+  > ul {
+    display: flex;
+    justify-content: space-between;
+    height: core.$navHeight;
+
+
+    /*separate left and right*/
+    > div {
+      display: flex;
+
+      li {
+        width: 100%;
+        height: 100%;
+
+        > button, a {
+          pointer-events: auto;
+        }
+      }
+    }
+  }
+
+  button, a {
+    @include core.buttonReset;
+    position: relative;
+    z-index: 2;
+    padding: 8px 16px;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-nav);
+    transition: width core.$navTransitionTime ease core.$navTransitionTime,
+    background-color core.$navTransitionTime*2 ease;
+    pointer-events: none;
+
+    &:hover {
+      background-color: var(--acc);
+      transition-duration: core.$navTransitionTime;
+    }
+
+    &.active {
+      width: 200px;
+      background-color: var(--acc);
+    }
+  }
+
+
+  li.dropdown {
+    position: relative;
+  }
+
+  ul.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    transform: translateY(-100%);
+    transition: core.$navTransitionTime;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     opacity: 0;
+    z-index: -1;
+    width: 200px;
+
+    &.active {
+      transform: translateY(0);
+      transition-delay: core.$navTransitionTime * 2;
+      opacity: 1;
+      z-index: 1;
+    }
   }
+
 }
 
-@mixin show() {
-  opacity: 1;
-  pointer-events: auto;
-  & > a > span, & > button > span {
-    opacity: 1;
-  }
-}
-
-@mixin startPos() {
-  bottom: 15%;
-  right: 50%;
-}
+//@mixin hidden() {
+//  opacity: 0;
+//  pointer-events: none;
+//  & > a > span,
+//  & > button > span {
+//    opacity: 0;
+//  }
+//}
+//
+//@mixin show() {
+//  opacity: 1;
+//  pointer-events: auto;
+//  & > a > span,
+//  & > button > span {
+//    opacity: 1;
+//  }
+//}
 
 .mobile {
   position: fixed;
-  bottom: 140px;
+  bottom: 0;
   left: 0;
-  right: 0;
-  z-index: 400;
+  top: 0;
+  z-index: map-get(core.$z-indexes, "backdrop");
   pointer-events: none;
+  color: var(--bg-contrast-text);
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.5rem;
 
+  span {
+    font-size: 1rem;
+  }
+
+  [data-name="compass"] {
+    svg {
+      font-size: 2rem;
+    }
+  }
 
   .relative {
     position: relative;
@@ -38,235 +132,95 @@
   }
 
   .backdrop {
+    transition: opacity core.$navTransitionTime ease;
+    background-color: var(--bg-trans);
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: -1;
-    transition: background-color core.$navTransitionTime ease;
+    width: 100%;
+    height: 1000%;
+    opacity: 0;
   }
 
-  .focus ~ .backdrop {
-    background-color: var(--bg-trans);
+  .compassOpen ~ .backdrop {
+    opacity: 1;
   }
 
-  .compassContainer, .libraryContainer {
-    @include hidden;
+  ul {
     width: 100%;
     height: 100%;
-    transition: all ease core.$navTransitionTime;
   }
 
   .navItem {
-    /*cleanup*/
-    background-color: transparent;
-    user-select: none;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    line-height: 50%;
-    /*position*/
+    width: 100%;
+    height: 100%;
     position: absolute;
-    @include startPos;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  a, button {
+    @include core.buttonReset;
+    line-height: 50%;
+    position: fixed;
+    bottom: 100px;
+    right: 50%;
     transform: translate(50%, 50%);
-    /*size*/
-    width: 40px;
-    height: 40px;
-    /*flex*/
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
+    user-select: none;
     gap: 10px;
-    /*font*/
-    font-size: 1rem;
-    color: var(--bg-trans-contrast-text);
-    /*misc*/
-    transition: all core.$navTransitionTime ease;
+    z-index: 1;
     -webkit-tap-highlight-color: transparent;
-    filter: drop-shadow(0 0 0.25rem #fff);
+    transition: all ease core.$navTransitionTime;
 
-    span {
-      text-transform: capitalize;
-    }
-
-    &:nth-child(1).focus {
-      animation-name: rotate;
-      animation-duration: 1s;
-      animation-timing-function: ease;
-      animation-iteration-count: infinite;
-      @keyframes rotate {
-        to {
-          transform: translate(50%, 50%) rotate(360deg);
-        }
-      }
-    }
-
-    svg {
-      font-size: 2rem;
+    &[data-name="compass"] {
+      z-index: 2;
     }
   }
 
-  .relative > .navItem {
-    pointer-events: auto;
-
-    &.focus {
-      @include show;
-      @include startPos;
-    }
-
-    &.removeFocus {
-      @include hidden;
-      @include startPos;
-    }
+  .compassContainer, .libraryContainer {
+    transition: all ease core.$navTransitionTime;
+    z-index: 0;
+    opacity: 0;
   }
 
-  .focus ~ .compassContainer {
-    @include show;
+  .navItem.compassOpen {
+    .compassContainer {
+      opacity: 1;
 
-    [data-name="blog"] {
-      bottom: calc(15% + 80px);
-      right: 50%;
-    }
-
-    [data-name="library"] {
-      bottom: calc(15% + 80px);
-      right: 30%;
-    }
-
-    .focus ~ .libraryContainer {
-      @include show;
-
-      [data-name="courses"] {
-        bottom: calc(15% + 80px);
+      [data-name="blog"] {
+        bottom: 200px;
         right: 50%;
       }
 
-      [data-name="tips"] {
-        bottom: calc(15% + 80px);
-        right: 30%;
-      }
-    }
-
-    [data-name="contact"] {
-      bottom: calc(15% + 80px);
-      right: 70%;
-    }
-
-    [data-name="portal"] {
-      bottom: calc(15% + 80px);
-      right: 10%;
-    }
-
-    [data-name="settings"], [data-name="login"] {
-      right: 30%;
-    }
-
-    .focus {
-      @include show;
-      @include startPos;
-    }
-
-    .removeFocus {
-      @include hidden;
-      @include startPos;
-    }
-  }
-}
-
-nav.desktop {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 800;
-  background-color: var(--bg-nav);
-  pointer-events: none;
-  height: 40px;
-
-  ul {
-    list-style: none;
-  }
-
-  ul:first-child {
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    div {
-      display: flex;
-    }
-  }
-
-  button, a {
-    @include core.buttonReset;
-    background: var(--bg-nav);
-    padding: 8px 32px;
-    z-index: 1;
-    position: relative;
-    height: 100%;
-    width: 100%;
-    font-weight: bold;
-
-    &.active, &:hover {
-      background-color: var(--acc);
-    }
-  }
-
-  .dropdown {
-    position: relative;
-  }
-
-  .dropdownMenu {
-    opacity: 0;
-    position: absolute;
-    background-color: var(--bg-nav);
-    width: 100%;
-
-    transition: opacity 150ms ease,
-    transform 150ms ease, left 150ms ease;
-  }
-
-  /* first ul */
-  > ul {
-    > li > a, > li > button {
-      pointer-events: auto;
-    }
-
-    /*STAGE 1*/
-    > li.dropdown > ul.dropdownMenu {
-      top: 100%;
-      left: 0;
-      transform: translateY(-100%);
-    }
-
-    > li.dropdown > ul.dropdownMenu.active {
-      opacity: 1;
-      transform: none;
-
-      /*STAGE 2*/
-      > li.dropdown > ul.dropdownMenu {
-        top: 0;
-        left: 0;
+      [data-name="library"] {
+        bottom: 200px;
+        right: 20%;
       }
 
-      > li.dropdown > ul.dropdownMenu.active {
-        opacity: 1;
-        left: 100%;
+      [data-name="contact"] {
+        bottom: 200px;
+        right: 80%;
       }
-    }
-  }
 
+      [data-name="settings"], [data-name="login"] {
+        bottom: 100px;
+        right: 20%;
+      }
 
-  .dropdownMenu.active {
-    > li {
-      a, button {
-        pointer-events: auto;
+      [data-name="portal"] {
+        bottom: 100px;
+        right: 80%;
       }
     }
   }
 }
 
 .margin {
-  margin-top: core.$navHeight;
+  margin-bottom: core.$navHeight;
 }

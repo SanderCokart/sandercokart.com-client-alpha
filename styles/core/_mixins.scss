@@ -49,6 +49,8 @@ $xl: 1536px;
 
 @mixin buttonReset {
   background: none;
+  text-transform: inherit;
+  font-weight: inherit;
   border: none;
   color: inherit;
   cursor: pointer;

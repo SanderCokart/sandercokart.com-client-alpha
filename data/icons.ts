@@ -1,4 +1,6 @@
 import {
+    faArrowLeft,
+    faArrowRight,
     faBook,
     faBoxes,
     faCalendar,
@@ -59,5 +61,7 @@ export default [
     faMoon,
     faSun,
     faDatabase,
-    faPen
+    faPen,
+    faArrowRight,
+    faArrowLeft
 ];

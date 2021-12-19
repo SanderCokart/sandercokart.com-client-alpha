@@ -1,45 +1,51 @@
+import PortalNavigation from '@/components/PortalNavigation';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
 import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
+import {useRouter} from 'next/router';
 import type {FC, MouseEvent, PropsWithChildren} from 'react';
-import {forwardRef, Fragment, useRef} from 'react';
+import {forwardRef} from 'react';
 import useMediaQuery from '../hooks/useMediaQuery';
 
 const Navigation: FC = () => {
         const { loggedIn, isAdmin } = useAuth();
-        const compassNav = useRef<null | HTMLButtonElement>(null);
-        const libraryNav = useRef<null | HTMLButtonElement>(null);
+        const { pathname } = useRouter();
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
+        const isPortalPage = pathname.includes('portal');
 
         const openCompassNav = () => {
-            compassNav.current?.classList.toggle(styles.focus);
+            document.documentElement.classList.toggle('modalOpen');
+            document.getElementById('compassNavMenu')?.classList.toggle(styles.compassOpen);
         };
+
         const openLibraryNav = () => {
-            libraryNav.current?.classList.toggle(styles.focus);
-            compassNav.current?.classList.toggle(styles.removeFocus);
-            Array.from(compassNav.current?.nextElementSibling?.children ?? [])
-                .forEach(item => {
-                    if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
-                        item.classList.toggle(styles.removeFocus);
-                });
+            // libraryNav.current?.classList.toggle(styles.focus);
+            // compassNav.current?.classList.toggle(styles.removeFocus);
+            // Array.from(compassNav.current?.nextElementSibling?.children ?? [])
+            //     .forEach(item => {
+            //         if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
+            //             item.classList.toggle(styles.removeFocus);
+            //     });
         };
 
         const navigate = () => {
-            libraryNav.current?.classList.remove(styles.focus);
-            compassNav.current?.classList.remove(styles.removeFocus, styles.focus);
-            Array.from(compassNav.current?.nextElementSibling?.children ?? [])
-                .forEach(item => {
-                    if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
-                        item.classList.remove(styles.removeFocus);
-                });
+            document.documentElement.classList.toggle('modalOpen');
+
+            // libraryNav.current?.classList.remove(styles.focus);
+            // compassNav.current?.classList.remove(styles.removeFocus, styles.focus);
+            // Array.from(compassNav.current?.nextElementSibling?.children ?? [])
+            //     .forEach(item => {
+            //         if (item !== libraryNav.current && item !== libraryNav.current?.nextElementSibling)
+            //             item.classList.remove(styles.removeFocus);
+            //     });
         };
 
         const Mobile = () => (
             <nav className={styles.mobile}>
-                <div className={styles.relative}>
-                    <MobileMenu ref={compassNav} icon="compass" name="compass" showSpan={false} onClick={openCompassNav}>
+                <ul className={styles.relative}>
+                    <MobileMenu icon="compass" name="compass" showSpan={false} onClick={openCompassNav}>
                         <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
 
                         {loggedIn ?
@@ -52,14 +58,14 @@ const Navigation: FC = () => {
                             <MobileItem href="/portal" icon="database" name="portal" onClick={navigate}/>
                         )}
 
-                        <MobileMenu ref={libraryNav} icon="boxes" name="library" onClick={openLibraryNav}>
+                        <MobileMenu icon="boxes" name="library" onClick={openLibraryNav}>
                             <MobileItem href="/library/courses" icon="book" name="courses" onClick={navigate}/>
                             <MobileItem href="/library/tips" icon="lightbulb" name="tips" onClick={navigate}/>
                         </MobileMenu>
                         <MobileItem href="/contact" icon="envelope" name="contact" onClick={navigate}/>
                     </MobileMenu>
                     <div className={styles.backdrop}/>
-                </div>
+                </ul>
             </nav>
         );
 
@@ -74,6 +80,7 @@ const Navigation: FC = () => {
                                 <NavItem href="/library/courses" icon="book" text="Courses"/>
                                 <NavItem href="/library/tips" icon="lightbulb" text="Tips"/>
                             </Dropdown>
+
                         </div>
                         {/*RIGHT*/}
                         <div>
@@ -90,6 +97,7 @@ const Navigation: FC = () => {
                     </ul>
                 </nav>
                 <div className={styles.margin}/>
+                {isPortalPage && <PortalNavigation/>}
             </>
         );
 
@@ -103,23 +111,23 @@ export default Navigation;
 const MobileMenu = forwardRef<HTMLButtonElement, PropsWithChildren<MobileMenuProps>>(function MobileMenu(props, ref) {
     const { showSpan = true, name, onClick, icon, children } = props;
     return (
-        <Fragment>
-            <button ref={ref} className={styles.navItem} data-name={name}
+        <li className={styles.navItem} id={`${name}NavMenu`}>
+            <button ref={ref} data-name={name}
                     onClick={onClick}>
                 <FontAwesomeIcon icon={icon}/>
                 {showSpan && <span>{name}</span>}
             </button>
             <ul className={styles[`${name}Container`]}>{children}</ul>
-        </Fragment>
+        </li>
     );
 });
 
 const MobileItem: FC<MobileItemProps> = (props) => {
     const { name, href, icon, onClick } = props;
     return (
-        <li data-name={name} onClick={onClick}>
+        <li className={styles.navItem} onClick={onClick}>
             <Link href={href}>
-                <a className={styles.navItem} data-name={name}>
+                <a data-name={name}>
                     <FontAwesomeIcon icon={icon}/><span>{name}</span>
                 </a>
             </Link>
@@ -138,14 +146,14 @@ const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
 );
 
 const Dropdown: FC<DropdownProps> = ({ children, text, icon }) => {
-    const activateDropdownMenu = (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+    const toggleDropdown = (e: MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
         e.currentTarget.classList.toggle(styles.active);
         e.currentTarget.nextElementSibling?.classList.toggle(styles.active);
     };
 
     return (
         <li className={styles.dropdown}>
-            <button onClick={activateDropdownMenu}><FontAwesomeIcon icon={icon}/><span>{text}</span></button>
+            <button onClick={toggleDropdown}><FontAwesomeIcon icon={icon}/><span>{text}</span></button>
             <ul className={styles.dropdownMenu}>
                 {children}
             </ul>

@@ -1,5 +1,6 @@
 $navHeight: 40px;
-$navHeightCalc: 40px;
+$navWidth: 150px;
+$navHeightCalc: calc(100vh - 40px);
 
 $z-indexes: (
         "body": 0,
