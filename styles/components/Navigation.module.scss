@@ -9,6 +9,7 @@
   top: 0;
   left: 0;
   right: 0;
+  z-index: map-get(core.$z-indexes, 'navigation');
 
   ul {
     list-style: none;

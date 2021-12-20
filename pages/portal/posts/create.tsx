@@ -1,11 +1,5 @@
-import Error from '../../../lib/components/Error';
-import File from '../../../lib/components/formComponents/File';
-import Input from '../../../lib/components/formComponents/Input';
-import TextArea from '../../../lib/components/formComponents/TextArea';
-import {handler, useApi} from '../../../lib/providers/ApiProvider';
-import {useAuth} from '../../../lib/providers/AuthProvider';
 import editorStyles from '@/styles/components/Editor.module.scss';
-import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
+import styles from '@/styles/pages/portal/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -16,10 +10,16 @@ import type {FC} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 
-import 'react-markdown-editor-lite/lib/index.css';
+// import 'react-markdown-editor-lite/lib/index.css';
 import * as Yup from 'yup';
+import Error from '../../../lib/components/Error';
+import File from '../../../lib/components/formComponents/File';
+import Input from '../../../lib/components/formComponents/Input';
+import TextArea from '../../../lib/components/formComponents/TextArea';
+import useAuth from '../../../lib/hooks/useAuth';
 import useMDEOptions from '../../../lib/hooks/useMDEOptions';
 import useMediaQuery from '../../../lib/hooks/useMediaQuery';
+import {handler, useApi} from '../../../lib/providers/ApiProvider';
 
 const CreatePostPage: FC = () => {
     const { loggedIn } = useAuth();
@@ -51,7 +51,7 @@ const CreatePostPage: FC = () => {
         const { data } = await handler(api.post('/posts', formValues));
     };
 
-    const markdown = methods.watch('markdown');
+    // const markdown = methods.watch('markdown');
 
     return (
         <main className={mdUp ? styles.desktop : styles.mobile}>
@@ -60,7 +60,7 @@ const CreatePostPage: FC = () => {
                     <Input label="Title" name="title"/>
                     <TextArea label="Excerpt" name="excerpt"/>
                     <File name="banner_image"/>
-                    <Preview markdown={markdown}/>
+                    <Editor/>
                     <button className={styles.submit} type="submit">
                         <FontAwesomeIcon icon="plus"/>
                     </button>

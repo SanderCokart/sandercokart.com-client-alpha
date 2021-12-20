@@ -3,19 +3,22 @@
 .users {
   margin-top: core.$navHeight;
   margin-left: core.$navWidth;
+  position: relative;
+  width: core.$navWidthCalc;
+  height: core.$navHeightCalc;
+  overflow: auto;
 
   table {
     border-collapse: collapse;
     min-width: 100%;
-    overflow-x: auto;
   }
 
   thead {
     background: var(--acc);
     font-weight: bold;
     position: sticky;
-    top: core.$navHeight;
-
+    top: 0;
+    z-index: 10;
   }
 
   ul {
@@ -83,6 +86,7 @@ td.actions {
 
     &:disabled {
       background-color: var(--acc-disabled);
+
       &:hover {
         background-color: var(--acc-disabled);
         transform: none;

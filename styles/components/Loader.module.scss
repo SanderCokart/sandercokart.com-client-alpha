@@ -7,6 +7,14 @@
   align-items: center;
   gap: 2rem;
   font-size: 2.5rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: var(--bg);
+  color: var(--bg-contrast-text);
+  z-index: map-get(core.$z-indexes, 'loader');
 
   @include core.up(core.$lg) {
     font-size: 5rem;

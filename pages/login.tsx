@@ -1,6 +1,3 @@
-import Checkbox from '../lib/components/formComponents/Checkbox';
-import Input from '../lib/components/formComponents/Input';
-import {useAuth} from '../lib/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
 import type {LoginPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
@@ -9,11 +6,16 @@ import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
+import Checkbox from '../lib/components/formComponents/Checkbox';
+import Input from '../lib/components/formComponents/Input';
+import useAuth from '../lib/hooks/useAuth';
 
 export const Login: FC = () => {
 
     const router = useRouter();
     const { login } = useAuth();
+    // const { login } = useAuth();
+
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required('This field is required'),
@@ -31,23 +33,27 @@ export const Login: FC = () => {
     const { query: { user, hash, type, signature, expires } } = router;
     const { formState: { isValid, isDirty } } = methods;
 
+    // const onSubmit = async (formValues: LoginPayload) => {
+    //     const { status } = await login(formValues);
+    //     if (status === 200) {
+    //         switch (type) {
+    //             case 'verify': {
+    //                 router.push({
+    //                     pathname: `/account/email/verify/${user}/${hash}`,
+    //                     query: { expires, type, signature }
+    //                 });
+    //                 break;
+    //             }
+    //             default: {
+    //                 router.push('/blog');
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // };
+
     const onSubmit = async (formValues: LoginPayload) => {
-        const { status } = await login(formValues);
-        if (status === 200) {
-            switch (type) {
-                case 'verify': {
-                    router.push({
-                        pathname: `/account/email/verify/${user}/${hash}`,
-                        query: { expires, type, signature }
-                    });
-                    break;
-                }
-                default: {
-                    router.push('/blog');
-                    return;
-                }
-            }
-        }
+        login(formValues);
     };
 
 

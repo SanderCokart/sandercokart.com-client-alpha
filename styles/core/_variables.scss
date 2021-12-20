@@ -1,13 +1,15 @@
 $navHeight: 40px;
 $navWidth: 150px;
+$navWidthCalc: calc(100vw - 150px);
 $navHeightCalc: calc(100vh - 40px);
 
 $z-indexes: (
         "body": 0,
-        "navigation": 200,
-        "fab": 300,
-        "backdrop": 400,
-        "model": 500,
+        "navigation": 100,
+        "backdrop": 200,
+        "model": 300,
+        "fab": 400,
+        "loader": 500
 );
 
 $radius: 16px;

@@ -1,15 +1,13 @@
-import {useApi} from '../../lib/providers/ApiProvider';
 import styles from '@/styles/pages/blog/Recent.module.scss';
 import {BlogProps} from '@/types/PropTypes';
 import {PostsResponse} from '@/types/ResponseTypes';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import type {GetStaticProps} from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
 import type {FC} from 'react';
 import {useState} from 'react';
 import RecentPostLayout from '../../lib/layouts/pages/blog/RecentPostLayout';
+import {useApi} from '../../lib/providers/ApiProvider';
 
 export const Blog: FC<BlogProps> = (props) => {
     const api = useApi();

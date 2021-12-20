@@ -1,5 +1,3 @@
-import PortalNavigation from './PortalNavigation';
-import {useAuth} from '../providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
 import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -7,9 +5,12 @@ import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC, MouseEvent, PropsWithChildren} from 'react';
 import {forwardRef} from 'react';
+import useAuth from '../hooks/useAuth';
 import useMediaQuery from '../hooks/useMediaQuery';
+import PortalNavigation from './PortalNavigation';
 
 const Navigation: FC = () => {
+        // const { loggedIn, isAdmin } = useAuth();
         const { loggedIn, isAdmin } = useAuth();
         const { pathname } = useRouter();
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -84,9 +85,7 @@ const Navigation: FC = () => {
                         </div>
                         {/*RIGHT*/}
                         <div>
-                            {isAdmin && (
                                 <NavItem href="/portal" icon="database" text="Portal"/>
-                            )}
                             {loggedIn ?
                              <NavItem href="/settings" icon="cog" text="Settings"/>
 

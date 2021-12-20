@@ -26,6 +26,8 @@ const sizes: Sizes = {
 };
 
 function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: 'xs', option: 'up' }) {
+    const [matches, setMatches] = useState(false);
+
     const getQuery = () => {
         switch (options.option) {
             case 'down':
@@ -37,17 +39,19 @@ function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: '
         }
     };
 
-    const mediaQuery = window.matchMedia(getQuery());
-    const [matches, setMatches] = useState(mediaQuery.matches);
-
     useEffect(() => {
+        const mediaQuery = window.matchMedia(getQuery());
+
         const handler = () => setMatches(mediaQuery.matches);
         mediaQuery.addEventListener('change', handler);
 
         return () => {
             mediaQuery.removeEventListener('change', handler);
         };
-    });
+    }, [matches]);
+
+
+    console.log(matches);
 
     return matches;
 }

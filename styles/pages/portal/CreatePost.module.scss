@@ -1,6 +1,13 @@
-@use '../../../core';
+@use '../../core';
 
 .desktop {
+  margin-top: core.$navHeight;
+  margin-left: core.$navWidth;
+  position: relative;
+  width: core.$navWidthCalc;
+  height: core.$navHeightCalc;
+  overflow: auto;
+
   form {
     display: flex;
     flex-direction: column;
@@ -11,6 +18,12 @@
 
 
 .mobile {
+  margin-top: core.$navHeight;
+  margin-left: core.$navWidth;
+  position: relative;
+  width: core.$navWidthCalc;
+  height: core.$navHeightCalc;
+  overflow: auto;
   form {
 
   }
