@@ -1,5 +1,5 @@
-import DropBox from '@/components/formComponents/File/DropBox';
-import FileCarousel from '@/components/formComponents/File/FileCarousel';
+import DropBox from './DropBox';
+import FileCarousel from './FileCarousel';
 import styles from '@/styles/components/formComponents/File/File.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {FC} from 'react';

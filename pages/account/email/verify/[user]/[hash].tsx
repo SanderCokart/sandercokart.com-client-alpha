@@ -1,6 +1,6 @@
-import Loader from '@/components/Loader';
-import {handler, useApi} from '@/providers/ApiProvider';
-import {useAuth} from '@/providers/AuthProvider';
+import Loader from '../../../../../lib/components/Loader';
+import {handler, useApi} from '../../../../../lib/providers/ApiProvider';
+import {useAuth} from '../../../../../lib/providers/AuthProvider';
 import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';

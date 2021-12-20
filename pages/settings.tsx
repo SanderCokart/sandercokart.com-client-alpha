@@ -1,4 +1,4 @@
-import Switch from '@/components/formComponents/Switch';
+import Switch from '../lib/components/formComponents/Switch';
 import type {FC} from 'react';
 
 const Settings: FC = () => {

@@ -1,5 +1,5 @@
-import PortalNavigation from '@/components/PortalNavigation';
-import {useAuth} from '@/providers/AuthProvider';
+import PortalNavigation from './PortalNavigation';
+import {useAuth} from '../providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
 import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

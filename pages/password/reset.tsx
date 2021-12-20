@@ -1,5 +1,5 @@
-import Input from '@/components/formComponents/Input';
-import {handler, useApi} from '@/providers/ApiProvider';
+import Input from '../../lib/components/formComponents/Input';
+import {handler, useApi} from '../../lib/providers/ApiProvider';
 import styles from '@/styles/pages/account/PasswordReset.module.scss';
 import {PasswordResetPayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';

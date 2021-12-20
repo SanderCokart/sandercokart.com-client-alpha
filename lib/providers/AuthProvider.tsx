@@ -1,4 +1,4 @@
-import {handler, useApi} from '@/providers/ApiProvider';
+import {handler, useApi} from './ApiProvider';
 import type {AuthContextInitialProps, LoginPayload} from '@/types/AuthProviderTypes';
 import {AuthContextProps} from '@/types/AuthProviderTypes';
 import type {FC} from 'react';

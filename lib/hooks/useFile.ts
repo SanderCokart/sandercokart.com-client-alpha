@@ -1,5 +1,5 @@
-import {ApiFileType} from '@/components/formComponents/File';
-import {handler, useApi} from '@/providers/ApiProvider';
+import {ApiFileType} from '../components/formComponents/File';
+import {handler, useApi} from '../providers/ApiProvider';
 import {useEffect, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 

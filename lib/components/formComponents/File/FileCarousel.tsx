@@ -1,5 +1,5 @@
-import FileItem from '@/components/formComponents/File/FileItem';
-import type {ApiFileType} from '@/components/formComponents/File/index';
+import FileItem from './FileItem';
+import type {ApiFileType} from './index';
 import styles from '@/styles/components/formComponents/File/FileContainer.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {FC} from 'react';

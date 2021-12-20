@@ -1,4 +1,4 @@
-import {ApiFileType} from '@/components/formComponents/File/index';
+import {ApiFileType} from './index';
 import styles from '@/styles/components/formComponents/File/FileItem.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

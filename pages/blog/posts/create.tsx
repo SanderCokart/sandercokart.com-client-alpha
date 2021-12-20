@@ -1,9 +1,9 @@
-import Error from '@/components/Error';
-import File from '@/components/formComponents/File';
-import Input from '@/components/formComponents/Input';
-import TextArea from '@/components/formComponents/TextArea';
-import {handler, useApi} from '@/providers/ApiProvider';
-import {useAuth} from '@/providers/AuthProvider';
+import Error from '../../../lib/components/Error';
+import File from '../../../lib/components/formComponents/File';
+import Input from '../../../lib/components/formComponents/Input';
+import TextArea from '../../../lib/components/formComponents/TextArea';
+import {handler, useApi} from '../../../lib/providers/ApiProvider';
+import {useAuth} from '../../../lib/providers/AuthProvider';
 import editorStyles from '@/styles/components/Editor.module.scss';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
@@ -18,8 +18,8 @@ import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 
 import 'react-markdown-editor-lite/lib/index.css';
 import * as Yup from 'yup';
-import useMDEOptions from '../../../hooks/useMDEOptions';
-import useMediaQuery from '../../../hooks/useMediaQuery';
+import useMDEOptions from '../../../lib/hooks/useMDEOptions';
+import useMediaQuery from '../../../lib/hooks/useMediaQuery';
 
 const CreatePostPage: FC = () => {
     const { loggedIn } = useAuth();

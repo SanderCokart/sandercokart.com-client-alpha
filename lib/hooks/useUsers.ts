@@ -1,4 +1,4 @@
-import {useApi} from '@/providers/ApiProvider';
+import {useApi} from '../providers/ApiProvider';
 import {UsersResponse} from '@/types/ResponseTypes';
 import {useEffect, useState} from 'react';
 import useSWR from 'swr';

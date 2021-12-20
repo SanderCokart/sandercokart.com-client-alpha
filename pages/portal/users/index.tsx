@@ -1,10 +1,10 @@
-import Loader from '@/components/Loader';
+import Loader from '../../../lib/components/Loader';
 import styles from '@/styles/pages/portal/Users.module.scss';
 import {UserRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import type {FC} from 'react';
-import useUsers from '../../../hooks/useUsers';
+import useUsers from '../../../lib/hooks/useUsers';
 
 const Users: FC = () => {
     const { users, isLoading, links, nextPage, prevPage, hasMore, hasLess } = useUsers();

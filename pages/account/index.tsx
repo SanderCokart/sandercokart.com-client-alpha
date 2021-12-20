@@ -1,8 +1,8 @@
-import Error from '@/components/Error';
-import Checkbox from '@/components/formComponents/Checkbox';
-import Input from '@/components/formComponents/Input';
-import {handler, useApi} from '@/providers/ApiProvider';
-import {useAuth} from '@/providers/AuthProvider';
+import Error from '../../lib/components/Error';
+import Checkbox from '../../lib/components/formComponents/Checkbox';
+import Input from '../../lib/components/formComponents/Input';
+import {handler, useApi} from '../../lib/providers/ApiProvider';
+import {useAuth} from '../../lib/providers/AuthProvider';
 import styles from '@/styles/pages/account/Account.module.scss';
 import {EmailChangePayload, PasswordChangePayload} from '@/types/AuthProviderTypes';
 import {yupResolver} from '@hookform/resolvers/yup';

@@ -1,5 +1,5 @@
-import File from '@/components/formComponents/File';
-import Input from '@/components/formComponents/Input';
+import File from '../../../../formComponents/File';
+import Input from '../../../../formComponents/Input';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import type {CreatePostModel} from '@/types/ModelTypes';
 import EasyMDE from 'easymde';

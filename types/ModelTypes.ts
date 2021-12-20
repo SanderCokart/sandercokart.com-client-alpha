@@ -1,4 +1,4 @@
-import File from '@/components/formComponents/File';
+import File from '../lib/components/formComponents/File';
 
 export interface CreatePostModel {
     title: string;

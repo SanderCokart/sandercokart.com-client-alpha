@@ -1,7 +1,7 @@
 import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
-import Loader from '@/components/Loader';
-import {useAuth} from '@/providers/AuthProvider';
+import Loader from '../components/Loader';
+import {useAuth} from './AuthProvider';
 
 interface LoadingContext {
     loading: boolean,
