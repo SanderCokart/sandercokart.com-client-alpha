@@ -1,6 +1,6 @@
-import {FontAwesomeIcon} from '@/types/CustomTypes';
-import {Post, User} from '@/types/ModelTypes';
-import {PostsResponse} from '@/types/ResponseTypes';
+import type {FontAwesomeIcon} from './CustomTypes';
+import type {Post, User} from './ModelTypes';
+import type {PostsResponse} from './ResponseTypes';
 
 export interface NavItemProps {
     href: string;
@@ -42,4 +42,6 @@ export interface PortalNavItemProps {
 
 export interface UserRowProps {
     user: User;
+    onDelete: (id: number) => void;
+    onEdit: (id: number) => void;
 }

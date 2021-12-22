@@ -1,5 +1,5 @@
-import {FontAwesomeIcon} from '@/types/CustomTypes';
 import type {InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes} from 'react';
+import {FontAwesomeIcon} from './CustomTypes';
 
 type Options = Array<{ label: string, value: string }>
 
@@ -61,5 +61,5 @@ export interface SwitchProps {
     name: string;
     label?: string;
     icon?: FontAwesomeIcon;
-    onToggle: (state:boolean) => void;
+    onToggle: (state: boolean) => void;
 }

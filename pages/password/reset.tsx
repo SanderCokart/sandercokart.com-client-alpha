@@ -1,7 +1,7 @@
-import Input from '../../lib/components/formComponents/Input';
-import {handler, useApi} from '../../lib/providers/ApiProvider';
+import Input from '@/components/formComponents/Input';
+import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/PasswordReset.module.scss';
-import {PasswordResetPayload} from '@/types/AuthProviderTypes';
+import type {PasswordResetFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
@@ -10,7 +10,6 @@ import * as Yup from 'yup';
 
 export const PasswordReset: FC = () => {
     const router = useRouter();
-    const api = useApi();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             password: Yup.string().min(8, '').max(50).required('This field is required').matches(
@@ -30,8 +29,8 @@ export const PasswordReset: FC = () => {
     const { query } = router; //token and email
     const { formState: { isValid, isDirty } } = methods;
 
-    const resetPassword = async (formValues: PasswordResetPayload) => {
-        await handler(api.patch('/password/reset', formValues, { params: query }));
+    const resetPassword = async (formValues: PasswordResetFormValues) => {
+        await axios.simplePatch('/password/reset', formValues, { params: query });
     };
 
     return (

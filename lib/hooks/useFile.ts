@@ -1,7 +1,7 @@
-import {ApiFileType} from '../components/formComponents/File';
-import {handler, useApi} from '../providers/ApiProvider';
 import {useEffect, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
+import {ApiFileType} from '@/components/formComponents/File';
+import {handler, useApi} from '@/providers/ApiProvider';
 
 function useFile(fileToUpload: File & ApiFileType, name: string, index: number) {
     const api = useApi();

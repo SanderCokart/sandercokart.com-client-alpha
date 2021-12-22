@@ -23,14 +23,14 @@ const Date: FC<DateProps> = (props) => {
                 {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
 
                 {error &&
-                <div className={styles.formControlError}>
-                    <span>{error.message}</span>
-                </div>
+                    <div className={styles.formControlError}>
+                        <span>{error.message}</span>
+                    </div>
                 }
 
                 <div className={styles.iconContainer}>
                     {prependIcon &&
-                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                        <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
                     <input {...rest} {...register(name)} className={dateClassName} id={id} name={name} type={type}/>
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
                     <div className={styles.line}/>

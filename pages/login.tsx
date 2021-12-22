@@ -1,20 +1,20 @@
+import Checkbox from '@/components/formComponents/Checkbox';
+import Input from '@/components/formComponents/Input';
+import Loader from '@/components/Loader';
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
-import type {LoginPayload} from '@/types/AuthProviderTypes';
+import type {LoginFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
+import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import Checkbox from '../lib/components/formComponents/Checkbox';
-import Input from '../lib/components/formComponents/Input';
-import useAuth from '../lib/hooks/useAuth';
 
 export const Login: FC = () => {
-
     const router = useRouter();
-    const { login } = useAuth();
-    // const { login } = useAuth();
+    const { login, isLoading, shouldRedirect } = useAuth({ middleware: 'guest' });
 
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -30,30 +30,34 @@ export const Login: FC = () => {
         }
     });
 
+
     const { query: { user, hash, type, signature, expires } } = router;
     const { formState: { isValid, isDirty } } = methods;
 
-    // const onSubmit = async (formValues: LoginPayload) => {
-    //     const { status } = await login(formValues);
-    //     if (status === 200) {
-    //         switch (type) {
-    //             case 'verify': {
-    //                 router.push({
-    //                     pathname: `/account/email/verify/${user}/${hash}`,
-    //                     query: { expires, type, signature }
-    //                 });
-    //                 break;
-    //             }
-    //             default: {
-    //                 router.push('/blog');
-    //                 return;
-    //             }
-    //         }
-    //     }
-    // };
+    useEffect(() => {
+        if (shouldRedirect && !isLoading) router.push('/blog');
+    }, [isLoading]);
 
-    const onSubmit = async (formValues: LoginPayload) => {
-        login(formValues);
+
+    if (isLoading || shouldRedirect) return <Loader/>;
+
+    const onSubmit = async (formValues: LoginFormValues) => {
+        const { error } = await login(formValues);
+        if (!error)
+            switch (type) {
+                case'verify': {
+                    router.push({
+                        pathname: `/account/email/verify/${user}/${hash}`,
+                        query: { expires, type, signature }
+                    });
+                    break;
+                }
+                default: {
+                    console.log('didnt verify route: ', true);
+                    router.push('/blog');
+                    break;
+                }
+            }
     };
 
 

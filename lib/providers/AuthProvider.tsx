@@ -1,76 +1,76 @@
-import {handler, useApi} from './ApiProvider';
-import type {AuthContextInitialProps, LoginPayload} from '@/types/AuthProviderTypes';
-import {AuthContextProps} from '@/types/AuthProviderTypes';
+import type {AuthContextType} from '@/types/AuthProviderTypes';
+import type {LoginFormValues} from '@/types/FormValueTypes';
 import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
+import useSWR from 'swr';
+import axios from '../functions/shared/axios';
 
-const defaultState = {
-    user: null,
-    loading: true,
-    justVerified: false,
-    loggedIn: false,
-    isVerified: false,
-    isAdmin: false
+const AuthContext = createContext({});
+
+interface Props {
+    middleware?: 'guest' | 'auth';
+}
+
+export const useAuth = ({ middleware }: Props = {}) => {
+    const context = useContext(AuthContext) as AuthContextType;
+    const { user, error, isLoading } = context;
+
+    const shouldRedirect = () => {
+        if (middleware === 'guest' && user) return true;
+        return !!(middleware === 'auth' && !user && error);
+    };
+
+    return { ...context, isLoading, shouldRedirect: shouldRedirect() };
 };
 
-const AuthContext = createContext<AuthContextInitialProps>(defaultState);
+const AuthProvider: FC = ({ children }) => {
+    const [isLoading, setIsLoading] = useState(true);
+    const { data: user, mutate, error } = useSWR('/user',
+        () => axios.get('/user')
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            })
+    );
 
-export const useAuth = () => useContext(AuthContext) as AuthContextProps;
+    const csrf = () => axios.get('/sanctum/csrf-cookie');
 
-export const AuthProvider: FC = ({ children }) => {
-    const api = useApi();
-
-    const [state, setState] = useState<AuthContextInitialProps>({
-        user: null,
-        loading: true,
-        justVerified: false,
-        loggedIn: false,
-        isVerified: false,
-        isAdmin: false
-    });
-
-    const login = async (credentials: LoginPayload) => {
-        setState(prev => ({ ...prev, loading: true }));
-        const { data: { user }, status } = await handler(api.post('/login', credentials));
-        setState(prev => ({ ...prev, user: status === 200 ? user : null, loading: false }));
-        return { status };
+    const login = async (formValues: LoginFormValues) => {
+        await csrf();
+        const response = await axios.simplePost('/login', formValues);
+        await mutate();
+        return response;
     };
 
     const logout = async () => {
-        setState(prev => ({ ...prev, loading: true }));
-        const { status } = await handler(api.post('/account/logout'));
-        setState(prev => ({ ...prev, loading: false, user: null }));
-        return { status };
-    };
-
-
-    /*TODO QUERY DEPENDENT FUNCTIONS MOVE TO PAGE*/
-
-
-    const check = async () => {
-        const { data, status, error } = await handler(api.get('/check'));
-        setState(prev => ({ ...prev, user: status === 200 ? data?.user : null, loading: false }));
-        return { status };
+        if (user) {
+            const response = await axios.simplePost('/logout');
+            await mutate(null);
+            return response;
+        }
+        return;
     };
 
     useEffect(() => {
-        check();
-    }, []);
+        if (user || error)
+            setIsLoading(false);
+    }, [user, error]);
 
     return (
         <AuthContext.Provider value={{
-            ...state,
-            loggedIn: !!state.user,
-            isAdmin: !!state.user?.roles.includes('admin'),
-            isVerified: !!state.user?.emailVerifiedAt,
+            isLoading,
+            isAdmin: user?.roles.includes('admin'),
+            isVerified: !!user?.emailVerifiedAt,
+            loggedIn: !!user,
+            user,
             login,
-            logout,
-            check
+            csrf,
+            error,
+            logout
         }}>
             {children}
         </AuthContext.Provider>
     );
 };
-
 
 export default AuthProvider;

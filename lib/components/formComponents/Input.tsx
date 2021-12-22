@@ -27,7 +27,7 @@ const Input: FC<InputProps> = (props) => {
 
                 <div className={styles.iconContainer}>
                     {prependIcon &&
-                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                        <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
                     <input {...rest} {...register(name)} className={inputClassName} id={id} name={name} type={type}/>
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
                     <div className={styles.line}/>

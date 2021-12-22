@@ -1,7 +1,7 @@
-import Input from '../../../../lib/components/formComponents/Input';
-import {handler, useApi} from '../../../../lib/providers/ApiProvider';
+import Input from '@/components/formComponents/Input';
+import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
-import type {EmailCompromisedPayload} from '@/types/AuthProviderTypes';
+import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
@@ -10,7 +10,6 @@ import * as yup from 'yup';
 
 const ChangePassword: FC = () => {
     const router = useRouter();
-    const api = useApi();
     const methods = useForm({
         resolver: yupResolver(yup.object().shape({
             email: yup.string().email('Must be a valid email').required('This field is required'),
@@ -28,16 +27,16 @@ const ChangePassword: FC = () => {
     });
 
     const { query: { user, token } } = router;
-    const { formState: { isValid, isDirty } } = methods;
+    const { formState: { isValid, isDirty }, handleSubmit } = methods;
 
-    const onSubmit = async (formValues: EmailCompromisedPayload) => {
-        await handler(api.patch(`/email/compromised/${user}/${token}`, formValues));
+    const onSubmit = async (formValues: EmailCompromisedFormValues) => {
+        await axios.simplePatch(`/email/compromised/${user}/${token}`, formValues);
     };
 
     return (
         <div className={styles.changePassword}>
             <FormProvider {...methods}>
-                <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
+                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                     <div>
                         <header className={styles.header}>
                             <h1>Change password & Email</h1>

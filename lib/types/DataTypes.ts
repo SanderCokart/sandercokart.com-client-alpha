@@ -1,5 +1,5 @@
-import type {FontAwesomeIcon} from '@/types/CustomTypes';
 import type {MouseEvent, MutableRefObject} from 'react';
+import type {FontAwesomeIcon} from './CustomTypes';
 
 export type NavigationType = Array<NavigationContainer | NavigationItem>;
 

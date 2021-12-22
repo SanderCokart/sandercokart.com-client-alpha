@@ -51,8 +51,6 @@ function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: '
     }, [matches]);
 
 
-    console.log(matches);
-
     return matches;
 }
 

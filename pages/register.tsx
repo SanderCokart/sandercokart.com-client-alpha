@@ -1,14 +1,12 @@
-import Input from '../lib/components/formComponents/Input';
-import {handler, useApi} from '../lib/providers/ApiProvider';
+import Input from '@/components/formComponents/Input';
+import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/Register.module.scss';
-import {RegisterPayload} from '@/types/AuthProviderTypes';
+import type {RegisterFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 import * as Yup from 'yup';
-
-const timeout = 5000;
 
 export const CreateAccount: FC = () => {
     const methods = useForm({
@@ -30,12 +28,12 @@ export const CreateAccount: FC = () => {
         }
     });
 
-    const { formState: { isSubmitting } } = methods;
+    const { formState: { isSubmitted } } = methods;
 
     return (
         <div className={styles.register}>
             <FormProvider {...methods}>
-                {isSubmitting ? <EmailSend/> : <RegisterForm/>}
+                {isSubmitted ? <EmailSend/> : <RegisterForm/>}
             </FormProvider>
         </div>
     );
@@ -45,15 +43,12 @@ export default CreateAccount;
 
 
 const RegisterForm: FC = () => {
-    const api = useApi();
     const router = useRouter();
     const { formState: { isValid, isDirty }, handleSubmit } = useFormContext();
 
-    const register = async (formValues: RegisterPayload) => {
-        const { data, status } = await (handler(api.post('/register', formValues)));
-        if (status >= 200 && status < 300) {
-
-        };
+    const register = async (formValues: RegisterFormValues) => {
+        const { error } = await axios.simplePost('/register', formValues);
+        if (!error) setTimeout(() => router.push('/login'), 3000);
     };
 
     return (
@@ -89,7 +84,7 @@ const EmailSend: FC = () => {
     return (
         <div>
             <h1>Please verify your email! We sent you an email at {email} </h1>
-            <p>You will be sent back to the login page in {timeout / 1000} seconds</p>
+            <p>You will be sent back to the login page in {3000 / 1000} seconds</p>
         </div>
     );
 };

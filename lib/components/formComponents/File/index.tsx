@@ -1,8 +1,8 @@
-import DropBox from './DropBox';
-import FileCarousel from './FileCarousel';
 import styles from '@/styles/components/formComponents/File/File.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {FC} from 'react';
+import DropBox from './DropBox';
+import FileCarousel from './FileCarousel';
 
 export interface ApiFileType {
     id: number;

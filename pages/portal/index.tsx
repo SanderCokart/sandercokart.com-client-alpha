@@ -1,7 +1,7 @@
 import styles from '@/styles/pages/portal/Portal.module.scss';
 import type {FC} from 'react';
 import Loader from '../../lib/components/Loader';
-import useAuth from '../../lib/hooks/useAuth';
+import {useAuth} from '../../lib/providers/AuthProvider';
 
 const Portal: FC = () => {
     const { isLoading } = useAuth({ middleware: 'auth' });

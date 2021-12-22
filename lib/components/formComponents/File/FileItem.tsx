@@ -1,9 +1,9 @@
-import {ApiFileType} from './index';
 import styles from '@/styles/components/formComponents/File/FileItem.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {FC} from 'react';
 import useFile from '../../../hooks/useFile';
+import {ApiFileType} from './index';
 
 
 const FileItem: FC<{ file: File & ApiFileType, index: number } & FileProps> = (props) => {

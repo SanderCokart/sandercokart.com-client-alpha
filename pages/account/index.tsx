@@ -1,26 +1,34 @@
-import Error from '../../lib/components/Error';
-import Checkbox from '../../lib/components/formComponents/Checkbox';
-import Input from '../../lib/components/formComponents/Input';
-import {handler, useApi} from '../../lib/providers/ApiProvider';
-import {useAuth} from '../../lib/providers/AuthProvider';
+import Checkbox from '@/components/formComponents/Checkbox';
+import Input from '@/components/formComponents/Input';
+import Switch from '@/components/formComponents/Switch';
+import Loader from '@/components/Loader';
+import axios from '@/functions/shared/axios';
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/Account.module.scss';
-import {EmailChangePayload, PasswordChangePayload} from '@/types/AuthProviderTypes';
+import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
+import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
 export const Account: FC = () => {
-    const { isVerified, logout, loggedIn } = useAuth();
+    const { logout, shouldRedirect, isLoading } = useAuth({ middleware: 'auth' });
     const router = useRouter();
 
-    if (!loggedIn) {
-        return <Error statusCode={404}/>;
-    }
 
+    useEffect(() => {
+        if (shouldRedirect) router.push('/login');
+    }, [shouldRedirect]);
 
-    const onLogout = async () => {
+    if (isLoading || shouldRedirect) return <Loader/>;
+
+    const onClickToggleTheme = (state: boolean) => {
+        document.documentElement.setAttribute('data-theme', state ? 'light' : 'dark');
+    };
+
+    const onClickLogout = async () => {
         const { status } = await logout();
         status === 200 && await router.push('/blog/recent');
     };
@@ -28,17 +36,19 @@ export const Account: FC = () => {
 
     return (
         <div className={styles.account}>
+            <div>
+                <Switch icon="sun" label="Toggle Dark Theme" name="theme" onToggle={onClickToggleTheme}/>
+            </div>
             <PasswordForm/>
             <EmailForm/>
             <div className={styles.actions}>
-                <button className={styles.logoutButton} onClick={onLogout}>logout</button>
+                <button className={styles.logoutButton} onClick={onClickLogout}>logout</button>
             </div>
         </div>
     );
 };
 
 const PasswordForm: FC = () => {
-    const api = useApi();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
@@ -58,8 +68,8 @@ const PasswordForm: FC = () => {
     });
 
 
-    const changePassword = async (formValues: PasswordChangePayload) => {
-        await handler(api.patch('/account/password/change', formValues));
+    const changePassword = async (formValues: PasswordChangeFormValues) => {
+        await axios.simplePatch('/account/password/change', formValues);
     };
 
     const { formState: { isDirty, isValid }, handleSubmit } = methods;
@@ -88,7 +98,6 @@ const PasswordForm: FC = () => {
 };
 
 const EmailForm: FC = () => {
-    const api = useApi();
     const { user } = useAuth();
 
     const methods = useForm({
@@ -101,8 +110,8 @@ const EmailForm: FC = () => {
         }
     });
 
-    const changeEmail = async (formValues: EmailChangePayload) => {
-        await handler(api.patch(`/account/email/change/${user?.id}`, formValues));
+    const changeEmail = async (formValues: EmailChangeFormValues) => {
+        await axios.simplePatch(`/account/email/change/${user?.id}`, formValues);
     };
 
     const { formState: { isDirty, isValid }, handleSubmit } = methods;

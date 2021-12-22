@@ -1,6 +1,7 @@
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
-import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote';
-import {FC} from 'react';
+import type {MDXRemoteSerializeResult} from 'next-mdx-remote';
+import {MDXRemote} from 'next-mdx-remote';
+import type {FC} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 const PostPreview: FC<{ mdxSource: MDXRemoteSerializeResult | null }> = ({ mdxSource }) => {

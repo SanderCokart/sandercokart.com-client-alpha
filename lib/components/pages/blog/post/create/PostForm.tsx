@@ -1,10 +1,10 @@
-import File from '../../../../formComponents/File';
-import Input from '../../../../formComponents/Input';
+import File from '@/components/formComponents/File';
+import Input from '@/components/formComponents/Input';
 import styles from '@/styles/pages/blog/post/CreatePost.module.scss';
 import type {CreatePostModel} from '@/types/ModelTypes';
-import EasyMDE from 'easymde';
+import type EasyMDE from 'easymde';
 import dynamic from 'next/dynamic';
-import {FC} from 'react';
+import type {FC} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 const PostForm: FC = () => {

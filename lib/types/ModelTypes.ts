@@ -1,4 +1,4 @@
-import File from '../lib/components/formComponents/File';
+import File from '@/components/formComponents/File';
 
 export interface CreatePostModel {
     title: string;
@@ -25,8 +25,6 @@ export interface Banner {
 }
 
 export interface User {
-    [key: string]: any;
-
     id: number;
     name: string;
     createdAt: string;
@@ -34,5 +32,7 @@ export interface User {
     emailVerifiedAt: string;
     email: string;
     roles: Array<'guest' | 'verified' | 'admin'>;
+
+    [key: string]: any;
 }
 

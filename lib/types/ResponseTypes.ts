@@ -1,5 +1,5 @@
-import type {Post, User} from '@/types/ModelTypes';
 import type {AxiosResponse} from 'axios';
+import type {Post, User} from './ModelTypes';
 
 interface Links {
     first: string;

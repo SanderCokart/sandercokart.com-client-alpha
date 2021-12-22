@@ -1,19 +1,14 @@
+import Loader from '@/components/Loader';
+import useUsers from '@/hooks/useUsers';
 import styles from '@/styles/pages/portal/Users.module.scss';
 import type {UserRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import type {FC} from 'react';
 import Skeleton from 'react-loading-skeleton';
-import Loader from '../../../lib/components/Loader';
-import useAuth from '../../../lib/hooks/useAuth';
-import useUsers from '../../../lib/hooks/useUsers';
 
 const Users: FC = () => {
-    const { users, isLoading, nextPage, prevPage, hasMore, hasLess } = useUsers();
-    const { isLoading: authLoading } = useAuth({ middleware: 'auth' });
-
-
-    if (authLoading) return <Loader/>;
+    const { users, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = useUsers();
 
     const keys = ['id', 'name', 'email', 'roles', 'createdAt', 'updatedAt', 'emailVerifiedAt', 'actions'];
 
@@ -35,7 +30,7 @@ const Users: FC = () => {
                         )}
                     </tr>
                 )) : users.map(user => (
-                    <UserRow key={user.id} user={user}/>
+                    <UserRow key={user.id} user={user} onDelete={onDelete} onEdit={onEdit}/>
                 ))}
 
                 </tbody>
@@ -55,7 +50,7 @@ const Users: FC = () => {
 
 export default Users;
 
-const UserRow: FC<UserRowProps> = ({ user }) => {
+const UserRow: FC<UserRowProps> = ({ user, onDelete, onEdit }) => {
 
     return (
         <tr>
@@ -75,8 +70,8 @@ const UserRow: FC<UserRowProps> = ({ user }) => {
 
             <td className={styles.actions}>
                 <div>
-                    <button><FontAwesomeIcon icon="trash"/></button>
-                    <button><FontAwesomeIcon icon="pen"/></button>
+                    <button type="button" onClick={() => onDelete(user.id)}><FontAwesomeIcon icon="trash"/></button>
+                    <button type="button" onClick={() => onEdit(user.id)}><FontAwesomeIcon icon="pen"/></button>
                 </div>
             </td>
         </tr>

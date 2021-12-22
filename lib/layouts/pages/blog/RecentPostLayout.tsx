@@ -1,8 +1,8 @@
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
-import {RecentPostLayoutProps} from '@/types/PropTypes';
 import Image from 'next/image';
 import type {FC} from 'react';
-import useImage from '../../../hooks/useImage';
+import useImage from '@/hooks/useImage';
+import {RecentPostLayoutProps} from '@/types/PropTypes';
 
 const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
     const { url } = useImage(post.banner);

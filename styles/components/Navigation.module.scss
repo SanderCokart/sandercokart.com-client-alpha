@@ -45,8 +45,7 @@
     width: 100%;
     height: 100%;
     background-color: var(--bg-nav);
-    transition: width core.$navTransitionTime ease core.$navTransitionTime,
-    background-color core.$navTransitionTime*2 ease;
+    transition: width core.$navTransitionTime ease core.$navTransitionTime;
     pointer-events: none;
 
     &:hover {

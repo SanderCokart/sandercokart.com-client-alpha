@@ -1,9 +1,9 @@
-import FileItem from './FileItem';
-import type {ApiFileType} from './index';
 import styles from '@/styles/components/formComponents/File/FileContainer.module.scss';
 import type {FileProps} from '@/types/FormControlTypes';
 import type {FC} from 'react';
 import {useWatch} from 'react-hook-form';
+import FileItem from './FileItem';
+import type {ApiFileType} from './index';
 
 
 const FileCarousel: FC<FileProps> = (props) => {
