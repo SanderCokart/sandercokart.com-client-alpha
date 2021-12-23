@@ -39,16 +39,21 @@ function useMediaQuery(options: BasicMediaQuery | AdvancedMediaQuery = { from: '
         }
     };
 
-    useEffect(() => {
+    const handler = () => {
         const mediaQuery = window.matchMedia(getQuery());
+        setMatches(mediaQuery.matches);
+    };
 
-        const handler = () => setMatches(mediaQuery.matches);
-        mediaQuery.addEventListener('change', handler);
-
+    useEffect(() => {
+        window.addEventListener('resize', handler);
         return () => {
-            mediaQuery.removeEventListener('change', handler);
+            window.removeEventListener('resize', handler);
         };
     }, [matches]);
+
+    useEffect(() => {
+        handler();
+    }, []);
 
 
     return matches;

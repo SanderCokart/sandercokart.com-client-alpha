@@ -45,12 +45,12 @@
     width: 100%;
     height: 100%;
     background-color: var(--bg-nav);
-    transition: width core.$navTransitionTime ease core.$navTransitionTime;
+    //transition: width core.$navTransitionTime ease core.$navTransitionTime;
     pointer-events: none;
 
     &:hover {
       background-color: var(--acc);
-      transition-duration: core.$navTransitionTime;
+      //transition-duration: core.$navTransitionTime;
     }
 
     &.active {
@@ -68,7 +68,7 @@
     position: absolute;
     top: 100%;
     transform: translateY(-100%);
-    transition: core.$navTransitionTime;
+    //transition: core.$navTransitionTime;
     display: grid;
     grid-template-columns: 1fr 1fr;
     opacity: 0;
@@ -77,7 +77,7 @@
 
     &.active {
       transform: translateY(0);
-      transition-delay: core.$navTransitionTime * 2;
+      //transition-delay: core.$navTransitionTime * 2;
       opacity: 1;
       z-index: 1;
     }
@@ -85,45 +85,32 @@
 
 }
 
-//@mixin hidden() {
-//  opacity: 0;
-//  pointer-events: none;
-//  & > a > span,
-//  & > button > span {
-//    opacity: 0;
-//  }
-//}
-//
-//@mixin show() {
-//  opacity: 1;
-//  pointer-events: auto;
-//  & > a > span,
-//  & > button > span {
-//    opacity: 1;
-//  }
-//}
+@mixin hide() {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@mixin show() {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@mixin startPos() {
+  bottom: 150px;
+  right: 50%;
+}
 
 .mobile {
   position: fixed;
   bottom: 0;
   left: 0;
   top: 0;
+  right: 0;
   z-index: map-get(core.$z-indexes, "backdrop");
   pointer-events: none;
   color: var(--bg-contrast-text);
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 1.5rem;
-
-  span {
-    font-size: 1rem;
-  }
-
-  [data-name="compass"] {
-    svg {
-      font-size: 2rem;
-    }
-  }
 
   .relative {
     position: relative;
@@ -132,7 +119,7 @@
   }
 
   .backdrop {
-    transition: opacity core.$navTransitionTime ease;
+    //transition: opacity core.$navTransitionTime ease;
     background-color: var(--bg-trans);
     position: fixed;
     top: 0;
@@ -144,31 +131,16 @@
     opacity: 0;
   }
 
-  .compassOpen ~ .backdrop {
+  .openCompass ~ .backdrop {
     opacity: 1;
-  }
-
-  ul {
-    width: 100%;
-    height: 100%;
-  }
-
-  .navItem {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
   }
 
   a, button {
     @include core.buttonReset;
+    pointer-events: none;
     line-height: 50%;
+    @include startPos;
     position: fixed;
-    bottom: 100px;
-    right: 50%;
     transform: translate(50%, 50%);
     display: flex;
     flex-direction: column;
@@ -176,47 +148,83 @@
     gap: 10px;
     z-index: 1;
     -webkit-tap-highlight-color: transparent;
-    transition: all ease core.$navTransitionTime;
+    @include hide;
+    transition: bottom ease core.$navTransitionTime,
+    right ease core.$navTransitionTime,
+    opacity ease core.$navTransitionTime;
 
-    &[data-name="compass"] {
-      z-index: 2;
+    span {
+      font-size: 5vw;
+    }
+
+    svg {
+      font-size: 10vw;
     }
   }
 
-  .compassContainer, .libraryContainer {
-    transition: all ease core.$navTransitionTime;
-    z-index: 0;
-    opacity: 0;
+  ul {
+    width: 100%;
+    height: 100%;
   }
 
-  .navItem.compassOpen {
-    .compassContainer {
-      opacity: 1;
+  [data-name="compass"] {
+    pointer-events: auto;
+    @include show;
+  }
 
-      [data-name="blog"] {
-        bottom: 200px;
-        right: 50%;
-      }
+  .openCompass {
+    [data-name="blog"] {
+      bottom: 250px;
+      right: 50%;
+      @include show;
+    }
 
-      [data-name="library"] {
-        bottom: 200px;
-        right: 20%;
-      }
+    [data-name="library"] {
+      bottom: 250px;
+      right: 20%;
+      @include show;
+    }
 
-      [data-name="contact"] {
-        bottom: 200px;
-        right: 80%;
-      }
+    [data-name="contact"] {
+      bottom: 250px;
+      right: 80%;
+      @include show;
+    }
 
-      [data-name="settings"], [data-name="login"] {
-        bottom: 100px;
-        right: 20%;
-      }
+    [data-name="login"], [data-name="account"] {
+      bottom: 100px;
+      right: 20%;
+      @include show;
+    }
 
-      [data-name="portal"] {
-        bottom: 100px;
-        right: 80%;
-      }
+    [data-name="portal"] {
+      bottom: 100px;
+      right: 80%;
+      @include show;
+    }
+  }
+
+  .openLibrary {
+    [data-name="blog"], [data-name="library"], [data-name="contact"], [data-name="login"],
+    [data-name="account"], [data-name="portal"] {
+      @include startPos;
+    }
+
+    [data-name="blog"], [data-name="contact"], [data-name="login"],
+    [data-name="account"], [data-name="portal"], [data-name="compass"] {
+      @include hide;
+    }
+
+    [data-name="courses"] {
+      @include show;
+      bottom: 250px;
+      right: 80%;
+    }
+
+    [data-name="tips"] {
+      @include show;
+      right: 20%;
+      bottom: 250px;
     }
   }
 }

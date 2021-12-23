@@ -6,21 +6,29 @@ import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/t
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import type {FC, MouseEvent, PropsWithChildren} from 'react';
-import {forwardRef} from 'react';
+import type {FC, MouseEvent} from 'react';
+import {useEffect} from 'react';
 
 const Navigation: FC = () => {
         const { loggedIn, isAdmin } = useAuth();
         const { pathname } = useRouter();
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
+
+        useEffect(() => {
+            console.log(window.matchMedia(`all and (max-width: 600px})`).matches);
+        });
+
         const isPortalPage = pathname.includes('portal');
 
         const openCompassNav = () => {
             document.documentElement.classList.toggle('modalOpen');
-            document.getElementById('compassNavMenu')?.classList.toggle(styles.compassOpen);
+            document.getElementById('mobileMenuNavigation')?.classList.toggle(styles.openCompass);
         };
 
         const openLibraryNav = () => {
+            document.getElementById('mobileMenuNavigation')?.classList.toggle(styles.openLibrary);
+
+
             // libraryNav.current?.classList.toggle(styles.focus);
             // compassNav.current?.classList.toggle(styles.removeFocus);
             // Array.from(compassNav.current?.nextElementSibling?.children ?? [])
@@ -31,7 +39,8 @@ const Navigation: FC = () => {
         };
 
         const navigate = () => {
-            document.documentElement.classList.toggle('modalOpen');
+            document.documentElement.classList.remove('modalOpen');
+            document.getElementById('mobileMenuNavigation')?.classList.remove(styles.openLibrary, styles.openCompass);
 
             // libraryNav.current?.classList.remove(styles.focus);
             // compassNav.current?.classList.remove(styles.removeFocus, styles.focus);
@@ -45,11 +54,12 @@ const Navigation: FC = () => {
         const Mobile = () => (
             <nav className={styles.mobile}>
                 <ul className={styles.relative}>
-                    <MobileMenu icon="compass" name="compass" showSpan={false} onClick={openCompassNav}>
+                    <MobileMenu icon="compass" id="mobileMenuNavigation" name="compass" showSpan={false}
+                                onClick={openCompassNav}>
                         <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
 
                         {loggedIn ?
-                         (<MobileItem href="/settings" icon="cog" name="settings" onClick={navigate}/>)
+                         (<MobileItem href="/account" icon="user" name="account" onClick={navigate}/>)
                                   :
                          (<MobileItem href="/login" icon="user-lock" name="login" onClick={navigate}/>)
                         }
@@ -107,24 +117,23 @@ const Navigation: FC = () => {
 export default Navigation;
 
 
-const MobileMenu = forwardRef<HTMLButtonElement, PropsWithChildren<MobileMenuProps>>(function MobileMenu(props, ref) {
-    const { showSpan = true, name, onClick, icon, children } = props;
+const MobileMenu: FC<MobileMenuProps> = (props) => {
+    const { showSpan = true, name, onClick, icon, children, id = '' } = props;
     return (
-        <li className={styles.navItem} id={`${name}NavMenu`}>
-            <button ref={ref} data-name={name}
-                    onClick={onClick}>
+        <li id={id}>
+            <button data-name={name} onClick={onClick}>
                 <FontAwesomeIcon icon={icon}/>
                 {showSpan && <span>{name}</span>}
             </button>
-            <ul className={styles[`${name}Container`]}>{children}</ul>
+            <ul>{children}</ul>
         </li>
     );
-});
+};
 
 const MobileItem: FC<MobileItemProps> = (props) => {
     const { name, href, icon, onClick } = props;
     return (
-        <li className={styles.navItem} onClick={onClick}>
+        <li onClick={onClick}>
             <Link href={href}>
                 <a data-name={name}>
                     <FontAwesomeIcon icon={icon}/><span>{name}</span>

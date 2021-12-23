@@ -26,6 +26,7 @@ export interface MobileMenuProps {
     icon: FontAwesomeIcon;
     onClick: () => void;
     showSpan?: boolean;
+    id?: string;
 }
 
 export interface MobileItemProps {
