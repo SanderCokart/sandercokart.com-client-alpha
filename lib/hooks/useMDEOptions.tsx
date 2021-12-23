@@ -40,6 +40,7 @@ const UseMdeOptions = () => {
                 },
                 'heading-smaller',
                 'heading-bigger',
+                'side-by-side',
                 {
                     name: 'lineNumbers',
                     action: editor => {

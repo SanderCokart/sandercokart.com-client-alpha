@@ -7,6 +7,7 @@ import type {GetStaticProps} from 'next';
 import Image from 'next/image';
 import type {FC} from 'react';
 import {useState} from 'react';
+import Banner from '/public/assets/images/banner-compressed.jpg';
 
 export const Blog: FC<BlogProps> = (props) => {
     const [state, setState] = useState({ ...props.initialData });
@@ -28,7 +29,7 @@ export const Blog: FC<BlogProps> = (props) => {
         <div className={styles.container}>
             <div className={styles.banner}>
                 <Image priority alt="banner" layout="fill" objectFit="cover" objectPosition="80% 20%" quality={100}
-                       src="/assets/images/banner-compressed.jpg"/>
+                       src={Banner}/>
             </div>
 
             <div className={styles.posts}>

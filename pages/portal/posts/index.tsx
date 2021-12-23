@@ -1,49 +1,63 @@
+import Loader from '@/components/Loader';
 import usePosts from '@/hooks/usePosts';
+import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/Users.module.scss';
 import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import {useRouter} from 'next/router';
 import type {FC} from 'react';
+import {useEffect} from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 const Posts: FC = () => {
     const { posts, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = usePosts();
+    const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
+    const router = useRouter();
+
+    useEffect(() => {
+        if (shouldRedirect) router.push('/login');
+    }, []);
 
     const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'actions'];
 
     return (
-        <main className={styles.users}>
-            <table>
-                <thead>
-                <tr>
-                    {keys.map(key => (
-                        <td key={key}>{key}</td>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {isLoading ? [...Array(100)].map((_, index) => (
-                    <tr key={index}>
-                        {[...Array(8)].map((_, index2) =>
-                            <td key={index2}><Skeleton baseColor="#222" width="100%"/></td>
-                        )}
+        <>
+            {(isLoadingAuth || shouldRedirect) && <Loader/>}
+
+            <main className={styles.users}>
+                <table>
+                    <thead>
+                    <tr>
+                        {keys.map(key => (
+                            <td key={key}>{key}</td>
+                        ))}
                     </tr>
-                )) : posts.map(post => (
-                    <PostRow key={post.id} post={post} onDelete={onDelete} onEdit={onEdit}/>
-                ))}
+                    </thead>
+                    <tbody>
+                    {isLoading ? [...Array(100)].map((_, index) => (
+                        <tr key={index}>
+                            {[...Array(8)].map((_, index2) =>
+                                <td key={index2}><Skeleton baseColor="#222" width="100%"/></td>
+                            )}
+                        </tr>
+                    )) : posts.map(post => (
+                        <PostRow key={post.id} post={post} onDelete={onDelete} onEdit={onEdit}/>
+                    ))}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            <div className={styles.pageControls}>
-                <button disabled={!hasLess} onClick={prevPage}>
-                    <FontAwesomeIcon icon="arrow-left"/>
-                </button>
-                <button disabled={!hasMore} onClick={nextPage}>
-                    <FontAwesomeIcon icon="arrow-right"/>
-                </button>
-            </div>
-        </main>
+                <div className={styles.pageControls}>
+                    <button disabled={!hasLess} onClick={prevPage}>
+                        <FontAwesomeIcon icon="arrow-left"/>
+                    </button>
+                    <button disabled={!hasMore} onClick={nextPage}>
+                        <FontAwesomeIcon icon="arrow-right"/>
+                    </button>
+                </div>
+            </main>
+        </>
     );
 };
 

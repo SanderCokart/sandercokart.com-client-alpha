@@ -1,28 +1,14 @@
-import Error from '@/components/Error';
-import File from '@/components/formComponents/File';
-import Input from '@/components/formComponents/Input';
-import TextArea from '@/components/formComponents/TextArea';
-import axios from '@/functions/shared/axios';
-import useMDEOptions from '@/hooks/useMDEOptions';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';
-import editorStyles from '@/styles/components/Editor.module.scss';
-import styles from '@/styles/pages/portal/CreatePost.module.scss';
-import type {CreatePostFormValues} from '@/types/FormValueTypes';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
-import MDX from '@mdx-js/runtime';
-import 'easymde/dist/easymde.min.css';
-import dynamic from 'next/dynamic';
+import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import {renderToStaticMarkup} from 'react-dom/server';
-import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+import {useEffect} from 'react';
+import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-// import 'react-markdown-editor-lite/lib/index.css';
-
 const CreatePostPage: FC = () => {
-    const { loggedIn } = useAuth({ middleware: 'auth' });
+    const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
     const mdUp = useMediaQuery({ from: 'md', option: 'up' });
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -39,96 +25,17 @@ const CreatePostPage: FC = () => {
             banner_image: []
         }
     });
+    const router = useRouter();
 
-    if (!loggedIn) {
-        return <Error statusCode={401} title="Unauthorized"/>;
-    }
-
-    const { handleSubmit } = methods;
-
-    const submitPost = async (formValues: CreatePostFormValues) => {
-        const { data } = await axios.simplePost('/posts', formValues);
-    };
-
-    // const markdown = methods.watch('markdown');
+    useEffect(() => {
+        if (shouldRedirect) router.push('/login');
+    }, []);
 
     return (
-        <main className={mdUp ? styles.desktop : styles.mobile}>
-            <FormProvider {...methods}>
-                <form onSubmit={handleSubmit(submitPost)}>
-                    <Input label="Title" name="title"/>
-                    <TextArea label="Excerpt" name="excerpt"/>
-                    <File name="banner_image"/>
-                    <Editor/>
-                    <button className={styles.submit} type="submit">
-                        <FontAwesomeIcon icon="plus"/>
-                    </button>
-                </form>
-            </FormProvider>
-        </main>
+        <>
+        </>
     );
-};
 
+};
 
 export default CreatePostPage;
-
-const Editor: FC = () => {
-    const SimpleMDE = dynamic(() => import('react-simplemde-editor'));
-    const MDEOptions = useMDEOptions();
-
-    const { setValue, getValues } = useFormContext();
-
-    const onChange = (text: string) => {
-        setValue('markdown', text);
-    };
-
-    const value = getValues('markdown');
-
-    return (
-        <div className={editorStyles.view}>
-            <SimpleMDE options={MDEOptions} style={{ backgroundColor: 'white' }} value={value} onChange={onChange}/>
-        </div>
-    );
-};
-
-const Preview: FC<{ markdown: string }> = ({ markdown }) => {
-    const { watch } = useFormContext();
-    const [title, excerpt] = watch(['title', 'excerpt']);
-
-    const components: { [key: string]: FC } = {
-        h1: ({ children, ...props }) => (
-            <h2 {...props}>{children}</h2>
-        )
-    };
-
-    const scope = {
-        some: 'value'
-    };
-
-    const MdEditor = dynamic(() => import('react-markdown-editor-lite'), {
-        ssr: false
-    });
-
-    return <MdEditor renderHTML={(text) => {
-        try {
-            return renderToStaticMarkup(
-                <>
-                    <h1>{title}</h1>
-                    <p>{excerpt}</p>
-                    <MDX components={components} scope={scope}>
-                        {text}
-                    </MDX>
-                </>
-            );
-        } catch (err: any) {
-            console.error(err);
-            return renderToStaticMarkup(
-                <div>
-                    <h1>{err.name}</h1>
-                    <p>{err.message}</p>
-                </div>
-            );
-        }
-    }} style={{ height: '50vh' }}/>;
-
-};
