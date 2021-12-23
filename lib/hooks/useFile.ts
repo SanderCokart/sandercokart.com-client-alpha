@@ -1,10 +1,9 @@
+import {ApiFileType} from '@/components/formComponents/File';
+import axios from '@/functions/shared/axios';
 import {useEffect, useState} from 'react';
 import {useFormContext} from 'react-hook-form';
-import {ApiFileType} from '@/components/formComponents/File';
-import {handler, useApi} from '@/providers/ApiProvider';
 
 function useFile(fileToUpload: File & ApiFileType, name: string, index: number) {
-    const api = useApi();
     const { formState: { isSubmitted }, setValue, getValues } = useFormContext();
     const [state, setState] = useState<{ file: null | File & ApiFileType }>({
         file: null
@@ -18,7 +17,7 @@ function useFile(fileToUpload: File & ApiFileType, name: string, index: number) 
         const formData = new FormData();
         formData.set('file', fileToUpload);
         (async () => {
-            const { data, status } = await (handler(api.post('/files', formData)));
+            const { data } = await axios.simplePost('/files', formData);
 
             // values combo of File and ApiFileType, starts as File, must merge with ApiFileType
             const initialFilesArr = getValues(name);

@@ -27,7 +27,7 @@ export const Blog: FC<BlogProps> = (props) => {
     return (
         <div className={styles.container}>
             <div className={styles.banner}>
-                <Image alt="banner" layout="fill" objectFit="cover" objectPosition="80% 20%"
+                <Image priority alt="banner" layout="fill" objectFit="cover" objectPosition="80% 20%" quality={100}
                        src="/assets/images/banner-compressed.jpg"/>
             </div>
 

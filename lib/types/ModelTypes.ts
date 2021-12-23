@@ -10,10 +10,10 @@ export interface Post {
     id: number;
     title: string;
     markdown: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     slug: string;
-    user: User;
+    author: User;
     banner: Banner;
 }
 

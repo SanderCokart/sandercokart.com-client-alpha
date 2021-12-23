@@ -1,8 +1,8 @@
+import useImage from '@/hooks/useImage';
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
+import {RecentPostLayoutProps} from '@/types/PropTypes';
 import Image from 'next/image';
 import type {FC} from 'react';
-import useImage from '@/hooks/useImage';
-import {RecentPostLayoutProps} from '@/types/PropTypes';
 
 const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
     const { url } = useImage(post.banner);
@@ -13,7 +13,7 @@ const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
             <figure className={styles.figure}>
 
                 {post.banner &&
-                    <Image alt="banner" layout="fill" objectFit="cover"
+                    <Image priority alt="banner" layout="fill" objectFit="cover" quality={25}
                            src={url}/>
                 }
 

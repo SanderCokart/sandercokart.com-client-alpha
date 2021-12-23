@@ -45,3 +45,9 @@ export interface UserRowProps {
     onDelete: (id: number) => void;
     onEdit: (id: number) => void;
 }
+
+export interface PostRowProps {
+    post: Post;
+    onDelete: (id: number) => void;
+    onEdit: (id: number) => void;
+}

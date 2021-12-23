@@ -43,7 +43,7 @@ const UseUsers = () => {
             users,
             links,
             meta,
-            isLoading: isValidating,
+            isLoading: !error && !data,
             isError: error,
             nextPage,
             prevPage,

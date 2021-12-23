@@ -1,15 +1,15 @@
-import useUsers from '@/hooks/useUsers';
+import usePosts from '@/hooks/usePosts';
 import styles from '@/styles/pages/portal/Users.module.scss';
-import type {UserRowProps} from '@/types/PropTypes';
+import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import type {FC} from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-const Users: FC = () => {
-    const { users, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = useUsers();
+const Posts: FC = () => {
+    const { posts, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = usePosts();
 
-    const keys = ['id', 'name', 'email', 'roles', 'createdAt', 'updatedAt', 'emailVerifiedAt', 'actions'];
+    const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'actions'];
 
     return (
         <main className={styles.users}>
@@ -28,8 +28,8 @@ const Users: FC = () => {
                             <td key={index2}><Skeleton baseColor="#222" width="100%"/></td>
                         )}
                     </tr>
-                )) : users.map(user => (
-                    <UserRow key={user.id} user={user} onDelete={onDelete} onEdit={onEdit}/>
+                )) : posts.map(post => (
+                    <PostRow key={post.id} post={post} onDelete={onDelete} onEdit={onEdit}/>
                 ))}
 
                 </tbody>
@@ -47,30 +47,22 @@ const Users: FC = () => {
     );
 };
 
-export default Users;
+export default Posts;
 
-const UserRow: FC<UserRowProps> = ({ user, onDelete, onEdit }) => {
-
+const PostRow: FC<PostRowProps> = ({ post, onDelete, onEdit }) => {
     return (
         <tr>
-            <td>{user.id}</td>
-            <td>{user.name}</td>
-            <td>{user.email}</td>
-            <td>
-                <ul>
-                    {user.roles.map(role => (
-                        <li key={role} className={styles.roleTag}>{role}</li>
-                    ))}
-                </ul>
-            </td>
-            <td>{moment(user.createdAt).calendar()}</td>
-            <td>{moment(user.updatedAt).calendar()}</td>
-            <td>{moment(user.emailVerifiedAt).calendar()}</td>
+            <td>{post.id}</td>
+            <td>{post.title}</td>
+            <td>{post.slug}</td>
+            <td>{post.author.name}</td>
+            <td>{moment(post.createdAt).calendar()}</td>
+            <td>{moment(post.updatedAt).calendar()}</td>
 
             <td className={styles.actions}>
                 <div>
-                    <button type="button" onClick={() => onDelete(user.id)}><FontAwesomeIcon icon="trash"/></button>
-                    <button type="button" onClick={() => onEdit(user.id)}><FontAwesomeIcon icon="pen"/></button>
+                    <button type="button" onClick={() => onDelete(post.id)}><FontAwesomeIcon icon="trash"/></button>
+                    <button type="button" onClick={() => onEdit(post.id)}><FontAwesomeIcon icon="pen"/></button>
                 </div>
             </td>
         </tr>
