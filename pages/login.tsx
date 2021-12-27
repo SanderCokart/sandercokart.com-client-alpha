@@ -4,7 +4,7 @@ import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
 import type {LoginFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup';
+import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
@@ -53,7 +53,6 @@ export const Login: FC = () => {
                     break;
                 }
                 default: {
-                    console.log('didnt verify route: ', true);
                     router.push('/blog');
                     break;
                 }

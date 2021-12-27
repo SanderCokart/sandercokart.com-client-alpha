@@ -1,3 +1,4 @@
+import {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import type {FontAwesomeIcon} from './CustomTypes';
 import type {Post, User} from './ModelTypes';
 import type {PostsResponse} from './ResponseTypes';
@@ -51,4 +52,9 @@ export interface PostRowProps {
     post: Post;
     onDelete: (id: number) => void;
     onEdit: (id: number) => void;
+}
+
+export interface BlogPostProps {
+    post: Post;
+    mdxSource: MDXRemoteSerializeResult;
 }

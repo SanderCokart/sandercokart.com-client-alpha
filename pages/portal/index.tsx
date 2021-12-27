@@ -13,7 +13,7 @@ const Portal: FC = () => {
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
-    }, []);
+    }, [shouldRedirect]);
 
     return (
         <>

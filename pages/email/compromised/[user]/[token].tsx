@@ -2,7 +2,7 @@ import Input from '@/components/formComponents/Input';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup';
+import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';

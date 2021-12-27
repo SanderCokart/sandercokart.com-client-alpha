@@ -19,7 +19,7 @@ const Users: FC = () => {
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
-    }, []);
+    }, [shouldRedirect]);
 
 
     return (

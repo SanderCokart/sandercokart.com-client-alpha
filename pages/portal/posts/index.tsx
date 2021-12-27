@@ -17,7 +17,7 @@ const Posts: FC = () => {
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
-    }, []);
+    }, [shouldRedirect]);
 
     const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'actions'];
 

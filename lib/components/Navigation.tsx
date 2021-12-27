@@ -14,10 +14,6 @@ const Navigation: FC = () => {
         const { pathname } = useRouter();
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
 
-        useEffect(() => {
-            console.log(window.matchMedia(`all and (max-width: 600px})`).matches);
-        });
-
         const isPortalPage = pathname.includes('portal');
 
         const openCompassNav = () => {
@@ -95,6 +91,7 @@ const Navigation: FC = () => {
                         {/*RIGHT*/}
                         <div>
 
+                            <NavItem href="/contact" icon="envelope" text="Contact"/>
                             {isAdmin && <NavItem href="/portal" icon="database" text="Portal"/>}
 
                             {loggedIn ?

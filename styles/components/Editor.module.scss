@@ -1,6 +1,40 @@
 @use '../core';
 
-.view {
-  position: relative;
-  z-index: 1000;
+
+.editor {
+  height: core.$navHeightCalc;
+  background: var(--bg) !important;
+  border: none !important;
+
+  /* TOOLBAR */
+  > div:nth-child(1) {
+    background-color: var(--bg-nav);
+    border: none;
+
+    * {
+      color: inherit !important;
+      background: none;
+      font-size: 2rem !important;
+    }
+    /* Editor Pane */
+  }
+
+  > div:nth-child(2) {
+    > section:nth-child(2) > div {
+      padding: 0 !important;
+    }
+  }
+
+  .markdown {
+    background: inherit !important;
+    color: inherit !important;
+  }
+
+  .html {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background: inherit !important;
+  }
 }
+

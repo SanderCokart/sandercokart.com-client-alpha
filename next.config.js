@@ -15,7 +15,8 @@ module.exports = {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         domains: ['api.sandercokart.com', '192.168.2.160', '192.168.2.15'],
-        formats: ['image/avif', 'image/webp'],
+        formats: ['image/avif', 'image/webp']
+
     },
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')]
@@ -28,5 +29,4 @@ module.exports = {
 
         return config;
     },
-
 };

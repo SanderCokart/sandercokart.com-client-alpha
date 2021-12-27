@@ -11,8 +11,9 @@
     top: 0;
     left: 0;
     right: 0;
-    bottom: 10px;
+    bottom: 0;
     background-color: var(--bg);
+    z-index: map-get(core.$z-indexes, 'navigation');
   }
 
   .labelStandalone {

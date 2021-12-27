@@ -32,7 +32,6 @@ const DropBox: FC<FileProps> = (props) => {
         //     setValue(name, [...currentFiles, data]);
         // }
         const currentFiles = getValues(name);
-        console.log(currentFiles);
         setValue(name, [...currentFiles, ...newFiles]);
     };
 

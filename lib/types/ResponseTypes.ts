@@ -30,3 +30,6 @@ export interface UsersResponse extends AxiosResponse {
     meta: Meta;
 }
 
+export interface PostsSlugsResponse extends AxiosResponse {
+    params: { slug: string };
+}

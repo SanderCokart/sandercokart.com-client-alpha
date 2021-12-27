@@ -2,7 +2,7 @@ import Input from '@/components/formComponents/Input';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/PasswordForgot.module.scss';
 import type {PasswordForgotFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup';
+import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
