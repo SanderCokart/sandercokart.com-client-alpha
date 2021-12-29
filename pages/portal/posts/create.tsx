@@ -2,7 +2,7 @@ import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import TextArea from '@/components/formComponents/TextArea';
 import Loader from '@/components/Loader';
-import MDXComponents from '@/components/MDXComponents/MDXComponents';
+import MDXComponents from '@/components/MDXComponents';
 import axios from '@/functions/shared/axios';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';
@@ -88,8 +88,6 @@ const CreatePostPage: FC = () => {
         setValue('markdown', value.text);
     };
 
-    const codeString = '(num) => num + 1';
-
     return (
         <>
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
@@ -121,6 +119,7 @@ const CreatePostPage: FC = () => {
                                        }
                                    }
                                    }
+                                   syncScrollMode={['rightFollowLeft', 'leftFollowRight']}
                                    onChange={onChange}/>
                         <button type="submit">Submit</button>
                     </form>

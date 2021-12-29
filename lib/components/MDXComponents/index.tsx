@@ -1,4 +1,4 @@
-import Code from '@/components/MDXComponents/Code';
+import NewCode from '@/components/MDXComponents/NewCode';
 import styles from '@/styles/components/MDXComponents.module.scss';
 import {Property} from 'csstype';
 import type {FC} from 'react';
@@ -32,7 +32,6 @@ export const UL: FC = (props) => <ul className={styles.ul} {...props}/>;
 export const LI: FC = (props) => <li className={styles.li} {...props}/>;
 export const OL: FC = (props) => <ol className={styles.ol} {...props}/>;
 
-
 export const MDXComponents = {
     p: P,
     Title,
@@ -46,6 +45,6 @@ export const MDXComponents = {
     ul: UL,
     li: LI,
     ol: OL,
-    code: Code,
+    code: NewCode
 };
 export default MDXComponents;
