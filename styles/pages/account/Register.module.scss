@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .register {
   .form {
@@ -36,7 +36,7 @@
   }
 }
 
-@include core.up(core.$sm) {
+@include utils.up(utils.$sm) {
   .register {
     height: 100%;
     display: flex;

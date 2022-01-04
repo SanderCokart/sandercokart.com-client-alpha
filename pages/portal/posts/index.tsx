@@ -19,7 +19,7 @@ const Posts: FC = () => {
         if (shouldRedirect) router.push('/login');
     }, [shouldRedirect]);
 
-    const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'actions'];
+    const keys = ['id', 'title', 'slug', 'author', 'status', 'createdAt', 'updatedAt', 'publishedAt', 'actions'];
 
     return (
         <>
@@ -70,8 +70,10 @@ const PostRow: FC<PostRowProps> = ({ post, onDelete, onEdit }) => {
             <td>{post.title}</td>
             <td>{post.slug}</td>
             <td>{post.author.name}</td>
+            <td className={styles[post.status]}>{post.status}</td>
             <td>{moment(post.createdAt).calendar()}</td>
             <td>{moment(post.updatedAt).calendar()}</td>
+            <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
 
             <td className={styles.actions}>
                 <div>

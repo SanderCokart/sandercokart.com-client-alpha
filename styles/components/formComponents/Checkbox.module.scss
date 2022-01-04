@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .formControl {
   .labelStandalone {
@@ -34,11 +34,11 @@
         height: 100%;
         background-color: var(--acc);
         transform: scale(0);
-        transition: core.$transitionTime ease transform;
+        transition: utils.$transitionTime ease transform;
       }
 
       svg {
-        transition: core.$transitionTime ease transform;
+        transition: utils.$transitionTime ease transform;
         transform: scale(0);
         width: 70%;
         height: 70%;

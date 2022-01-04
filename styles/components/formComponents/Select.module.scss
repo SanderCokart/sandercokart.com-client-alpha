@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .formControl {
   display: flex;
@@ -21,7 +21,7 @@
       height: inherit;
       padding: 8px;
       outline: none;
-      transition: background-color core.$transitionTime ease;
+      transition: background-color utils.$transitionTime ease;
       background-color: hsl(0, 0%, 93%);
       border: none;
       font-size: 1rem;

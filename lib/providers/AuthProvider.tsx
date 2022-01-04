@@ -15,9 +15,6 @@ export const useAuth = ({ middleware }: Props = {}) => {
     const context = useContext(AuthContext) as AuthContextType;
     const { user, error, isLoading } = context;
 
-    console.log(!!(!user && error));
-
-
     const shouldRedirect = () => {
         if (middleware === 'guest' && user) return true;
         return !!(middleware === 'auth' && !user && error);

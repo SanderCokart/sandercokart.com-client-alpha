@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .container {
   display: flex;
@@ -15,7 +15,7 @@
   grid-template-columns: 1fr;
   grid-auto-rows: 40vh;
 
-  @include core.up(core.$sm) {
+  @include utils.up(utils.$sm) {
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   }
 }

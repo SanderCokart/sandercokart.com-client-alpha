@@ -1,0 +1,19 @@
+[data-tooltip] {
+  position: relative;
+
+  &:hover {
+    &::after {
+      content: attr(data-tooltip);
+      color: var(--acc-contrast-text);
+      background-color: var(--acc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      transform-origin: top;
+      padding: 16px;
+    }
+  }
+}

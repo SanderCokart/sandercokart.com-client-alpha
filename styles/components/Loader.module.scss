@@ -1,4 +1,4 @@
-@use '../core';
+@use '../utils';
 
 .container {
   height: 100%;
@@ -14,9 +14,9 @@
   left: 0;
   background-color: var(--bg);
   color: var(--bg-contrast-text);
-  z-index: map-get(core.$z-indexes, 'loader');
+  z-index: map-get(utils.$z-indexes, 'loader');
 
-  @include core.up(core.$lg) {
+  @include utils.up(utils.$lg) {
     font-size: 5rem;
   }
 

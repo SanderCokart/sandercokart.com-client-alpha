@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .label {
   display: flex;
@@ -39,9 +39,9 @@
   right: 0;
   bottom: 0;
   background-color: var(--acc-disabled);
-  -webkit-transition: core.$transitionTime;
-  transition: core.$transitionTime;
-  border-radius: core.$radius;
+  -webkit-transition: utils.$transitionTime;
+  transition: utils.$transitionTime;
+  border-radius: utils.$radius;
   color: var(--acc-disabled-contrast-text);
 
   display: flex;
@@ -56,8 +56,8 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: core.$transitionTime;
-    transition: core.$transitionTime;
+    -webkit-transition: utils.$transitionTime;
+    transition: utils.$transitionTime;
     border-radius: 50%;
   }
 }

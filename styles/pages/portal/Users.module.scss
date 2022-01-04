@@ -1,11 +1,11 @@
-@use '../../core';
+@use '../../utils';
 
 .users {
-  margin-top: core.$navHeight;
-  margin-left: core.$navWidth;
+  margin-top: utils.$navHeight;
+  margin-left: utils.$navWidth;
   position: relative;
-  width: core.$navWidthCalc;
-  height: core.$navHeightCalc;
+  width: utils.$navWidthCalc;
+  height: utils.$navHeightCalc;
   overflow: auto;
 
   table {
@@ -46,7 +46,7 @@ td.actions {
     gap: 16px;
 
     button {
-      @include core.buttonReset;
+      @include utils.buttonReset;
     }
   }
 
@@ -69,7 +69,7 @@ td.actions {
   gap: 30px;
 
   button {
-    @include core.buttonReset;
+    @include utils.buttonReset;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -77,7 +77,7 @@ td.actions {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform ease core.$transitionTime;
+    transition: transform ease utils.$transitionTime;
 
     &:hover {
       background-color: var(--acc);
@@ -93,4 +93,20 @@ td.actions {
       }
     }
   }
+}
+
+.unlisted, .published, .archived {
+  font-weight: bold;
+}
+
+.unlisted {
+  background-color: var(--warning);
+}
+
+.published {
+  background-color: var(--success);
+}
+
+.archived {
+  background-color: var(--info);
 }

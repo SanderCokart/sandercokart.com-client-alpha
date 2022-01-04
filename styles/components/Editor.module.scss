@@ -1,9 +1,9 @@
-@use '../core';
+@use '../utils';
 
 
 .editor {
   margin: 0 -16px;
-  height: core.$navHeightCalc;
+  height: utils.$navHeightCalc;
   background: var(--bg) !important;
   border: none !important;
 

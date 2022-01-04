@@ -1,4 +1,4 @@
-@use '../../core';
+@use '../../utils';
 
 .iconContainer {
   height: inherit;
@@ -25,7 +25,7 @@
     height: inherit;
     padding: 8px;
     outline: none;
-    transition: background-color core.$transitionTime ease;
+    transition: background-color utils.$transitionTime ease;
     background-color: hsl(0, 0%, 93%);
     border: none;
     font-size: 1rem;
@@ -58,7 +58,7 @@
     background-color: var(--acc);
     width: 100%;
     height: 4px;
-    transition: transform core.$transitionTime ease;
+    transition: transform utils.$transitionTime ease;
     transform: scaleX(0);
     transform-origin: right;
     position: absolute;

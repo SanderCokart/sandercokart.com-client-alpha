@@ -1,3 +1,4 @@
+import Checkbox from '@/components/formComponents/Checkbox';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import TextArea from '@/components/formComponents/TextArea';
@@ -38,14 +39,17 @@ const CreatePostPage: FC = () => {
             title: Yup.string().required('This field is required'),
             markdown: Yup.string().required('This field is required'),
             excerpt: Yup.string().required('This field is required'),
-            banner_image: Yup.mixed().required()
+            banner_image: Yup.mixed().required(),
+            publish_now: Yup.boolean().required()
         })),
         mode: 'all',
         defaultValues: {
             title: '',
             excerpt: '',
             markdown: '',
-            banner_image: []
+            banner_image: [],
+            publish_now: false
+
         }
     });
 
@@ -88,6 +92,23 @@ const CreatePostPage: FC = () => {
         setValue('markdown', value.text);
     };
 
+    useEffect(() => {
+        axios.simpleGet('files/1').then(res => {
+            console.log(res.data);
+        });
+    }, []);
+
+    const onImageUpload = async (file: File) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const { data } = await axios.simplePost('/files', formData);
+
+        return new Promise(resolve => {
+            resolve(`${process.env.NEXT_PUBLIC_API_URL}/files/${data.id}`);
+        });
+    };
+
     return (
         <>
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
@@ -97,6 +118,7 @@ const CreatePostPage: FC = () => {
                         <Input label="Title" name="title"/>
                         <TextArea label="Excerpt" name="excerpt"/>
                         <File name="banner_image"/>
+                        <Checkbox label="Publish Now" name="publish_now"/>
                         <MDXEditor className={editorStyles.editor} htmlClass={editorStyles.html}
                                    markdownClass={editorStyles.markdown}
                                    plugins={PLUGINS}
@@ -120,7 +142,8 @@ const CreatePostPage: FC = () => {
                                    }
                                    }
                                    syncScrollMode={['rightFollowLeft', 'leftFollowRight']}
-                                   onChange={onChange}/>
+                                   onChange={onChange}
+                                   onImageUpload={onImageUpload}/>
                         <button type="submit">Submit</button>
                     </form>
                 </FormProvider>

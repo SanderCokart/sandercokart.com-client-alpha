@@ -12,9 +12,11 @@ export interface Post {
     markdown: string;
     createdAt: string;
     updatedAt: string;
+    publishedAt: string;
     slug: string;
     author: User;
     banner: Banner;
+    status: 'unlisted' | 'published' | 'archived';
 }
 
 export interface Banner {
