@@ -15,3 +15,23 @@ a {
 body {
   font-size: 100%;
 }
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--scrollbar);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--acc);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

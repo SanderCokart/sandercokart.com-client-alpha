@@ -26,6 +26,7 @@ import {
     faSun,
     faTimes,
     faTrash,
+    faUnderline,
     faUser,
     faUserLock,
     faWindowMaximize,
@@ -63,5 +64,6 @@ export default [
     faDatabase,
     faPen,
     faArrowRight,
-    faArrowLeft
+    faArrowLeft,
+    faUnderline
 ];

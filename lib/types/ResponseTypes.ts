@@ -19,12 +19,14 @@ interface Meta {
 }
 
 export interface PostsResponse extends AxiosResponse {
+    [key: string]: any;
     posts: Post[];
     links: Links;
     meta: Meta;
 }
 
 export interface UsersResponse extends AxiosResponse {
+    [key: string]: any;
     users: User[];
     links: Links;
     meta: Meta;

@@ -50,11 +50,22 @@ export interface UserRowProps {
 
 export interface PostRowProps {
     post: Post;
-    onDelete: (id: number) => void;
-    onEdit: (id: number) => void;
 }
 
 export interface BlogPostProps {
     post: Post;
     mdxSource: MDXRemoteSerializeResult;
+}
+
+export interface PaginatedModelProviderProps {
+    model: string;
+    middleware?: 'guest' | 'auth';
+}
+
+export interface EditPostFormProps {
+    post: Post;
+}
+
+export interface MarkdownEditorProps {
+    name: string;
 }

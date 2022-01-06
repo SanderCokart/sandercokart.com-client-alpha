@@ -10,6 +10,7 @@ export interface Post {
     id: number;
     title: string;
     markdown: string;
+    excerpt: string;
     createdAt: string;
     updatedAt: string;
     publishedAt: string;

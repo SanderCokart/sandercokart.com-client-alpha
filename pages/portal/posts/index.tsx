@@ -1,17 +1,18 @@
 import Loader from '@/components/Loader';
-import usePosts from '@/hooks/usePosts';
 import {useAuth} from '@/providers/AuthProvider';
+import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
 import styles from '@/styles/pages/portal/Users.module.scss';
+import type {Post} from '@/types/ModelTypes';
 import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 const Posts: FC = () => {
-    const { posts, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = usePosts();
     const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
     const router = useRouter();
 
@@ -19,68 +20,89 @@ const Posts: FC = () => {
         if (shouldRedirect) router.push('/login');
     }, [shouldRedirect]);
 
-    const keys = ['id', 'title', 'slug', 'author', 'status', 'createdAt', 'updatedAt', 'publishedAt', 'actions'];
 
     return (
-        <>
+        <PaginatedModelProvider middleware="auth" model="posts">
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
-
-            <main className={styles.users}>
-                <table>
-                    <thead>
-                    <tr>
-                        {keys.map(key => (
-                            <td key={key}>{key}</td>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {isLoading ? [...Array(100)].map((_, index) => (
-                        <tr key={index}>
-                            {[...Array(8)].map((_, index2) =>
-                                <td key={index2}><Skeleton baseColor="#222" width="100%"/></td>
-                            )}
-                        </tr>
-                    )) : posts.map(post => (
-                        <PostRow key={post.id} post={post} onDelete={onDelete} onEdit={onEdit}/>
-                    ))}
-
-                    </tbody>
-                </table>
-
-                <div className={styles.pageControls}>
-                    <button disabled={!hasLess} onClick={prevPage}>
-                        <FontAwesomeIcon icon="arrow-left"/>
-                    </button>
-                    <button disabled={!hasMore} onClick={nextPage}>
-                        <FontAwesomeIcon icon="arrow-right"/>
-                    </button>
-                </div>
-            </main>
-        </>
+            <PostTable/>
+        </PaginatedModelProvider>
     );
 };
 
 export default Posts;
 
-const PostRow: FC<PostRowProps> = ({ post, onDelete, onEdit }) => {
+const PostRow: FC<PostRowProps> = ({ post }) => {
     return (
         <tr>
             <td>{post.id}</td>
-            <td>{post.title}</td>
+            <td data-tooltip={post.title}>{post.title}</td>
             <td>{post.slug}</td>
             <td>{post.author.name}</td>
-            <td className={styles[post.status]}>{post.status}</td>
             <td>{moment(post.createdAt).calendar()}</td>
             <td>{moment(post.updatedAt).calendar()}</td>
             <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
+            <td className={styles[post.status]}>{post.status}</td>
 
             <td className={styles.actions}>
                 <div>
-                    <button type="button" onClick={() => onDelete(post.id)}><FontAwesomeIcon icon="trash"/></button>
-                    <button type="button" onClick={() => onEdit(post.id)}><FontAwesomeIcon icon="pen"/></button>
+                    <Link href={`/portal/posts/delete/${post.slug}`}>
+                        <a type="button"><FontAwesomeIcon icon="trash"/></a>
+                    </Link>
+                    <Link href={`/portal/posts/edit/${post.slug}`}>
+                        <a type="button"><FontAwesomeIcon icon="pen"/></a>
+                    </Link>
                 </div>
             </td>
         </tr>
+    );
+};
+
+const PostTable: FC = () => {
+    const { data, isLoading, nextPage, prevPage, hasMore, hasLess } = usePaginatedContext<Post>();
+
+    const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'publishedAt', 'status', 'actions'];
+
+    return (
+        <main className={styles.users}>
+            <table>
+                <colgroup>
+                    <col width="100"/>
+                    <col width="200"/>
+                    <col width="200"/>
+                    <col width="200"/>
+                    <col width="250"/>
+                    <col width="250"/>
+                    <col width="250"/>
+                    <col width="100"/>
+                    <col width="100"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    {keys.map(key => (
+                        <td key={key}>{key}</td>
+                    ))}
+                </tr>
+                </thead>
+                <tbody>
+                {isLoading ? [...Array(100)].map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                        <td colSpan={9}><Skeleton baseColor="var(--bg)" duration={.75} height="100%" width="100%"/></td>
+                    </tr>
+                )) : data.map(post => (
+                    <PostRow key={post.id} post={post}/>
+                ))}
+
+                </tbody>
+            </table>
+
+            <div className={styles.pageControls}>
+                <button disabled={!hasLess} onClick={prevPage}>
+                    <FontAwesomeIcon icon="arrow-left"/>
+                </button>
+                <button disabled={!hasMore} onClick={nextPage}>
+                    <FontAwesomeIcon icon="arrow-right"/>
+                </button>
+            </div>
+        </main>
     );
 };

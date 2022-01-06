@@ -53,7 +53,7 @@ const CreatePostPage: FC = () => {
         }
     });
 
-    const { formState: { isDirty, isValid, isSubmitted }, handleSubmit, setValue } = methods;
+    const { handleSubmit, setValue } = methods;
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
