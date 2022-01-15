@@ -7,8 +7,8 @@ import MDXComponents from '@/components/MDXComponents';
 import axios from '@/functions/shared/axios';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';
-import editorStyles from '@/styles/components/Editor.module.scss';
-import pageStyles from '@/styles/pages/portal/CreatePost.module.scss';
+import editorStyles from '@/styles/components/formComponents/Editor.module.scss';
+import pageStyles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 // @ts-ignore

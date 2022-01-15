@@ -33,11 +33,12 @@ const UL: FC = (props) => <ul className={styles.ul} {...props}/>;
 const LI: FC = (props) => <li className={styles.li} {...props}/>;
 const OL: FC = (props) => <ol className={styles.ol} {...props}/>;
 
-const Image: FC = (props) => <img className={styles.img} {...props}/>;
+//@ts-ignore
+const Image: FC<Partial<HTMLImageElement>> = (props) => <img {...props} className={styles.img} title={props.alt}/>;
 
 const CustomImage: FC<{ src: string }> = (props) => (
     <div className={styles.imageWrapper}>
-        <NextImage {...props} unoptimized height={300} layout="fill" objectFit="contain" width={300}/>
+        <NextImage {...props} layout="fill" objectFit="contain" unoptimized={props.src.includes('/files')}/>
     </div>
 );
 

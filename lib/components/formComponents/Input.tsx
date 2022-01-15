@@ -18,20 +18,18 @@ const Input: FC<InputProps> = (props) => {
 
     return (
         <div className={styles.formControl}>
-            <div>
-                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
+            {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
 
-                <div className={styles.formControlError}>
-                    {error && <span>{error.message}</span>}
-                </div>
+            <div className={styles.formControlError}>
+                {error && <span>{error.message}</span>}
+            </div>
 
-                <div className={styles.iconContainer}>
-                    {prependIcon &&
-                        <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                    <input {...rest} {...register(name)} className={inputClassName} id={id} name={name} type={type}/>
-                    {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
-                    <div className={styles.line}/>
-                </div>
+            <div className={styles.iconContainer}>
+                {prependIcon &&
+                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
+                <input {...rest} {...register(name)} className={inputClassName} id={id} name={name} type={type}/>
+                {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+                <div className={styles.line}/>
             </div>
         </div>
     );

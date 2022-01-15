@@ -39,3 +39,9 @@ export interface User {
     [key: string]: any;
 }
 
+export interface File {
+    id: number,
+    original_name: string;
+    relative_url?: string;
+    created_at: string;
+}

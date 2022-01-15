@@ -56,4 +56,6 @@ interface CustomAxiosInstance extends AxiosInstance {
     simplePatch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<CustomApiPromise<T>>;
 }
 
+
+
 export default toExport;

@@ -4,6 +4,7 @@ import TextArea from '@/components/formComponents/TextArea';
 import Loader from '@/components/Loader';
 import PortalContainer from '@/components/PortalContainer';
 import {useAuth} from '@/providers/AuthProvider';
+import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {EditPostFormProps} from '@/types/PropTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
@@ -11,7 +12,6 @@ import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import * as Yup from 'yup';
 
@@ -28,7 +28,7 @@ const EditPost: FC = () => {
     return (
         <PortalContainer>
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
-            <h1>Edit Post - {post ? `${post.id} - ${post.title}` : <Skeleton baseColor="var(--bg)"/>}</h1>
+            {/*<h1>Edit Post - {post ? `${post.id} - ${post.title}` : <Skeleton baseColor="var(--bg)"/>}</h1>*/}
             <EditPostForm post={post}/>
         </PortalContainer>
     );
@@ -62,9 +62,9 @@ const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
 
     return (
         <FormProvider {...methods}>
-            <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
-                <Input name="title"/>
-                <TextArea name="excerpt"/>
+            <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
+                <Input label="Title" name="title"/>
+                <TextArea label="Excerpt" name="excerpt"/>
                 <MarkdownEditor name="markdown"/>
                 <button type="submit">submit</button>
             </form>

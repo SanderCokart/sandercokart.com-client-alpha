@@ -1,0 +1,11 @@
+@mixin toolbarItemDropdown() {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  pointer-events: none;
+  background: var(--bg-nav);
+  padding: 16px;
+  transform-origin: top;
+  transition: transform 150ms ease;
+}

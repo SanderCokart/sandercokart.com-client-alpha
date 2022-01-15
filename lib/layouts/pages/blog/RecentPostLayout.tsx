@@ -2,11 +2,12 @@ import useImage from '@/hooks/useImage';
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 import {RecentPostLayoutProps} from '@/types/PropTypes';
 import Image from 'next/image';
-import type {FC} from 'react';
 import Link from 'next/link';
-const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
-    const { url } = useImage(post.banner);
+import type {FC} from 'react';
 
+const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
+    const { getUrl } = useImage();
+    const url = getUrl(post.banner);
 
     return (
         <Link href={'/blog/posts/' + post.slug}>

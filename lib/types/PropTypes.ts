@@ -1,4 +1,5 @@
 import {MDXRemoteSerializeResult} from 'next-mdx-remote';
+import {MutableRefObject} from 'react';
 import type {FontAwesomeIcon} from './CustomTypes';
 import type {Post, User} from './ModelTypes';
 import type {PostsResponse} from './ResponseTypes';
@@ -68,4 +69,8 @@ export interface EditPostFormProps {
 
 export interface MarkdownEditorProps {
     name: string;
+}
+
+export interface ToolbarProps {
+    name:string;
 }

@@ -1,4 +1,4 @@
-import MDXComponents, {Title} from '@/components/MDXComponents';
+import useMDXComponents from '@/components/MDXComponents';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
 import {BlogPostProps} from '@/types/PropTypes';
@@ -11,6 +11,8 @@ import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 
 const BlogPost: FC<BlogPostProps> = ({ post, mdxSource }) => {
+    const MDXComponents = useMDXComponents();
+    const { Title } = MDXComponents;
     return (
         <div className={styles.container}>
             <Title>{post.title}</Title>

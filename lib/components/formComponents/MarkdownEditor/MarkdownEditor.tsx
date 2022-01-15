@@ -1,97 +1,141 @@
-import File from '@/components/formComponents/File';
-import MDXComponents from '@/components/MDXComponents';
-import axios from '@/functions/shared/axios';
-import editorStyles from '@/styles/components/Editor.module.scss';
-import {MarkdownEditorProps} from '@/types/PropTypes';
+import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar';
+import useMDXComponents from '@/components/MDXComponents';
+import styles from '@/styles/components/formComponents/MarkdownEditor/MarkdownEditor.module.scss';
+import type {MarkdownEditorProps} from '@/types/PropTypes';
 // @ts-ignore
-import MDX from '@mdx-js/runtime';
-import dynamic from 'next/dynamic';
-import type {FC} from 'react';
+import MDXRuntime from '@mdx-js/runtime';
+import type {FC, MouseEvent, MutableRefObject} from 'react';
+import {createContext, createElement, useContext, useRef} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
-import {Plugins} from 'react-markdown-editor-lite';
-import 'react-markdown-editor-lite/lib/index.css';
 import rehypeSlug from 'rehype-slug';
-import remarkBreaks from 'remark-breaks';
-import remarkGfm from 'remark-gfm';
-import remarkParse from 'remark-parse';
 import remarkToc from 'remark-toc';
 // @ts-ignore
 import remarkUnderline from 'remark-underline';
 
+const EditorContext = createContext({});
+export const useEditorContext = () => useContext(EditorContext) as { editorRef: MutableRefObject<HTMLTextAreaElement | null>, previewRef: MutableRefObject<HTMLTextAreaElement | null> };
 
-const MDXEditor = dynamic(
-    () => {
-        return new Promise((resolve) => {
-            Promise.all([
-                import('react-markdown-editor-lite'),
-                import ('./Plugins/Underline'),
-                import ('./Plugins/HR')
-            ]).then((res) => {
-                res[0].default.use(res[1].default);
-                res[0].default.use(res[2].default);
-                res[0].default.use(Plugins.TabInsert, { tabMapValue: 3 });
-                res[0].default.unuse(Plugins.FontUnderline);
-                res[0].default.unuse(Plugins.Clear);
-                res[0].default.unuse(Plugins.Logger);
-                res[0].default.unuse(Plugins.Clear);
-                resolve(res[0].default);
-            });
-        });
-    },
-    {
-        ssr: false
-    }
-);
+const MarkdownEditor: FC<MarkdownEditorProps> = ({ name }) => {
+    const editorRef = useRef<HTMLTextAreaElement | null>(null);
+    const previewRef = useRef<HTMLDivElement | null>(null);
+    const { register } = useFormContext();
 
-const MarkdownEditor: FC<MarkdownEditorProps> = ({ name, ...props }) => {
-    const { setValue, watch } = useFormContext();
+    const { ref, ...rest } = register(name);
 
-    const onChange = (value: { text: string, html: string }) => {
-        setValue(name, value.text);
-    };
+    const syncTextAreaWithPreview = (e: MouseEvent<HTMLTextAreaElement>) => {
+        if (previewRef.current && editorRef.current) {
+            const elements = Array.from(document.querySelectorAll(':hover'));
+            const hovering = elements.includes(editorRef.current);
 
-    const onImageUpload = async (file: File) => {
-        const formData = new FormData();
-        formData.append('file', file);
+            if (hovering) {
+                //total height
+                const textareaHeight = editorRef.current.scrollHeight;
+                const previewHeight = previewRef.current.scrollHeight;
 
-        const { data } = await axios.simplePost('/files', formData);
+                //amount actually scrolled
+                const textareaScrolled = editorRef.current.scrollTop;
 
+                //inner height
+                const textareaInnerHeight = editorRef.current.clientHeight;
+                const previewInnerHeight = previewRef.current.clientHeight;
 
-        return new Promise(resolve => {
-            resolve(`${process.env.NEXT_PUBLIC_API_URL}/files/${data.id}`);
-        });
-    };
+                //available scroll hight on both
+                const textareaScrollArea = textareaHeight - textareaInnerHeight;
+                const previewScrollArea = previewHeight - previewInnerHeight;
 
-    const renderFunction = (html: string) => {
-        const [title, excerpt] = watch(['title', 'excerpt', 'markdown']);
-        const header = `<Title>${title}</Title>\n\n${excerpt}\n\n`;
-        try {
-            return (
-                <MDX components={MDXComponents}
-                     rehypePlugins={[rehypeSlug]}
-                     remarkPlugins={[remarkParse, remarkGfm, remarkBreaks, remarkToc, remarkUnderline]}>
-                    {header + html}
-                </MDX>
-            );
-        } catch (error) {
-            return (
-                <div>
-                    <h1>{error.name}</h1>
-                    <p>{error.message}</p>
-                </div>
-            );
+                //amount scrolled converted from textarea to preview
+                const percentageScrolledOnTextarea = (100 / textareaScrollArea) * textareaScrolled;
+                const result = (previewScrollArea / 100) * percentageScrolledOnTextarea;
+
+                previewRef.current.scrollTop = result;
+            }
         }
     };
 
-    return <MDXEditor
-        className={editorStyles.editor}
-        htmlClass={editorStyles.html}
-        markdownClass={editorStyles.markdown}
-        renderHTML={renderFunction}
-        value={watch('markdown')}
-        onChange={onChange}
-        onImageUpload={onImageUpload}
-    />;
+
+    return (
+        <EditorContext.Provider value={{ editorRef, previewRef }}>
+            <div className={styles.container}>
+                <Toolbar name={name}/>
+                <div className={styles.editorContainer}>
+                <textarea onScroll={syncTextAreaWithPreview} {...rest} ref={el => {
+                    ref(el);
+                    editorRef.current = el;
+                }} className={styles.editor} name={name}/>
+                    <Preview name={name}/>
+                </div>
+            </div>
+        </EditorContext.Provider>
+    );
 };
 
 export default MarkdownEditor;
+
+
+const Preview: FC<{ name: string }> = ({ name, ...props }) => {
+    const MDXComponents = useMDXComponents(true);
+    const { editorRef, previewRef } = useEditorContext();
+    const { watch } = useFormContext();
+    const markdown: string = watch(name);
+
+    const syncPreviewWithTextArea = () => {
+
+        if (previewRef.current && editorRef.current) {
+            const elements = Array.from(document.querySelectorAll(':hover'));
+            const hovering = elements.includes(previewRef.current);
+
+            if (hovering) {
+                //total height
+                const textareaHeight = editorRef.current.scrollHeight;
+                const previewHeight = previewRef.current.scrollHeight;
+
+                //amount actually scrolled
+                const previewScrolled = previewRef.current.scrollTop;
+
+                //inner height
+                const textareaInnerHeight = editorRef.current.clientHeight;
+                const previewInnerHeight = previewRef.current.clientHeight;
+
+                //available scroll hight on both
+                const textareaScrollArea = textareaHeight - textareaInnerHeight;
+                const previewScrollArea = previewHeight - previewInnerHeight;
+
+                //amount scrolled converted from preview to textarea
+                const percentageScrolledOnPreview = (100 / previewScrollArea) * previewScrolled;
+                const result = (textareaScrollArea / 100) * percentageScrolledOnPreview;
+
+                editorRef.current.scrollTop = result;
+            }
+        }
+    };
+
+    try {
+        return createElement(
+            'div', {
+                ...props,
+                ref: previewRef,
+                onScroll: syncPreviewWithTextArea,
+                className: styles.preview,
+                dangerouslySetInnerHTML: {
+                    __html: renderToStaticMarkup(
+                        <MDXRuntime components={MDXComponents} rehypePlugins={[rehypeSlug]}
+                                    remarkPlugins={[remarkToc, remarkUnderline]}>
+                            {markdown}
+                        </MDXRuntime>
+                    )
+                }
+            }
+        );
+    } catch (e) {
+
+        return (
+            <div className={styles.error}>
+                <MDXRuntime components={MDXComponents} rehypePlugins={[rehypeSlug]}
+                            remarkPlugins={[remarkToc, remarkUnderline]}>
+                    {renderToStaticMarkup(<>{markdown}</>)}
+                </MDXRuntime>
+            </div>
+        );
+    }
+};

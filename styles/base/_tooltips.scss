@@ -1,3 +1,5 @@
+@use '../utils';
+
 [data-tooltip] {
   position: relative;
 
@@ -6,14 +8,34 @@
       content: attr(data-tooltip);
       color: var(--acc-contrast-text);
       background-color: var(--acc);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       position: absolute;
       top: 100%;
+      text-align: left;
       left: 0;
       transform-origin: top;
       padding: 16px;
+      white-space: pre;
+      font-weight: bold;
+    }
+  }
+}
+
+[data-component-tooltip] {
+  position: relative;
+
+  &:hover {
+    &::after {
+      @include utils.buttonReset;
+      content: attr(data-component-tooltip);
+      color: var(--acc-contrast-text);
+      background-color: var(--acc);
+      position: absolute;
+      text-align: left;
+      top: 0;
+      left: calc(100% + 16px);
+      padding: 16px;
+      white-space: pre;
+      font-weight: bold;
     }
   }
 }

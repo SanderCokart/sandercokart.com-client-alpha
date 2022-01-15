@@ -1,9 +1,9 @@
 import {Banner} from '@/types/ModelTypes';
 
-const UseImage = (image: Banner) => {
-    const url = image?.relative_url ? `${process.env.NEXT_PUBLIC_API_URL}/${image.relative_url}` : `${process.env.NEXT_PUBLIC_API_URL}/files/${image.id}`;
+const UseImage = () => {
+    const getUrl = (image: Banner) => image?.relative_url ? `${process.env.NEXT_PUBLIC_API_URL}/${image.relative_url}` : `${process.env.NEXT_PUBLIC_API_URL}/files/${image.id}`;
 
-    return { url };
+    return { getUrl };
 };
 
 export default UseImage;

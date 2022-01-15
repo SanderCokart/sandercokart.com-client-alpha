@@ -28,7 +28,7 @@ export interface InputProps extends InputHTMLAttributes<any> {
     placeholder?: string;
     prependIcon?: FontAwesomeIcon;
     appendIcon?: FontAwesomeIcon;
-    type?: 'password' | 'email' | 'text';
+    type?: 'password' | 'email' | 'text' | 'number';
 }
 
 export interface FileProps extends InputHTMLAttributes<any> {
