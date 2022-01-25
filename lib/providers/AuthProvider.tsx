@@ -52,8 +52,8 @@ const AuthProvider: FC = ({ children }) => {
     };
 
     useEffect(() => {
-        if (user || error)
-            setIsLoading(false);
+        if (user && error) mutate(null);
+        else if (user || error) setIsLoading(false);
     }, [user, error]);
 
     return (

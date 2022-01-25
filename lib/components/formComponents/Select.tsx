@@ -27,7 +27,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(props,
 
                 <div className={styles.iconContainer}>
                     {prependIcon && <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                    <select {...rest} {...register(name)} className={selectClassName} name={name}>
+                    <select  {...register(name)} className={selectClassName} name={name} {...rest}>
                         {children}
                     </select>
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}

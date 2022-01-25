@@ -2,7 +2,7 @@ import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
 import styles from '@/styles/pages/portal/Users.module.scss';
-import type {Post} from '@/types/ModelTypes';
+import type {PostModel} from '@/types/ModelTypes';
 import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
@@ -11,18 +11,20 @@ import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import {useSWRConfig} from 'swr';
 
 const Posts: FC = () => {
     const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
     const router = useRouter();
+    const { mutate } = useSWRConfig();
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
+        mutate('/user');
     }, [shouldRedirect]);
 
-
     return (
-        <PaginatedModelProvider middleware="auth" model="posts">
+        <PaginatedModelProvider middleware="auth" modelName="posts" url="/posts">
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
             <PostTable/>
         </PaginatedModelProvider>
@@ -41,7 +43,7 @@ const PostRow: FC<PostRowProps> = ({ post }) => {
             <td>{moment(post.createdAt).calendar()}</td>
             <td>{moment(post.updatedAt).calendar()}</td>
             <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
-            <td className={styles[post.status]}>{post.status}</td>
+            <td className={styles[post.status.name]}>{post.status.name}</td>
 
             <td className={styles.actions}>
                 <div>
@@ -58,7 +60,7 @@ const PostRow: FC<PostRowProps> = ({ post }) => {
 };
 
 const PostTable: FC = () => {
-    const { data, isLoading, nextPage, prevPage, hasMore, hasLess } = usePaginatedContext<Post>();
+    const { data, isLoading, nextPage, prevPage, hasMore, hasLess } = usePaginatedContext<PostModel>();
 
     const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'publishedAt', 'status', 'actions'];
 

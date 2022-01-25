@@ -36,7 +36,7 @@ import {
     faTextHeight,
     faTimes,
     faTrash,
-    faUnderline,
+    faUnderline, faUndo,
     faUser,
     faUserLock,
     faWindowMaximize,
@@ -86,5 +86,6 @@ export default [
     faListOl,
     faListUl,
     faLink,
-    faReact
+    faReact,
+    faUndo
 ];

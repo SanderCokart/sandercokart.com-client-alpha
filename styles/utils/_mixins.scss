@@ -47,18 +47,38 @@ $xl: 1536px;
   }
 }
 
-@mixin buttonReset {
-  background: none;
-  text-transform: inherit;
-  font-weight: inherit;
+@mixin defaultButton {
+  background-color: var(--acc-inactive);
+  color: var(--acc-contrast-text);
+
   border: none;
-  color: inherit;
+  outline: none;
   cursor: pointer;
+  user-select: none;
+
+  padding: 8px;
+
+  text-transform: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+
+  width: 100%;
+
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: inherit;
-  outline: none;
-  text-decoration: none;
+
+  transition: background-color 150ms ease;
   pointer-events: auto;
+
+  &:hover, &:active, &:focus {
+    background-color: var(--acc);
+  }
+
+  &:disabled {
+    background-color: var(--acc-disabled);
+    color: var(--acc-disabled-contrast-text);
+    pointer-events: none;
+  }
 }

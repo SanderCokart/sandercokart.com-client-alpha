@@ -25,7 +25,7 @@
 
   &:hover {
     &::after {
-      @include utils.buttonReset;
+      @include utils.defaultButton;
       content: attr(data-component-tooltip);
       color: var(--acc-contrast-text);
       background-color: var(--acc);

@@ -4,8 +4,8 @@ import styles from '@/styles/components/formComponents/MarkdownEditor/MarkdownEd
 import type {MarkdownEditorProps} from '@/types/PropTypes';
 // @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
-import type {FC, MouseEvent, MutableRefObject} from 'react';
-import {createContext, createElement, useContext, useRef} from 'react';
+import type {Dispatch, FC, MouseEvent, MutableRefObject, SetStateAction} from 'react';
+import {createContext, createElement, useContext, useRef, useState} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 import rehypeSlug from 'rehype-slug';
@@ -14,14 +14,31 @@ import remarkToc from 'remark-toc';
 import remarkUnderline from 'remark-underline';
 
 const EditorContext = createContext({});
-export const useEditorContext = () => useContext(EditorContext) as { editorRef: MutableRefObject<HTMLTextAreaElement | null>, previewRef: MutableRefObject<HTMLTextAreaElement | null> };
+export const useEditorContext = () => useContext(EditorContext) as {
+    editorRef: MutableRefObject<HTMLTextAreaElement | null>,
+    previewRef: MutableRefObject<HTMLTextAreaElement | null>,
+    tableRows: number,
+    tableColumns: number,
+    fontSize: number,
+    gridColumns: number,
+    gridRows: number,
+    setState: Dispatch<SetStateAction<{ tableRows: number, tableColumns: number, fontSize: number, gridColumns: number, gridRows: number }>>
+};
 
-const MarkdownEditor: FC<MarkdownEditorProps> = ({ name }) => {
+const MarkdownEditor: FC<MarkdownEditorProps> = ({ name, textareaProps, ...props }) => {
     const editorRef = useRef<HTMLTextAreaElement | null>(null);
     const previewRef = useRef<HTMLDivElement | null>(null);
     const { register } = useFormContext();
 
-    const { ref, ...rest } = register(name);
+    const { ref, ...restOfRegister } = register(name);
+
+    const [state, setState] = useState({
+        tableRows: 1,
+        tableColumns: 1,
+        fontSize: 20,
+        gridColumns: 1,
+        gridRows: 1
+    });
 
     const syncTextAreaWithPreview = (e: MouseEvent<HTMLTextAreaElement>) => {
         if (previewRef.current && editorRef.current) {
@@ -46,23 +63,26 @@ const MarkdownEditor: FC<MarkdownEditorProps> = ({ name }) => {
 
                 //amount scrolled converted from textarea to preview
                 const percentageScrolledOnTextarea = (100 / textareaScrollArea) * textareaScrolled;
-                const result = (previewScrollArea / 100) * percentageScrolledOnTextarea;
 
-                previewRef.current.scrollTop = result;
+                previewRef.current.scrollTop = (previewScrollArea / 100) * percentageScrolledOnTextarea;
             }
         }
     };
 
 
     return (
-        <EditorContext.Provider value={{ editorRef, previewRef }}>
-            <div className={styles.container}>
+        <EditorContext.Provider value={{ editorRef, previewRef, ...state, setState }}>
+            <div {...props} className={styles.container}>
                 <Toolbar name={name}/>
                 <div className={styles.editorContainer}>
-                <textarea onScroll={syncTextAreaWithPreview} {...rest} ref={el => {
+                <textarea {...restOfRegister} ref={el => {
                     ref(el);
                     editorRef.current = el;
-                }} className={styles.editor} name={name}/>
+                }}
+                          className={styles.editor}
+                          name={name}
+                          onScroll={syncTextAreaWithPreview}
+                          {...textareaProps}/>
                     <Preview name={name}/>
                 </div>
             </div>
@@ -75,9 +95,10 @@ export default MarkdownEditor;
 
 const Preview: FC<{ name: string }> = ({ name, ...props }) => {
     const MDXComponents = useMDXComponents(true);
+    const { Title } = MDXComponents;
     const { editorRef, previewRef } = useEditorContext();
     const { watch } = useFormContext();
-    const markdown: string = watch(name);
+    const [markdown, title, excerpt]: string[] = watch([name, 'title', 'excerpt']);
 
     const syncPreviewWithTextArea = () => {
 
@@ -119,10 +140,15 @@ const Preview: FC<{ name: string }> = ({ name, ...props }) => {
                 className: styles.preview,
                 dangerouslySetInnerHTML: {
                     __html: renderToStaticMarkup(
-                        <MDXRuntime components={MDXComponents} rehypePlugins={[rehypeSlug]}
-                                    remarkPlugins={[remarkToc, remarkUnderline]}>
-                            {markdown}
-                        </MDXRuntime>
+                        <>
+                            <Title>{title}</Title>
+                            <p>{excerpt}</p>
+                            <MDXRuntime components={MDXComponents} rehypePlugins={[rehypeSlug]}
+                                        remarkPlugins={[remarkToc, remarkUnderline]}
+                                        scope={undefined}>
+                                {markdown}
+                            </MDXRuntime>
+                        </>
                     )
                 }
             }

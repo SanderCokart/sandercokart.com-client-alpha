@@ -7,10 +7,10 @@ const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
     headers: {
+        'Accept': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
     }
 });
-
 
 const handler = async (promise: AxiosPromise): Promise<CustomApiPromise> => {
     try {
@@ -55,7 +55,6 @@ interface CustomAxiosInstance extends AxiosInstance {
 
     simplePatch<T = any, R = AxiosResponse<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<CustomApiPromise<T>>;
 }
-
 
 
 export default toExport;

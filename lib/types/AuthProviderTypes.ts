@@ -1,7 +1,7 @@
 import {AxiosError} from 'axios';
 import {CustomApiPromise} from './CustomTypes';
 import {LoginFormValues} from './FormValueTypes';
-import type {User} from './ModelTypes';
+import type {UserModel} from './ModelTypes';
 
 
 // export interface AuthContextInitialProps {
@@ -23,7 +23,7 @@ import type {User} from './ModelTypes';
 // }
 
 export interface AuthContextType {
-    user: User | null;
+    user: UserModel | null;
     error: Error | AxiosError;
     csrf: () => void;
     logout: () => Promise<CustomApiPromise>;

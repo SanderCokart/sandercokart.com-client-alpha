@@ -1,21 +1,24 @@
+import Button from '@/components/Button';
 import Input from '@/components/formComponents/Input';
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/MarkdownEditor';
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
 import styles from '@/styles/components/formComponents/MarkdownEditor/Toolbar.module.scss';
 import type {FontAwesomeIcon as FontAwesomeIconType} from '@/types/CustomTypes';
-import type {File} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 import type {ToolbarProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Papa from 'papaparse';
 import type {ChangeEvent, FC, MouseEvent} from 'react';
 import {useCallback, useEffect} from 'react';
-import {useFormContext} from 'react-hook-form';
+import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 
 
 const Toolbar: FC<ToolbarProps> = ({ name }) => {
-    const { setValue, getValues } = useFormContext();
-    const { editorRef } = useEditorContext();
+    const { setValue } = useFormContext();
+    const toolbarForm = useForm();
+    const { getValues } = toolbarForm;
+    const { editorRef, tableRows, tableColumns, gridRows, gridColumns, fontSize, setState } = useEditorContext();
     const { getUrl } = useImage();
 
     const selectWordUnderCursor = useCallback(() => {
@@ -51,11 +54,11 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     }, []);
 
 
-    const wrapSelection = useCallback((start: number, end: number, wrapWith: string) => {
+    const wrapSelection = useCallback((wrapWith: string) => {
         if (editorRef.current) {
-            const trimmedText = editorRef.current.value.substring(start, end).split(' ').filter(item => item !== '').toString();
-            const endWrap = editorRef.current.value.substring(end).charAt(0) === ' ' ? editorRef.current.value.substring(end) : ` ${editorRef.current.value.substring(end)}`;
-            setValue(name, editorRef.current.value.substring(0, start) + wrapWith + trimmedText + wrapWith + endWrap);
+            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const hasLeadingSpace = value.charAt(selectionEnd - 1) === ' ';
+            setValue(name, `${value.substring(0, selectionStart)}${wrapWith + value.substring(selectionStart, hasLeadingSpace ? selectionEnd - 1 : selectionEnd) + wrapWith}${hasLeadingSpace ? ' ' : ''}${value.substring(selectionEnd)}`);
         }
     }, []);
 
@@ -65,7 +68,7 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
             if (editorRef.current.selectionStart === editorRef.current.selectionEnd) {
                 selectWordUnderCursor();
             }
-            wrapSelection(editorRef.current.selectionStart, editorRef.current.selectionEnd, '**');
+            wrapSelection('**');
             editorRef.current.focus();
         }
     }, []);
@@ -75,7 +78,7 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
             if (editorRef.current.selectionStart === editorRef.current.selectionEnd) {
                 selectWordUnderCursor();
             }
-            wrapSelection(editorRef.current.selectionStart, editorRef.current.selectionEnd, '~~');
+            wrapSelection('~~');
             editorRef.current.focus();
         }
     }, []);
@@ -85,7 +88,7 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
             if (editorRef.current.selectionStart === editorRef.current.selectionEnd) {
                 selectWordUnderCursor();
             }
-            wrapSelection(editorRef.current.selectionStart, editorRef.current.selectionEnd, '*');
+            wrapSelection('*');
             editorRef.current.focus();
         }
     }, []);
@@ -95,15 +98,14 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
             if (editorRef.current.selectionStart === editorRef.current.selectionEnd) {
                 selectWordUnderCursor();
             }
-            wrapSelection(editorRef.current.selectionStart, editorRef.current.selectionEnd, '__');
+            wrapSelection('__');
             editorRef.current.focus();
         }
     }, []);
 
     const insertTable = useCallback(() => {
         if (editorRef.current) {
-            const rows = getValues('rows');
-            const cols = getValues('cols');
+            const [rows, cols] = getValues(['tableRows', 'tableColumns']);
 
             let tableMd = '\n\n';
             for (let i = 0; i < cols; i++) {
@@ -154,7 +156,7 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
         const formData = new FormData();
         formData.set('file', files[0]);
 
-        const { data } = await axios.simplePost<File>('files', formData);
+        const { data } = await axios.simplePost<FileModel>('files', formData);
 
         if (editorRef.current) {
             const { value, selectionStart, selectionEnd } = editorRef.current;
@@ -247,8 +249,6 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
                         const headers = results.data[0];
                         const rows = results.data.slice(1);
 
-                        console.log(rows);
-
                         let tableMd = '\n\n';
                         for (let i = 0; i < headers.length; i++) {
                             tableMd += `| ${headers[i]} `;
@@ -292,13 +292,12 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     const rightToolbarItems: { icon: FontAwesomeIconType, onClick: () => void }[] = [];
 
     const AutoFocus = (e: MouseEvent<HTMLInputElement>) => {
-        e.currentTarget.focus();
+        e.currentTarget.focus({preventScroll: true});
     };
 
     const AutoBlur = (e: MouseEvent<HTMLInputElement>) => {
         if (editorRef.current) {
-            e.currentTarget.blur();
-            editorRef.current.focus();
+            editorRef.current.focus({preventScroll: true});
         }
     };
 
@@ -309,92 +308,114 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     }, []);
 
     return (
-        <div className={styles.toolbar}>
-            <div className={styles.left}>
-                {leftToolbarItems.map((item, index) => (
-                    <button key={index}
-                            className={styles.toolbarItem}
-                            title={item.title}
-                            onClick={item.onClick}>
-                        <FontAwesomeIcon icon={item.icon}/>
-                    </button>
-                ))}
+        <FormProvider {...toolbarForm}>
+            <div className={styles.toolbar}>
+                <div className={styles.left}>
+                    {leftToolbarItems.map((item, index) => (
+                        <Button key={index}
+                                className={styles.toolbarItem}
+                                title={item.title}
+                                type="button"
+                                onClick={item.onClick}>
+                            <FontAwesomeIcon icon={item.icon}/>
+                        </Button>
+                    ))}
 
-                <div className={styles.toolbarItem}>
-                    <FontAwesomeIcon icon="table"/>
-                    <div className={styles.toolbarItemTableDropdown}>
-                        <Input defaultValue={1} label="Rows" min={1} name="rows" type="number"
-                               onMouseEnter={AutoFocus}
-                               onMouseLeave={AutoBlur}/>
-                        <Input defaultValue={1} label="Columns" min={1} name="cols" type="number"
-                               onMouseEnter={AutoFocus}
-                               onMouseLeave={AutoBlur}/>
-                        <button className={styles.dropdownInteractionButton} type="button"
-                                onClick={insertTable}>Insert
-                        </button>
-                        <label className={styles.uploadCSVLabel}
-                               htmlFor="uploadCSV">Import CSV</label>
-                        <input className={styles.uploadCSVInput} id="uploadCSV" type="file" onChange={importCSV}/>
+                    <div className={styles.toolbarItem}>
+                        <FontAwesomeIcon icon="table"/>
+                        <div className={styles.toolbarItemTableDropdown}>
+                            <Input defaultValue={1}
+                                   label="Rows"
+                                   min={1}
+                                   name="tableRows"
+                                   type="number"
+                                   onMouseEnter={AutoFocus}
+                                   onMouseLeave={AutoBlur}/>
+
+                            <Input defaultValue={1}
+                                   label="Columns"
+                                   min={1}
+                                   name="tableColumns"
+                                   type="number"
+                                   onMouseEnter={AutoFocus}
+                                   onMouseLeave={AutoBlur}/>
+                            <Button className={styles.dropdownInteractionButton} type="button"
+                                    onClick={insertTable}>Insert
+                            </Button>
+                            <label className={styles.uploadCSVLabel}
+                                   htmlFor="uploadCSV">Import CSV</label>
+                            <input className={styles.uploadCSVInput} id="uploadCSV" type="file" onChange={importCSV}/>
+                        </div>
                     </div>
-                </div>
 
-                <div className={styles.toolbarItem}>
-                    <FontAwesomeIcon icon="images"/>
-                    <div className={styles.toolbarItemImageDropdown}>
-                        <button className={styles.dropdownInteractionButton} onClick={imageMd}>
-                            External image
-                        </button>
-                        <label className={styles.uploadCustomImageLabel}
-                               htmlFor="uploadCustomImage">Upload Image</label>
-                        <input className={styles.uploadCustomImageInput} id="uploadCustomImage" type="file"
-                               onChange={onImageUpload}/>
+                    <div className={styles.toolbarItem}>
+                        <FontAwesomeIcon icon="images"/>
+                        <div className={styles.toolbarItemImageDropdown}>
+                            <Button className={styles.dropdownInteractionButton} type="button" onClick={imageMd}>
+                                External image
+                            </Button>
+                            <label className={styles.uploadCustomImageLabel}
+                                   htmlFor="uploadCustomImage">Upload Image</label>
+                            <input className={styles.uploadCustomImageInput} id="uploadCustomImage" type="file"
+                                   onChange={onImageUpload}/>
+                        </div>
                     </div>
-                </div>
 
-                <div className={styles.toolbarItem}>
-                    <FontAwesomeIcon icon={['fab', 'react']}/>
-                    <div className={styles.toolbarComponentDropDown}>
-                        <div className={styles.componentSelection}>
-                            Grid
-                            <div className={styles.componentSelectionItem}>
-                                <Input defaultValue={1} label="Rows" name="gridRows"
-                                       type="number" onMouseEnter={AutoFocus} onMouseLeave={AutoBlur}/>
-                                <Input defaultValue={1} label="Columns" name="gridColumns"
-                                       type="number" onMouseEnter={AutoFocus} onMouseLeave={AutoBlur}/>
-                                <button className={styles.dropdownInteractionButton} name="Grid"
-                                        onClick={insertComponent}>
-                                    Insert Grid
-                                </button>
+                    <div className={styles.toolbarItem}>
+                        <FontAwesomeIcon icon={['fab', 'react']}/>
+                        <div className={styles.toolbarComponentDropDown}>
+                            <div className={styles.componentSelection}>
+                                Grid
+                                <div className={styles.componentSelectionItem}>
+                                    <Input defaultValue={1}
+                                           label="Rows"
+                                           min={1}
+                                           name="gridRows"
+                                           type="number"
+                                           onMouseEnter={AutoFocus}
+                                           onMouseLeave={AutoBlur}/>
+                                    <Input defaultValue={1}
+                                           label="Columns"
+                                           min={1}
+                                           name="gridColumns"
+                                           type="number"
+                                           onMouseEnter={AutoFocus}
+                                           onMouseLeave={AutoBlur}/>
+                                    <Button name="Grid" type="button" onClick={insertComponent}>
+                                        Insert
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
+                <div className={styles.right}>
+                    {rightToolbarItems.map((item, index) => (
+                        <Button key={index}
+                                className={styles.toolbarItem}
+                                type="button"
+                                onClick={item.onClick}>
+                            <FontAwesomeIcon icon={item.icon}/>
+                        </Button>
+                    ))}
 
-            </div>
-            <div className={styles.right}>
-                {rightToolbarItems.map((item, index) => (
-                    <button key={index}
-                            className={styles.toolbarItem}
-                            onClick={item.onClick}>
-                        <FontAwesomeIcon icon={item.icon}/>
-                    </button>
-                ))}
-
-                <div className={styles.toolbarItem} data-name="fontSize">
-                    <FontAwesomeIcon icon="text-height"/>
-                    <div className={styles.toolbarItemFontSizeDropdown}>
-                        <Input defaultValue={20}
-                               label="Font Size"
-                               name="fontSize"
-                               type="number"
-                               onInput={onFontSizeChange}
-                               onMouseEnter={AutoFocus}
-                               onMouseLeave={AutoBlur}/>
+                    <div className={styles.toolbarItem} data-name="fontSize">
+                        <FontAwesomeIcon icon="text-height"/>
+                        <div className={styles.toolbarItemFontSizeDropdown}>
+                            <Input defaultValue={20}
+                                   label="Font Size"
+                                   name="fontSize"
+                                   type="number"
+                                   onInput={onFontSizeChange}
+                                   onMouseEnter={AutoFocus}
+                                   onMouseLeave={AutoBlur}/>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
+        </FormProvider>
     );
 };
 

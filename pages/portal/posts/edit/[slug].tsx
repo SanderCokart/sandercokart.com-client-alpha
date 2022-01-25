@@ -1,17 +1,25 @@
+import Button from '@/components/Button';
 import Input from '@/components/formComponents/Input';
 import MarkdownEditor from '@/components/formComponents/MarkdownEditor/MarkdownEditor';
+
+import NewFile from '@/components/formComponents/NewFile';
+import Select from '@/components/formComponents/Select';
 import TextArea from '@/components/formComponents/TextArea';
 import Loader from '@/components/Loader';
 import PortalContainer from '@/components/PortalContainer';
+import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
+import {StatusModel} from '@/types/ModelTypes';
 import {EditPostFormProps} from '@/types/PropTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import * as Yup from 'yup';
 
@@ -28,8 +36,18 @@ const EditPost: FC = () => {
     return (
         <PortalContainer>
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
-            {/*<h1>Edit Post - {post ? `${post.id} - ${post.title}` : <Skeleton baseColor="var(--bg)"/>}</h1>*/}
-            <EditPostForm post={post}/>
+            <div className={styles.desktop}>
+                <header className={styles.header}>
+                    {post && !error ?
+                     <h1>Edit Post - {post.id} - {post.title}</h1>
+                                    :
+                     <h1><Skeleton baseColor="var(--bg)"/></h1>
+                    }
+                </header>
+                <main className={styles.main}>
+                    <EditPostForm post={post}/>
+                </main>
+            </div>
         </PortalContainer>
     );
 };
@@ -37,37 +55,64 @@ const EditPost: FC = () => {
 export default EditPost;
 
 const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
+    const [loading, setLoading] = useState(true);
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             title: Yup.string().required('This field is required'),
             excerpt: Yup.string().required('This field is required'),
             markdown: Yup.string().required('This field is required'),
-            banner_image: Yup.mixed().required()
-        })),
-        mode: 'all'
+            banner: Yup.mixed().required('This field is required')
+        }))
     });
+    const { data: statuses, error } = useSWR<StatusModel[]>('/status/post');
+
 
     useEffect(() => {
-        methods.reset({
-            title: post?.title,
-            excerpt: post?.excerpt,
-            markdown: post?.markdown,
-            banner: post?.banner
-        });
+        if (post) {
+            methods.reset({
+                title: post?.title,
+                excerpt: post?.excerpt,
+                markdown: post?.markdown,
+                banner: [post?.banner],
+                status: String(post?.status.id)
+            });
+            setLoading(false);
+        }
     }, [post]);
 
-    const onSubmit = (formValues: CreatePostFormValues) => {
-        console.log(formValues);
+    const onSubmit = async (formValues: CreatePostFormValues) => {
+        const transformedData = {
+            ...formValues,
+            banner: formValues.banner[0].id
+        };
+
+        console.log(transformedData);
+
+        const { data, error } = await axios.simplePatch(`/posts/${post.id}`, transformedData);
     };
+
+    const { formState: { isDirty, isValid }, getValues } = methods;
+
+    console.log(getValues('status'));
 
     return (
         <FormProvider {...methods}>
-            <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
-                <Input label="Title" name="title"/>
-                <TextArea label="Excerpt" name="excerpt"/>
-                <MarkdownEditor name="markdown"/>
-                <button type="submit">submit</button>
-            </form>
+            {!loading && (
+                <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
+                    <Input label="Title" name="title"/>
+                    <TextArea label="Excerpt" name="excerpt"/>
+                    <NewFile editMode={true} name="banner"/>
+                    <Select name="status">
+                        {(statuses && !error) && statuses.map(status => (
+                            <option key={status.id} value={status.id}>{status.name}</option>
+                        ))}
+                    </Select>
+                    <MarkdownEditor name="markdown"/>
+                    <Button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">
+                        <FontAwesomeIcon icon="plus"/>
+                    </Button>
+                </form>
+            )}
         </FormProvider>
     );
 };

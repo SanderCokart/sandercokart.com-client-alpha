@@ -1,0 +1,5 @@
+@use '../utils';
+
+.button {
+  @include utils.defaultButton;
+}

@@ -5,14 +5,17 @@ import Head from 'next/head';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';
+import {useSWRConfig} from 'swr';
 
 const Portal: FC = () => {
     const { isLoading: isLoadingAuth, shouldRedirect } = useAuth({ middleware: 'auth' });
     const router = useRouter();
+    const {mutate} = useSWRConfig()
 
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
+        mutate('/user');
     }, [shouldRedirect]);
 
     return (

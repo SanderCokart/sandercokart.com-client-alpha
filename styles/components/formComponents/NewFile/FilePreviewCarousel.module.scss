@@ -1,0 +1,66 @@
+@use '../../../utils';
+.carouselContainer {
+  border: solid 4px var(--bg-contrast-text);
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  padding: 8px;
+  position: relative;
+}
+
+.carouselItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carouselItem {
+  min-width: 45%;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  display: inline-block;
+
+  &:hover {
+    .deleteButton {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+}
+
+
+.resetButton {
+  @include utils.defaultButton;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  padding: 8px;
+  clip-path: circle();
+  background-color: var(--acc-inactive);
+  &:hover {
+    background-color: var(--acc);
+  }
+}
+
+.deleteButton {
+  transition: transform 150ms ease;
+  @include utils.defaultButton;
+  position: absolute;
+  place-self: center;
+  cursor: pointer;
+  padding: 16px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 2rem;
+  clip-path: circle();
+  border-radius: 50%;
+  width: min-content;
+  background-color: var(--bg-trans);
+  &:hover {
+    background-color: var(--acc);
+  }
+}

@@ -1,7 +1,10 @@
+import {FileModel, StatusModel} from '@/types/ModelTypes';
+
 export interface CreatePostFormValues {
     title: string;
     excerpt: string;
-    banner_image: object;
+    banner: FileModel[];
+    status: StatusModel;
     markdown: string;
 }
 

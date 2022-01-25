@@ -1,4 +1,4 @@
-import {Post, User} from '@/types/ModelTypes';
+import {PostModel, UserModel} from '@/types/ModelTypes';
 import {PostsResponse, UsersResponse} from '@/types/ResponseTypes';
 import {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 
@@ -12,4 +12,4 @@ export interface CustomApiPromise<T = any> {
 }
 
 export type PaginatedResponses = UsersResponse | PostsResponse | { [key: string]: any };
-export type PaginatableModels = User | Post;
+export type PaginatableModels = UserModel | PostModel;

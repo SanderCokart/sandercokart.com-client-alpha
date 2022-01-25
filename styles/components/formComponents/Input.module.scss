@@ -1,5 +1,9 @@
 @use '../../utils';
 
+.labelAndError {
+  display: flex;
+}
+
 .formControl {
   display: flex;
   flex-direction: column;

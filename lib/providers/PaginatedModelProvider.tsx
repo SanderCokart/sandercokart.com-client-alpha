@@ -10,13 +10,13 @@ const Context = createContext({});
 export const usePaginatedContext = <T extends PaginatableModels>() => useContext(Context) as PaginatedModelContext<T>;
 
 
-const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, model, middleware = 'auth' }) => {
+const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, modelName, url, middleware = 'auth' }) => {
     const [pageIndex, setPageIndex] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [hasLess, setHasLess] = useState(false);
     const { isAdmin } = useAuth({ middleware });
-    const { data, error, mutate } = useSWR<PaginatedResponses>(isAdmin ? `/${model}?page=${pageIndex}` : null);
-    const { [model]: modelData = [], links = [], meta = [] } = data || { modelData: [], links: [], meta: [] };
+    const { data, error, mutate } = useSWR<PaginatedResponses>(isAdmin ? `${url}?page=${pageIndex}` : null);
+    const { [modelName]: modelData = [], links = [], meta = [] } = data || { modelData: [], links: [], meta: [] };
 
     useEffect(() => {
         setHasMore(!!data?.links.next);
@@ -42,7 +42,7 @@ const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, mod
             nextPage,
             prevPage,
             hasMore,
-            hasLess,
+            hasLess
         }}>
             {children}
         </Context.Provider>

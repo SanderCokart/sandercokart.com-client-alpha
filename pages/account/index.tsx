@@ -1,3 +1,4 @@
+import Button from '@/components/Button';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Switch from '@/components/formComponents/Switch';
@@ -42,7 +43,7 @@ export const Account: FC = () => {
             <PasswordForm/>
             <EmailForm/>
             <div className={styles.actions}>
-                <button className={styles.logoutButton} onClick={onClickLogout}>logout</button>
+                <Button onClick={onClickLogout}>logout</Button>
             </div>
         </div>
     );
@@ -52,7 +53,7 @@ const PasswordForm: FC = () => {
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
-            password: Yup.string().min(8, '').max(50).required('This field is required').matches(
+            password: Yup.string().min(8).max(50).required('This field is required').matches(
                 /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
                 'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
             ),
@@ -90,7 +91,7 @@ const PasswordForm: FC = () => {
                            placeholder="Type your new password again"
                            type="password"/>
                     <Checkbox label="Sign out on all other devices" name="sign_out_everywhere"/>
-                    <button disabled={!isDirty || !isValid} type="submit">Submit</button>
+                    <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                 </main>
             </form>
         </FormProvider>
@@ -124,7 +125,7 @@ const EmailForm: FC = () => {
                 </header>
                 <main className={styles.main}>
                     <Input autoComplete="email" label="Email" name="email"/>
-                    <button disabled={!isDirty || !isValid} type="submit">Submit</button>
+                    <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                 </main>
             </form>
         </FormProvider>

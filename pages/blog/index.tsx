@@ -1,29 +1,29 @@
+import Banner from '/public/static/assets/images/banner-compressed.jpg';
 import axios from '@/functions/shared/axios';
 import RecentPostLayout from '@/layouts/pages/blog/RecentPostLayout';
+import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
 import styles from '@/styles/pages/blog/Recent.module.scss';
+import {PostModel} from '@/types/ModelTypes';
 import {BlogProps} from '@/types/PropTypes';
-import {PostsResponse} from '@/types/ResponseTypes';
 import type {GetStaticProps} from 'next';
 import Image from 'next/image';
 import type {FC} from 'react';
-import {useState} from 'react';
-import Banner from '/public/static/assets/images/banner-compressed.jpg';
 
 export const Blog: FC<BlogProps> = (props) => {
-    const [state, setState] = useState({ ...props.initialData });
-    const [loading, setLoading] = useState(false);
+    // const [state, setState] = useState({ ...props.initialData });
+    // const [loading, setLoading] = useState(false);
 
-    const getMorePosts = async () => {
-        if (!!state.links.next && !loading)
-            try {
-                await setLoading(true);
-                const { data } = await axios.simpleGet<PostsResponse>(state.links.next, { params: { cursor: state.meta.cursor } });
-                await setState(prev => ({ ...data, posts: [...prev.posts, ...data.posts] }));
-                await setLoading(false);
-            } catch (err) {
-                console.error(err);
-            }
-    };
+    // const getMorePosts = async () => {
+    //     if (!!state.links.next && !loading)
+    //         try {
+    //             await setLoading(true);
+    //             const { data } = await axios.simpleGet<PostsResponse>(state.links.next, { params: { cursor: state.meta.cursor } });
+    //             await setState(prev => ({ ...data, posts: [...prev.posts, ...data.posts] }));
+    //             await setLoading(false);
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    // };
 
     return (
         <div className={styles.container}>
@@ -33,9 +33,9 @@ export const Blog: FC<BlogProps> = (props) => {
             </div>
 
             <div className={styles.posts}>
-                {state.posts.map(post => (
-                    <RecentPostLayout key={post.id} post={post}/>
-                ))}
+                <PaginatedModelProvider middleware="guest" modelName="posts" url="/posts/recent">
+                    {RecentPosts}
+                </PaginatedModelProvider>
             </div>
         </div>
     );
@@ -43,9 +43,23 @@ export const Blog: FC<BlogProps> = (props) => {
 
 export default Blog;
 
+const RecentPosts = () => {
+    const { data: posts, isLoading, nextPage, prevPage, hasMore, hasLess } = usePaginatedContext<PostModel>();
+
+    return posts.map(post => (
+        <RecentPostLayout key={post.id} post={post}/>
+    ));
+};
+
 
 export const getStaticProps: GetStaticProps = async () => {
-    const { data: initialData } = await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + '/posts?perPage=5');
+    const {
+        data: initialData,
+        error
+    } = await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + '/posts/recent?perPage=5');
 
-    return { props: { initialData } };
+    if (initialData && !error)
+        return { props: { initialData } };
+
+    return { props: [] };
 };

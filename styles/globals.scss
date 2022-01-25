@@ -2,29 +2,28 @@
 @use 'utils';
 
 :root {
+  /*haf = hover,active,focus*/
   --bg: hsl(0, 0%, 20%);
   --bg-contrast-text: hsl(0, 0%, 93%);
 
   --bg-nav: hsl(0, 0%, 13%);
   --bg-nav-contrast-text: hsl(0, 0%, 93%);
 
-  --scrollbar: hsl(0, 0%, 93%);
-
   --bg-trans: hsla(0, 0%, 0%, .8);
   --bg-trans-contrast-text: hsl(0, 0%, 100%);
 
   --acc: hsl(0, 96%, 48%);
-  --acc-trans: hsla(0, 96%, 48%, .1);
+  --acc-contrast-text: hsl(0, 0%, 100%);
   --acc-disabled: hsl(0, 0%, 40%);
   --acc-disabled-contrast-text: hsl(0, 0%, 20%);
-  /*haf = hover,active,focus*/
-  --acc-haf: hsl(0, 96%, 38%);
-  --acc-contrast-text: hsl(0, 0%, 100%);
+  --acc-inactive: hsla(0, 96%, 18%);
 
   --error: hsl(0, 100%, 42%);
   --success: hsl(145, 100%, 39%);
   --info: hsl(203, 100%, 46%);
   --warning: hsl(40, 100%, 50%);
+  --scrollbar: hsl(0, 0%, 93%);
+
 
   &[data-theme="light"] {
     --bg: hsl(0, 0%, 100%);

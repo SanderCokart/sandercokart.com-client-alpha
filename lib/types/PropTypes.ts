@@ -1,7 +1,7 @@
 import {MDXRemoteSerializeResult} from 'next-mdx-remote';
-import {MutableRefObject} from 'react';
+import {ButtonHTMLAttributes, HTMLAttributes, TextareaHTMLAttributes} from 'react';
 import type {FontAwesomeIcon} from './CustomTypes';
-import type {Post, User} from './ModelTypes';
+import type {PostModel, UserModel} from './ModelTypes';
 import type {PostsResponse} from './ResponseTypes';
 
 export interface NavItemProps {
@@ -20,7 +20,7 @@ export interface BlogProps {
 }
 
 export interface RecentPostLayoutProps {
-    post: Post;
+    post: PostModel;
 }
 
 export interface MobileMenuProps {
@@ -44,33 +44,57 @@ export interface PortalNavItemProps {
 }
 
 export interface UserRowProps {
-    user: User;
+    user: UserModel;
     onDelete: (id: number) => void;
     onEdit: (id: number) => void;
 }
 
 export interface PostRowProps {
-    post: Post;
+    post: PostModel;
 }
 
 export interface BlogPostProps {
-    post: Post;
+    post: PostModel;
     mdxSource: MDXRemoteSerializeResult;
 }
 
 export interface PaginatedModelProviderProps {
-    model: string;
     middleware?: 'guest' | 'auth';
+    modelName: string;
+    url: string;
 }
 
 export interface EditPostFormProps {
-    post: Post;
+    post: PostModel;
 }
 
-export interface MarkdownEditorProps {
+export interface MarkdownEditorProps extends HTMLAttributes<HTMLDivElement> {
     name: string;
+    textareaProps?: TextareaHTMLAttributes<any>;
 }
 
 export interface ToolbarProps {
-    name:string;
+    name: string;
+}
+
+export interface FileProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+export interface FileDropBoxProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+export interface FilePreviewCarouselProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+export interface ButtonProps extends ButtonHTMLAttributes<any> {
+
 }

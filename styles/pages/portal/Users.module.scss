@@ -48,7 +48,7 @@ td.actions {
     gap: 16px;
 
     button {
-      @include utils.buttonReset;
+      @include utils.defaultButton;
     }
   }
 
@@ -71,7 +71,7 @@ td.actions {
   gap: 30px;
 
   button {
-    @include utils.buttonReset;
+    @include utils.defaultButton;
     width: 30px;
     height: 30px;
     border-radius: 50%;

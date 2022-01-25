@@ -1,12 +1,10 @@
-import File from '@/components/formComponents/File';
-
 export interface CreatePostModel {
     title: string;
     markdown: string;
-    bannerImage: File | undefined;
+    bannerImage: FileModel | undefined;
 }
 
-export interface Post {
+export interface PostModel {
     id: number;
     title: string;
     markdown: string;
@@ -15,19 +13,12 @@ export interface Post {
     updatedAt: string;
     publishedAt: string;
     slug: string;
-    author: User;
-    banner: Banner;
-    status: 'unlisted' | 'published' | 'archived';
+    author: UserModel;
+    banner: FileModel;
+    status: StatusModel;
 }
 
-export interface Banner {
-    id: number,
-    original_name: string;
-    relative_url?: string;
-    created_at: string;
-}
-
-export interface User {
+export interface UserModel {
     id: number;
     name: string;
     createdAt: string;
@@ -39,9 +30,14 @@ export interface User {
     [key: string]: any;
 }
 
-export interface File {
+export interface FileModel {
     id: number,
     original_name: string;
     relative_url?: string;
     created_at: string;
+}
+
+export interface StatusModel {
+    id: number;
+    name: 'unlisted' | 'published' | 'archived';
 }

@@ -1,5 +1,5 @@
 import type {AxiosResponse} from 'axios';
-import type {Post, User} from './ModelTypes';
+import type {PostModel, UserModel} from './ModelTypes';
 
 interface Links {
     first: string;
@@ -20,14 +20,14 @@ interface Meta {
 
 export interface PostsResponse extends AxiosResponse {
     [key: string]: any;
-    posts: Post[];
+    posts: PostModel[];
     links: Links;
     meta: Meta;
 }
 
 export interface UsersResponse extends AxiosResponse {
     [key: string]: any;
-    users: User[];
+    users: UserModel[];
     links: Links;
     meta: Meta;
 }

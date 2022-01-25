@@ -1,64 +1,133 @@
 @use '../utils';
 
+//.desktop {
+//  pointer-events: none;
+//  background: var(--bg-nav);
+//  color: var(--bg-nav-contrast-text);
+//  position: fixed;
+//  font-weight: bold;
+//  top: 0;
+//  left: 0;
+//  right: 0;
+//  z-index: map-get(utils.$z-indexes, 'navigation');
+//
+//  ul {
+//    list-style: none;
+//  }
+//
+//  /*first row*/
+//  > ul {
+//    display: flex;
+//    justify-content: space-between;
+//    height: utils.$navHeight;
+//
+//
+//    /*separate left and right*/
+//    > div {
+//      display: flex;
+//
+//      > li {
+//        width: 100%;
+//        height: 100%;
+//
+//        > button, > a {
+//          pointer-events: auto;
+//        }
+//      }
+//    }
+//  }
+//  /*first row*/
+//
+//
+//  button, a {
+//    @include utils.defaultButton;
+//    position: relative;
+//    z-index: 2;
+//    width: 100%;
+//    height: 40px;
+//    background-color: var(--bg-nav);
+//    //transition: width utils.$navTransitionTime ease utils.$navTransitionTime;
+//
+//    &:hover, &:active, &:focus {
+//      background-color: var(--acc);
+//      //transition-duration: utils.$navTransitionTime;
+//    }
+//
+//    &.active {
+//      width: 200px;
+//      background-color: var(--acc);
+//    }
+//  }
+//
+//
+//  li.dropdown {
+//    position: relative;
+//  }
+//
+//  ul.dropdownMenu {
+//    position: absolute;
+//    top: 100%;
+//    transform: translateY(-100%);
+//    //transition: utils.$navTransitionTime;
+//    display: grid;
+//    grid-template-columns: 1fr 1fr;
+//    opacity: 0;
+//    z-index: -1;
+//    width: 200px;
+//
+//    &.active {
+//      transform: translateY(0);
+//      //transition-delay: utils.$navTransitionTime * 2;
+//      opacity: 1;
+//      z-index: 1;
+//    }
+//  }
+//
+//}
+
 .desktop {
-  pointer-events: none;
-  background: var(--bg-nav);
-  color: var(--bg-nav-contrast-text);
   position: fixed;
-  font-weight: bold;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  height: 40px;
   z-index: map-get(utils.$z-indexes, 'navigation');
+  background-color: var(--bg-nav);
 
   ul {
     list-style: none;
+    display: flex;
   }
 
-  /*first row*/
   > ul {
     display: flex;
     justify-content: space-between;
-    height: utils.$navHeight;
 
-
-    /*separate left and right*/
     > div {
       display: flex;
 
-      li {
-        width: 100%;
-        height: 100%;
-
-        > button, a {
-          pointer-events: auto;
-        }
+      > li > button, > li > a {
+        pointer-events: auto;
       }
     }
   }
 
-  button, a {
-    @include utils.buttonReset;
+  a, button {
+    @include utils.defaultButton;
     position: relative;
-    z-index: 2;
-    padding: 8px 16px;
-    width: 100%;
-    height: 100%;
+    z-index: 1;
+    height: 40px;
     background-color: var(--bg-nav);
-    //transition: width utils.$navTransitionTime ease utils.$navTransitionTime;
     pointer-events: none;
-
-    &:hover {
-      background-color: var(--acc);
-      //transition-duration: utils.$navTransitionTime;
-    }
+    transition: width 250ms ease 150ms,
+    background-color 150ms ease;
 
     &.active {
       width: 200px;
+      transition: width 150ms ease;
       background-color: var(--acc);
     }
   }
-
 
   li.dropdown {
     position: relative;
@@ -68,21 +137,26 @@
     position: absolute;
     top: 100%;
     transform: translateY(-100%);
-    //transition: utils.$navTransitionTime;
     display: grid;
     grid-template-columns: 1fr 1fr;
     opacity: 0;
-    z-index: -1;
     width: 200px;
+    transition: opacity 150ms ease,
+    transform 150ms ease,
+    background-color 150ms ease;
+
 
     &.active {
+      transition: opacity 150ms ease 150ms,
+      transform 150ms ease 150ms;
       transform: translateY(0);
-      //transition-delay: utils.$navTransitionTime * 2;
       opacity: 1;
-      z-index: 1;
+
+      > li > a, > li > button {
+        pointer-events: auto;
+      }
     }
   }
-
 }
 
 @mixin hide() {
@@ -119,7 +193,7 @@
   }
 
   .backdrop {
-    //transition: opacity utils.$navTransitionTime ease;
+    transition: opacity 100ms ease;
     background-color: var(--bg-trans);
     position: fixed;
     top: 0;
@@ -136,22 +210,27 @@
   }
 
   a, button {
-    @include utils.buttonReset;
+    @include utils.defaultButton;
+    @include startPos;
+    @include hide;
     pointer-events: none;
     line-height: 50%;
-    @include startPos;
     position: fixed;
     transform: translate(50%, 50%);
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    gap: 10px;
     z-index: 1;
     -webkit-tap-highlight-color: transparent;
-    @include hide;
-    transition: bottom ease utils.$navTransitionTime,
-    right ease utils.$navTransitionTime,
-    opacity ease utils.$navTransitionTime;
+    flex-direction: column;
+    gap: 16px;
+
+    transition: bottom ease 100ms,
+    right ease 100ms,
+    opacity ease 100ms;
+
+    background-color: transparent;
+
+    &:hover, &:active, &:focus {
+      background-color: transparent;
+    }
 
     span {
       font-size: 5vw;

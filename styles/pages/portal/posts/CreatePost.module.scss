@@ -8,16 +8,10 @@
   height: utils.$navHeightCalc;
   overflow: auto;
 
-  form {
-    display: flex;
-    flex-direction: column;
+  .form {
+    display: grid;
     gap: 20px;
     padding: 16px;
-  }
-
-  .preview {
-    display: flex;
-    flex-direction: column;
   }
 }
 
@@ -35,20 +29,13 @@
 }
 
 
-.submit {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: none;
+.submitButton {
+  @include utils.defaultButton;
   background-color: var(--acc);
-  color: var(--acc-contrast-text);
-  font-size: 2rem;
-  cursor: pointer;
-  z-index: 1000;
+
+  &:disabled {
+    background: var(--acc-disabled);
+    color: var(--acc-disabled-contrast-text);
+    pointer-events: none;
+  }
 }
