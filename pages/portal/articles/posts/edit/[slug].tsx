@@ -1,7 +1,6 @@
 import Button from '@/components/Button';
 import Input from '@/components/formComponents/Input';
-import MarkdownEditor from '@/components/formComponents/MarkdownEditor/MarkdownEditor';
-
+import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
 import NewFile from '@/components/formComponents/NewFile';
 import Select from '@/components/formComponents/Select';
 import TextArea from '@/components/formComponents/TextArea';
@@ -25,9 +24,9 @@ import * as Yup from 'yup';
 
 const EditPost: FC = () => {
     const router = useRouter();
-    const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
+    const { shouldRedirect, isLoading: isLoadingAuth, isAdmin } = useAuth({ middleware: 'auth' });
     const { query: { slug: postSlug } } = router;
-    const { data: post, error } = useSWR(postSlug ? `/posts/${postSlug}` : null);
+    const { data: post, error } = useSWR((postSlug && isAdmin) ? `/articles/posts/${postSlug}` : null);
 
     useEffect(() => {
         shouldRedirect && router.push('/login');
@@ -88,12 +87,10 @@ const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
 
         console.log(transformedData);
 
-        const { data, error } = await axios.simplePatch(`/posts/${post.id}`, transformedData);
+        const { data, error } = await axios.simplePatch(`/articles/posts/${post.id}`, transformedData);
     };
 
     const { formState: { isDirty, isValid }, getValues } = methods;
-
-    console.log(getValues('status'));
 
     return (
         <FormProvider {...methods}>

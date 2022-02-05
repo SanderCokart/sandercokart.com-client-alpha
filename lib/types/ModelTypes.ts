@@ -4,7 +4,7 @@ export interface CreatePostModel {
     bannerImage: FileModel | undefined;
 }
 
-export interface PostModel {
+export interface ArticleModel {
     id: number;
     title: string;
     markdown: string;

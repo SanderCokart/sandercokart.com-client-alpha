@@ -1,25 +1,51 @@
+import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper';
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Input.module.scss';
-import type {InputProps} from '@/types/FormControlTypes';
+import {FontAwesomeIconType} from '@/types/CustomTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FC} from 'react';
-import {useEffect, useRef} from 'react';
-import {useFormContext} from 'react-hook-form';
+import {
+    FC,
+    HTMLAttributes,
+    InputHTMLAttributes,
+    LabelHTMLAttributes,
+    MutableRefObject,
+    useCallback,
+    useEffect,
+    useRef
+} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'week' | 'time';
+    registerFormHook?: UseFormRegisterReturn;
+    prependIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    appendIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
 
 const Input: FC<InputProps> = (props) => {
+    const inputRef = useRef<null | HTMLInputElement>(null);
     const {
-        name, prependIcon, appendIcon, label,
-        id = name,
         type = 'text',
-        ...rest
+        loading = false,
+        appendIcon = undefined,
+        prependIcon = undefined,
+        containerProps = undefined,
+        labelProps = undefined,
+        name = undefined,
+        label = undefined,
+        onChange = undefined,
+        onBlur = undefined,
+        registerFormHook,
+        ...restOfProps
     } = props;
 
-    const inputRef = useRef<HTMLInputElement | null>(null);
-
-    const { register, formState: { errors: { [name]: error } } } = useFormContext();
-
-    const inputClassName = `${styles.input} ${prependIcon ? styles.prependIconPadding : ''} ${appendIcon ? styles.appendIconPadding : ''}`;
-
-    const handleWheel = (e: WheelEvent) => {
+    const handleNumberScrollingOnWheel = useCallback((e: WheelEvent) => {
         e.preventDefault();
         const target = e.currentTarget as HTMLInputElement;
 
@@ -27,50 +53,89 @@ const Input: FC<InputProps> = (props) => {
         const min = Number(target.min);
         const value = Number(target.value);
 
-
-        if (target.type === 'number') {
-            if ((e.deltaY < 0) && (!!max ? value < max : true)) {
-                inputRef.current?.stepUp(1);
-            } else if ((e.deltaY > 0) && (!!min ? value > min : true)) {
-                inputRef.current?.stepDown(1);
-            }
+        if ((e.deltaY < 0) && (!!max ? value < max : true)) {
+            inputRef.current?.stepUp();
+        } else if ((e.deltaY > 0) && (!!min ? value > min : true)) {
+            inputRef.current?.stepDown();
         }
-    };
+    }, []);
 
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.addEventListener('wheel', handleWheel);
+        if (type === 'number') {
+            inputRef.current?.addEventListener('wheel', handleNumberScrollingOnWheel);
         }
         return () => {
-            if (inputRef.current) {
-                inputRef.current.removeEventListener('wheel', handleWheel);
+            if (type === 'number') {
+                inputRef.current?.removeEventListener('wheel', handleNumberScrollingOnWheel);
             }
         };
     }, []);
 
-    const { ref, ...restOfRegister } = register(name);
+    const nameAndId = registerFormHook?.name || name || '';
 
+    let inputClassName = styles.input;
+    prependIcon && (inputClassName += ' ' + styles.withPrependIcon);
+    appendIcon && (inputClassName += ' ' + styles.withAppendIcon);
 
     return (
-        <div className={styles.formControl}>
+        <div className={styles.control} {...containerProps}>
+            {label && <label className={styles.label} {...labelProps} htmlFor={nameAndId}>{label}</label>}
 
-            <div className={styles.labelAndError}>
-                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
-                <div className={styles.formControlError}>
-                    {error && <span>{error.message}</span>}
-                </div>
-            </div>
+            {registerFormHook && <LabelErrorAccessory name={nameAndId}/>}
 
-            <div className={styles.iconContainer}>
-                {prependIcon &&
-                    <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                <input ref={el => {
-                    ref(el);
-                    inputRef.current = el;
-                }}  {...restOfRegister} {...rest} className={inputClassName} id={id}
-                       name={name}
-                       type={type}/>
-                {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
+            <div className={styles.inputContainer}>
+                {prependIcon && (
+                    <ConditionalButtonWrapper
+                        className={styles.iconButtonPrepend}
+                        condition={!!prependIcon.onClick}
+                        onClick={() => {
+                            !!prependIcon.onClick && prependIcon.onClick(inputRef);
+                        }}
+                        onKeyUp={e => {
+                            console.log(e.key);
+                            if (['Enter', 'Space'].includes(e.key)) {
+                                !!prependIcon.onClick && prependIcon.onClick(inputRef);
+                            }
+                        }}>
+                        <FontAwesomeIcon
+                            className={!!prependIcon.onClick ? undefined : styles.iconPrepend}
+                            icon={prependIcon.icon}
+                        />
+                    </ConditionalButtonWrapper>
+                )}
+
+                {loading ? (
+                    <Skeleton
+                        borderRadius={0}
+                        className={`${styles.input}${prependIcon && ` ${styles.withPrependIcon}`}${appendIcon && ` ${styles.withAppendIcon}`}`}/>
+                ) : (
+                     <input ref={(el) => {
+                         registerFormHook?.ref(el);
+                         inputRef.current = el;
+                     }} className={
+                         inputClassName
+                     } onBlur={(e) => {
+                         registerFormHook?.onBlur(e);
+                         onBlur?.(e);
+                     }} onChange={(e) => {
+                         registerFormHook?.onChange(e);
+                         onChange?.(e);
+                     }} {...restOfProps} id={nameAndId} name={nameAndId} type={type}/>
+                 )}
+
+                {appendIcon && (
+                    <ConditionalButtonWrapper
+                        className={styles.iconButtonAppend}
+                        condition={!!appendIcon.onClick}
+                        onClick={() => {
+                            !!appendIcon.onClick && appendIcon.onClick(inputRef);
+                        }}>
+                        <FontAwesomeIcon className={!!appendIcon.onClick ? undefined : styles.iconAppend}
+                                         icon={appendIcon.icon}/>
+                    </ConditionalButtonWrapper>
+                )}
+
+                <div className={styles.whiteLine}/>
                 <div className={styles.line}/>
             </div>
         </div>

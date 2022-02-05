@@ -1,4 +1,4 @@
-import styles from '@/styles/components/formComponents/Date.module.scss';
+import styles from '@/styles/components/OLDformComponents/Date.module.scss';
 import type {DateProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {FC} from 'react';
@@ -10,7 +10,7 @@ const Date: FC<DateProps> = (props) => {
         name, prependIcon, appendIcon = ['fas', 'calendar'], label,
         id = name,
         type = 'date',
-        ...rest
+        ...restOfProps
     } = props;
 
     const { register, formState: { errors: { [name]: error } } } = useFormContext();
@@ -31,7 +31,8 @@ const Date: FC<DateProps> = (props) => {
                 <div className={styles.iconContainer}>
                     {prependIcon &&
                         <FontAwesomeIcon className={styles.prependIcon} icon={prependIcon}/>}
-                    <input {...rest} {...register(name)} className={dateClassName} id={id} name={name} type={type}/>
+                    <input  {...register(name)} className={dateClassName} id={id} name={name}
+                            type={type} {...restOfProps}/>
                     {appendIcon && <FontAwesomeIcon className={styles.appendIcon} icon={appendIcon}/>}
                     <div className={styles.line}/>
                 </div>

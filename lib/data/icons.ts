@@ -12,7 +12,7 @@ import {
     faCompress,
     faDatabase,
     faEnvelope,
-    faExpand,
+    faExpand, faEye, faEyeSlash,
     faFileImage,
     faHistory,
     faImages,
@@ -87,5 +87,7 @@ export default [
     faListUl,
     faLink,
     faReact,
-    faUndo
+    faUndo,
+    faEye,
+    faEyeSlash
 ];

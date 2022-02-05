@@ -1,10 +1,10 @@
 import Button from '@/components/Button';
 import Input from '@/components/formComponents/Input';
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/MarkdownEditor';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
 import styles from '@/styles/components/formComponents/MarkdownEditor/Toolbar.module.scss';
-import type {FontAwesomeIcon as FontAwesomeIconType} from '@/types/CustomTypes';
+import type {FontAwesomeIconType as FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
 import type {ToolbarProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -61,7 +61,6 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
             setValue(name, `${value.substring(0, selectionStart)}${wrapWith + value.substring(selectionStart, hasLeadingSpace ? selectionEnd - 1 : selectionEnd) + wrapWith}${hasLeadingSpace ? ' ' : ''}${value.substring(selectionEnd)}`);
         }
     }, []);
-
 
     const bold = useCallback(() => {
         if (editorRef.current) {
@@ -241,41 +240,45 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     };
 
     const importCSV = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files)
-            Papa.parse<string[]>(e.target.files[0], {
-                complete: (results) => {
-                    if (editorRef.current) {
-                        const { value, selectionStart, selectionEnd } = editorRef.current;
-                        const headers = results.data[0];
-                        const rows = results.data.slice(1);
+        // if (e.target.files)
+        //     Papa.parse<string[]>(e.target.files[0], {
+        //         complete: (results) => {
+        //             if (editorRef.current) {
+        //                 const { value, selectionStart, selectionEnd } = editorRef.current;
+        //                 const headers = results.data[0];
+        //                 const rows = results.data.slice(1);
+        //
+        //                 let tableMd = '\n\n';
+        //                 for (let i = 0; i < headers.length; i++) {
+        //                     tableMd += `| ${headers[i]} `;
+        //                 }
+        //                 tableMd += '|\n';
+        //                 for (let i = 0; i < headers.length; i++) {
+        //                     tableMd += '| :--: ';
+        //                 }
+        //                 tableMd += '|\n';
+        //
+        //                 for (let i = 0; i < rows.length; i++) {
+        //                     for (let j = 0; j < headers.length; j++) {
+        //                         tableMd += `| ${rows[i][j]} `;
+        //                     }
+        //                     tableMd += '|\n';
+        //                 }
+        //
+        //                 tableMd += '\n';
+        //
+        //                 selectWordUnderCursor();
+        //                 setValue(name, value.substring(0, selectionEnd) + tableMd + value.substring(selectionEnd));
+        //
+        //                 e.target.value = '';
+        //                 editorRef.current.focus();
+        //             }
+        //         }
+        //     });
 
-                        let tableMd = '\n\n';
-                        for (let i = 0; i < headers.length; i++) {
-                            tableMd += `| ${headers[i]} `;
-                        }
-                        tableMd += '|\n';
-                        for (let i = 0; i < headers.length; i++) {
-                            tableMd += '| :--: ';
-                        }
-                        tableMd += '|\n';
+        //import CSV and parse it without packages
 
-                        for (let i = 0; i < rows.length; i++) {
-                            for (let j = 0; j < headers.length; j++) {
-                                tableMd += `| ${rows[i][j]} `;
-                            }
-                            tableMd += '|\n';
-                        }
 
-                        tableMd += '\n';
-
-                        selectWordUnderCursor();
-                        setValue(name, value.substring(0, selectionEnd) + tableMd + value.substring(selectionEnd));
-
-                        e.target.value = '';
-                        editorRef.current.focus();
-                    }
-                }
-            });
     };
 
     const leftToolbarItems: { icon: FontAwesomeIconType, onClick: () => void, title: string }[] = [
@@ -292,12 +295,12 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     const rightToolbarItems: { icon: FontAwesomeIconType, onClick: () => void }[] = [];
 
     const AutoFocus = (e: MouseEvent<HTMLInputElement>) => {
-        e.currentTarget.focus({preventScroll: true});
+        e.currentTarget.focus({ preventScroll: true });
     };
 
     const AutoBlur = (e: MouseEvent<HTMLInputElement>) => {
         if (editorRef.current) {
-            editorRef.current.focus({preventScroll: true});
+            editorRef.current.focus({ preventScroll: true });
         }
     };
 

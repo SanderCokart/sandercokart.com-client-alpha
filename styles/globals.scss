@@ -3,7 +3,7 @@
 
 :root {
   /*haf = hover,active,focus*/
-  --bg: hsl(0, 0%, 20%);
+  --bg: hsl(0, 0%, 9%);
   --bg-contrast-text: hsl(0, 0%, 93%);
 
   --bg-nav: hsl(0, 0%, 13%);
@@ -24,18 +24,25 @@
   --warning: hsl(40, 100%, 50%);
   --scrollbar: hsl(0, 0%, 93%);
 
+  * {
+    color-scheme: dark;
+  }
 
   &[data-theme="light"] {
-    --bg: hsl(0, 0%, 100%);
+    --bg: hsl(0, 0%, 98%);
     --bg-contrast-text: hsl(0, 0%, 0%);
 
-    --bg-nav: hsl(0, 0%, 87%);
+    --bg-nav: hsl(0, 0%, 100%);
     --bg-nav-contrast-text: hsl(0, 0%, 7%);
 
     --bg-trans: hsla(0, 0%, 100%, .8);
     --bg-trans-contrast-text: hsl(0, 0%, 0%);
 
     --scrollbar: hsl(0, 0%, 7%);
+
+    * {
+      color-scheme: light;
+    }
   }
 }
 

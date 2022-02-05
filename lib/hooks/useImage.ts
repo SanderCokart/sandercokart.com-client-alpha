@@ -1,7 +1,11 @@
 import {FileModel} from '@/types/ModelTypes';
 
 const UseImage = () => {
-    const getUrl = (image: FileModel) => image?.relative_url ? `${process.env.NEXT_PUBLIC_API_URL}/${image.relative_url}` : `${process.env.NEXT_PUBLIC_API_URL}/files/${image.id}`;
+    const getUrl = (image: FileModel) => {
+        if (image?.relative_url)
+            return { url: `${process.env.NEXT_PUBLIC_API_URL}/${image.relative_url}`, isPrivate: false };
+        else return { url: `${process.env.NEXT_PUBLIC_API_URL}/files/${image.id}`, isPrivate: true };
+    };
 
     return { getUrl };
 };

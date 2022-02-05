@@ -7,7 +7,7 @@ import type {FC} from 'react';
 
 const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
     const { getUrl } = useImage();
-    const url = getUrl(post.banner);
+    const { url, isPrivate } = getUrl(post.banner);
 
     return (
         <Link href={'/blog/posts/' + post.slug}>
@@ -15,8 +15,8 @@ const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
                 <figure className={styles.figure}>
 
                     {post.banner &&
-                        <Image priority alt="banner" layout="fill" objectFit="cover" quality={25}
-                               src={url}/>
+                        <Image alt="banner" layout="fill" objectFit="cover" priority={true} quality={100} src={url}
+                               unoptimized={isPrivate}/>
                     }
 
                     <figcaption className={styles.caption}>

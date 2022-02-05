@@ -1,50 +1,83 @@
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Radio.module.scss';
-import type {RadioProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {forwardRef, Fragment} from 'react';
-import {useFormContext} from 'react-hook-form';
+import type {FC} from 'react';
+import {Fragment, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
 
+interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    registerFormHook?: UseFormRegisterReturn;
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    nestedLabelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    options: CheckBoxGroupOption[];
+}
 
-const Radio = forwardRef<HTMLInputElement, RadioProps>(function Radio(props, ref) {
+interface CheckBoxGroupOption {
+    label: string;
+    value: string;
+}
+
+const CheckboxGroup: FC<RadioProps> = (props) => {
     const {
-        name, label,
-        id = name,
+        loading = false,
+        containerProps = undefined,
+        labelProps = undefined,
+        nestedLabelProps = undefined,
+        name = undefined,
+        label = undefined,
+        onChange = undefined,
+        onBlur = undefined,
+        registerFormHook,
         options,
-        ...rest
+        ...restOfProps
     } = props;
 
-    const { register, formState: { errors: { [name]: error } } } = useFormContext();
+    const nameAndId = registerFormHook?.name || name || '';
 
     return (
-        <div className={styles.formControl}>
-            <div>
-                {label && <label className={styles.labelStandalone} htmlFor={id}>{label}</label>}
-                <div className={styles.formControlError}>
-                    {error && <span>{error.message}</span>}
-                </div>
-                <div className={styles.optionsContainer}>
-                    {options.map((option) => {
+        <div className={styles.control}>
+            {label && <label className={styles.label} {...labelProps} htmlFor="">{label}</label>}
+            {registerFormHook && <LabelErrorAccessory className={styles.error} name={nameAndId}/>}
+            <div className={styles.optionsContainer}>
+                {options.map((option) => {
+                        const nestedNameAndId = `${nameAndId}-${option.value}`;
                         return (
                             <Fragment key={option.label}>
-                                <label className={styles.labelWrapper} htmlFor={`${name} ${option.value}`}>
+                                <label className={styles.nestedLabel} {...nestedLabelProps} htmlFor={nestedNameAndId}>
                                     {option.label}
-                                    <input {...rest}
-                                           {...register(name)}
-                                           id={`${id} ${option.value}`}
-                                           name={name}
-                                           type="radio"
-                                           value={option.value}/>
-                                    <div className={styles.checkmark}>
-                                        <FontAwesomeIcon icon={['fas', 'check']}/>
+                                    <input
+                                        ref={(el) => {
+                                            registerFormHook?.ref(el);
+                                        }}
+                                        className={styles.input}
+                                        value={option.value}
+                                        onBlur={(e) => {
+                                            registerFormHook?.onBlur(e);
+                                            onBlur && onBlur(e);
+                                        }}
+                                        onChange={(e) => {
+                                            registerFormHook?.onChange(e);
+                                            onChange && onChange(e);
+                                        }}
+                                        {...restOfProps}
+                                        id={nestedNameAndId}
+                                        name={nameAndId}
+                                        type="radio"/>
+                                    <div className={styles.checkbox}>
+                                        <FontAwesomeIcon icon="check"/>
                                     </div>
                                 </label>
                             </Fragment>
                         );
-                    })}
-                </div>
+                    }
+                )}
             </div>
         </div>
     );
-});
+};
 
-export default Radio;
+export default CheckboxGroup;

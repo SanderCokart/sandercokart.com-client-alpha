@@ -1,5 +1,5 @@
 import Input from '@/components/formComponents/Input';
-import MarkdownEditor from '@/components/formComponents/MarkdownEditor/MarkdownEditor';
+import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
 import NewFile from '@/components/formComponents/NewFile';
 import Select from '@/components/formComponents/Select';
 import TextArea from '@/components/formComponents/TextArea';
@@ -11,7 +11,6 @@ import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {StatusModel} from '@/types/ModelTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
-// @ts-ignore
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
 import {useEffect} from 'react';
@@ -34,8 +33,8 @@ const CreatePostPage: FC = () => {
         })),
         mode: 'all',
         defaultValues: {
-            title: '',
-            excerpt: '',
+            title: 'title',
+            excerpt: 'excerpt',
             markdown: '',
             banner: null,
             status: 1

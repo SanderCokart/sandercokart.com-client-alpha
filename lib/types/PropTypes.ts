@@ -1,31 +1,32 @@
 import {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {ButtonHTMLAttributes, HTMLAttributes, TextareaHTMLAttributes} from 'react';
-import type {FontAwesomeIcon} from './CustomTypes';
-import type {PostModel, UserModel} from './ModelTypes';
-import type {PostsResponse} from './ResponseTypes';
+import type {FontAwesomeIconType, Middleware} from './CustomTypes';
+import type {ArticleModel, UserModel} from './ModelTypes';
+import {FileModel} from './ModelTypes';
+import {CursorPaginationResponse} from './ResponseTypes';
 
 export interface NavItemProps {
     href: string;
-    icon: FontAwesomeIcon;
+    icon: FontAwesomeIconType;
     text: string;
 }
 
 export interface DropdownProps {
-    icon: FontAwesomeIcon;
+    icon: FontAwesomeIconType;
     text: string;
 }
 
 export interface BlogProps {
-    initialData: PostsResponse;
+    fallback: any;
 }
 
 export interface RecentPostLayoutProps {
-    post: PostModel;
+    post: ArticleModel;
 }
 
 export interface MobileMenuProps {
     name: string;
-    icon: FontAwesomeIcon;
+    icon: FontAwesomeIconType;
     onClick: () => void;
     showSpan?: boolean;
     id?: string;
@@ -35,7 +36,7 @@ export interface MobileItemProps {
     onClick: () => void;
     name: string;
     href: string;
-    icon: FontAwesomeIcon;
+    icon: FontAwesomeIconType;
 }
 
 export interface PortalNavItemProps {
@@ -50,22 +51,22 @@ export interface UserRowProps {
 }
 
 export interface PostRowProps {
-    post: PostModel;
+    post: ArticleModel;
 }
 
 export interface BlogPostProps {
-    post: PostModel;
+    post: ArticleModel;
     mdxSource: MDXRemoteSerializeResult;
 }
 
 export interface PaginatedModelProviderProps {
-    middleware?: 'guest' | 'auth';
+    middleware?: Middleware;
     modelName: string;
     url: string;
 }
 
 export interface EditPostFormProps {
-    post: PostModel;
+    post: ArticleModel;
 }
 
 export interface MarkdownEditorProps extends HTMLAttributes<HTMLDivElement> {
@@ -83,6 +84,12 @@ export interface FileProps {
     name: string;
 }
 
+
+export interface FileItemProps extends FileProps {
+    file: File | FileModel,
+    index: number
+}
+
 export interface FileDropBoxProps {
     editMode?: boolean;
     multiple?: boolean;
@@ -98,3 +105,18 @@ export interface FilePreviewCarouselProps {
 export interface ButtonProps extends ButtonHTMLAttributes<any> {
 
 }
+
+export interface CursorPaginationProviderProps {
+    dataKey: string;
+    url: string;
+    middleware?: Middleware;
+}
+
+export interface MapCollectionsProps {
+    collections: CursorPaginationResponse[];
+}
+
+export interface MapCollectionProps {
+    collection: CursorPaginationResponse;
+}
+

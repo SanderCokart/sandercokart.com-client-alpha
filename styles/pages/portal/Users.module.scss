@@ -49,6 +49,13 @@ td.actions {
 
     button {
       @include utils.defaultButton;
+      background-color: transparent;
+      transition: color 150ms ease;
+
+      &:hover, &:active, &:focus {
+        background-color: transparent;
+        color: var(--acc);
+      }
     }
   }
 
@@ -60,6 +67,7 @@ td.actions {
   text-align: center;
   font-weight: bold;
   width: 100%;
+  padding: 2px 8px;
 }
 
 .pageControls {

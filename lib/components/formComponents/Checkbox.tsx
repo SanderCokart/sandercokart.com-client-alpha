@@ -1,31 +1,60 @@
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Checkbox.module.scss';
-import type {CheckBoxProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {FC} from 'react';
-import {useFormContext} from 'react-hook-form';
+import type {FC} from 'react';
+import {HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
 
+interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    registerFormHook?: UseFormRegisterReturn;
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
 
-const Checkbox: FC<CheckBoxProps> = (props) => {
+const Checkbox: FC<CheckboxProps> = (props) => {
     const {
-        name, label,
-        id = name,
-        ...rest
+        loading = false,
+        containerProps = undefined,
+        labelProps = undefined,
+        name = undefined,
+        label = undefined,
+        onBlur = undefined,
+        onChange = undefined,
+        registerFormHook,
+        ...restOfProps
     } = props;
 
-    const { register, formState: { errors: { [name]: error } } } = useFormContext();
-
+    const nameAndId = registerFormHook?.name || name || '';
 
     return (
-        <div className={styles.formControl}>
-            <label className={styles.labelWrapper} htmlFor={props.name}>{props.label}
-                <input {...rest} {...register(name)} id={id} name={name} type="checkbox"/>
-                <div className={styles.checkmark}>
-                    <FontAwesomeIcon icon={['fas', 'check']}/>
+        <div className={styles.control} {...containerProps}>
+            <label className={styles.label} {...labelProps} htmlFor={nameAndId}>
+                {label}
+                <input
+                    ref={(el) => {
+                        registerFormHook?.ref(el);
+                    }}
+                    className={styles.input}
+                    id={nameAndId}
+                    name={nameAndId}
+                    {...restOfProps}
+                    type="checkbox"
+                    onBlur={(e) => {
+                        registerFormHook?.onBlur(e);
+                        onBlur?.(e);
+                    }}
+                    onChange={(e) => {
+                        registerFormHook?.onChange(e);
+                        onChange?.(e);
+                    }}/>
+                <div className={styles.checkbox}>
+                    <FontAwesomeIcon icon="check"/>
                 </div>
             </label>
-            <div className={styles.formControlError}>
-                {error && <span>{error.message}</span>}
-            </div>
+            <LabelErrorAccessory name={nameAndId}/>
         </div>
     );
 };

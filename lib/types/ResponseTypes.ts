@@ -1,14 +1,14 @@
 import type {AxiosResponse} from 'axios';
-import type {PostModel, UserModel} from './ModelTypes';
+import type {ArticleModel, UserModel} from './ModelTypes';
 
-interface Links {
+export interface Links {
     first: string;
     last: string;
     next: string;
     prev: string;
 }
 
-interface Meta {
+export interface Meta {
     current_page: number;
     cursor: number | null;
     from: number;
@@ -16,22 +16,32 @@ interface Meta {
     path: string;
     per_page: number;
     to: number;
+    links: { active: boolean; label: string; url: string | null }[];
+    total: number | null;
 }
 
 export interface PostsResponse extends AxiosResponse {
-    [key: string]: any;
-    posts: PostModel[];
+    posts: ArticleModel[];
     links: Links;
     meta: Meta;
+
+    [key: string]: any;
 }
 
 export interface UsersResponse extends AxiosResponse {
-    [key: string]: any;
     users: UserModel[];
     links: Links;
     meta: Meta;
+
+    [key: string]: any;
 }
 
 export interface PostsSlugsResponse extends AxiosResponse {
     params: { slug: string };
+}
+
+export interface CursorPaginationResponse {
+    articles: ArticleModel[],
+    links: Links,
+    meta: Meta
 }

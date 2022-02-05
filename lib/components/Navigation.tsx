@@ -155,7 +155,7 @@ const MobileItem: FC<MobileItemProps> = (props) => {
 
 const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
     <li>
-        <Link href={href}>
+        <Link href={href} scroll={false}>
             <a>
                 <FontAwesomeIcon icon={icon}/>{text}
             </a>
@@ -164,8 +164,6 @@ const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
 );
 
 const Dropdown: FC<DropdownProps> = ({ children, text, icon }) => {
-
-
     return (
         <li className={styles.dropdown}>
             <button data-navigation-dropdown><FontAwesomeIcon icon={icon}/>{text}</button>

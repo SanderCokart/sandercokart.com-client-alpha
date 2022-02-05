@@ -2,7 +2,7 @@ import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
 import styles from '@/styles/pages/portal/Users.module.scss';
-import type {PostModel} from '@/types/ModelTypes';
+import type {ArticleModel} from '@/types/ModelTypes';
 import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
@@ -24,7 +24,7 @@ const Posts: FC = () => {
     }, [shouldRedirect]);
 
     return (
-        <PaginatedModelProvider middleware="auth" modelName="posts" url="/posts">
+        <PaginatedModelProvider middleware="auth" modelName="articles" url="/articles/posts">
             {(isLoadingAuth || shouldRedirect) && <Loader/>}
             <PostTable/>
         </PaginatedModelProvider>
@@ -47,10 +47,10 @@ const PostRow: FC<PostRowProps> = ({ post }) => {
 
             <td className={styles.actions}>
                 <div>
-                    <Link href={`/portal/posts/delete/${post.slug}`}>
+                    <Link href={`/portal/articles/posts/delete/${post.slug}`}>
                         <a type="button"><FontAwesomeIcon icon="trash"/></a>
                     </Link>
-                    <Link href={`/portal/posts/edit/${post.slug}`}>
+                    <Link href={`/portal/articles/posts/edit/${post.slug}`}>
                         <a type="button"><FontAwesomeIcon icon="pen"/></a>
                     </Link>
                 </div>
@@ -60,7 +60,16 @@ const PostRow: FC<PostRowProps> = ({ post }) => {
 };
 
 const PostTable: FC = () => {
-    const { data, isLoading, nextPage, prevPage, hasMore, hasLess } = usePaginatedContext<PostModel>();
+    const {
+        data,
+        isLoading,
+        nextPage,
+        prevPage,
+        hasMore,
+        hasLess,
+        meta,
+        setPageIndex
+    } = usePaginatedContext<ArticleModel>();
 
     const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'publishedAt', 'status', 'actions'];
 
@@ -101,6 +110,11 @@ const PostTable: FC = () => {
                 <button disabled={!hasLess} onClick={prevPage}>
                     <FontAwesomeIcon icon="arrow-left"/>
                 </button>
+                {meta?.links?.slice(1, meta.links.length - 1).map(link => (
+                    <button key={link.label} disabled={link.active || link.label === '...'} onClick={() => setPageIndex(Number(link.label))}>
+                        {link.label}
+                    </button>
+                ))}
                 <button disabled={!hasMore} onClick={nextPage}>
                     <FontAwesomeIcon icon="arrow-right"/>
                 </button>

@@ -1,50 +1,83 @@
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/CheckboxGroup.module.scss';
-import type {CheckBoxGroupProps} from '@/types/FormControlTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {forwardRef, Fragment} from 'react';
-import {useFormContext} from 'react-hook-form';
+import type {FC} from 'react';
+import {Fragment, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
 
+interface CheckboxGroupProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    registerFormHook?: UseFormRegisterReturn;
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    nestedLabelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    options: CheckBoxGroupOption[];
+}
 
-const CheckboxGroup = forwardRef<HTMLInputElement, CheckBoxGroupProps>(function CheckboxGroup(props, ref) {
+interface CheckBoxGroupOption {
+    label: string;
+    value: string;
+}
+
+const CheckboxGroup: FC<CheckboxGroupProps> = (props) => {
     const {
-        name, label,
-        id = name,
+        loading = false,
+        containerProps = undefined,
+        labelProps = undefined,
+        nestedLabelProps = undefined,
+        name = undefined,
+        label = undefined,
+        onChange = undefined,
+        onBlur = undefined,
+        registerFormHook,
         options,
-        ...rest
+        ...restOfProps
     } = props;
 
-    const { register, formState: { errors: { [name]: error } } } = useFormContext();
+    const nameAndId = registerFormHook?.name || name || '';
 
     return (
-        <div className={styles.formControl}>
-            {label && <label className={styles.labelStandalone} htmlFor={name}>{label}</label>}
-            <div className={styles.formControlError}>
-                {error && <span>{error.message}</span>}
-            </div>
+        <div className={styles.control}>
+            {label && <label className={styles.label} {...labelProps} htmlFor="">{label}</label>}
+            {registerFormHook && <LabelErrorAccessory className={styles.error} name={nameAndId}/>}
             <div className={styles.optionsContainer}>
-                {
-                    options.map((option) => {
+                {options.map((option) => {
+                        const nestedNameAndId = `${nameAndId}-${option.value}`;
                         return (
                             <Fragment key={option.label}>
-                                <label className={styles.labelWrapper} htmlFor={`${name} ${option.value}`}>
+                                <label className={styles.nestedLabel} {...nestedLabelProps} htmlFor={nestedNameAndId}>
                                     {option.label}
-                                    <input {...rest}
-                                           {...register(name)}
-                                           id={`${id} ${option.value}`}
-                                           name={name}
-                                           type="checkbox"
-                                           value={option.value}/>
-                                    <div className={styles.checkmark}>
-                                        <FontAwesomeIcon icon={['fas', 'check']}/>
+                                    <input
+                                        ref={(el) => {
+                                            registerFormHook?.ref(el);
+                                        }}
+                                        className={styles.input}
+                                        value={option.value}
+                                        onBlur={(e) => {
+                                            registerFormHook?.onBlur(e);
+                                            onBlur && onBlur(e);
+                                        }}
+                                        onChange={(e) => {
+                                            registerFormHook?.onChange(e);
+                                            onChange && onChange(e);
+                                        }}
+                                        {...restOfProps}
+                                        id={nestedNameAndId}
+                                        name={nameAndId}
+                                        type="checkbox"/>
+                                    <div className={styles.checkbox}>
+                                        <FontAwesomeIcon icon="check"/>
                                     </div>
                                 </label>
                             </Fragment>
                         );
-                    })
-                }
+                    }
+                )}
             </div>
         </div>
     );
-});
+};
 
 export default CheckboxGroup;

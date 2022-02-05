@@ -1,32 +1,27 @@
-import styles from '@/styles/components/formComponents/File/File.module.scss';
-import type {FileProps} from '@/types/FormControlTypes';
+import FileDropBox from '@/components/formComponents/NewFile/FileDropBox';
+import FilePreviewCarousel from '@/components/formComponents/NewFile/FilePreviewCarousel';
+import styles from '@/styles/components/formComponents/NewFile/File.module.scss';
+import {FileModel} from '@/types/ModelTypes';
+import type {FileProps} from '@/types/PropTypes';
+import ObjectPath from 'object-path';
 import type {FC} from 'react';
-import DropBox from './DropBox';
-import FileCarousel from './FileCarousel';
+import {useFormContext, useFormState} from 'react-hook-form';
 
-export interface ApiFileType {
-    id: number;
-    created_at: string;
-    original_name: string;
-    relative_path?: string;
-    url: string;
-}
+const File: FC<FileProps> = (props) => {
+    const { name, multiple = false, editMode = false } = props;
+    const { watch } = useFormContext();
+    const { dirtyFields} = useFormState();
 
-const Index: FC<FileProps> = (props) => {
+    const isDirty = ObjectPath.has(dirtyFields, name);
+
+    const files: FileModel[] = watch(name, []);
+
     return (
-        <div className={styles.formControl}>
-            <FileCarousel {...props}/>
-            <DropBox {...props}/>
+        <div className={styles.file}>
+            {files?.length && <FilePreviewCarousel editMode={editMode} multiple={multiple} name={name}/>}
+            {(multiple || !isDirty) && <FileDropBox editMode={editMode} multiple={multiple} name={name}/>}
         </div>
     );
 };
 
-export default Index;
-
-// $table->id();
-// $table->nullableMorphs('fileable');
-// $table->string('original_name');
-// $table->string('mime_type');
-// $table->boolean('is_private')->default(true);
-// $table->string('relative_url');
-// $table->timestampsTz();
+export default File;

@@ -39,16 +39,19 @@ const FilePreviewCarousel: FC<FilePreviewCarouselProps> = (props) => {
                     <FontAwesomeIcon icon="undo"/>
                 </button>
             )}
-            {files.map((file) => (
-                <div key={file.id} className={styles.carouselItem}>
-                    {(editMode && isDirty || !editMode) && (
-                        <button className={styles.deleteButton} type="button" onClick={() => onDelete(file)}>
-                            <FontAwesomeIcon icon="trash"/>
-                        </button>
-                    )}
-                    <img alt="alt" src={getUrl(file)}/>
-                </div>
-            ))}
+            {files.map((file) => {
+                const { url } = getUrl(file);
+                return (
+                    <div key={file.id} className={styles.carouselItem}>
+                        {(editMode && isDirty || !editMode) && (
+                            <button className={styles.deleteButton} type="button" onClick={() => onDelete(file)}>
+                                <FontAwesomeIcon icon="trash"/>
+                            </button>
+                        )}
+                        <img alt="alt" src={url}/>
+                    </div>
+                );
+            })}
         </div>
     );
 };

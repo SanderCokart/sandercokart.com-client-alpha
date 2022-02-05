@@ -1,13 +1,13 @@
 import {useAuth} from '@/providers/AuthProvider';
 import {PaginatedModelContext} from '@/types/ContextTypes';
-import type {PaginatableModels, PaginatedResponses} from '@/types/CustomTypes';
+import type {PaginatedModels, PaginatedResponses} from '@/types/CustomTypes';
 import type {PaginatedModelProviderProps} from '@/types/PropTypes';
 import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
 
 const Context = createContext({});
-export const usePaginatedContext = <T extends PaginatableModels>() => useContext(Context) as PaginatedModelContext<T>;
+export const usePaginatedContext = <T extends PaginatedModels>() => useContext(Context) as PaginatedModelContext<T>;
 
 
 const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, modelName, url, middleware = 'auth' }) => {
@@ -38,9 +38,10 @@ const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, mod
             links,
             meta,
             isLoading: !error && !data,
-            isError: error,
+            error,
             nextPage,
             prevPage,
+            setPageIndex,
             hasMore,
             hasLess
         }}>

@@ -1,8 +1,38 @@
+import Input from '@/components/formComponents/Input';
 import styles from '@/styles/components/PortalNavigation.module.scss';
-import {PortalNavItemProps} from '@/types/PropTypes';
+import type {PortalNavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import {FC} from 'react';
+import {FC, useState} from 'react';
+
+const PortalNavigation: FC = () => {
+    const [search, setSearch] = useState('');
+
+    const models = [
+        { href: '/portal/users', text: 'Users' },
+        { href: '/portal/articles/posts', text: 'Posts' },
+        { href: '/portal/articles/tips', text: 'Tips' },
+        { href: '/portal/articles/courses', text: 'Courses' },
+        { href: '/portal/articles/thoughts', text: 'Thoughts' }
+    ];
+
+    return (
+        <nav className={styles.portalNav}>
+            <Input placeholder="Search" prependIcon={{ icon: 'search' }} type="search" value={search}
+                   onChange={(e) => setSearch(e.target.value)}/>
+
+            <ul className={styles.linkList}>
+                {models.map((model) => {
+                    if (model.text.toLowerCase().includes(search.toLowerCase())) {
+                        return (
+                            <PortalNavItem key={model.text} href={model.href} text={model.text}/>
+                        );
+                    }
+                })}
+            </ul>
+        </nav>
+    );
+};
 
 const PortalNavItem: FC<PortalNavItemProps> = ({ href, text }) => {
     return (
@@ -20,19 +50,6 @@ const PortalNavItem: FC<PortalNavItemProps> = ({ href, text }) => {
                 </li>
             </ul>
         </li>
-    );
-};
-
-const PortalNavigation: FC = () => {
-    return (
-        <nav className={styles.portalNav}>
-            <ul>
-                <PortalNavItem href="/portal/users" text="Users"/>
-                <PortalNavItem href="/portal/posts" text="Posts"/>
-                <PortalNavItem href="/portal/tips" text="Tips"/>
-                <PortalNavItem href="/portal/courses" text="Courses"/>
-            </ul>
-        </nav>
     );
 };
 

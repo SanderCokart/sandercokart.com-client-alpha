@@ -1,92 +1,106 @@
 @use '../../utils';
 
-.labelAndError {
-  display: flex;
+.control {
+  margin-bottom: 2px;
 }
 
-.formControl {
-  display: flex;
-  flex-direction: column;
+
+.label {
+  width: auto;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.input {
+  outline: none;
+  border: none;
+  padding: 8px;
+  font-size: 1rem;
   width: 100%;
+  background-color: var(--bg);
+  color: var(--bg-contrast-text);
 
-  .labelStandalone {
-    margin-bottom: 4px;
-    display: inline-block;
-    width: auto;
-    font-weight: bolder;
+  &.withPrependIcon {
+    padding-left: 1.75rem;
   }
 
-  .iconContainer {
-    height: inherit;
-    position: relative;
-    color: #111;
-    width: 100%;
+  &.withAppendIcon {
+    padding-right: 1.75rem;
+  }
 
-    .input {
-      width: inherit;
-      height: inherit;
-      padding: 8px;
-      outline: none;
-      transition: background-color utils.$transitionTime ease;
-      background-color: hsl(0, 0%, 93%);
-      border: none;
-      font-size: 1rem;
-      z-index: 1;
-      line-height: 2rem;
-
-      &:active, &:focus ~ .line {
-        transform: scaleX(1);
-        transform-origin: left;
-      }
-
-      &:hover, &:active, &:focus {
-        background-color: hsl(0, 0%, 100%);
-      }
-    }
-
-    .prependIcon {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 14px;
-      pointer-events: none;
-      user-select: none;
-
-      z-index: 2;
-    }
-
-    .prependIconPadding {
-      padding-left: 35px;
-    }
-
-    .appendIcon {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: 14px;
-      pointer-events: none;
-      z-index: 2;
-      user-select: none;
-
-    }
-
-    .appendIconPadding {
-      padding-right: 30px;
-    }
-
-
-    .line {
-      background-color: var(--acc);
-      width: 100%;
-      height: 4px;
-      transition: transform utils.$transitionTime ease;
-      transform: scaleX(0);
-      transform-origin: right;
-      position: absolute;
-      bottom: 0;
+  &:active, &:focus {
+    & ~ .line {
+      transform-origin: left;
+      transform: scaleX(1);
     }
   }
 
-  @import "formControlError";
+  &::placeholder {
+    color: var(--bg-contrast-text);
+  }
 }
 
+.iconPrepend {
+  color: #fffa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 8px;
+  transition: color 150ms ease;
+}
+
+.iconButtonPrepend {
+  @extend .iconPrepend;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: none;
+
+  &:hover, &:active, &:focus {
+    color: var(--acc);
+  }
+}
+
+.iconAppend {
+  color: #fffa;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 8px;
+  transition: color 150ms ease;
+}
+
+.iconButtonAppend {
+  @extend .iconAppend;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: none;
+
+  &:hover, &:active, &:focus {
+    color: var(--acc);
+  }
+}
+
+.line {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: var(--acc);
+  border: none;
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform 250ms ease;
+}
+
+.whiteLine {
+  @extend .line;
+  transform: none;
+  background-color: #fff;
+}
