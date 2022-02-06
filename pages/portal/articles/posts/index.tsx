@@ -97,7 +97,7 @@ const PostTable: FC = () => {
                 <tbody>
                 {isLoading ? [...Array(100)].map((_, rowIndex) => (
                     <tr key={rowIndex}>
-                        <td colSpan={9}><Skeleton baseColor="var(--bg)" duration={.75} height="100%" width="100%"/></td>
+                        <td colSpan={9}><Skeleton  duration={.75} height="100%" width="100%"/></td>
                     </tr>
                 )) : data.map(post => (
                     <PostRow key={post.id} post={post}/>

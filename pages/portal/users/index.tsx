@@ -38,7 +38,7 @@ const Users: FC = () => {
                     {isLoading ? [...Array(100)].map((_, index) => (
                         <tr key={index}>
                             {[...Array(8)].map((_, index2) =>
-                                <td key={index2}><Skeleton baseColor="#222" width="100%"/></td>
+                                <td key={index2}><Skeleton width="100%"/></td>
                             )}
                         </tr>
                     )) : users.map(user => (

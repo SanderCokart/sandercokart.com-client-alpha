@@ -3,16 +3,7 @@ import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory
 import styles from '@/styles/components/formComponents/Select.module.scss';
 import {FontAwesomeIconType} from '@/types/CustomTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {
-    FC,
-    HTMLAttributes,
-    InputHTMLAttributes,
-    LabelHTMLAttributes,
-    MutableRefObject, SelectHTMLAttributes,
-    useCallback,
-    useEffect,
-    useRef
-} from 'react';
+import {FC, HTMLAttributes, LabelHTMLAttributes, MutableRefObject, SelectHTMLAttributes, useRef} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
@@ -80,8 +71,7 @@ const Select: FC<SelectProps> = (props) => {
 
                 {loading ? (
                     <Skeleton
-                        borderRadius={0}
-                        className={`${styles.input}${prependIcon && ` ${styles.withPrependIcon}`}${appendIcon && ` ${styles.withAppendIcon}`}`}/>
+                        borderRadius={0} className={styles.select} height="32px" style={{ padding: 0 }}/>
                 ) : (
                      <select ref={(el) => {
                          registerFormHook?.ref(el);

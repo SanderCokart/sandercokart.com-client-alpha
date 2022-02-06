@@ -1,9 +1,9 @@
 import Button from '@/components/Button';
+import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
-import NewFile from '@/components/formComponents/NewFile';
 import Select from '@/components/formComponents/Select';
-import TextArea from '@/components/formComponents/TextArea';
+import Textarea from '@/components/formComponents/Textarea';
 import Loader from '@/components/Loader';
 import PortalContainer from '@/components/PortalContainer';
 import axios from '@/functions/shared/axios';
@@ -40,7 +40,7 @@ const EditPost: FC = () => {
                     {post && !error ?
                      <h1>Edit Post - {post.id} - {post.title}</h1>
                                     :
-                     <h1><Skeleton baseColor="var(--bg)"/></h1>
+                     <h1><Skeleton/></h1>
                     }
                 </header>
                 <main className={styles.main}>
@@ -97,8 +97,8 @@ const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
             {!loading && (
                 <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
                     <Input label="Title" name="title"/>
-                    <TextArea label="Excerpt" name="excerpt"/>
-                    <NewFile editMode={true} name="banner"/>
+                    <Textarea label="Excerpt" name="excerpt"/>
+                    <File editMode={true} name="banner"/>
                     <Select name="status">
                         {(statuses && !error) && statuses.map(status => (
                             <option key={status.id} value={status.id}>{status.name}</option>

@@ -41,7 +41,7 @@ const Test: FC = () => {
         <FormProvider {...testForm}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input loading={isLoading}/>
-                <Select registerFormHook={{...register('select')}}>
+                <Select loading={isLoading} registerFormHook={{...register('select')}}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                 </Select>

@@ -107,7 +107,9 @@ const Input: FC<InputProps> = (props) => {
                 {loading ? (
                     <Skeleton
                         borderRadius={0}
-                        className={`${styles.input}${prependIcon && ` ${styles.withPrependIcon}`}${appendIcon && ` ${styles.withAppendIcon}`}`}/>
+                        className={styles.input}
+                        height="31px"
+                        style={{padding:0}}/>
                 ) : (
                      <input ref={(el) => {
                          registerFormHook?.ref(el);

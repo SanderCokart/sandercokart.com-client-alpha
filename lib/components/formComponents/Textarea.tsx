@@ -43,9 +43,7 @@ const Textarea: FC<TextareaProps> = (props) => {
             <div className={styles.inputContainer}>
 
                 {loading ? (
-                    <Skeleton baseColor="var(--bg)" borderRadius={0} className={styles.textarea} duration={.75}
-                              highlightColor="var(--acc)"
-                              style={{ padding: 0 }}/>
+                    <Skeleton borderRadius={0} className={styles.textarea} duration={.75} style={{ padding: 0 }}/>
                 ) : (
                      <textarea
                          ref={(el) => {
