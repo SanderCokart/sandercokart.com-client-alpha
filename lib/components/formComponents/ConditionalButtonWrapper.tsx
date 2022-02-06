@@ -1,4 +1,4 @@
-import {FC, HTMLAttributes, ReactElement} from 'react';
+import type {FC, HTMLAttributes, ReactElement} from 'react';
 
 interface ConditionalWrapperButtonProps {
     condition: boolean;

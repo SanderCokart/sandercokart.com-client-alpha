@@ -1,7 +1,7 @@
-import FileDropBox from '@/components/formComponents/NewFile/FileDropBox';
-import FilePreviewCarousel from '@/components/formComponents/NewFile/FilePreviewCarousel';
+import FileDropBox from '@/components/formComponents/File/FileDropBox';
+import FilePreviewCarousel from '@/components/formComponents/File/FilePreviewCarousel';
 import styles from '@/styles/components/formComponents/NewFile/File.module.scss';
-import {FileModel} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 import type {FileProps} from '@/types/PropTypes';
 import ObjectPath from 'object-path';
 import type {FC} from 'react';

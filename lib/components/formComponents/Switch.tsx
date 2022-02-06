@@ -1,5 +1,5 @@
 import styles from '@/styles/components/formComponents/Switch.module.scss';
-import type {SwitchProps} from '@/types/FormControlTypes';
+import type {SwitchProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {ChangeEvent, FC} from 'react';
 import {useState} from 'react';

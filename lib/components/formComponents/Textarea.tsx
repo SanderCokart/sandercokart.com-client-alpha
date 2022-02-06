@@ -1,17 +1,9 @@
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Textarea.module.scss';
-import {ChangeEvent, FC, HTMLAttributes, LabelHTMLAttributes, TextareaHTMLAttributes} from 'react';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type {TextareaProps} from '@/types/PropTypes';
+import type {ChangeEvent, FC} from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-    loading?: boolean;
-    name?: string;
-    label?: string;
-    registerFormHook?: UseFormRegisterReturn;
-    containerProps?: HTMLAttributes<HTMLDivElement>;
-    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
-}
 
 const Textarea: FC<TextareaProps> = (props) => {
     const {

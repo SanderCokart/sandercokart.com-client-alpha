@@ -1,8 +1,7 @@
-
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/components/formComponents/NewFile/FileDropBox.module.scss';
-import {FileModel} from '@/types/ModelTypes';
-import {FileDropBoxProps} from '@/types/PropTypes';
+import type {FileModel} from '@/types/ModelTypes';
+import type {FileDropBoxProps} from '@/types/PropTypes';
 import type {ChangeEvent, DragEvent, FC} from 'react';
 import {useFormContext} from 'react-hook-form';
 

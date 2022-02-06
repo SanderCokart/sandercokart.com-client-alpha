@@ -4,7 +4,7 @@ import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
 import styles from '@/styles/components/formComponents/MarkdownEditor/Toolbar.module.scss';
-import type {FontAwesomeIconType as FontAwesomeIconType} from '@/types/CustomTypes';
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
 import type {ToolbarProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

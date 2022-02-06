@@ -1,25 +1,10 @@
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/CheckboxGroup.module.scss';
+import type {CheckboxGroupProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {FC} from 'react';
-import {Fragment, HTMLAttributes, InputHTMLAttributes, LabelHTMLAttributes} from 'react';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import {Fragment} from 'react';
 
-interface CheckboxGroupProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
-    loading?: boolean;
-    name?: string;
-    label?: string;
-    registerFormHook?: UseFormRegisterReturn;
-    containerProps?: HTMLAttributes<HTMLDivElement>;
-    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
-    nestedLabelProps?: LabelHTMLAttributes<HTMLLabelElement>;
-    options: CheckBoxGroupOption[];
-}
-
-interface CheckBoxGroupOption {
-    label: string;
-    value: string;
-}
 
 const CheckboxGroup: FC<CheckboxGroupProps> = (props) => {
     const {

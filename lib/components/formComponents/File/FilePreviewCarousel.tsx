@@ -1,8 +1,8 @@
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
 import styles from '@/styles/components/formComponents/NewFile/FilePreviewCarousel.module.scss';
-import {FileModel} from '@/types/ModelTypes';
-import {FilePreviewCarouselProps} from '@/types/PropTypes';
+import type {FileModel} from '@/types/ModelTypes';
+import type {FilePreviewCarouselProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import ObjectPath from 'object-path';
 import type {FC} from 'react';
