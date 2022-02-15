@@ -1,0 +1,200 @@
+@use '../utils';
+
+//.desktop {
+//  ul {
+//    list-style: none;
+//  }
+//
+//  .nav {
+//    height: utils.$navHeight;
+//    background-color: var(--bg-nav);
+//    border-bottom: 2px solid var(--acc);
+//  }
+//
+//  .navUl {
+//    max-width: 100%;
+//    height: 100%;
+//    display: flex;
+//    justify-content: flex-end;
+//  }
+//
+//  .navItem {
+//    @include utils.defaultButton;
+//    background-color: transparent;
+//    position: relative;
+//    width: auto;
+//    display: flex;
+//    align-items: center;
+//    justify-content: center;
+//    padding: 0 8px;
+//  }
+//
+//  .iconButton {
+//    $buttonSize: calc(var(--dropdown-navigation-size) * 0.5);
+//    width: $buttonSize;
+//    height: $buttonSize;
+//    display: flex;
+//    align-items: center;
+//    justify-content: center;
+//    transition: filter 300ms;
+//    gap: 8px;
+//
+//    svg {
+//      --svg-size: 20px;
+//      width: var(--svg-size);
+//      height: var(--svg-size);
+//    }
+//
+//    &:hover {
+//      filter: brightness(1.2);
+//    }
+//  }
+//
+//  .dropdown {
+//    box-sizing: content-box;
+//    position: absolute;
+//    top: calc(100% + 2px);
+//    right: 0;
+//    width: 300px;
+//    background-color: var(--bg-nav);
+//    overflow: hidden;
+//    transition: height utils.$navSpeed ease;
+//  }
+//
+//  /*-------------------------------------------------*/
+//
+//  .menu {
+//    width: 100%;
+//  }
+//
+//  .menuItem {
+//    height: 50px;
+//    display: flex;
+//    align-items: center;
+//    justify-content: revert;
+//    transition: background utils.$navSpeed;
+//    padding: 0 1rem;
+//    & .iconButton {
+//      margin-right: 0.5rem;
+//
+//      &:hover {
+//        filter: none;
+//      }
+//    }
+//  }
+//
+//  .iconRight {
+//    margin-left: auto;
+//  }
+//}
+
+
+.desktopNav {
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  background-color: var(--bg-nav);
+  color: var(--bg-contrast-text);
+
+  .left {
+
+  }
+
+  .right {
+
+  }
+
+  .navItem {
+    height: 100%;
+  }
+
+  .navItemLink {
+    @include utils.defaultButton;
+    height: 100%;
+  }
+
+  .navItemWithDropdown {
+    @include utils.defaultButton;
+    height: 100%;
+    position: relative;
+  }
+
+  .dropdownMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 300px;
+    background-color: var(--bg-nav);
+    color: var(--bg-contrast-text);
+    overflow: hidden;
+  }
+
+  .dropdownItem {
+    @include utils.defaultButton;
+    padding: 0;
+    background-color: var(--bg-nav);
+    color: var(--bg-contrast-text);
+    justify-content: revert;
+
+    &:hover, &:active, &:focus {
+      background-color: var(--acc-inactive);
+
+      .leftIcon {
+        background-color: var(--acc);
+      }
+    }
+  }
+
+  .leftIcon {
+    @include utils.defaultButton;
+    width: 40px;
+    height: 40px;
+    background-color: var(--acc-inactive);
+  }
+
+  .rightIcon {
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .dropdownLinkItem {
+
+  }
+
+  .dropdownLinkItemAnchor {
+    @include utils.defaultButton;
+    background-color: var(--bg-nav);
+    color: var(--bg-contrast-text);
+    padding: 0;
+    justify-content: revert;
+
+    &:hover, &:active, &:focus {
+      background-color: var(--acc-inactive);
+
+      .leftIcon {
+        background-color: var(--acc);
+      }
+    }
+  }
+}
+
+.themeControl {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.themeRadioControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 1.5rem;
+  gap: 16px;
+  padding: 16px;
+}

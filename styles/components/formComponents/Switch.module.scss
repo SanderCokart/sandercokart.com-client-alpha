@@ -39,9 +39,9 @@
   right: 0;
   bottom: 0;
   background-color: var(--acc-disabled);
-  -webkit-transition: utils.$transitionTime;
-  transition: utils.$transitionTime;
-  border-radius: utils.$radius;
+  -webkit-transition: 200ms;
+  transition: 200ms;
+  border-radius: 16px;
   color: var(--acc-disabled-contrast-text);
 
   display: flex;
@@ -56,8 +56,8 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    -webkit-transition: utils.$transitionTime;
-    transition: utils.$transitionTime;
+    -webkit-transition: 200ms;
+    transition: 200ms;
     border-radius: 50%;
   }
 }

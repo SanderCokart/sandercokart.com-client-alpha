@@ -3,3 +3,7 @@
 .button {
   @include utils.defaultButton;
 }
+
+.navigationButton {
+  background-color: var(--bg-nav);
+}

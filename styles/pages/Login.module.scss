@@ -15,30 +15,6 @@
       display: flex;
       flex-direction: column;
       gap: 24px;
-
-      .submitButton {
-        width: 100%;
-        background-color: var(--acc);
-        color: var(--acc-contrast-text);
-        padding: 8px;
-        border: none;
-        border-radius: var(--radius);
-        font-weight: bolder;
-        cursor: pointer;
-        transition: background-color ease utils.$transitionTime;
-
-
-        &:disabled {
-          background: var(--acc-disabled);
-          color: var(--acc-disabled-contrast-text);
-          pointer-events: none;
-        }
-
-        &:hover, &:active, &:focus {
-          background-color: var(--acc-haf);
-
-        }
-      }
     }
 
     .footer {
@@ -54,7 +30,7 @@
           font-weight: bolder;
           text-align: center;
           margin: 0 auto;
-          transition: color ease utils.$transitionTime;
+          transition: color ease 200ms;
 
           &:hover, &:active, &:focus {
             color: var(--acc)

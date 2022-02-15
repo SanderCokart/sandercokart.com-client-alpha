@@ -13,6 +13,7 @@
 
 .inputContainer {
   position: relative;
+  height: 100%;
 }
 
 .select {
@@ -23,6 +24,7 @@
   width: 100%;
   background-color: var(--bg);
   color: var(--bg-contrast-text);
+  height: 100%;
 
   &.withPrependIcon {
     padding-left: 1.75rem;

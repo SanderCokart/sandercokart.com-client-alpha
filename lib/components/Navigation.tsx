@@ -1,13 +1,15 @@
+import Button from '@/components/Button';
+import Dropdown, {DropdownGrid, DropdownItem} from '@/components/Dropdown';
 import PortalNavigation from '@/components/PortalNavigation';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/components/Navigation.module.scss';
-import {DropdownProps, MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
+import {FontAwesomeIconType} from '@/types/CustomTypes';
+import {MobileItemProps, MobileMenuProps, NavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import type {FC} from 'react';
-import {useEffect} from 'react';
 
 const Navigation: FC = () => {
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -69,54 +71,46 @@ const Desktop = () => {
     const { loggedIn, isAdmin } = useAuth();
     const isPortalPage = pathname.includes('portal');
 
-    const onDropdownClick = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        const isDropdown = target.matches('[data-navigation-dropdown]');
-        let currentDropdown: HTMLElement | null = null;
-        if (isDropdown) {
-            currentDropdown = target;
-            target?.classList.toggle(styles.active);
-            target?.nextElementSibling?.classList.toggle(styles.active);
-        }
-
-        document.querySelectorAll(`[data-navigation-dropdown].${styles.active}`).forEach(el => {
-            if (el !== currentDropdown) {
-                el.classList.remove(styles.active);
-                el.nextElementSibling?.classList.remove(styles.active);
-            }
-        });
-    };
-
-    useEffect(() => {
-        document.addEventListener('click', onDropdownClick);
-
-        return () => {
-            document.removeEventListener('click', onDropdownClick);
-        };
-    }, []);
-
     return (
         <>
             <nav className={styles.desktop}>
                 <ul>
                     {/*LEFT*/}
                     <div>
-                        <NavItem href="/blog" icon="rss" text="Blog"/>
-                        <Dropdown icon="boxes" text="Library">
-                            <NavItem href="/library/courses" icon="book" text="Courses"/>
-                            <NavItem href="/library/tips" icon="lightbulb" text="Tips"/>
-                        </Dropdown>
+                        <Button navigationButton href="/blog"><FontAwesomeIcon icon="rss"/>Blog</Button>
+                        <NavigationDropdown icon="boxes" text="Library">
+                            <DropdownGrid columns={3} width="100%">
+                                <DropdownItem>
+                                    <Button navigationButton href="/library/courses"><FontAwesomeIcon icon="book"/>Courses</Button>
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <Button navigationButton href="/library/tips"><FontAwesomeIcon icon="lightbulb"/>Tips</Button>
+
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <Button navigationButton href="/library/courses"><FontAwesomeIcon icon="book"/>Courses</Button>
+
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <Button navigationButton href="/library/courses"><FontAwesomeIcon icon="book"/>Courses</Button>
+                                </DropdownItem>
+                            </DropdownGrid>
+                        </NavigationDropdown>
                     </div>
                     {/*RIGHT*/}
                     <div>
 
-                        <NavItem href="/contact" icon="envelope" text="Contact"/>
-                        {isAdmin && <NavItem href="/portal" icon="database" text="Portal"/>}
+                        <Button navigationButton href="/contact"><FontAwesomeIcon icon="envelope"/>Contact</Button>
+
+
+                        {isAdmin &&
+                            <Button navigationButton href="/portal"><FontAwesomeIcon icon="database"/>Portal</Button>}
 
                         {loggedIn ?
-                         <NavItem href="/account" icon="user" text="Account"/>
+                         <Button navigationButton href="/account"><FontAwesomeIcon icon="user"/>Account</Button>
+
                                   :
-                         <NavItem href="/login" icon="user-lock" text="Login"/>
+                         <Button navigationButton href="/login"><FontAwesomeIcon icon="user-lock"/>Login</Button>
                         }
                     </div>
                 </ul>
@@ -163,13 +157,15 @@ const NavItem: FC<NavItemProps> = ({ href, icon, text }) => (
     </li>
 );
 
-const Dropdown: FC<DropdownProps> = ({ children, text, icon }) => {
+const NavigationDropdown: FC<{ text: string, icon: FontAwesomeIconType }> = ({ children, text, icon }) => {
     return (
-        <li className={styles.dropdown}>
-            <button data-navigation-dropdown><FontAwesomeIcon icon={icon}/>{text}</button>
-            <ul className={styles.dropdownMenu}>
-                {children}
-            </ul>
-        </li>
+        <Dropdown buttonContent={
+            <>
+                <FontAwesomeIcon icon={icon}/>
+                {text}
+            </>
+        } expandedWidth="200px" height="40px">
+            {children}
+        </Dropdown>
     );
 };

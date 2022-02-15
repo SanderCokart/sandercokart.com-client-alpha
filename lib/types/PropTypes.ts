@@ -1,23 +1,24 @@
+import {Property} from 'csstype';
 import {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {
     ButtonHTMLAttributes,
     HTMLAttributes,
     InputHTMLAttributes,
-    LabelHTMLAttributes, MutableRefObject, SelectHTMLAttributes,
+    LabelHTMLAttributes,
+    MutableRefObject,
+    ReactElement,
+    SelectHTMLAttributes,
     TextareaHTMLAttributes
 } from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
 import type {FontAwesomeIconType, Middleware} from './CustomTypes';
 import type {ArticleModel, UserModel} from './ModelTypes';
 import {CursorPaginationResponse} from './ResponseTypes';
+import FlexDirection = Property.FlexDirection;
+import TextAlign = Property.TextAlign;
 
 export interface NavItemProps {
     href: string;
-    icon: FontAwesomeIconType;
-    text: string;
-}
-
-export interface DropdownProps {
     icon: FontAwesomeIconType;
     text: string;
 }
@@ -103,7 +104,9 @@ export interface FilePreviewCarouselProps {
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<any> {
-
+    navigationButton?: boolean;
+    type?: 'submit' | 'reset' | 'button';
+    href?: string;
 }
 
 export interface CursorPaginationProviderProps {
@@ -160,16 +163,18 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
 }
 
-export interface LabelErrorAccessoryProps extends HTMLAttributes<HTMLSpanElement>{
+export interface LabelErrorAccessoryProps extends HTMLAttributes<HTMLSpanElement> {
     name: string;
 }
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
     loading?: boolean;
     name?: string;
+    selectedValue?: string;
     label?: string;
     registerFormHook?: UseFormRegisterReturn;
     containerProps?: HTMLAttributes<HTMLDivElement>;
+    optionsContainerProps?: HTMLAttributes<HTMLDivElement>;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
     nestedLabelProps?: LabelHTMLAttributes<HTMLLabelElement>;
     options: FormRadioCheckboxOptions[];
@@ -194,4 +199,30 @@ export interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElemen
     registerFormHook?: UseFormRegisterReturn;
     containerProps?: HTMLAttributes<HTMLDivElement>;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
+
+export interface DropdownProps {
+    expandedWidth?: string;
+    buttonContent: ReactElement | string;
+    width?: string;
+    height?: string;
+    type?: 'grid' | 'list';
+}
+
+export interface DropdownListProps {
+    flexDirection?: FlexDirection;
+    textAlign?: TextAlign;
+    padding?: string;
+    width?: string;
+}
+
+export interface DropdownGridProps {
+    columns: number;
+    gap?: { col?: number, row?: number } | number;
+    width?: string;
+    padding?: string;
+}
+
+export interface DropdownItemProps {
+
 }

@@ -2,6 +2,7 @@ $navHeight: 40px;
 $navWidth: 150px;
 $navWidthCalc: calc(100% - 150px);
 $navHeightCalc: calc(100vh - 40px);
+$navSpeed: 250ms;
 
 $z-indexes: (
         "body": 0,
@@ -11,7 +12,3 @@ $z-indexes: (
         "fab": 400,
         "loader": 500
 );
-
-$radius: 16px;
-$transitionTime: 200ms;
-$navTransitionTime: 100ms;

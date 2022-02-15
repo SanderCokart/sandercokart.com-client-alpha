@@ -16,6 +16,7 @@ const Select: FC<SelectProps> = (props) => {
         appendIcon = undefined,
         prependIcon = undefined,
         containerProps = undefined,
+        className,
         labelProps = undefined,
         name = undefined,
         label = undefined,
@@ -65,15 +66,13 @@ const Select: FC<SelectProps> = (props) => {
                      <select ref={(el) => {
                          registerFormHook?.ref(el);
                          inputRef.current = el;
-                     }} className={
-                         inputClassName
-                     } onBlur={(e) => {
+                     }} className={[inputClassName, className].join(' ')} onBlur={(e) => {
                          registerFormHook?.onBlur(e);
                          onBlur?.(e);
                      }} onChange={(e) => {
                          registerFormHook?.onChange(e);
                          onChange?.(e);
-                     }} {...restOfProps} id={nameAndId} name={nameAndId}>
+                     }} onClick={e => e.stopPropagation()} {...restOfProps} id={nameAndId} name={nameAndId}>
                          {children}
                      </select>
                  )}

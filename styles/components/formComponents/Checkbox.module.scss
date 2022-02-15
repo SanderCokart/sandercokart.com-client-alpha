@@ -33,7 +33,7 @@
     height: 100%;
     background-color: var(--acc);
     transform: scale(0);
-    transition: utils.$transitionTime ease transform;
+    transition: 200ms ease transform;
   }
 
   svg {

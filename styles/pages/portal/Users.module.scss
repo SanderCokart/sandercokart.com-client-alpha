@@ -87,7 +87,7 @@ td.actions {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform ease utils.$transitionTime;
+    transition: transform ease 200ms;
 
     &:hover {
       background-color: var(--acc);

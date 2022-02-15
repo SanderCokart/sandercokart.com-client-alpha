@@ -1,6 +1,7 @@
 import type {CustomApiPromise} from '@/types/CustomTypes';
 import type {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
 import axios, {AxiosResponse} from 'axios';
+import {toast} from 'react-toastify';
 
 
 const axiosInstance = axios.create({
@@ -17,10 +18,12 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiPromise> => {
         const { data, status } = await promise;
         if (status >= 200 && status < 400)
             return { data, status, error: null };
-        else
+        else {
+            toast.error('Something went wrong');
+            console.log(data);
             throw new Error('Something went wrong');
+        }
     } catch (error) {
-        console.error(error);
         return { data: null, status: error.response.status, error: error };
     }
 };

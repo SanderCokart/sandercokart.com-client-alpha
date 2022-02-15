@@ -1,6 +1,7 @@
+import Button from '@/components/Button';
+import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
-import Checkbox from '@/components/OLDformComponents/Checkbox';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
 import type {LoginFormValues} from '@/types/FormValueTypes';
@@ -18,11 +19,12 @@ export const Login: FC = () => {
 
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
-            email: Yup.string().email().required('This field is required'),
+            email: Yup.string().min(5).email().required('This field is required'),
             password: Yup.string().required('This field is required'),
             remember_me: Yup.boolean().required('This field is required')
         })),
         mode: 'all',
+        criteriaMode: 'all',
         defaultValues: {
             email: '',
             password: '',
@@ -30,7 +32,7 @@ export const Login: FC = () => {
         }
     });
     const [showPasswordAsText, setShowPasswordAsText] = useState(false);
-
+    const [errors, setErrors] = useState({});
 
     const togglePasswordVisibility = (ref: MutableRefObject<HTMLInputElement | null>) => {
         if (ref.current) {
@@ -39,9 +41,8 @@ export const Login: FC = () => {
         }
     };
 
-
     const { query: { user, hash, type, signature, expires } } = router;
-    const { formState: { isValid, isDirty }, register } = methods;
+    const { formState: { isValid, isDirty }, register, setError } = methods;
 
     useEffect(() => {
         if (shouldRedirect && !isLoading) router.push('/blog');
@@ -66,6 +67,16 @@ export const Login: FC = () => {
                     break;
                 }
             }
+        else if (error) {
+            if (error.response) {
+                const errorKeys = Object.keys(error.response.data.errors);
+                errorKeys.forEach((key: any) => {
+                    setError(key, { type: 'manual', message: error.response?.data.errors[key][0] });
+                });
+            } else {
+                console.log('other error');
+            }
+        }
     };
 
 
@@ -86,17 +97,20 @@ export const Login: FC = () => {
                             registerFormHook={{ ...register('email') }}
                             type="text"/>
                         <Input
-                            appendIcon={{ icon: showPasswordAsText ? 'eye-slash' : 'eye', onClick: togglePasswordVisibility }}
+                            appendIcon={{
+                                icon: showPasswordAsText ? 'eye-slash' : 'eye',
+                                onClick: togglePasswordVisibility
+                            }}
                             autoComplete="current-password"
                             label="Password"
                             loading={isLoading}
                             placeholder="Type your password here"
                             prependIcon={{ icon: 'lock', onClick: undefined }}
                             registerFormHook={{ ...register('password') }}
-                            type="text"/>
+                            type="password"/>
                         <Checkbox label="Remember me" name="remember_me"/>
-                        <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">Submit
-                        </button>
+
+                        <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                     </main>
 
                     <footer className={styles.footer}>

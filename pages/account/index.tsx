@@ -1,7 +1,6 @@
 import Button from '@/components/Button';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
-import Switch from '@/components/formComponents/Switch';
 import Loader from '@/components/Loader';
 import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
@@ -25,10 +24,6 @@ export const Account: FC = () => {
 
     if (isLoading || shouldRedirect) return <Loader/>;
 
-    const onClickToggleTheme = (state: boolean) => {
-        document.documentElement.setAttribute('data-theme', state ? 'light' : 'dark');
-    };
-
     const onClickLogout = async () => {
         const { status } = await logout();
         status === 200 && await router.push('/blog/recent');
@@ -37,9 +32,6 @@ export const Account: FC = () => {
 
     return (
         <div className={styles.account}>
-            <div>
-                <Switch icon="sun" label="Toggle Dark Theme" name="theme" onToggle={onClickToggleTheme}/>
-            </div>
             <PasswordForm/>
             <EmailForm/>
             <div className={styles.actions}>

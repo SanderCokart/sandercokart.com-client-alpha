@@ -96,10 +96,9 @@
 
   ul {
     list-style: none;
-    display: flex;
   }
 
-  > ul {
+  & > ul {
     display: flex;
     justify-content: space-between;
 
@@ -112,51 +111,23 @@
     }
   }
 
-  a, button {
-    @include utils.defaultButton;
-    position: relative;
-    z-index: 1;
-    height: 40px;
-    background-color: var(--bg-nav);
-    pointer-events: none;
-    transition: width 250ms ease 150ms,
-    background-color 150ms ease;
+  //a, button {
+  //  @include utils.defaultButton;
+  //  position: relative;
+  //  z-index: 1;
+  //  height: 40px;
+  //  background-color: var(--bg-nav);
+  //  pointer-events: none;
+  //  transition: width 250ms ease 150ms,
+  //  background-color 150ms ease;
+  //
+  //  &.active {
+  //    width: 200px;
+  //    transition: width 150ms ease;
+  //    background-color: var(--acc);
+  //  }
+  //}
 
-    &.active {
-      width: 200px;
-      transition: width 150ms ease;
-      background-color: var(--acc);
-    }
-  }
-
-  li.dropdown {
-    position: relative;
-  }
-
-  ul.dropdownMenu {
-    position: absolute;
-    top: 100%;
-    transform: translateY(-100%);
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    opacity: 0;
-    width: 200px;
-    transition: opacity 150ms ease,
-    transform 150ms ease,
-    background-color 150ms ease;
-
-
-    &.active {
-      transition: opacity 150ms ease 150ms,
-      transform 150ms ease 150ms;
-      transform: translateY(0);
-      opacity: 1;
-
-      > li > a, > li > button {
-        pointer-events: auto;
-      }
-    }
-  }
 }
 
 @mixin hide() {

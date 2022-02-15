@@ -6,12 +6,14 @@ import type {FC} from 'react';
 import {Fragment} from 'react';
 
 
-const CheckboxGroup: FC<RadioProps> = (props) => {
+const Radio: FC<RadioProps> = (props) => {
     const {
         loading = false,
         containerProps = undefined,
+        optionsContainerProps= undefined,
         labelProps = undefined,
         nestedLabelProps = undefined,
+        selectedValue = undefined,
         name = undefined,
         label = undefined,
         onChange = undefined,
@@ -21,13 +23,14 @@ const CheckboxGroup: FC<RadioProps> = (props) => {
         ...restOfProps
     } = props;
 
+    if (!(registerFormHook?.name || name)) throw new Error('Radio: name or registerFormHook is required');
     const nameAndId = registerFormHook?.name || name || '';
 
     return (
-        <div className={styles.control}>
+        <div className={styles.control} {...containerProps}>
             {label && <label className={styles.label} {...labelProps} htmlFor="">{label}</label>}
             {registerFormHook && <LabelErrorAccessory className={styles.error} name={nameAndId}/>}
-            <div className={styles.optionsContainer}>
+            <div className={styles.optionsContainer} {...optionsContainerProps}>
                 {options.map((option) => {
                         const nestedNameAndId = `${nameAndId}-${option.value}`;
                         return (
@@ -38,6 +41,7 @@ const CheckboxGroup: FC<RadioProps> = (props) => {
                                         ref={(el) => {
                                             registerFormHook?.ref(el);
                                         }}
+                                        checked={registerFormHook ? undefined : (selectedValue === option.value)}
                                         className={styles.input}
                                         value={option.value}
                                         onBlur={(e) => {
@@ -46,7 +50,7 @@ const CheckboxGroup: FC<RadioProps> = (props) => {
                                         }}
                                         onChange={(e) => {
                                             registerFormHook?.onChange(e);
-                                            onChange && onChange(e);
+                                            onChange?.(e);
                                         }}
                                         {...restOfProps}
                                         id={nestedNameAndId}
@@ -65,4 +69,4 @@ const CheckboxGroup: FC<RadioProps> = (props) => {
     );
 };
 
-export default CheckboxGroup;
+export default Radio;

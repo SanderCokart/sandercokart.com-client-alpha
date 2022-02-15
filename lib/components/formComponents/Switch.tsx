@@ -1,10 +1,11 @@
 import styles from '@/styles/components/formComponents/Switch.module.scss';
 import type {SwitchProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {ChangeEvent, FC} from 'react';
+import type {ChangeEvent} from 'react';
 import {useState} from 'react';
 
-const Switch: FC<SwitchProps> = ({ name, label, icon, onToggle }) => {
+const Switch = (props: SwitchProps) => {
+    const { name, label, icon, onToggle } = props;
     const [state, setState] = useState(false);
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {

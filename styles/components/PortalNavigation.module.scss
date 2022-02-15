@@ -36,7 +36,7 @@
     width: 100%;
     height: 100%;
     padding: 8px;
-    transition: background utils.$transitionTime ease;
+    transition: background 200ms ease;
     background-color: var(--bg-nav);
   }
 
@@ -53,7 +53,7 @@
 
 
 ul.expansion {
-  transition: utils.$transitionTime 1000ms;
+  transition: 200ms 1000ms;
   position: absolute;
   top: 0;
   left: 0;
