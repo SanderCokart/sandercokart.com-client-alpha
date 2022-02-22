@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 
 export const Login: FC = () => {
     const router = useRouter();
-    const { login, isLoading, shouldRedirect } = useAuth({ middleware: 'guest' });
+    const { login, isLoading: isLoadingAuth, shouldRedirect } = useAuth({ middleware: 'guest' });
 
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -23,16 +23,9 @@ export const Login: FC = () => {
             password: Yup.string().required('This field is required'),
             remember_me: Yup.boolean().required('This field is required')
         })),
-        mode: 'all',
-        criteriaMode: 'all',
-        defaultValues: {
-            email: '',
-            password: '',
-            remember_me: false
-        }
+        mode: 'all'
     });
     const [showPasswordAsText, setShowPasswordAsText] = useState(false);
-    const [errors, setErrors] = useState({});
 
     const togglePasswordVisibility = (ref: MutableRefObject<HTMLInputElement | null>) => {
         if (ref.current) {
@@ -45,11 +38,8 @@ export const Login: FC = () => {
     const { formState: { isValid, isDirty }, register, setError } = methods;
 
     useEffect(() => {
-        if (shouldRedirect && !isLoading) router.push('/blog');
-    }, [isLoading]);
-
-
-    if (isLoading || shouldRedirect) return <Loader/>;
+        if (shouldRedirect) router.push('/blog');
+    }, [shouldRedirect]);
 
     const onSubmit = async (formValues: LoginFormValues) => {
         const { error } = await login(formValues);
@@ -79,54 +69,55 @@ export const Login: FC = () => {
         }
     };
 
-
     return (
-        <div className={styles.login}>
-            <FormProvider {...methods}>
-                <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
-                    <header className={styles.header}>
-                        <h1>Login</h1>
-                    </header>
-                    <main className={styles.main}>
-                        <Input
-                            autoComplete="email"
-                            label="E-Mail"
-                            loading={isLoading}
-                            placeholder="Enter your email here"
-                            prependIcon={{ icon: 'envelope', onClick: undefined }}
-                            registerFormHook={{ ...register('email') }}
-                            type="text"/>
-                        <Input
-                            appendIcon={{
-                                icon: showPasswordAsText ? 'eye-slash' : 'eye',
-                                onClick: togglePasswordVisibility
-                            }}
-                            autoComplete="current-password"
-                            label="Password"
-                            loading={isLoading}
-                            placeholder="Type your password here"
-                            prependIcon={{ icon: 'lock', onClick: undefined }}
-                            registerFormHook={{ ...register('password') }}
-                            type="password"/>
-                        <Checkbox label="Remember me" name="remember_me"/>
+        <>
+            {(isLoadingAuth || shouldRedirect) && <Loader/>}
 
-                        <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
-                    </main>
+            <div className={styles.login}>
+                <FormProvider {...methods}>
+                    <form noValidate className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
+                        <header className={styles.header}>
+                            <h1>Login</h1>
+                        </header>
+                        <main className={styles.main}>
+                            <Input
+                                autoComplete="email"
+                                label="E-Mail"
+                                placeholder="Enter your email here"
+                                prependIcon={{ icon: 'envelope', onClick: undefined }}
+                                registerFormHook={{ ...register('email') }}
+                                type="text"/>
+                            <Input
+                                appendIcon={{
+                                    icon: showPasswordAsText ? 'eye-slash' : 'eye',
+                                    onClick: togglePasswordVisibility
+                                }}
+                                autoComplete="current-password"
+                                label="Password"
+                                placeholder="Type your password here"
+                                prependIcon={{ icon: 'lock', onClick: undefined }}
+                                registerFormHook={{ ...register('password') }}
+                                type="password"/>
+                            <Checkbox label="Remember me" registerFormHook={{ ...register('remember_me') }}/>
 
-                    <footer className={styles.footer}>
-                        <div className={styles.links}>
-                            <Link href="/password/forgot">
-                                <a className={styles.link}>Forgot password?</a>
-                            </Link>
-                            <Link href="/register">
-                                <a className={styles.link}>Don't have an account yet?</a>
-                            </Link>
-                        </div>
-                    </footer>
+                            <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
+                        </main>
 
-                </form>
-            </FormProvider>
-        </div>
+                        <footer className={styles.footer}>
+                            <div className={styles.links}>
+                                <Link href="/password/forgot">
+                                    <a className={styles.link}>Forgot password?</a>
+                                </Link>
+                                <Link href="/register">
+                                    <a className={styles.link}>Don't have an account yet?</a>
+                                </Link>
+                            </div>
+                        </footer>
+
+                    </form>
+                </FormProvider>
+            </div>
+        </>
     );
 };
 

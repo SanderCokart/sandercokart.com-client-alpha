@@ -7,200 +7,49 @@ import Link from 'next/link';
 import type {ChangeEvent, Dispatch, MouseEvent, ReactNode, SetStateAction} from 'react';
 import {createContext, useContext, useState} from 'react';
 import {useDetectClickOutside} from 'react-detect-click-outside';
-import {CSSTransition} from 'react-transition-group';
-
-// const Test: FC = () => {
-//     return (
-//         <div className={styles.desktop}>
-//             <Navbar>
-//                 <NavItem icon="user" text="Account"/>
-//                 <NavItem icon="cog" text="Settings">
-//                     <SettingsDropdown/>
-//                 </NavItem>
-//             </Navbar>
-//         </div>
-//     );
-// };
-//
-//
-// const Navbar: FC = (props) => {
-//     return (
-//         <nav className={styles.nav}>
-//             <ul className={styles.navUl}>{props.children}</ul>
-//         </nav>
-//     );
-// };
-//
-// interface NavItemProps {
-//     icon: FontAwesomeIconType;
-//     text: string;
-// }
-//
-// const NavItem: FC<NavItemProps> = (props) => {
-//     const [open, setOpen] = useState(false);
-//     const ref = useDetectClickOutside({ onTriggered: () => setOpen(false) });
-//
-//     return (
-//         <li ref={ref} className={styles.navItem} onClick={
-//             props.children ? () => setOpen(open => !open) : undefined
-//         }>
-//             <Link href="#">
-//                 <a className={styles.iconButton}>
-//                     <FontAwesomeIcon icon={props.icon}/>
-//                     {props.text}
-//                 </a>
-//             </Link>
-//             {props.children &&
-//                 <CSSTransition unmountOnExit classNames="nav-item" in={open} timeout={500}>
-//                     {props.children}
-//                 </CSSTransition>
-//             }
-//         </li>
-//     );
-// };
-//
-// interface DropdownItemProps extends HTMLAttributes<HTMLAnchorElement> {
-//     leftIcon?: FontAwesomeIconType;
-//     rightIcon?: FontAwesomeIconType;
-//     goToMenu?: string;
-// }
-//
-// const SettingsDropdown: FC = () => {
-//     const [menuHeight, setMenuHeight] = useState<number>(0);
-//     const dropdownRef = useRef<null | HTMLDivElement>(null);
-//     const [activeMenu, setActiveMenu] = useState('main');
-//     const [theme, setTheme] = useState('dark');
-//
-//     useEffect(() => {
-//         const firstChild = dropdownRef.current?.firstChild as HTMLDivElement;
-//         setMenuHeight(firstChild?.offsetHeight);
-//     }, []);
-//
-//     function calcHeight(el: HTMLElement) {
-//         const height = el.offsetHeight;
-//         setMenuHeight(height);
-//     }
-//
-//
-//     const DropdownItem: FC<DropdownItemProps> = (props) => {
-//         const { goToMenu, leftIcon, rightIcon, children, ...restOfProps } = props;
-//         return (
-//             <Link href="#">
-//                 <a className={styles.menuItem}
-//                    onClick={goToMenu ? ((e) => {
-//                        e.stopPropagation();
-//                        setActiveMenu(goToMenu);
-//                    }) : undefined} {...restOfProps}>
-//                     {leftIcon && (
-//                         <span className={styles.iconButton}>
-//                             <FontAwesomeIcon icon={leftIcon}/>
-//                         </span>
-//                     )}
-//
-//                     {children}
-//
-//                     {rightIcon && (
-//                         <span className={styles.iconRight}>
-//                             <FontAwesomeIcon icon={rightIcon}/>
-//                         </span>
-//                     )}
-//                 </a>
-//             </Link>
-//         );
-//     };
-//
-//
-//     return (
-//         <div ref={dropdownRef} className={styles.dropdown} style={{ height: menuHeight }}
-//              onClick={e => e.stopPropagation()}>
-//             <CSSTransition
-//                 unmountOnExit
-//                 classNames="menu-primary"
-//                 in={activeMenu === 'main'}
-//                 timeout={250}
-//                 onEnter={calcHeight}>
-//                 <div className={styles.menu}>
-//                     <DropdownItem leftIcon="paint-brush">
-//                         <Radio name="theme" options={[
-//                             { label: 'Light', value: 'light' },
-//                             { label: 'Dark', value: 'dark' },
-//                             { label: 'Device', value: 'device' }
-//                         ]} value={theme} onChange={() => {
-//                             console.log(true);
-//                         }}/>
-//                     </DropdownItem>
-//                 </div>
-//             </CSSTransition>
-//         </div>
-//     );
-// };
 
 const Test2 = () => {
     return (
         <Navbar>
             <div className={styles.left}>
                 <NavItem href="/" icon={<FontAwesomeIcon icon="home"/>} text="Home"/>
-                {/*    <NavItem icon={icon} text="Library">*/}
-                {/*        <DropdownMenu initialMenu="library">*/}
-                {/*            <DropdownGroup grid={2} menuName="library">*/}
-                {/*                <DropdownItem*/}
-                {/*                    href={}*/}
-                {/*                    onCLick={}*/}
-                {/*                    leftIcon={}*/}
-                {/*                >*/}
-                {/*                    Courses*/}
-                {/*                </DropdownItem>*/}
-                {/*                <DropdownItem*/}
-                {/*                    href={}*/}
-                {/*                    onCLick={}*/}
-                {/*                    leftIcon={}*/}
-                {/*                >*/}
-                {/*                    Tutorials*/}
-                {/*                </DropdownItem>*/}
-                {/*                <DropdownItem*/}
-                {/*                    href={}*/}
-                {/*                    onCLick={}*/}
-                {/*                    leftIcon={}*/}
-                {/*                >*/}
-                {/*                    Tips*/}
-                {/*                </DropdownItem>*/}
-                {/*            </DropdownGroup>*/}
-                {/*        </DropdownMenu>*/}
-                {/*    </NavItem>*/}
+                <NavItem dropdown align="bottom-left" icon={<FontAwesomeIcon icon="boxes"/>} initialMenu="main"
+                         text="Library" width="200px">
+                    <DropdownMenu menuName="main">
+                        <DropdownLinkItem href="library/courses" leftIcon={<FontAwesomeIcon icon="book"/>}>
+                            Courses
+                        </DropdownLinkItem>
+                        <DropdownLinkItem href="library/tips-&-tutorials"
+                                          leftIcon={<FontAwesomeIcon icon="lightbulb"/>}>
+                            Tips & Tutorials
+                        </DropdownLinkItem>
+                        <DropdownLinkItem href="library/tips" leftIcon={<FontAwesomeIcon icon="rss"/>}>
+                            Posts
+                        </DropdownLinkItem>
+                    </DropdownMenu>
+                </NavItem>
             </div>
-            <div className={styles.right}>
-                <NavItem dropdown icon={<FontAwesomeIcon icon="cog"/>} text="Settings">
-                    <Dropdown initialMenu="home">
-                        <DropdownMenu animationTimeout={250} menuName="home">
-                            <DropdownItem
-                                goToMenu="theme"
-                                leftIcon={<FontAwesomeIcon icon="paint-brush"/>}
-                                rightIcon={<FontAwesomeIcon icon="caret-right"/>}
-                            >
-                                Theme
-                            </DropdownItem>
-                            {/*                <DropdownItem>*/}
-                            {/*                    <Radio name="theme" options={[*/}
-                            {/*                        { label: 'Light', value: 'light' },*/}
-                            {/*                        { label: 'Dark', value: 'dark' },*/}
-                            {/*                        { label: 'Device', value: 'device' }*/}
-                            {/*                    ]} selectedValue="dark"/>*/}
-                            {/*                </DropdownItem>*/}
-                            {/*            </DropdownGroup>*/}
-                            {/*            <DropdownGroup menuName="settings">*/}
-                            {/*                <DropdownItem goToMenu="home" leftIcon={<FontAwesomeIcon icon="caret-left"/>}>*/}
 
-                            {/*                </DropdownItem>*/}
-                        </DropdownMenu>
-                        <DropdownMenu animationTimeout={250} menuName="theme">
-                            <DropdownItem goToMenu="home" leftIcon={<FontAwesomeIcon icon="caret-left"/>}>
-                                Back to settings
-                            </DropdownItem>
-                            <DropdownItem>
-                                <ThemeControl/>
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
+            <div className={styles.right}>
+                <NavItem dropdown align="bottom-right" icon={<FontAwesomeIcon icon="cog"/>} initialMenu="main"
+                         text="Settings" width="200px">
+                    <DropdownMenu menuName="main">
+                        <DropdownItem
+                            goToMenu="theme"
+                            leftIcon={<FontAwesomeIcon icon="paint-brush"/>}
+                            rightIcon={<FontAwesomeIcon icon="caret-right"/>}
+                        >
+                            Theme
+                        </DropdownItem>
+                    </DropdownMenu>
+                    <DropdownMenu menuName="theme">
+                        <DropdownItem goToMenu="home" leftIcon={<FontAwesomeIcon icon="caret-left"/>}>
+                            Back to settings
+                        </DropdownItem>
+                        <DropdownItem>
+                            <ThemeControl/>
+                        </DropdownItem>
+                    </DropdownMenu>
                 </NavItem>
             </div>
         </Navbar>
@@ -233,7 +82,7 @@ interface NavItemTypeAnchorProps {
     icon: ReactNode;
     text?: string;
     href: string;
-};
+}
 
 type NavItemProps = NavItemTypeAnchorProps | NavItemDropdownProps;
 
@@ -242,73 +91,93 @@ interface NavItemDropdownProps {
     icon: ReactNode;
     text?: string;
     children: ReactNode;
+    initialMenu: string;
+    align: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+    width: string;
 }
 
 const NavItem = (props: NavItemProps) => {
     if (props.dropdown) {
-        return <NavItemWithDropdown icon={props.icon} text={props.text}>{props.children}</NavItemWithDropdown>;
-    } else {
         return (
-            <li className={styles.navItem}>
-                <Link href={props.href}>
-                    <a className={styles.navItemLink}>
-                        {props.icon}
-                        {props.text}
-                    </a>
-                </Link>
-            </li>
+            <NavItemWithDropdown align={props.align} icon={props.icon} initialMenu={props.initialMenu} text={props.text}
+                                 width={props.width}>
+                {props.children}
+            </NavItemWithDropdown>
         );
     }
-};
-
-const NavItemWithDropdown = (props: Omit<NavItemDropdownProps, 'dropdown'>) => {
-    const [open, setOpen] = useState(false);
-    const ref = useDetectClickOutside({ onTriggered: () => setOpen(false) });
-
     return (
-        <li ref={ref} className={styles.navItemWithDropdown} onClick={() => setOpen(open => !open)}>
-            {props.icon}
-            {props.text}
-            {open && props.children}
+        <li className={styles.navItem}>
+            <Link href={props.href}>
+                <a className={styles.navItemLink}>
+                    {props.icon}
+                    {props.text}
+                </a>
+            </Link>
         </li>
     );
 };
 
-interface DropdownProps {
-    initialMenu: string;
-    children: ReactNode;
-}
+const NavItemWithDropdown = (props: Omit<NavItemDropdownProps, 'dropdown'>) => {
+    const [open, setOpen] = useState(false);
+    const ref = useDetectClickOutside({
+        onTriggered: () => {
+            setOpen(false);
+            setActiveMenu(props.initialMenu);
+        }
+    });
+    const [activeMenu, setActiveMenu] = useState(props.initialMenu);
+
+    const onClick = () => {
+        setOpen(open => {
+            open && setActiveMenu(props.initialMenu);
+            return !open;
+        });
+    };
+
+    const alignmentOptions = {
+        'top-left': { bottom: '100%', left: '0', right: 'auto', top: 'auto' },
+        'top-right': { bottom: '100%', left: 'auto', right: '0', top: 'auto' },
+        'bottom-left': { bottom: 'auto', left: '0', right: 'auto', top: '100%' },
+        'bottom-right': { bottom: 'auto', left: 'auto', right: '0', top: '100%' }
+    };
+
+    return (
+        <li ref={ref} className={styles.navItemWithDropdown} onClick={onClick}>
+            {props.icon}
+            {props.text}
+            {open && (
+                <DropdownMenuContext.Provider
+                    value={{ activeMenu, setActiveMenu, initialMenu: props.initialMenu }}>
+                    <ul className={styles.dropdownMenu}
+                        style={{ ...alignmentOptions[props.align || 'bottom-left'], width: props.width || '200px' }}>
+                        {props.children}
+                    </ul>
+                </DropdownMenuContext.Provider>
+            )}
+        </li>
+    );
+};
 
 const DropdownMenuContext = createContext({});
 const useDropdownMenu = () => useContext(DropdownMenuContext) as {
     activeMenu: string;
     setActiveMenu: Dispatch<SetStateAction<string>>;
-};
-
-const Dropdown = (props: DropdownProps) => {
-    const [activeMenu, setActiveMenu] = useState(props.initialMenu);
-    return (
-        <DropdownMenuContext.Provider value={{ activeMenu, setActiveMenu }}>
-            {props.children}
-        </DropdownMenuContext.Provider>
-    );
+    initialMenu: string;
+    setMenuHeight: Dispatch<SetStateAction<number>>;
 };
 
 interface DropdownMenuProps {
     children: ReactNode;
     menuName: string;
-    animationTimeout: number;
 }
 
 const DropdownMenu = (props: DropdownMenuProps) => {
     const { activeMenu } = useDropdownMenu();
+
     return (
-        <CSSTransition unmountOnExit classNames="dropdownMenu" in={activeMenu === props.menuName}
-                       timeout={props.animationTimeout}>
-            <ul className={styles.dropdownMenu}>
-                {props.children}
-            </ul>
-        </CSSTransition>
+        <div className={styles.menu}>
+            {(activeMenu === props.menuName) && props.children}
+        </div>
     );
 };
 
@@ -330,7 +199,7 @@ const DropdownItem = (props: DropdownItemProps) => {
         }
     };
     return (
-        <li className={styles.dropdownItem} onClick={onClick}>
+        <li className={props.goToMenu ? styles.dropdownItemButton : styles.dropdownItem} onClick={onClick}>
             {props.leftIcon && <div className={styles.leftIcon}>{props.leftIcon}</div>}
             {props.children}
             {props.rightIcon && <div className={styles.rightIcon}>{props.rightIcon}</div>}
@@ -368,12 +237,15 @@ const ThemeControl = () => {
 
     return (
         <div className={styles.themeControl}>
-            <Radio name="theme" options={[
-                { label: 'Light', value: 'light' },
-                { label: 'Dark', value: 'dark' },
-                { label: 'Device', value: 'device' }
-            ]} optionsContainerProps={{ className: styles.themeRadioControl }} selectedValue={theme}
-                   onChange={onThemeChange}/>
+            <Radio
+                name="theme"
+                options={[
+                    { label: 'Light', value: 'light' },
+                    { label: 'Dark', value: 'dark' },
+                    { label: 'Device', value: 'device' }]}
+                optionsContainerProps={{ className: styles.themeRadioControl }}
+                selectedValue={theme}
+                onChange={onThemeChange}/>
         </div>
     );
 };

@@ -45,10 +45,11 @@ const PasswordForm: FC = () => {
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
-            password: Yup.string().min(8).max(50).required('This field is required').matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-            ),
+            password: Yup.string().min(8).max(50).required('This field is required')
+                .matches(/[a-z]/, 'must contain a lower case character')
+                .matches(/[A-Z]/, 'must contain an upper case character')
+                .matches(/[0-9]/, 'must contain a number')
+                .matches(/[!@#$%^&*]/, 'must contain a special case character'),
             password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('This field is required')
         })),
         mode: 'all',
@@ -93,7 +94,7 @@ const PasswordForm: FC = () => {
 const EmailForm: FC = () => {
     const { user } = useAuth();
 
-    const methods = useForm({
+    const changeEmailForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
         })),
@@ -102,21 +103,21 @@ const EmailForm: FC = () => {
             email: user?.email
         }
     });
+    const { formState: { isDirty, isValid }, handleSubmit, register } = changeEmailForm;
 
     const changeEmail = async (formValues: EmailChangeFormValues) => {
         await axios.simplePatch(`/account/email/change/${user?.id}`, formValues);
     };
 
-    const { formState: { isDirty, isValid }, handleSubmit } = methods;
 
     return (
-        <FormProvider {...methods}>
+        <FormProvider {...changeEmailForm}>
             <form noValidate className={styles.form} onSubmit={handleSubmit(changeEmail)}>
                 <header className={styles.header}>
                     <h1>Change email</h1>
                 </header>
                 <main className={styles.main}>
-                    <Input autoComplete="email" label="Email" name="email"/>
+                    <Input autoComplete="email" label="Email" registerFormHook={{...register('email')}}/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                 </main>
             </form>

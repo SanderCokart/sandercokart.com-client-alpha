@@ -54,6 +54,7 @@ const Input: FC<InputProps> = (props) => {
     const nameAndId = registerFormHook?.name || name || '';
 
     let inputClassName = styles.input;
+
     prependIcon && (inputClassName += ' ' + styles.withPrependIcon);
     appendIcon && (inputClassName += ' ' + styles.withAppendIcon);
 

@@ -12,21 +12,20 @@ interface ThemeProviderProps {
 }
 
 const ThemeProvider = (props: ThemeProviderProps) => {
-    const [theme, setTheme] = useState('device');
+    const [theme, setTheme] = useState('');
 
 
     useEffect(() => {
         const theme = localStorage.getItem('theme') || 'device';
         document.documentElement.setAttribute('data-theme', theme);
+        setTheme(theme);
     }, []);
 
-
     useEffect(() => {
-        const newTheme = (theme !== 'device')
-                         ? theme :
-                         (window.matchMedia('(prefers-color-scheme: dark)').matches)
-                         ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', theme);
+        const deviceTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        const dataAttr = theme === 'device' ? deviceTheme : theme;
+        document.documentElement.setAttribute('data-theme', dataAttr);
     }, [theme]);
 
     return (

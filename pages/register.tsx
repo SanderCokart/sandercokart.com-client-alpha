@@ -4,7 +4,8 @@ import styles from '@/styles/pages/account/Register.module.scss';
 import type {RegisterFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
+import type {FC, MutableRefObject} from 'react';
+import {useState} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -13,22 +14,17 @@ export const CreateAccount: FC = () => {
         resolver: yupResolver(Yup.object().shape({
             name: Yup.string().required('This field is required'),
             email: Yup.string().email('Must be a valid email').required('This field is required'),
-            password: Yup.string().min(8, '').max(50).required('This field is required').matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-            ),
-            password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('This field is required')
+            password: Yup.string().min(8).max(50).required('This field is required')
+                .matches(/[a-z]/, 'must contain a lower case character')
+                .matches(/[A-Z]/, 'must contain an upper case character')
+                .matches(/[0-9]/, 'must contain a number')
+                .matches(/[!@#$%^&*]/, 'must contain a special case character'),
+            password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match')
         })),
-        mode: 'all',
-        defaultValues: {
-            name: '',
-            email: '',
-            password: '',
-            password_confirmation: ''
-        }
+        mode: 'all'
     });
 
-    const { formState: { isSubmitted } } = methods;
+    const { formState: { isSubmitted, errors } } = methods;
 
     return (
         <div className={styles.register}>
@@ -39,36 +35,59 @@ export const CreateAccount: FC = () => {
     );
 };
 
+
 export default CreateAccount;
 
 
 const RegisterForm: FC = () => {
     const router = useRouter();
-    const { formState: { isValid, isDirty }, handleSubmit } = useFormContext();
+    const { formState: { isValid, isDirty }, handleSubmit, register } = useFormContext();
 
-    const register = async (formValues: RegisterFormValues) => {
+    const submitRegistration = async (formValues: RegisterFormValues) => {
         const { error } = await axios.simplePost('/register', formValues);
         if (!error) setTimeout(() => router.push('/login'), 3000);
     };
 
+    const [showPasswordAsText, setShowPasswordAsText] = useState(false);
+
+    const togglePasswordVisibility = (ref: MutableRefObject<HTMLInputElement | null>) => {
+        if (ref.current) {
+            ref.current.type = ref.current.type === 'password' ? 'text' : 'password';
+            setShowPasswordAsText(showPasswordAsText => !showPasswordAsText);
+        }
+    };
+
     return (
-        <form noValidate className={styles.form} onSubmit={handleSubmit(register)}>
+        <form noValidate className={styles.form} onSubmit={handleSubmit(submitRegistration)}>
             <header className={styles.header}>
                 <h1>Register</h1>
             </header>
             <main className={styles.main}>
-                <Input autoComplete="name" label="Full name" name="name"
+                <Input autoComplete="name"
+                       label="Full name"
                        placeholder="Type your full name"
-                       prependIcon={['fas', 'user']}/>
-                <Input autoComplete="email" name="email" placeholder="Type you email address"
-                       prependIcon={['fas', 'envelope']}
+                       prependIcon={{ icon: 'user' }}
+                       registerFormHook={{ ...register('name') }}/>
+                <Input autoComplete="email"
+                       label="Email"
+                       placeholder="Type you email address"
+                       prependIcon={{ icon: 'envelope' }}
+                       registerFormHook={{ ...register('email') }}
                        type="email"/>
-                <Input autoComplete="new-password" label="Password" name="password"
-                       placeholder="Type your password"
-                       prependIcon={['fas', 'lock']} type="password"/>
-                <Input autoComplete="new-password" label="Password" name="password_confirmation"
+                <Input
+                    appendIcon={{ icon: showPasswordAsText ? 'eye-slash' : 'eye', onClick: togglePasswordVisibility }}
+                    autoComplete="new-password"
+                    label="Password"
+                    placeholder="Type your password"
+                    prependIcon={{ icon: 'lock' }}
+                    registerFormHook={{ ...register('password') }}
+                    type="password"/>
+                <Input autoComplete="new-password"
+                       label="Password"
                        placeholder="Type your password again"
-                       prependIcon={['fas', 'lock']} type="password"/>
+                       prependIcon={{ icon: 'lock' }}
+                       registerFormHook={{ ...register('password_confirmation') }}
+                       type="password"/>
                 <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">
                     Submit
                 </button>

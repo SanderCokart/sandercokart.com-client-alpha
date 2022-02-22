@@ -16,10 +16,10 @@ const ChangePassword: FC = () => {
     const router = useRouter();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
-            password: Yup.string().min(8, '').max(50).required('This field is required').matches(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-                'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-            ),
+            password: Yup.string().min(8).max(50).required('This field is required')                .matches(/[a-z]/, 'must contain a lower case character')
+                .matches(/[A-Z]/, 'must contain an upper case character')
+                .matches(/[0-9]/, 'must contain a number')
+                .matches(/[!@#$%^&*]/, 'must contain a special case character'),
             password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('This field is required')
 
         })),
