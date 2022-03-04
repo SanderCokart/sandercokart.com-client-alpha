@@ -4,12 +4,12 @@ import styles from '@/styles/pages/account/Register.module.scss';
 import type {RegisterFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC, MutableRefObject} from 'react';
+import type {MutableRefObject} from 'react';
 import {useState} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 import * as Yup from 'yup';
 
-export const CreateAccount: FC = () => {
+export const Register = () => {
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             name: Yup.string().required('This field is required'),
@@ -29,17 +29,17 @@ export const CreateAccount: FC = () => {
     return (
         <div className={styles.register}>
             <FormProvider {...methods}>
-                {isSubmitted ? <EmailSend/> : <RegisterForm/>}
+                {isSubmitted ? <EmailHasBeenSendMessage/> : <RegisterForm/>}
             </FormProvider>
         </div>
     );
 };
 
 
-export default CreateAccount;
+export default Register;
 
 
-const RegisterForm: FC = () => {
+const RegisterForm = () => {
     const router = useRouter();
     const { formState: { isValid, isDirty }, handleSubmit, register } = useFormContext();
 
@@ -96,7 +96,7 @@ const RegisterForm: FC = () => {
     );
 };
 
-const EmailSend: FC = () => {
+const EmailHasBeenSendMessage = () => {
     const { getValues } = useFormContext();
     const email = getValues('email');
 

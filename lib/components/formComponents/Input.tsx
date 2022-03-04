@@ -1,14 +1,27 @@
 import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper';
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Input.module.scss';
-import type {InputProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { useCallback, useEffect, useRef} from 'react';
-import type {FC} from 'react';
+import type {InputHTMLAttributes, MutableRefObject, HTMLAttributes, LabelHTMLAttributes} from 'react';
+import {useCallback, useEffect, useRef} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import {UseFormRegisterReturn} from 'react-hook-form';
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
 
 
-const Input: FC<InputProps> = (props) => {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'week' | 'time';
+    registerFormHook?: UseFormRegisterReturn;
+    prependIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    appendIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
+
+const Input = (props: InputProps) => {
     const inputRef = useRef<null | HTMLInputElement>(null);
     const {
         type = 'text',

@@ -2,15 +2,14 @@ import Loader from '@/components/Loader';
 import useUsers from '@/hooks/useUsers';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/Users.module.scss';
-import type {UserRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import {UserModel, RoleModel} from '@/types/ModelTypes';
 
-const Users: FC = () => {
+const Users = () => {
     const { users, isLoading, nextPage, prevPage, hasMore, hasLess, onDelete, onEdit } = useUsers();
     const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
     const router = useRouter();
@@ -61,9 +60,14 @@ const Users: FC = () => {
     );
 };
 
-export default Users;
 
-const UserRow: FC<UserRowProps> = ({ user, onDelete, onEdit }) => {
+interface UserRowProps {
+    user: UserModel;
+    onDelete: (id: number) => void;
+    onEdit: (id: number) => void;
+}
+
+const UserRow = ({ user, onDelete, onEdit }: UserRowProps) => {
 
     return (
         <tr>
@@ -72,7 +76,7 @@ const UserRow: FC<UserRowProps> = ({ user, onDelete, onEdit }) => {
             <td>{user.email}</td>
             <td>
                 <ul>
-                    {user.roles.map(role => (
+                    {user.roles.map((role: RoleModel) => (
                         <li key={role} className={styles.roleTag}>{role}</li>
                     ))}
                 </ul>
@@ -90,3 +94,5 @@ const UserRow: FC<UserRowProps> = ({ user, onDelete, onEdit }) => {
         </tr>
     );
 };
+
+export default Users;

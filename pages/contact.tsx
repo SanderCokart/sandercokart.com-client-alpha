@@ -1,6 +1,4 @@
-import type {FC} from 'react';
-
-const Contact: FC = () => {
+const ContactPage = () => {
     return (
         <>
             contact
@@ -8,4 +6,4 @@ const Contact: FC = () => {
     );
 };
 
-export default Contact;
+export default ContactPage;

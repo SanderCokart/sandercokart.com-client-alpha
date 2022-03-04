@@ -43,7 +43,8 @@ const PaginatedModelProvider: FC<PaginatedModelProviderProps> = ({ children, mod
             prevPage,
             setPageIndex,
             hasMore,
-            hasLess
+            hasLess,
+            mutate
         }}>
             {children}
         </Context.Provider>

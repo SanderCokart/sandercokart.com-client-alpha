@@ -2,7 +2,7 @@ import {dropdownHandler} from '@/functions/client/dropdownHandler';
 import type {FC} from 'react';
 import {useEffect} from 'react';
 
-const GlobalEventListeners: FC = () => {
+const GlobalEventListeners = () => {
 
     useEffect(() => {
         document.addEventListener('click', dropdownHandler);

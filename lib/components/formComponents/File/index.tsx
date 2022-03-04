@@ -1,16 +1,20 @@
 import FileDropBox from '@/components/formComponents/File/FileDropBox';
 import FilePreviewCarousel from '@/components/formComponents/File/FilePreviewCarousel';
-import styles from '@/styles/components/formComponents/NewFile/File.module.scss';
+import styles from './File.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
-import type {FileProps} from '@/types/PropTypes';
 import ObjectPath from 'object-path';
-import type {FC} from 'react';
 import {useFormContext, useFormState} from 'react-hook-form';
 
-const File: FC<FileProps> = (props) => {
+interface FileProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+const File = (props: FileProps) => {
     const { name, multiple = false, editMode = false } = props;
     const { watch } = useFormContext();
-    const { dirtyFields} = useFormState();
+    const { dirtyFields } = useFormState();
 
     const isDirty = ObjectPath.has(dirtyFields, name);
 

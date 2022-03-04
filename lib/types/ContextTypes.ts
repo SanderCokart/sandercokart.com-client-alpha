@@ -1,6 +1,7 @@
-import {CursorPaginatedModels} from '@/types/CustomTypes';
+import {CursorPaginatedModels, PaginatedResponses} from '@/types/CustomTypes';
 import type {Links, Meta} from '@/types/ResponseTypes';
 import type {Dispatch, SetStateAction} from 'react';
+import {KeyedMutator} from 'swr';
 
 export interface PaginatedModelContext<T> {
     data: T[];
@@ -13,6 +14,7 @@ export interface PaginatedModelContext<T> {
     links: Links;
     meta: Meta;
     error: Error;
+    mutate: KeyedMutator<PaginatedResponses>;
 }
 
 export interface CursorModelPaginationContext<T> {

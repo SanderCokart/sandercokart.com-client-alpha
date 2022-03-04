@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import {Button} from '@/components/Button';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
@@ -10,19 +10,17 @@ import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
-import {StatusModel} from '@/types/ModelTypes';
-import {EditPostFormProps} from '@/types/PropTypes';
+import {StatusModel, ArticleModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import * as Yup from 'yup';
 
-const EditPost: FC = () => {
+const EditPost = () => {
     const router = useRouter();
     const { shouldRedirect, isLoading: isLoadingAuth, isAdmin } = useAuth({ middleware: 'auth' });
     const { query: { slug: postSlug } } = router;
@@ -51,9 +49,12 @@ const EditPost: FC = () => {
     );
 };
 
-export default EditPost;
 
-const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
+interface EditPostFormProps {
+    post: ArticleModel;
+}
+
+const EditPostForm = ({ post }: EditPostFormProps) => {
     const [loading, setLoading] = useState(true);
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -85,12 +86,10 @@ const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
             banner: formValues.banner[0].id
         };
 
-        console.log(transformedData);
-
         const { data, error } = await axios.simplePatch(`/articles/posts/${post.id}`, transformedData);
     };
 
-    const { formState: { isDirty, isValid }, getValues } = methods;
+    const { formState: { isDirty, isValid } } = methods;
 
     return (
         <FormProvider {...methods}>
@@ -113,3 +112,5 @@ const EditPostForm: FC<EditPostFormProps> = ({ post }) => {
         </FormProvider>
     );
 };
+
+export default EditPost;

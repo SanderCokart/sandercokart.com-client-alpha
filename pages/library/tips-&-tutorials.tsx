@@ -1,6 +1,6 @@
 import type {FC} from 'react';
 
-const Tips: FC = () => {
+const TipsAndTutorials = () => {
     return (
         <>
             tips
@@ -8,4 +8,4 @@ const Tips: FC = () => {
     );
 };
 
-export default Tips;
+export default TipsAndTutorials;

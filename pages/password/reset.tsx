@@ -4,11 +4,10 @@ import styles from '@/styles/pages/account/PasswordReset.module.scss';
 import type {PasswordResetFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-export const PasswordReset: FC = () => {
+export const ResetPasswordPage = () => {
     const router = useRouter();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -44,11 +43,11 @@ export const PasswordReset: FC = () => {
                     <main className={styles.main}>
                         <Input autoComplete="new-password" label="New password" name="password"
                                placeholder="Type your new password..."
-                               prependIcon={{icon: ['fas', 'lock']}}
+                               prependIcon={{ icon: ['fas', 'lock'] }}
                                type="password"/>
                         <Input autoComplete="new-password" label="Password confirmation" name="password_confirmation"
                                placeholder="Type your new password again..."
-                               prependIcon={{icon: ['fas', 'lock']}} type="password"/>
+                               prependIcon={{ icon: ['fas', 'lock'] }} type="password"/>
                         <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">Submit
                         </button>
                     </main>
@@ -58,4 +57,4 @@ export const PasswordReset: FC = () => {
     );
 };
 
-export default PasswordReset;
+export default ResetPasswordPage;

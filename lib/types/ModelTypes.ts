@@ -25,10 +25,11 @@ export interface UserModel {
     updatedAt: string;
     emailVerifiedAt: string;
     email: string;
-    roles: Array<'guest' | 'verified' | 'admin'>;
-
-    [key: string]: any;
+    roles: RoleModel[];
+    // [key: string]: any;
 }
+
+export type RoleModel = 'admin' | 'user';
 
 export interface FileModel {
     id: number,

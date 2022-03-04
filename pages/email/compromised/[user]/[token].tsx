@@ -8,7 +8,7 @@ import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-const ChangePassword: FC = () => {
+const ChangePassword = () => {
     const router = useRouter();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({

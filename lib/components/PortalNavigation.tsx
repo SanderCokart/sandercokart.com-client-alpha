@@ -1,11 +1,10 @@
 import Input from '@/components/formComponents/Input';
 import styles from '@/styles/components/PortalNavigation.module.scss';
-import type {PortalNavItemProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
-import {FC, useState} from 'react';
+import {useState} from 'react';
 
-const PortalNavigation: FC = () => {
+const PortalNavigation = () => {
     const [search, setSearch] = useState('');
 
     const models = [
@@ -34,7 +33,12 @@ const PortalNavigation: FC = () => {
     );
 };
 
-const PortalNavItem: FC<PortalNavItemProps> = ({ href, text }) => {
+interface PortalNavItemProps {
+    href: string;
+    text: string;
+}
+
+const PortalNavItem = ({ href, text }: PortalNavItemProps) => {
     return (
         <li className={styles.portalNavItem}>
             <Link href={href}>

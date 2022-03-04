@@ -1,16 +1,33 @@
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Radio.module.scss';
-import type {RadioProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FC} from 'react';
-import {Fragment} from 'react';
+import {Fragment, InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
 
 
-const Radio: FC<RadioProps> = (props) => {
+interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    loading?: boolean;
+    name?: string;
+    selectedValue?: string;
+    label?: string;
+    registerFormHook?: UseFormRegisterReturn;
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    optionsContainerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    nestedLabelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    options: RadioCheckboxOptions[];
+}
+
+interface RadioCheckboxOptions {
+    label: string;
+    value: string;
+}
+
+const Radio = (props: RadioProps) => {
     const {
         loading = false,
         containerProps = undefined,
-        optionsContainerProps= undefined,
+        optionsContainerProps = undefined,
         labelProps = undefined,
         nestedLabelProps = undefined,
         selectedValue = undefined,

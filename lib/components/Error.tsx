@@ -1,12 +1,11 @@
 import styles from '@/styles/components/Error.module.scss';
-import type {FC} from 'react';
 
-interface Props {
+interface ErrorProps {
     statusCode: number,
     title?: string
 }
 
-const Error: FC<Props> = ({ statusCode, title = 'An unexpected error has occurred' }) => {
+const Error = ({ statusCode, title = 'An unexpected error has occurred' }: ErrorProps) => {
     return (
         <div className={styles.flex}>
             <h1 className={styles.errorCode}>{statusCode}</h1>

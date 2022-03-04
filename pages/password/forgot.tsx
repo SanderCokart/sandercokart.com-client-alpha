@@ -3,11 +3,10 @@ import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/PasswordForgot.module.scss';
 import type {PasswordForgotFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
-import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-export const PasswordForgot: FC = () => {
+export const ForgotPasswordPage = () => {
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required('This field is required')
@@ -45,4 +44,4 @@ export const PasswordForgot: FC = () => {
     );
 };
 
-export default PasswordForgot;
+export default ForgotPasswordPage;

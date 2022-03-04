@@ -1,14 +1,26 @@
 import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper';
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Select.module.scss';
-import type {SelectProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FC} from 'react';
-import {useRef} from 'react';
+import {useRef, SelectHTMLAttributes, MutableRefObject, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import {UseFormRegisterReturn} from 'react-hook-form';
+import {FontAwesomeIconType} from '@/types/CustomTypes';
 
 
-const Select: FC<SelectProps> = (props) => {
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'color' | 'date' | 'datetime-local' | 'week' | 'time';
+    registerFormHook?: UseFormRegisterReturn;
+    prependIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLSelectElement | null>) => void },
+    appendIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLSelectElement | null>) => void },
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
+
+const Select = (props: SelectProps) => {
     const inputRef = useRef<null | HTMLSelectElement>(null);
     const {
         children,

@@ -1,10 +1,10 @@
-import type {FC, HTMLAttributes, ReactElement} from 'react';
+import type {HTMLAttributes, ReactElement} from 'react';
 
-interface ConditionalWrapperButtonProps {
+interface ConditionalWrapperButtonProps extends HTMLAttributes<HTMLButtonElement> {
     condition: boolean;
 }
 
-const ConditionalButtonWrapper: FC<ConditionalWrapperButtonProps & HTMLAttributes<HTMLButtonElement>> = (props) => {
+const ConditionalButtonWrapper = (props: ConditionalWrapperButtonProps) => {
     const { condition, children, ...restOfProps } = props;
     if (condition)
         return <button type="button" {...restOfProps}>{children}</button>;

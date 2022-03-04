@@ -1,6 +1,6 @@
 import type {FC} from 'react';
 
-const BlogPostLayout: FC = () => {
+const BlogPostLayout = () => {
     return (
         <div>
 

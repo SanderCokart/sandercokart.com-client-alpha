@@ -3,11 +3,10 @@ import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect, useState} from 'react';
 import {useSWRConfig} from 'swr';
 
-const VerifyEmail: FC = () => {
+const VerifyEmail = () => {
     const { isLoading, loggedIn, isVerified } = useAuth();
     const router = useRouter();
     const { mutate } = useSWRConfig();

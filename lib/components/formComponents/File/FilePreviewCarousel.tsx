@@ -1,14 +1,18 @@
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
-import styles from '@/styles/components/formComponents/NewFile/FilePreviewCarousel.module.scss';
+import styles from './FilePreviewCarousel.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
-import type {FilePreviewCarouselProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import ObjectPath from 'object-path';
-import type {FC} from 'react';
 import {useFormContext} from 'react-hook-form';
 
-const FilePreviewCarousel: FC<FilePreviewCarouselProps> = (props) => {
+interface FilePreviewCarouselProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+const FilePreviewCarousel = (props: FilePreviewCarouselProps) => {
     const { name, multiple, editMode } = props;
     const { formState: { dirtyFields }, resetField, watch } = useFormContext();
     const { getUrl } = useImage();

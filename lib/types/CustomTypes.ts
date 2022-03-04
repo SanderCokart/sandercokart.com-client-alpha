@@ -3,6 +3,7 @@ import type {PostsResponse, UsersResponse} from '@/types/ResponseTypes';
 import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import type {AxiosError} from 'axios';
 import type {ReactNode} from 'react';
+import {ArticleResponse} from '@/types/ResponseTypes';
 
 export type FontAwesomeIconType = [IconPrefix, IconName] | IconName
 
@@ -20,7 +21,7 @@ export type CustomAxiosErrorResponse = AxiosError<{
     };
 }> | null;
 
-export type PaginatedResponses = UsersResponse | PostsResponse | { [key: string]: any };
+export type PaginatedResponses = UsersResponse | ArticleResponse | { [key: string]: any };
 export type PaginatedModels = UserModel | ArticleModel;
 export type CursorPaginatedModels = ArticleModel;
 

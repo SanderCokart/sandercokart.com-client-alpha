@@ -1,10 +1,12 @@
 import styles from '@/styles/components/formComponents/LabelErrorAccessory.module.scss';
-import type {LabelErrorAccessoryProps} from '@/types/PropTypes';
-import type {FC} from 'react';
+import type {HTMLAttributes} from 'react';
 import {useFormState} from 'react-hook-form';
 
+interface LabelErrorAccessoryProps extends HTMLAttributes<HTMLSpanElement> {
+    name: string;
+}
 
-const LabelErrorAccessory: FC<LabelErrorAccessoryProps> = (props) => {
+const LabelErrorAccessory = (props: LabelErrorAccessoryProps) => {
     const { name, ...restOfProps } = props;
     const { errors: { [name]: error } } = useFormState();
 

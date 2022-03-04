@@ -1,0 +1,50 @@
+@use '/styles/utils';
+
+.dropdownLinkItem {
+
+}
+
+.dropdownLinkItemAnchor {
+  @include utils.defaultButton;
+  background-color: var(--bg-nav);
+  color: var(--bg-contrast-text);
+
+  padding: 0;
+  justify-content: revert;
+
+  &:hover, &:active, &:focus {
+    background-color: var(--acc-inactive);
+    color: var(--acc-contrast-text);
+
+    .leftIcon {
+      background-color: var(--acc);
+    }
+  }
+}
+
+.leftIcon {
+  @include utils.defaultButton;
+  width: 40px;
+  height: 40px;
+  background-color: var(--acc-inactive);
+}
+
+.rightIcon {
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  background-color: var(--acc-inactive);
+  color: var(--acc-contrast-text);
+  cursor: default;
+  pointer-events: none;
+
+  .leftIcon {
+    background-color: var(--acc);
+  }
+}

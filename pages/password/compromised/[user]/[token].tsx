@@ -3,7 +3,6 @@ import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
@@ -12,11 +11,11 @@ interface ChangePasswordForm {
     password_confirmation: string
 }
 
-const ChangePassword: FC = () => {
+const EmailCompromisedPage = () => {
     const router = useRouter();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
-            password: Yup.string().min(8).max(50).required('This field is required')                .matches(/[a-z]/, 'must contain a lower case character')
+            password: Yup.string().min(8).max(50).required('This field is required').matches(/[a-z]/, 'must contain a lower case character')
                 .matches(/[A-Z]/, 'must contain an upper case character')
                 .matches(/[0-9]/, 'must contain a number')
                 .matches(/[!@#$%^&*]/, 'must contain a special case character'),
@@ -60,4 +59,4 @@ const ChangePassword: FC = () => {
     );
 };
 
-export default ChangePassword;
+export default EmailCompromisedPage;

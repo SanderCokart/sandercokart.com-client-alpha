@@ -1,10 +1,19 @@
 import styles from '@/styles/components/formComponents/Switch.module.scss';
-import type {SwitchProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {ChangeEvent} from 'react';
 import {useState} from 'react';
+import {FontAwesomeIconType} from '@/types/CustomTypes';
+
+interface SwitchProps {
+    name: string;
+    label?: string;
+    icon?: FontAwesomeIconType;
+    onToggle: (state: boolean) => void;
+}
 
 const Switch = (props: SwitchProps) => {
+    /*TODO REDESIGN*/
+
     const { name, label, icon, onToggle } = props;
     const [state, setState] = useState(false);
 

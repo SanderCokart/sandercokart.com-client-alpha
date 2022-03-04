@@ -1,4 +1,4 @@
-import NewCode from '@/components/MDXComponents/NewCode';
+import Code from '@/components/MDXComponents/Code';
 import styles from '@/styles/components/MDXComponents.module.scss';
 import {Property} from 'csstype';
 import NextImage from 'next/image';
@@ -57,7 +57,7 @@ const useMDXComponents = (isEditor = false) => {
         ul: UL,
         li: LI,
         ol: OL,
-        code: NewCode,
+        code: Code,
         img: isEditor ? Image : CustomImage
     };
 };

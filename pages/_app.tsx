@@ -1,23 +1,22 @@
 import GlobalEventListeners from '@/components/GlobalEventListeners';
-import GlobalSWRConfig from '@/config/GlobalSWRConfig';
-import icons from '@/data/icons';
-import AuthProvider from '@/providers/AuthProvider';
-import ThemeProvider from '@/providers/ThemeProvider';
-import '@/styles/global/dropdown.scss';
-import '@/styles/globals.scss';
-import {library} from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import type {AppProps} from 'next/app';
-import Head from 'next/head';
-import {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'swiper/scss';
-import 'swiper/scss/navigation';
-import 'swiper/scss/pagination';
 import 'swiper/scss/scrollbar';
+import 'react-responsive-modal/styles.css';
+import '@/styles/globals.scss';
+import AuthProvider from '@/providers/AuthProvider';
+import GlobalSWRConfig from '@/config/GlobalSWRConfig';
+import Head from 'next/head';
+import Navigation from '@/components/Navigation/Navigation';
+import ThemeProvider from '@/providers/ThemeProvider';
+import icons from '@/data/icons';
+import type {AppProps} from 'next/app';
 import {SWRConfig} from 'swr';
+import {SkeletonTheme} from 'react-loading-skeleton';
+import {ToastContainer} from 'react-toastify';
+import {library} from '@fortawesome/fontawesome-svg-core';
 
 library.add(...icons);
 
@@ -33,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <GlobalEventListeners/>
                     <AuthProvider>
                         <ThemeProvider>
-                            {/*<Navigation/>*/}
+                            <Navigation/>
                             <Component {...pageProps} />
                         </ThemeProvider>
                     </AuthProvider>

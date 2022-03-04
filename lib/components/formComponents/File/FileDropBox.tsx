@@ -1,11 +1,16 @@
 import axios from '@/functions/shared/axios';
-import styles from '@/styles/components/formComponents/NewFile/FileDropBox.module.scss';
+import styles from './FileDropBox.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
-import type {FileDropBoxProps} from '@/types/PropTypes';
-import type {ChangeEvent, DragEvent, FC} from 'react';
+import type {ChangeEvent, DragEvent} from 'react';
 import {useFormContext} from 'react-hook-form';
 
-const FileDropBox: FC<FileDropBoxProps> = (props) => {
+interface FileDropBoxProps {
+    editMode?: boolean;
+    multiple?: boolean;
+    name: string;
+}
+
+const FileDropBox = (props: FileDropBoxProps) => {
     const { name, multiple } = props;
     const { register, setValue, getValues, resetField } = useFormContext();
     const toggleHighlight = (e: DragEvent<HTMLInputElement>) => {

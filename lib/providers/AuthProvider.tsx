@@ -1,17 +1,31 @@
-import type {AuthContextType} from '@/types/AuthProviderTypes';
 import type {LoginFormValues} from '@/types/FormValueTypes';
-import type {FC} from 'react';
+import type {ReactNode} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import axios from '../functions/shared/axios';
+import {UserModel} from '@/types/ModelTypes';
+import {AxiosError} from 'axios';
+import {CustomApiPromise} from '@/types/CustomTypes';
 
 const AuthContext = createContext({});
 
-interface Props {
+interface useAuthProps {
     middleware?: 'guest' | 'auth';
 }
 
-export const useAuth = ({ middleware }: Props = {}) => {
+interface AuthContextType {
+    user: UserModel | null;
+    error: Error | AxiosError;
+    csrf: () => void;
+    logout: () => Promise<CustomApiPromise>;
+    login: (props: LoginFormValues) => Promise<CustomApiPromise>;
+    isLoading: boolean;
+    isAdmin: boolean;
+    isVerified: boolean;
+    loggedIn: boolean;
+}
+
+export const useAuth = ({ middleware }: useAuthProps = {}) => {
     const context = useContext(AuthContext) as AuthContextType;
     const { user, error, isLoading } = context;
 
@@ -23,7 +37,11 @@ export const useAuth = ({ middleware }: Props = {}) => {
     return { ...context, isLoading, shouldRedirect: shouldRedirect() };
 };
 
-const AuthProvider: FC = ({ children }) => {
+interface AuthProviderProps {
+    children: ReactNode;
+}
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
     const { data: user, mutate, error } = useSWR('/user',
         () => axios.get('/user')

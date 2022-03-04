@@ -1,11 +1,20 @@
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory';
 import styles from '@/styles/components/formComponents/Checkbox.module.scss';
-import type {CheckboxProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FC} from 'react';
+import type {InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
 
 
-const Checkbox: FC<CheckboxProps> = (props) => {
+interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    loading?: boolean;
+    name?: string;
+    label?: string;
+    registerFormHook?: UseFormRegisterReturn;
+    containerProps?: HTMLAttributes<HTMLDivElement>;
+    labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+}
+
+const Checkbox = (props: CheckboxProps) => {
     const {
         loading = false,
         containerProps = undefined,

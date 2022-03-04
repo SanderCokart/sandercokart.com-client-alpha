@@ -1,11 +1,18 @@
 import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar';
 import useMDXComponents from '@/components/MDXComponents';
 import styles from '@/styles/components/formComponents/MarkdownEditor/MarkdownEditor.module.scss';
-import type {MarkdownEditorProps} from '@/types/PropTypes';
 // @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
-import type {Dispatch, FC, MouseEvent, MutableRefObject, SetStateAction} from 'react';
-import {createContext, createElement, useContext, useRef, useState} from 'react';
+import type {Dispatch, MouseEvent, MutableRefObject, SetStateAction} from 'react';
+import {
+    createContext,
+    createElement,
+    useContext,
+    useRef,
+    useState,
+    HTMLAttributes,
+    TextareaHTMLAttributes
+} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 import rehypeSlug from 'rehype-slug';
@@ -25,7 +32,12 @@ export const useEditorContext = () => useContext(EditorContext) as {
     setState: Dispatch<SetStateAction<{ tableRows: number, tableColumns: number, fontSize: number, gridColumns: number, gridRows: number }>>
 };
 
-const MarkdownEditor: FC<MarkdownEditorProps> = ({ name, textareaProps, ...props }) => {
+interface MarkdownEditorProps extends HTMLAttributes<HTMLDivElement> {
+    name: string;
+    textareaProps?: TextareaHTMLAttributes<any>;
+}
+
+const MarkdownEditor = ({ name, textareaProps, ...restOfProps }: MarkdownEditorProps) => {
     const editorRef = useRef<HTMLTextAreaElement | null>(null);
     const previewRef = useRef<HTMLDivElement | null>(null);
     const { register } = useFormContext();
@@ -72,7 +84,7 @@ const MarkdownEditor: FC<MarkdownEditorProps> = ({ name, textareaProps, ...props
 
     return (
         <EditorContext.Provider value={{ editorRef, previewRef, ...state, setState }}>
-            <div {...props} className={styles.container}>
+            <div {...restOfProps} className={styles.container}>
                 <Toolbar name={name}/>
                 <div className={styles.editorContainer}>
                 <textarea {...restOfRegister} ref={el => {
@@ -90,10 +102,12 @@ const MarkdownEditor: FC<MarkdownEditorProps> = ({ name, textareaProps, ...props
     );
 };
 
-export default MarkdownEditor;
 
+interface PreviewProps {
+    name: string;
+}
 
-const Preview: FC<{ name: string }> = ({ name, ...props }) => {
+const Preview = ({ name, ...props }: PreviewProps) => {
     const MDXComponents = useMDXComponents(true);
     const { Title } = MDXComponents;
     const { editorRef, previewRef } = useEditorContext();
@@ -165,3 +179,5 @@ const Preview: FC<{ name: string }> = ({ name, ...props }) => {
         );
     }
 };
+
+export default MarkdownEditor;

@@ -1,27 +1,45 @@
 import styles from '@/styles/components/Button.module.scss';
-import type {ButtonProps} from '@/types/PropTypes';
 import Link from 'next/link';
-import type {FC} from 'react';
+import type {ButtonHTMLAttributes, AnchorHTMLAttributes} from 'react';
 
-const Button: FC<ButtonProps> = (props) => {
-    const { type = 'button', className, navigationButton = false, href, ...restOfProps } = props;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    navigationButton?: boolean;
+    type?: 'submit' | 'reset' | 'button';
+    fullWidth?: boolean;
+}
+
+interface LinkButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    navigationButton?: boolean;
+    href: string;
+    fullWidth?: boolean;
+}
+
+export const Button = (props: ButtonProps) => {
+    const { type = 'button', fullWidth = false, className, navigationButton = false, ...restOfProps } = props;
     const classNames = [
         styles.button,
-        className
+        className,
+        (fullWidth && styles.fullWidth),
+        (navigationButton && styles.navigationButton)
     ];
 
-    if (navigationButton) {
-        classNames.push(styles.navigationButton);
-    }
+    return <button className={classNames.join(' ')} type={type} {...restOfProps} />;
 
-    if (href)
-        return (
-            <Link href={href}>
-                <a className={classNames.join(' ')} {...restOfProps}/>
-            </Link>
-        );
-    return <button className={classNames.join(' ')}
-                   type={type} {...restOfProps} />;
 };
 
-export default Button;
+export const LinkButton = (props: LinkButtonProps) => {
+    const { fullWidth = false, className, navigationButton = false, href, ...restOfProps } = props;
+    const classNames = [
+        styles.button,
+        className,
+        (fullWidth && styles.fullWidth),
+        (navigationButton && styles.navigationButton)
+    ];
+
+
+    return (
+        <Link href={props.href}>
+            <a className={classNames.join(' ')} {...restOfProps}/>
+        </Link>
+    );
+};

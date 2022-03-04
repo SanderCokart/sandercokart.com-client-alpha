@@ -1,6 +1,6 @@
 import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
-import {PostsResponse} from '@/types/ResponseTypes';
+import {ArticleResponse} from '@/types/ResponseTypes';
 import {useEffect, useState} from 'react';
 import useSWR from 'swr';
 
@@ -9,8 +9,8 @@ const UsePosts = () => {
     const [hasMore, setHasMore] = useState(true);
     const [hasLess, setHasLess] = useState(false);
     const { isAdmin } = useAuth({ middleware: 'auth' });
-    const { data, error, mutate } = useSWR<PostsResponse>(isAdmin ? `/posts?page=${pageIndex}` : null);
-    const { posts = [], links = [], meta = [] } = data || { posts: [], links: [], meta: [] };
+    const { data, error, mutate } = useSWR<ArticleResponse>(isAdmin ? `/posts?page=${pageIndex}` : null);
+    const { articles = [], links = [], meta = [] } = data || { posts: [], links: [], meta: [] };
 
     useEffect(() => {
         setHasMore(!!data?.links.next);
@@ -29,7 +29,7 @@ const UsePosts = () => {
     const onDelete = async (id: number) => {
         await axios.simpleDelete(`/posts/${id}`);
         mutate(currentValue => {
-            if (currentValue) return { ...currentValue, posts: posts.filter(user => user.id !== id) };
+            if (currentValue) return { ...currentValue, articles: articles.filter(article => article.id !== id) };
         });
     };
 
@@ -38,7 +38,7 @@ const UsePosts = () => {
     };
 
     return {
-        posts,
+        articles,
         isLoading: !error && !data,
         nextPage,
         prevPage,

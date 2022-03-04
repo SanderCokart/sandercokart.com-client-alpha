@@ -5,24 +5,21 @@ import Select from '@/components/formComponents/Select';
 import TextArea from '@/components/formComponents/Textarea';
 import Loader from '@/components/Loader';
 import axios from '@/functions/shared/axios';
-import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {StatusModel} from '@/types/ModelTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import useSWR from 'swr';
 import * as Yup from 'yup';
 
 
-const CreatePostPage: FC = () => {
+const CreatePostPage = () => {
     const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
     const router = useRouter();
-    const mdUp = useMediaQuery({ from: 'md', option: 'up' });
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             title: Yup.string().required('This field is required'),
@@ -49,26 +46,6 @@ const CreatePostPage: FC = () => {
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
     }, [shouldRedirect]);
-
-    const PLUGINS = [
-        'header',
-        'font-bold',
-        'font-italic',
-        'font-strikethrough',
-        'divider',
-        'list-unordered',
-        'list-ordered',
-        'blockquote',
-        'block-wrap',
-        'block-code-inline',
-        'block-code-block',
-        'table',
-        'image',
-        'link',
-        'mode-toggle',
-        'fullscreen',
-        'auto-resize'
-    ];
 
     const onSubmit = async (formValues: CreatePostFormValues) => {
         await axios.simplePost('/posts', { ...formValues, banner: formValues.banner[0].id });

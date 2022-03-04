@@ -1,0 +1,16 @@
+.themeControl {
+  cursor: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.themeRadioControl {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 1.5rem;
+  gap: 16px;
+  padding: 16px;
+}

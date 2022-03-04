@@ -20,8 +20,8 @@ export interface Meta {
     total: number | null;
 }
 
-export interface PostsResponse extends AxiosResponse {
-    posts: ArticleModel[];
+export interface ArticleResponse extends AxiosResponse {
+    articles: ArticleModel[];
     links: Links;
     meta: Meta;
 
@@ -40,8 +40,8 @@ export interface PostsSlugsResponse extends AxiosResponse {
     params: { slug: string };
 }
 
-export interface CursorPaginationResponse {
-    articles: ArticleModel[],
+export interface CursorPaginationResponse<Model> {
+    articles: Model,
     links: Links,
     meta: Meta
 }

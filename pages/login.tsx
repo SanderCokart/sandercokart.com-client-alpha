@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import {Button} from '@/components/Button';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
@@ -8,12 +8,11 @@ import type {LoginFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {MutableRefObject, useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-export const Login: FC = () => {
+export const Login = () => {
     const router = useRouter();
     const { login, isLoading: isLoadingAuth, shouldRedirect } = useAuth({ middleware: 'guest' });
 

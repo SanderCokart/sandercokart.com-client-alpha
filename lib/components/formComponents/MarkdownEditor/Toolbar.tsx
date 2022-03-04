@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import {Button} from '@/components/Button';
 import Input from '@/components/formComponents/Input';
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import axios from '@/functions/shared/axios';
@@ -6,15 +6,18 @@ import useImage from '@/hooks/useImage';
 import styles from '@/styles/components/formComponents/MarkdownEditor/Toolbar.module.scss';
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
-import type {ToolbarProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Papa from 'papaparse';
-import type {ChangeEvent, FC, MouseEvent} from 'react';
+import type {ChangeEvent, MouseEvent} from 'react';
 import {useCallback, useEffect} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
 
 
-const Toolbar: FC<ToolbarProps> = ({ name }) => {
+interface ToolbarProps {
+    name: string;
+}
+
+const Toolbar = ({ name }: ToolbarProps) => {
     const { setValue } = useFormContext();
     const toolbarForm = useForm();
     const { getValues } = toolbarForm;
@@ -240,45 +243,41 @@ const Toolbar: FC<ToolbarProps> = ({ name }) => {
     };
 
     const importCSV = (e: ChangeEvent<HTMLInputElement>) => {
-        // if (e.target.files)
-        //     Papa.parse<string[]>(e.target.files[0], {
-        //         complete: (results) => {
-        //             if (editorRef.current) {
-        //                 const { value, selectionStart, selectionEnd } = editorRef.current;
-        //                 const headers = results.data[0];
-        //                 const rows = results.data.slice(1);
-        //
-        //                 let tableMd = '\n\n';
-        //                 for (let i = 0; i < headers.length; i++) {
-        //                     tableMd += `| ${headers[i]} `;
-        //                 }
-        //                 tableMd += '|\n';
-        //                 for (let i = 0; i < headers.length; i++) {
-        //                     tableMd += '| :--: ';
-        //                 }
-        //                 tableMd += '|\n';
-        //
-        //                 for (let i = 0; i < rows.length; i++) {
-        //                     for (let j = 0; j < headers.length; j++) {
-        //                         tableMd += `| ${rows[i][j]} `;
-        //                     }
-        //                     tableMd += '|\n';
-        //                 }
-        //
-        //                 tableMd += '\n';
-        //
-        //                 selectWordUnderCursor();
-        //                 setValue(name, value.substring(0, selectionEnd) + tableMd + value.substring(selectionEnd));
-        //
-        //                 e.target.value = '';
-        //                 editorRef.current.focus();
-        //             }
-        //         }
-        //     });
+        if (e.target.files)
+            Papa.parse<string[]>(e.target.files[0], {
+                complete: (results) => {
+                    if (editorRef.current) {
+                        const { value, selectionEnd } = editorRef.current;
+                        const headers = results.data[0];
+                        const rows = results.data.slice(1);
 
-        //import CSV and parse it without packages
+                        let tableMd = '\n\n';
+                        for (let i = 0; i < headers.length; i++) {
+                            tableMd += `| ${headers[i]} `;
+                        }
+                        tableMd += '|\n';
+                        for (let i = 0; i < headers.length; i++) {
+                            tableMd += '| :--: ';
+                        }
+                        tableMd += '|\n';
 
+                        for (let i = 0; i < rows.length; i++) {
+                            for (let j = 0; j < headers.length; j++) {
+                                tableMd += `| ${rows[i][j]} `;
+                            }
+                            tableMd += '|\n';
+                        }
 
+                        tableMd += '\n';
+
+                        selectWordUnderCursor();
+                        setValue(name, value.substring(0, selectionEnd) + tableMd + value.substring(selectionEnd));
+
+                        e.target.value = '';
+                        editorRef.current.focus();
+                    }
+                }
+            });
     };
 
     const leftToolbarItems: { icon: FontAwesomeIconType, onClick: () => void, title: string }[] = [

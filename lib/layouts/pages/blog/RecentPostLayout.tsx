@@ -1,11 +1,14 @@
 import useImage from '@/hooks/useImage';
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
-import {RecentPostLayoutProps} from '@/types/PropTypes';
 import Image from 'next/image';
 import Link from 'next/link';
-import type {FC} from 'react';
+import {ArticleModel} from '@/types/ModelTypes';
 
-const RecentPostLayout: FC<RecentPostLayoutProps> = ({ post }) => {
+interface RecentPostLayoutProps {
+    post: ArticleModel;
+}
+
+const RecentPostLayout = ({ post }: RecentPostLayoutProps) => {
     const { getUrl } = useImage();
     const { url, isPrivate } = getUrl(post.banner);
 

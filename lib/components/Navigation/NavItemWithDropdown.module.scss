@@ -1,0 +1,16 @@
+@use '/styles/utils';
+
+.navItemWithDropdown {
+  @include utils.defaultButton;
+  background-color: var(--bg-nav);
+  height: 100%;
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  cursor: auto;
+  background-color: var(--bg-nav);
+  color: var(--bg-contrast-text);
+  overflow: hidden;
+}

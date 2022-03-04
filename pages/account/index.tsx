@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import {Button} from '@/components/Button';
 import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
@@ -8,12 +8,12 @@ import styles from '@/styles/pages/account/Account.module.scss';
 import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
+import {GetStaticProps} from 'next';
 
-export const Account: FC = () => {
+export const AccountPage = () => {
     const { logout, shouldRedirect, isLoading } = useAuth({ middleware: 'auth' });
     const router = useRouter();
 
@@ -41,7 +41,7 @@ export const Account: FC = () => {
     );
 };
 
-const PasswordForm: FC = () => {
+const PasswordForm = () => {
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
@@ -91,7 +91,7 @@ const PasswordForm: FC = () => {
     );
 };
 
-const EmailForm: FC = () => {
+const EmailForm = () => {
     const { user } = useAuth();
 
     const changeEmailForm = useForm({
@@ -125,4 +125,4 @@ const EmailForm: FC = () => {
     );
 };
 
-export default Account;
+export default AccountPage;

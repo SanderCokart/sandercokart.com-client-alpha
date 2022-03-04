@@ -1,16 +1,15 @@
 import useMDXComponents from '@/components/MDXComponents';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
-import {BlogPostProps} from '@/types/PropTypes';
 import {PostsSlugsResponse} from '@/types/ResponseTypes';
 import {GetStaticPaths, GetStaticProps, GetStaticPropsContext} from 'next';
-import {MDXRemote} from 'next-mdx-remote';
+import {MDXRemote, MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {serialize} from 'next-mdx-remote/serialize';
-import type {FC} from 'react';
 import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
+import {ArticleModel} from '@/types/ModelTypes';
 
-const BlogPost: FC<BlogPostProps> = ({ post, mdxSource }) => {
+const PostPage = ({ post, mdxSource }: BlogPostProps) => {
     const MDXComponents = useMDXComponents();
     const { Title } = MDXComponents;
     return (
@@ -21,7 +20,12 @@ const BlogPost: FC<BlogPostProps> = ({ post, mdxSource }) => {
     );
 };
 
-export default BlogPost;
+interface BlogPostProps {
+    post: ArticleModel;
+    mdxSource: MDXRemoteSerializeResult;
+}
+
+export default PostPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const { data } = await axios.simpleGet<PostsSlugsResponse[]>('/posts/slugs');

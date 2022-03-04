@@ -14,7 +14,8 @@
   }
 
   thead {
-    background: var(--acc);
+    background-color: var(--acc);
+    color: var(--acc-contrast-text);
     font-weight: bold;
     position: sticky;
     top: 0;
@@ -23,6 +24,10 @@
 
   ul {
     list-style: none;
+  }
+
+  tr:hover {
+    background-color: var(--highlight-trans);
   }
 
   td {
@@ -41,24 +46,12 @@
 }
 
 td.actions {
-  div {
+  > div {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     gap: 16px;
-
-    button {
-      @include utils.defaultButton;
-      background-color: transparent;
-      transition: color 150ms ease;
-
-      &:hover, &:active, &:focus {
-        background-color: transparent;
-        color: var(--acc);
-      }
-    }
   }
-
 }
 
 .roleTag {
@@ -110,13 +103,18 @@ td.actions {
 }
 
 .unlisted {
-  background-color: var(--warning);
+  color: var(--warning);
 }
 
 .published {
-  background-color: var(--success);
+  color: var(--success);
 }
 
 .archived {
-  background-color: var(--info);
+  color: var(--info);
+}
+
+.deleteModalActions {
+  display: flex;
+  justify-content: space-between;
 }

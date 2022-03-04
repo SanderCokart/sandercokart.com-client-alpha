@@ -49,7 +49,6 @@ $xl: 1536px;
 
 @mixin defaultButton {
   background-color: var(--acc-inactive);
-  color: var(--acc-contrast-text);
 
   border: none;
   outline: none;
@@ -62,8 +61,6 @@ $xl: 1536px;
   font-size: 1rem;
   font-weight: bold;
 
-  width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,8 +69,13 @@ $xl: 1536px;
   transition: background-color 150ms ease;
   pointer-events: auto;
 
+  &.fullWidth{
+    width: 100%;
+  }
+
   &:hover, &:active, &:focus {
     background-color: var(--acc);
+    color: var(--acc-contrast-text);
   }
 
   &:disabled {

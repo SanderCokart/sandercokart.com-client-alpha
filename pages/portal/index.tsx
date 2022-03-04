@@ -3,14 +3,13 @@ import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/Portal.module.scss';
 import Head from 'next/head';
 import {useRouter} from 'next/router';
-import type {FC} from 'react';
 import {useEffect} from 'react';
 import {useSWRConfig} from 'swr';
 
-const Portal: FC = () => {
+const PortalPage = () => {
     const { isLoading: isLoadingAuth, shouldRedirect } = useAuth({ middleware: 'auth' });
     const router = useRouter();
-    const {mutate} = useSWRConfig()
+    const { mutate } = useSWRConfig();
 
 
     useEffect(() => {
@@ -33,4 +32,4 @@ const Portal: FC = () => {
     );
 };
 
-export default Portal;
+export default PortalPage;
