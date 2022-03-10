@@ -3,17 +3,23 @@ import styles from '@/styles/components/PortalNavigation.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import {useState} from 'react';
+import useSWR from 'swr';
+import type {ArticleType} from '@/types/ModelTypes';
 
 const PortalNavigation = () => {
     const [search, setSearch] = useState('');
+    const { data: articleTypes } = useSWR<ArticleType[]>('/articleTypes');
 
     const models = [
-        { href: '/portal/users', text: 'Users' },
-        { href: '/portal/articles/posts', text: 'Posts' },
-        { href: '/portal/articles/tips', text: 'Tips' },
-        { href: '/portal/articles/courses', text: 'Courses' },
-        { href: '/portal/articles/thoughts', text: 'Thoughts' }
+        { href: '/portal/users', text: 'users' },
+        { href: '/portal/articles/thoughts', text: 'thoughts' }
     ];
+
+    //for each articleType
+    articleTypes?.forEach(articleType => {
+        models.push({ href: `/portal/articles/${articleType.name}`, text: articleType.name });
+    });
+
 
     return (
         <nav className={styles.portalNav}>
@@ -22,7 +28,7 @@ const PortalNavigation = () => {
 
             <ul className={styles.linkList}>
                 {models.map((model) => {
-                    if (model.text.toLowerCase().includes(search.toLowerCase())) {
+                    if (model.text.includes(search.toLowerCase())) {
                         return (
                             <PortalNavItem key={model.text} href={model.href} text={model.text}/>
                         );

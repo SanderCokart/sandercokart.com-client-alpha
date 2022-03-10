@@ -52,7 +52,7 @@ export const Login = () => {
                     break;
                 }
                 default: {
-                    router.push('/blog');
+                    router.push('/');
                     break;
                 }
             }

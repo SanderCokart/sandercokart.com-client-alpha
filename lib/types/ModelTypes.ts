@@ -31,6 +31,11 @@ export interface UserModel {
 
 export type RoleModel = 'admin' | 'user';
 
+export interface ArticleType {
+    id: number;
+    name: string;
+}
+
 export interface FileModel {
     id: number,
     original_name: string;
