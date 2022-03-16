@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                         </ThemeProvider>
                     </AuthProvider>
                 </SkeletonTheme>
-                <ToastContainer/>
+                <ToastContainer autoClose={false}/>
             </SWRConfig>
         </>
     );

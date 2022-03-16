@@ -5,37 +5,37 @@ import type {PasswordForgotFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
+import {toast} from 'react-toastify';
 
 export const ForgotPasswordPage = () => {
-    const methods = useForm({
+    const forgotPasswordForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required('This field is required')
-
         })),
-        mode: 'all',
-        defaultValues: {
-            email: ''
-        }
+        mode: 'all'
     });
 
-    const { formState: { isValid, isDirty } } = methods;
+    const { formState: { isValid, isDirty }, register } = forgotPasswordForm;
 
-    const requestPasswordReset = async (formValues: PasswordForgotFormValues) => {
-        await axios.simplePost('/password/request', formValues);
+    const onSubmit = async (formValues: PasswordForgotFormValues) => {
+        const {error} = await axios.simplePost('/account/password/request', formValues);
+        if (!error) toast.success('An email has been sent to you with instructions on how to reset your password.');
     };
 
     return (
         <div className={styles.forgot}>
-            <FormProvider {...methods}>
-                <form noValidate className={styles.form} onSubmit={methods.handleSubmit(requestPasswordReset)}>
+            <FormProvider {...forgotPasswordForm}>
+                <form noValidate className={styles.form}
+                      onSubmit={forgotPasswordForm.handleSubmit(onSubmit)}>
                     <header className={styles.header}>
                         <h1>Forgot Password</h1>
                     </header>
                     <main className={styles.main}>
-                        <Input autoComplete="email" name="email" placeholder="Enter your email..."/>
-                        <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">Request
-                            new
-                            password
+                        <Input autoComplete="email" label="Email"
+                               placeholder="Enter your email address..."
+                               registerFormHook={{ ...register('email') }}/>
+                        <button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">
+                            Request new password
                         </button>
                     </main>
                 </form>

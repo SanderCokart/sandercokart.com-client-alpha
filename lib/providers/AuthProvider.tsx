@@ -44,7 +44,7 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
     const { data: user, mutate, error } = useSWR('/user',
-        () => axios.get('/user')
+        () => axios.get('/account/user')
             .then(response => response.data)
             .catch(error => {
                 throw error;
@@ -55,14 +55,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = async (formValues: LoginFormValues) => {
         await csrf();
-        const response = await axios.simplePost('/login', formValues);
+        const response = await axios.simplePost('/account/login', formValues);
         await mutate();
         return response;
     };
 
     const logout = async () => {
         if (user) {
-            const response = await axios.simplePost('/logout');
+            const response = await axios.simplePost('/account/logout');
             await mutate(null);
             return response;
         }

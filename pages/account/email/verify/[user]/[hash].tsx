@@ -31,12 +31,12 @@ const VerifyEmail = () => {
 
             else if (loggedIn && verificationCompleted)
                 setTimeout(() => {
-                    router.replace('/blog');
+                    router.replace('/');
                 }, 5000);
 
             else if (isVerified && !verificationCompleted)
                 setTimeout(() => {
-                    router.replace('/blog');
+                    router.replace('/');
                 }, 5000);
 
             else if (!loggedIn && !isLoading)

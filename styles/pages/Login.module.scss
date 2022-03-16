@@ -1,55 +1,21 @@
 @use '../utils';
 
-.login {
-  .form {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.links {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-    .header {
-      margin-bottom: 8px;
-    }
+  .link {
+    color: #eee;
+    padding: 8px;
+    border: none;
+    font-weight: bolder;
+    text-align: center;
+    margin: 0 auto;
+    transition: color ease 200ms;
 
-    .main {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .footer {
-      .links {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .link {
-          color: #eee;
-          padding: 8px;
-          border: none;
-          font-weight: bolder;
-          text-align: center;
-          margin: 0 auto;
-          transition: color ease 200ms;
-
-          &:hover, &:active, &:focus {
-            color: var(--acc)
-          }
-        }
-      }
-    }
-  }
-}
-
-
-@include utils.up(utils.$sm) {
-  .login {
-    height: 100%;
-    display: flex;
-
-    .form {
-      width: 500px;
-      margin: auto;
+    &:hover, &:active, &:focus {
+      color: var(--acc)
     }
   }
 }

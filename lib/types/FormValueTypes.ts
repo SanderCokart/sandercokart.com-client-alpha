@@ -34,7 +34,6 @@ export interface PasswordChangeFormValues {
     current_password: string,
     password: string,
     password_confirmation: string,
-    sign_out_everywhere: boolean,
 }
 
 export interface EmailChangeFormValues {

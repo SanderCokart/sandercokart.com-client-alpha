@@ -1,5 +1,4 @@
 import {Button} from '@/components/Button';
-import Checkbox from '@/components/formComponents/Checkbox';
 import Input from '@/components/formComponents/Input';
 import Loader from '@/components/Loader';
 import axios from '@/functions/shared/axios';
@@ -11,7 +10,7 @@ import {useRouter} from 'next/router';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import {GetStaticProps} from 'next';
+import {toast} from 'react-toastify';
 
 export const AccountPage = () => {
     const { logout, shouldRedirect, isLoading } = useAuth({ middleware: 'auth' });
@@ -26,7 +25,7 @@ export const AccountPage = () => {
 
     const onClickLogout = async () => {
         const { status } = await logout();
-        status === 200 && await router.push('/blog/recent');
+        status === 200 && await router.push('/');
     };
 
 
@@ -42,7 +41,7 @@ export const AccountPage = () => {
 };
 
 const PasswordForm = () => {
-    const methods = useForm({
+    const changePasswordForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
             password: Yup.string().min(8).max(50).required('This field is required')
@@ -52,38 +51,33 @@ const PasswordForm = () => {
                 .matches(/[!@#$%^&*]/, 'must contain a special case character'),
             password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('This field is required')
         })),
-        mode: 'all',
-        defaultValues: {
-            current_password: '',
-            password: '',
-            password_confirmation: '',
-            sign_out_everywhere: true
-        }
+        mode: 'all'
     });
 
 
-    const changePassword = async (formValues: PasswordChangeFormValues) => {
+    const onSubmitPasswordChange = async (formValues: PasswordChangeFormValues) => {
         await axios.simplePatch('/account/password/change', formValues);
     };
 
-    const { formState: { isDirty, isValid }, handleSubmit } = methods;
+    const { formState: { isDirty, isValid }, handleSubmit, register } = changePasswordForm;
 
     return (
-        <FormProvider {...methods}>
-            <form noValidate className={styles.form} onSubmit={handleSubmit(changePassword)}>
+        <FormProvider {...changePasswordForm}>
+            <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitPasswordChange)}>
                 <header className={styles.header}>
                     <h1>Change password</h1>
                 </header>
                 <main className={styles.main}>
-                    <Input autoComplete="current-password" label="Current password" name="current_password"
+                    <Input autoComplete="current-password" label="Current password"
                            placeholder="Type your current password"
+                           registerFormHook={{ ...register('current_password') }}
                            type="password"/>
-                    <Input autoComplete="new-password" label="New password" name="password"
-                           placeholder="Type your new password" type="password"/>
-                    <Input autoComplete="new-password" label="Confirm password" name="password_confirmation"
+                    <Input autoComplete="new-password" label="New password" placeholder="Type your new password"
+                           registerFormHook={{ ...register('password') }} type="password"/>
+                    <Input autoComplete="new-password" label="Confirm password"
                            placeholder="Type your new password again"
+                           registerFormHook={{ ...register('password_confirmation') }}
                            type="password"/>
-                    <Checkbox label="Sign out on all other devices" name="sign_out_everywhere"/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                 </main>
             </form>
@@ -103,21 +97,31 @@ const EmailForm = () => {
             email: user?.email
         }
     });
-    const { formState: { isDirty, isValid }, handleSubmit, register } = changeEmailForm;
+    const { formState: { isDirty, isValid }, handleSubmit, register, setError } = changeEmailForm;
 
-    const changeEmail = async (formValues: EmailChangeFormValues) => {
-        await axios.simplePatch(`/account/email/change/${user?.id}`, formValues);
+    const onSubmitEmailChange = async (formValues: EmailChangeFormValues) => {
+        const { error, status, data } = await axios.simplePatch(`/account/email/change/${user?.id}`, formValues);
+        if (status !== 200) {
+            if (error?.response?.data?.errors)
+                setError('email', {
+                    type: 'manual',
+                    message: error.response.data.errors?.['email'][0]
+                });
+            return;
+        }
+
+        console.log(data);
     };
 
 
     return (
         <FormProvider {...changeEmailForm}>
-            <form noValidate className={styles.form} onSubmit={handleSubmit(changeEmail)}>
+            <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitEmailChange)}>
                 <header className={styles.header}>
                     <h1>Change email</h1>
                 </header>
                 <main className={styles.main}>
-                    <Input autoComplete="email" label="Email" registerFormHook={{...register('email')}}/>
+                    <Input autoComplete="email" label="Email" registerFormHook={{ ...register('email') }}/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
                 </main>
             </form>
