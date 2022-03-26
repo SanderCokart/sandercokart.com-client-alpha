@@ -1,4 +1,3 @@
-import GlobalEventListeners from '@/components/GlobalEventListeners';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +16,7 @@ import {SWRConfig} from 'swr';
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {ToastContainer} from 'react-toastify';
 import {library} from '@fortawesome/fontawesome-svg-core';
+import {MantineProvider} from '@mantine/core';
 
 library.add(...icons);
 
@@ -29,13 +29,14 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Head>
             <SWRConfig value={GlobalSWRConfig}>
                 <SkeletonTheme baseColor="var(--bg)" borderRadius="0" highlightColor="var(--acc)">
-                    <GlobalEventListeners/>
-                    <AuthProvider>
-                        <ThemeProvider>
-                            <Navigation/>
-                            <Component {...pageProps} />
-                        </ThemeProvider>
-                    </AuthProvider>
+                    <MantineProvider theme={{loader: 'bars'}}>
+                        <AuthProvider>
+                            <ThemeProvider>
+                                <Navigation/>
+                                <Component {...pageProps} />
+                            </ThemeProvider>
+                        </AuthProvider>
+                    </MantineProvider>
                 </SkeletonTheme>
                 <ToastContainer autoClose={false}/>
             </SWRConfig>

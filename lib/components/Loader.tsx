@@ -2,15 +2,14 @@ import styles from '@/styles/components/Loader.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 interface LoaderProps {
-    absolute?: boolean;
+    fullscreen?: boolean;
 }
 
-export const Loader = ({ absolute }: LoaderProps) => {
+export const Loader = ({ fullscreen }: LoaderProps) => {
     return (
-        <div className={styles.container} style={{ position: absolute ? 'absolute' : 'revert' }}>
-            <FontAwesomeIcon icon="spinner"/>
-            <h3 className={styles.text}>Loading</h3>
-        </div>
+       <div className={styles.root}>
+
+       </div>
     );
 };
 

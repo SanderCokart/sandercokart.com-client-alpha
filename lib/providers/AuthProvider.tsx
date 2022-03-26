@@ -17,8 +17,8 @@ interface AuthContextType {
     user: UserModel | null;
     error: Error | AxiosError;
     csrf: () => void;
-    logout: () => Promise<CustomApiPromise>;
-    login: (props: LoginFormValues) => Promise<CustomApiPromise>;
+    logout: () => CustomApiPromise<{ message: string }>;
+    login: (props: LoginFormValues) => CustomApiPromise<{ message: string }>;
     isLoading: boolean;
     isAdmin: boolean;
     isVerified: boolean;
@@ -66,16 +66,16 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             await mutate(null);
             return response;
         }
-        return;
     };
 
     useEffect(() => {
         if (user && error) mutate(null);
-        else if (user || error) setIsLoading(false);
+        else if (user || error) setTimeout(() => setIsLoading(false), 1000);
     }, [user, error]);
 
     return (
         <AuthContext.Provider value={{
+            mutate,
             isLoading,
             isAdmin: user?.roles.includes('admin'),
             isVerified: !!user?.emailVerifiedAt,

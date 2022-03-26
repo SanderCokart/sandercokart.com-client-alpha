@@ -2,15 +2,28 @@
 
 .navItem {
   height: 100%;
+  min-height: 40px;
+  width: 100px;
 }
 
 .navItemLink {
   @include utils.defaultButton;
+  position: relative;
   background-color: var(--bg-nav);
   height: 100%;
+  min-width: 85px;
 }
 
 .active {
   background-color: var(--acc);
   color: var(--acc-contrast-text);
+  transition: background-color 150ms ease;
+}
+
+.skeleton {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }

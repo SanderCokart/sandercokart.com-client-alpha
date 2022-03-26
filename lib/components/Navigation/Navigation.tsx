@@ -15,6 +15,7 @@ import styles from '@/styles/components/Navigation.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useRouter} from 'next/router';
 import {memo} from 'react';
+import {CSSTransition} from 'react-transition-group';
 
 const Navigation = () => {
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -72,7 +73,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { loggedIn, isAdmin } = useAuth();
+    const { loggedIn, isAdmin, isLoading: authIsLoading } = useAuth();
     const isPortalPage = pathname.includes('portal');
 
     return (
@@ -103,14 +104,35 @@ const Desktop = memo(function Desktop() {
                     </div>
 
                     <div className={styles.right}>
-                        {isAdmin && (
-                            <NavItem href="/portal" icon={<FontAwesomeIcon icon="database"/>} text="Portal"/>
-                        )}
+                        <div className={styles.relativeButtonContainer}>
+                            <CSSTransition unmountOnExit classNames={{
+                                enter: styles.enter,
+                                enterActive: styles.enterActive,
+                                exit: styles.exit,
+                                exitActive: styles.exitActive
+                            }} in={isAdmin} timeout={500}>
+                                <NavItem href="/portal" icon={<FontAwesomeIcon icon="database"/>} text="Portal"/>
+                            </CSSTransition>
+                        </div>
 
-                        {loggedIn ?
-                         (<NavItem href="/account" icon={<FontAwesomeIcon icon="user"/>} text="Account"/>)
-                                  :
-                         (<NavItem href="/login" icon={<FontAwesomeIcon icon="user-lock"/>} text="Login"/>)}
+                        <div className={styles.relativeButtonContainer}>
+                            <CSSTransition unmountOnExit classNames={{
+                                enter: styles.enter,
+                                enterActive: styles.enterActive,
+                                exit: styles.exit,
+                                exitActive: styles.exitActive
+                            }} in={loggedIn} timeout={500}>
+                                <NavItem href="/account" icon={<FontAwesomeIcon icon="user"/>} text="Account"/>
+                            </CSSTransition>
+                            <CSSTransition unmountOnExit classNames={{
+                                enter: styles.enter,
+                                enterActive: styles.enterActive,
+                                exit: styles.exit,
+                                exitActive: styles.exitActive
+                            }} in={!loggedIn} timeout={500}>
+                                <NavItem href="/login" icon={<FontAwesomeIcon icon="user-lock"/>} text="Login"/>
+                            </CSSTransition>
+                        </div>
 
                         <NavItemWithDropdown align="bottom-right"
                                              icon={<FontAwesomeIcon icon="cog"/>}

@@ -64,7 +64,7 @@ body,
   color: var(--bg-contrast-text);
 
   @include utils.up(utils.$sm) {
-    height: calc(100% - 40px);
+    height: utils.$navHeightCalc;
   }
 }
 

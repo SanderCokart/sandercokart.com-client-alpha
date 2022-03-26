@@ -180,3 +180,29 @@
 .margin {
   margin-bottom: utils.$navHeight;
 }
+
+.relativeButtonContainer {
+  position: relative;
+  width: 100px;
+  height: 40px;
+  overflow: hidden
+}
+
+.enter {
+  position: absolute;
+  transform: translateY(100%);
+}
+
+.enterActive {
+  transform: translateY(0%);
+  transition: all 500ms ease;
+}
+
+.exit {
+  position: absolute;
+}
+
+.exitActive {
+  transition: all 500ms ease;
+  transform: translateY(-100%);
+}

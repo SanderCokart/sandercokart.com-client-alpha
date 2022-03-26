@@ -1,6 +1,10 @@
+import BoxContainer from '@/components/BoxContainer';
+
 const Test = () => {
     return (
-        <>test</>
+        <BoxContainer>
+            <h1>Test</h1>
+        </BoxContainer>
     );
 };
 

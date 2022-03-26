@@ -1,13 +1,13 @@
-import styles from './CenteredBox.module.scss';
+import styles from './CenteredFormLayout.module.scss';
 import type {ReactNode} from 'react';
 
-interface CenteredBoxProps {
+interface CenteredFormLayoutProps {
     children: ReactNode;
     title?: string;
     footer?: ReactNode;
 }
 
-const CenteredBox = (props: CenteredBoxProps) => {
+const CenteredFormLayout = (props: CenteredFormLayoutProps) => {
     return (
         <div className={styles.root}>
             <div className={styles.box}>
@@ -25,4 +25,4 @@ const CenteredBox = (props: CenteredBoxProps) => {
     );
 };
 
-export default CenteredBox;
+export default CenteredFormLayout;

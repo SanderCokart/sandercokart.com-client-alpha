@@ -36,11 +36,17 @@ export interface PasswordChangeFormValues {
     password_confirmation: string,
 }
 
+export interface PasswordCompromisedFormValues {
+    password: string,
+    password_confirmation: string
+}
+
 export interface EmailChangeFormValues {
     email: string;
 }
 
 export interface EmailCompromisedFormValues {
+    email: string;
     password: string,
     password_confirmation: string
 }

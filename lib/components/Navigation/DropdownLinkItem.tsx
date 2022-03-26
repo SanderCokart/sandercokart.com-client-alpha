@@ -13,9 +13,6 @@ interface DropdownLinkItemProps {
 
 const DropdownLinkItem = (props: DropdownLinkItemProps) => {
     const router = useRouter();
-
-    console.log(router.pathname, props.href);
-
     return (
         <li className={styles.dropdownLinkItem}>
             <Link href={props.href}>

@@ -1,60 +1,70 @@
 @use '../utils';
 
-.container {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  font-size: 2.5rem;
-  top: 0;
+//.container {
+//  height: 100%;
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//  gap: 2rem;
+//  font-size: 2.5rem;
+//  top: 0;
+//  bottom: 0;
+//  right: 0;
+//  left: 0;
+//  background-color: var(--bg);
+//  color: var(--bg-contrast-text);
+//  z-index: map-get(utils.$z-indexes, 'loader');
+//
+//  @include utils.up(utils.$lg) {
+//    font-size: 5rem;
+//  }
+//
+//  svg {
+//    animation: rotateAnimation 1s infinite linear;
+//    display: block;
+//    height: auto;
+//    width: auto;
+//  }
+//
+//  .text {
+//    &:after {
+//      content: ' .';
+//      animation: dots 1s steps(5, end) infinite;
+//    }
+//  }
+//
+//  @keyframes rotateAnimation {
+//    to {
+//      transform: rotate(360deg);
+//    }
+//  }
+//
+//  @keyframes dots {
+//    0%, 20% {
+//      color: rgba(0, 0, 0, 0);
+//    }
+//    40% {
+//      color: black;
+//      text-shadow: .25em 0 0 rgba(0, 0, 0, 0),
+//      .5em 0 0 rgba(0, 0, 0, 0);
+//    }
+//    60% {
+//      text-shadow: .25em 0 0 black,
+//      .5em 0 0 rgba(0, 0, 0, 0);
+//    }
+//    80%, 100% {
+//      text-shadow: .25em 0 0 black,
+//      .5em 0 0 black;
+//    }
+//  }
+//}
+
+.root {
+  position: absolute;
   bottom: 0;
-  right: 0;
+  top: 0;
   left: 0;
+  right: 0;
   background-color: var(--bg);
-  color: var(--bg-contrast-text);
   z-index: map-get(utils.$z-indexes, 'loader');
-
-  @include utils.up(utils.$lg) {
-    font-size: 5rem;
-  }
-
-  svg {
-    animation: rotateAnimation 1s infinite linear;
-    display: block;
-    height: auto;
-    width: auto;
-  }
-
-  .text {
-    &:after {
-      content: ' .';
-      animation: dots 1s steps(5, end) infinite;
-    }
-  }
-
-  @keyframes rotateAnimation {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes dots {
-    0%, 20% {
-      color: rgba(0, 0, 0, 0);
-    }
-    40% {
-      color: black;
-      text-shadow: .25em 0 0 rgba(0, 0, 0, 0),
-      .5em 0 0 rgba(0, 0, 0, 0);
-    }
-    60% {
-      text-shadow: .25em 0 0 black,
-      .5em 0 0 rgba(0, 0, 0, 0);
-    }
-    80%, 100% {
-      text-shadow: .25em 0 0 black,
-      .5em 0 0 black;
-    }
-  }
 }

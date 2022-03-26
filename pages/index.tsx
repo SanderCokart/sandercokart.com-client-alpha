@@ -30,8 +30,6 @@ export const getStaticProps: GetStaticProps = async () => {
     const { data: CoursesData } =
         await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + '/articles/courses');
 
-    console.log(postsData);
-
     return {
         props: {
             fallbacks: {

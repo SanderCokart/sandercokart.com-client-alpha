@@ -59,7 +59,6 @@ const Select = (props: SelectProps) => {
                             !!prependIcon.onClick && prependIcon.onClick(inputRef);
                         }}
                         onKeyUp={e => {
-                            console.log(e.key);
                             if (['Enter', 'Space'].includes(e.key)) {
                                 !!prependIcon.onClick && prependIcon.onClick(inputRef);
                             }

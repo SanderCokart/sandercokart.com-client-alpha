@@ -10,7 +10,7 @@ import {useRouter} from 'next/router';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import {toast} from 'react-toastify';
+import setFormErrors from '@/functions/client/setFormErrors';
 
 export const AccountPage = () => {
     const { logout, shouldRedirect, isLoading } = useAuth({ middleware: 'auth' });
@@ -24,8 +24,10 @@ export const AccountPage = () => {
     if (isLoading || shouldRedirect) return <Loader/>;
 
     const onClickLogout = async () => {
-        const { status } = await logout();
-        status === 200 && await router.push('/');
+        const response = await logout();
+        if (response.type === 'success') {
+            router.push('/');
+        }
     };
 
 
@@ -53,13 +55,18 @@ const PasswordForm = () => {
         })),
         mode: 'all'
     });
+    const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changePasswordForm;
 
 
     const onSubmitPasswordChange = async (formValues: PasswordChangeFormValues) => {
-        await axios.simplePatch('/account/password/change', formValues);
+        const response = await axios.simplePatch('/account/password/change', formValues);
+        if (response.type === 'form') {
+            setFormErrors(setError, response.errors);
+            changePasswordForm.reset();
+        }
+        reset();
     };
 
-    const { formState: { isDirty, isValid }, handleSubmit, register } = changePasswordForm;
 
     return (
         <FormProvider {...changePasswordForm}>
@@ -87,7 +94,6 @@ const PasswordForm = () => {
 
 const EmailForm = () => {
     const { user } = useAuth();
-
     const changeEmailForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
@@ -100,17 +106,11 @@ const EmailForm = () => {
     const { formState: { isDirty, isValid }, handleSubmit, register, setError } = changeEmailForm;
 
     const onSubmitEmailChange = async (formValues: EmailChangeFormValues) => {
-        const { error, status, data } = await axios.simplePatch(`/account/email/change/${user?.id}`, formValues);
-        if (status !== 200) {
-            if (error?.response?.data?.errors)
-                setError('email', {
-                    type: 'manual',
-                    message: error.response.data.errors?.['email'][0]
-                });
+        const response = await axios.simplePatch(`/account/email/change`, formValues);
+        if (response.type === 'form') {
+            setFormErrors(setError, response.errors);
             return;
         }
-
-        console.log(data);
     };
 
 
