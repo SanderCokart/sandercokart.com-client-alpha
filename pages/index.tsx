@@ -1,5 +1,5 @@
 import RecentArticles from '@/components/pages/home/RecentArticles';
-import styles from '@/styles/pages/home/Home.module.scss';
+import styles from '@/styles/pages/Home.module.scss';
 import {GetStaticProps} from 'next';
 import axios from '@/functions/shared/axios';
 import {SWRConfig} from 'swr';

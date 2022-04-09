@@ -22,7 +22,7 @@ interface AuthContextType {
     isLoading: boolean;
     isAdmin: boolean;
     isVerified: boolean;
-    loggedIn: boolean;
+    isLoggedIn: boolean;
 }
 
 export const useAuth = ({ middleware }: useAuthProps = {}) => {
@@ -43,13 +43,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { data: user, mutate, error } = useSWR('/user',
-        () => axios.get('/account/user')
-            .then(response => response.data)
-            .catch(error => {
-                throw error;
-            })
-    );
+    const { data: user, mutate, error } = useSWR('/account/user');
 
     const csrf = () => axios.get('/sanctum/csrf-cookie');
 
@@ -77,9 +71,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         <AuthContext.Provider value={{
             mutate,
             isLoading,
-            isAdmin: user?.roles.includes('admin'),
+            isAdmin: user?.roles?.includes('admin'),
             isVerified: !!user?.emailVerifiedAt,
-            loggedIn: !!user,
+            isLoggedIn: !!user,
             user,
             login,
             csrf,

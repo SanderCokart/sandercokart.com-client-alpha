@@ -11,17 +11,27 @@ import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import BoxContainer from '@/components/BoxContainer';
+
+const VerificationNotification = () => (
+    <h1 className={styles.verificationNotification}>Please verify your email to gain access too all features.</h1>
+);
+
+const BlockedFeature = () => {
+    return <div className={styles.blocked}>
+        <FontAwesomeIcon fixedWidth className={styles.blockedIcon} icon="lock"/>
+    </div>;
+};
 
 export const AccountPage = () => {
-    const { logout, shouldRedirect, isLoading } = useAuth({ middleware: 'auth' });
+    const { logout, shouldRedirect, isLoading: isLoadingAuth, isVerified } = useAuth({ middleware: 'auth' });
     const router = useRouter();
 
 
     useEffect(() => {
         if (shouldRedirect) router.push('/login');
     }, [shouldRedirect]);
-
-    if (isLoading || shouldRedirect) return <Loader/>;
 
     const onClickLogout = async () => {
         const response = await logout();
@@ -32,17 +42,24 @@ export const AccountPage = () => {
 
 
     return (
-        <div className={styles.account}>
-            <PasswordForm/>
-            <EmailForm/>
-            <div className={styles.actions}>
-                <Button onClick={onClickLogout}>logout</Button>
+        <BoxContainer className={styles.root}>
+            {!isVerified && <VerificationNotification/>}
+            <Loader visible={isLoadingAuth || shouldRedirect}/>
+            <div className={styles.forms}>
+                <PasswordForm/>
+                <EmailForm/>
             </div>
-        </div>
+            <div className={styles.actions}>
+                <Button fullWidth onClick={onClickLogout}>logout</Button>
+            </div>
+        </BoxContainer>
     );
 };
 
+
+
 const PasswordForm = () => {
+    const { isVerified } = useAuth();
     const changePasswordForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
@@ -67,10 +84,12 @@ const PasswordForm = () => {
         reset();
     };
 
-
     return (
         <FormProvider {...changePasswordForm}>
             <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitPasswordChange)}>
+
+                {!isVerified && <BlockedFeature/>}
+
                 <header className={styles.header}>
                     <h1>Change password</h1>
                 </header>
@@ -93,7 +112,7 @@ const PasswordForm = () => {
 };
 
 const EmailForm = () => {
-    const { user } = useAuth();
+    const { user, isVerified } = useAuth();
     const changeEmailForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
@@ -113,10 +132,12 @@ const EmailForm = () => {
         }
     };
 
-
     return (
         <FormProvider {...changeEmailForm}>
             <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitEmailChange)}>
+
+                {!isVerified && <BlockedFeature/>}
+
                 <header className={styles.header}>
                     <h1>Change email</h1>
                 </header>

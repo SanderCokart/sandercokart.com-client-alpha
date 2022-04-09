@@ -1,22 +1,14 @@
-@use '../../../utils';
+@use '/styles/utils';
 
+.notice {
+  animation: flash 1s ease-in-out infinite alternate;
 
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-weight: bolder;
-
-  .box {
-    width: 100%;
-    display: flex;
-    padding: 32px 0;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-bottom: solid var(--acc) 2px;
-    border-top: solid var(--acc) 2px;
+  @keyframes flash {
+    0% {
+      color: #fff;
+    }
+    100% {
+      color: var(--acc);
+    }
   }
 }

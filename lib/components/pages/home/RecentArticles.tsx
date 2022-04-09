@@ -1,4 +1,4 @@
-import styles from '@/styles/pages/home/Home.module.scss';
+import styles from '@/styles/pages/Home.module.scss';
 import {Mousewheel, Navigation, Keyboard, default as SwiperType} from 'swiper';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

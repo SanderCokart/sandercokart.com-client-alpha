@@ -13,8 +13,8 @@ import * as Yup from 'yup';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import setFormErrors from '@/functions/client/setFormErrors';
 import {useBooleanToggle} from '@/hooks/useToggle';
+import Loader from '@/components/Loader';
 import BoxContainer from '@/components/BoxContainer';
-import {LoadingOverlay} from '@mantine/core';
 
 export const Login = () => {
     const router = useRouter();
@@ -41,16 +41,7 @@ export const Login = () => {
 
     const onSubmitLogin = async (formValues: LoginFormValues) => {
         const response = await login(formValues);
-        const {
-            query: {
-                user: qUser,
-                hash: qHash,
-                type: qType,
-                signature: qSignature,
-                expires: qExpires
-            }
-        } = router;
-
+        const { type: qType } = router.query;
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
             return;
@@ -59,8 +50,8 @@ export const Login = () => {
         switch (qType) {
             case'verify': {
                 return router.push({
-                    pathname: `/account/email/verify/${qUser}/${qHash}`,
-                    query: { qExpires, qType, qSignature }
+                    pathname: `/account/email/verify`,
+                    query: router.query
                 });
             }
             default: {
@@ -83,10 +74,10 @@ export const Login = () => {
     );
     return (
         <BoxContainer>
-            <LoadingOverlay overlayColor="var(--bg)"  overlayOpacity={1} visible={isLoadingAuth || shouldRedirect}/>
+            <Loader visible={isLoadingAuth || shouldRedirect}/>
             <FormProvider {...loginForm}>
-                <form onSubmit={handleSubmit(onSubmitLogin)}>
-                    <CenteredFormLayout footer={footer} title="Login">
+                <CenteredFormLayout footer={footer} title="Login">
+                    <form className={styles.form} onSubmit={handleSubmit(onSubmitLogin)}>
                         <Input
                             autoComplete="email"
                             label="E-Mail"
@@ -108,8 +99,8 @@ export const Login = () => {
                         <Checkbox label="Remember me" registerFormHook={{ ...register('remember_me') }}/>
 
                         <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
-                    </CenteredFormLayout>
-                </form>
+                    </form>
+                </CenteredFormLayout>
             </FormProvider>
         </BoxContainer>
     );

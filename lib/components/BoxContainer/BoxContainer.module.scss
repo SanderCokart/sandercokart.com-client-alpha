@@ -3,3 +3,10 @@
   height: 100%;
   position: relative;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

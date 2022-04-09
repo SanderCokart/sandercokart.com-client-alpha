@@ -1,105 +1,67 @@
-@use '../../utils';
+@use "/styles/utils";
 
-.account {
-  .form {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .header {
-      margin-bottom: 8px;
-    }
-
-    .main {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-
-      .submitButton {
-        width: 100%;
-        background-color: var(--acc);
-        color: var(--acc-contrast-text);
-        padding: 8px;
-        border: none;
-        border-radius: var(--radius);
-        font-weight: bolder;
-        cursor: pointer;
-        transition: background-color ease 200ms;
-
-
-        &:disabled {
-          background: var(--acc-disabled);
-          color: var(--acc-disabled-contrast-text);
-          pointer-events: none;
-        }
-
-        &:hover, &:active, &:focus {
-          background-color: var(--acc-haf);
-
-        }
-      }
-    }
-
-    .footer {
-      .links {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        .link {
-          color: #eee;
-          padding: 8px;
-          border: none;
-          font-weight: bolder;
-          text-align: center;
-          margin: 0 auto;
-          transition: color ease 200ms;
-
-          &:hover, &:active, &:focus {
-            color: var(--acc)
-          }
-        }
-      }
-    }
-  }
-
-
-  .actions {
-
-    .logoutButton {
-      width: 100%;
-      background-color: var(--acc);
-      color: var(--acc-contrast-text);
-      padding: 8px;
-      border: none;
-      border-radius: var(--radius);
-      font-weight: bolder;
-      cursor: pointer;
-      transition: background-color ease 200ms;
-
-
-      &:disabled {
-        background: var(--acc-disabled);
-        color: var(--acc-disabled-contrast-text);
-        pointer-events: none;
-      }
-
-      &:hover, &:active, &:focus {
-        background-color: var(--acc-haf);
-
-      }
-    }
-  }
+.root {
+  padding        : 16px;
+  display        : flex;
+  flex-direction : column;
+  gap            : 16px;
 }
 
+.forms {
+  display               : grid;
+  gap                   : 16px;
+  grid-template-columns : 1fr;
+}
 
-@include utils.up(utils.$sm) {
-  .account {
-    width: 500px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
+.form {
+  position : relative;
+}
 
+.header {
+  margin-bottom : 16px;
+}
+
+.blocked {
+  background-color : var(--bg-trans);
+  position         : absolute;
+  top              : 0;
+  bottom           : 0;
+  right            : 0;
+  left             : 0;
+  display          : flex;
+  justify-content  : center;
+  align-items      : center;
+  user-select      : none;
+  z-index          : map-get(utils.$z-indexes, "overlay");
+}
+
+.blockedIcon {
+  font-size : 64px;
+  @include utils.animate(pulse);
+  opacity   : 0.5;
+}
+
+.main {
+  display        : flex;
+  flex-direction : column;
+  gap            : 16px;
+}
+
+.actions {
+
+}
+
+.verificationNotification {
+  text-align : center;
+}
+
+@include utils.up(utils.$md) {
+  .root {
+    margin    : 0 auto;
+    max-width : utils.$md;
+  }
+
+  .forms {
+    grid-template-columns : 1fr 1fr;
   }
 }

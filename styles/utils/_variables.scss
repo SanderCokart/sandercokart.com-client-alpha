@@ -6,9 +6,10 @@ $navSpeed: 500ms;
 
 $z-indexes: (
         "body": 0,
-        "navigation": 100,
-        "backdrop": 200,
-        "modal": 300,
-        "fab": 400,
-        "loader": 500
+        "overlay": 100,
+        "backdrop": 150,
+        "modal": 200,
+        "fab": 300,
+        "navigation": 400,
+        "loader": 500,
 );

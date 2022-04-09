@@ -9,6 +9,7 @@ import {Button} from '@/components/Button';
 import Input from '@/components/formComponents/Input';
 import useFieldVisibility from '@/hooks/useFieldVisibility';
 import setFormErrors from '@/functions/client/setFormErrors';
+import styles from '@/styles/pages/Register.module.scss';
 
 const RegisterPage = () => {
     const router = useRouter();
@@ -26,7 +27,7 @@ const RegisterPage = () => {
         })),
         mode: 'all'
     });
-    const { formState: { isValid, isDirty }, handleSubmit, register, setError } = registerForm;
+    const { formState: { isValid, isDirty, isSubmitting }, handleSubmit, register, setError } = registerForm;
 
     const onSubmitRegister = async (formValues: RegisterFormValues) => {
         const response = await axios.simplePost('/account/register', formValues);
@@ -39,8 +40,8 @@ const RegisterPage = () => {
 
     return (
         <FormProvider {...registerForm}>
-            <form onSubmit={handleSubmit(onSubmitRegister)}>
-                <CenteredFormLayout title="Register">
+            <CenteredFormLayout title="Register">
+                <form className={styles.form} onSubmit={handleSubmit(onSubmitRegister)}>
                     <Input autoComplete="name"
                            label="Full name"
                            placeholder="Type your full name"
@@ -70,8 +71,8 @@ const RegisterPage = () => {
                            registerFormHook={{ ...register('password_confirmation') }}
                            type="password"/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
-                </CenteredFormLayout>
-            </form>
+                </form>
+            </CenteredFormLayout>
         </FormProvider>
     );
 };

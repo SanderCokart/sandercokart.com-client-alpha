@@ -26,7 +26,7 @@ const Navigation = () => {
 
 
 const Mobile = memo(function Mobile() {
-    const { loggedIn, isAdmin } = useAuth();
+    const { isLoggedIn, isAdmin } = useAuth();
 
     const openCompassNav = () => {
         document.documentElement.classList.toggle('modalOpen');
@@ -49,9 +49,9 @@ const Mobile = memo(function Mobile() {
                             onClick={openCompassNav}>
                     <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
 
-                    {loggedIn ?
+                    {isLoggedIn ?
                      (<MobileItem href="/account" icon="user" name="account" onClick={navigate}/>)
-                              :
+                                :
                      (<MobileItem href="/login" icon="user-lock" name="login" onClick={navigate}/>)
                     }
 
@@ -73,7 +73,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { loggedIn, isAdmin, isLoading: authIsLoading } = useAuth();
+    const { isLoggedIn, isAdmin, isLoading: authIsLoading } = useAuth();
     const isPortalPage = pathname.includes('portal');
 
     return (
@@ -121,7 +121,7 @@ const Desktop = memo(function Desktop() {
                                 enterActive: styles.enterActive,
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
-                            }} in={loggedIn} timeout={500}>
+                            }} in={isLoggedIn} timeout={500}>
                                 <NavItem href="/account" icon={<FontAwesomeIcon icon="user"/>} text="Account"/>
                             </CSSTransition>
                             <CSSTransition unmountOnExit classNames={{
@@ -129,7 +129,7 @@ const Desktop = memo(function Desktop() {
                                 enterActive: styles.enterActive,
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
-                            }} in={!loggedIn} timeout={500}>
+                            }} in={!isLoggedIn} timeout={500}>
                                 <NavItem href="/login" icon={<FontAwesomeIcon icon="user-lock"/>} text="Login"/>
                             </CSSTransition>
                         </div>

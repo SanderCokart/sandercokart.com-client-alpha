@@ -21,7 +21,6 @@
   gap: 24px;
 }
 
-
 @include utils.up(utils.$sm) {
   .root {
     height: 100%;

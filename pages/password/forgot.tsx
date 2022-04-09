@@ -5,7 +5,7 @@ import type {PasswordForgotFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import {toast} from 'react-toastify';
+import setFormErrors from '@/functions/client/setFormErrors';
 
 export const ForgotPasswordPage = () => {
     const forgotPasswordForm = useForm({
@@ -15,11 +15,14 @@ export const ForgotPasswordPage = () => {
         mode: 'all'
     });
 
-    const { formState: { isValid, isDirty }, register } = forgotPasswordForm;
+    const { formState: { isValid, isDirty }, register, setError } = forgotPasswordForm;
 
     const onSubmit = async (formValues: PasswordForgotFormValues) => {
-        const {error} = await axios.simplePost('/account/password/request', formValues);
-        if (!error) toast.success('An email has been sent to you with instructions on how to reset your password.');
+        const response = await axios.simplePost('/account/password/request', formValues);
+        if (response.type === 'form') {
+            setFormErrors(setError, response.errors);
+            return;
+        }
     };
 
     return (

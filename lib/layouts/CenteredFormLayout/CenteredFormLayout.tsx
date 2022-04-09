@@ -1,5 +1,7 @@
 import styles from './CenteredFormLayout.module.scss';
 import type {ReactNode} from 'react';
+import Loader from '@/components/Loader';
+import {useFormState} from 'react-hook-form';
 
 interface CenteredFormLayoutProps {
     children: ReactNode;
@@ -8,9 +10,11 @@ interface CenteredFormLayoutProps {
 }
 
 const CenteredFormLayout = (props: CenteredFormLayoutProps) => {
+    const { isSubmitting } = useFormState();
     return (
         <div className={styles.root}>
             <div className={styles.box}>
+                <Loader transparant visible={isSubmitting}/>
                 <header className={styles.header}>
                     <h1>{props.title}</h1>
                 </header>

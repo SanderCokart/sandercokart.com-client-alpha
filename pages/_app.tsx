@@ -15,9 +15,9 @@ import type {AppProps} from 'next/app';
 import {SWRConfig} from 'swr';
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {ToastContainer} from 'react-toastify';
-import {library} from '@fortawesome/fontawesome-svg-core';
+import {library,config} from '@fortawesome/fontawesome-svg-core';
 import {MantineProvider} from '@mantine/core';
-
+config.autoAddCss = false;
 library.add(...icons);
 
 function MyApp({ Component, pageProps }: AppProps) {
