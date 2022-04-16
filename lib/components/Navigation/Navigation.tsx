@@ -16,6 +16,12 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useRouter} from 'next/router';
 import {memo} from 'react';
 import {CSSTransition} from 'react-transition-group';
+import {
+    LocalAccountPageRoute,
+    LocalLoginPageRoute,
+    LocalPortalPageRoute,
+    LocalLibraryPageRoute, LocalContactPageRoute
+} from '@/constants/local-routes';
 
 const Navigation = () => {
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -50,20 +56,22 @@ const Mobile = memo(function Mobile() {
                     <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
 
                     {isLoggedIn ?
-                     (<MobileItem href="/account" icon="user" name="account" onClick={navigate}/>)
+                     (<MobileItem href={LocalAccountPageRoute} icon="user" name="account" onClick={navigate}/>)
                                 :
-                     (<MobileItem href="/login" icon="user-lock" name="login" onClick={navigate}/>)
+                     (<MobileItem href={LocalLoginPageRoute} icon="user-lock" name="login" onClick={navigate}/>)
                     }
 
                     {isAdmin && (
-                        <MobileItem href="/portal" icon="database" name="portal" onClick={navigate}/>
+                        <MobileItem href={LocalPortalPageRoute} icon="database" name="portal" onClick={navigate}/>
                     )}
 
                     <MobileMenu icon="boxes" name="library" onClick={openLibraryNav}>
-                        <MobileItem href="/library/courses" icon="book" name="courses" onClick={navigate}/>
-                        <MobileItem href="/library/tips" icon="lightbulb" name="tips" onClick={navigate}/>
+                        <MobileItem href={LocalLibraryPageRoute('courses')} icon="book" name="courses"
+                                    onClick={navigate}/>
+                        <MobileItem href={LocalLibraryPageRoute('tips-&-tutorials')} icon="lightbulb" name="tips"
+                                    onClick={navigate}/>
                     </MobileMenu>
-                    <MobileItem href="/contact" icon="envelope" name="contact" onClick={navigate}/>
+                    <MobileItem href={LocalContactPageRoute} icon="envelope" name="contact" onClick={navigate}/>
                 </MobileMenu>
                 <div className={styles.backdrop}/>
             </ul>
@@ -89,13 +97,15 @@ const Desktop = memo(function Desktop() {
                             text="Library" width="200px"
                         >
                             <DropdownMenu menuName="main">
-                                <DropdownLinkItem href="/library/posts" leftIcon={<FontAwesomeIcon icon="rss"/>}>
+                                <DropdownLinkItem href={LocalLibraryPageRoute('posts')}
+                                                  leftIcon={<FontAwesomeIcon icon="rss"/>}>
                                     Posts
                                 </DropdownLinkItem>
-                                <DropdownLinkItem href="/library/courses" leftIcon={<FontAwesomeIcon icon="book"/>}>
+                                <DropdownLinkItem href={LocalLibraryPageRoute('courses')}
+                                                  leftIcon={<FontAwesomeIcon icon="book"/>}>
                                     Courses
                                 </DropdownLinkItem>
-                                <DropdownLinkItem href="/library/tips-&-tutorials"
+                                <DropdownLinkItem href={LocalLibraryPageRoute('tips-&-tutorials')}
                                                   leftIcon={<FontAwesomeIcon icon="lightbulb"/>}>
                                     Tips & Tutorials
                                 </DropdownLinkItem>
@@ -111,7 +121,8 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={isAdmin} timeout={500}>
-                                <NavItem href="/portal" icon={<FontAwesomeIcon icon="database"/>} text="Portal"/>
+                                <NavItem href={LocalPortalPageRoute} icon={<FontAwesomeIcon icon="database"/>}
+                                         text="Portal"/>
                             </CSSTransition>
                         </div>
 
@@ -122,7 +133,8 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={isLoggedIn} timeout={500}>
-                                <NavItem href="/account" icon={<FontAwesomeIcon icon="user"/>} text="Account"/>
+                                <NavItem href={LocalAccountPageRoute} icon={<FontAwesomeIcon icon="user"/>}
+                                         text="Account"/>
                             </CSSTransition>
                             <CSSTransition unmountOnExit classNames={{
                                 enter: styles.enter,
@@ -130,7 +142,8 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={!isLoggedIn} timeout={500}>
-                                <NavItem href="/login" icon={<FontAwesomeIcon icon="user-lock"/>} text="Login"/>
+                                <NavItem href={LocalLoginPageRoute} icon={<FontAwesomeIcon icon="user-lock"/>}
+                                         text="Login"/>
                             </CSSTransition>
                         </div>
 

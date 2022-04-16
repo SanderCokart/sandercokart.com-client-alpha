@@ -6,6 +6,7 @@ import axios from '../functions/shared/axios';
 import {UserModel} from '@/types/ModelTypes';
 import {AxiosError} from 'axios';
 import {CustomApiPromise} from '@/types/CustomTypes';
+import {ApiLogoutRoute, ApiCSRFTokenRoute, ApiUserRoute, ApiLoginRoute} from '@/constants/api-routes';
 
 const AuthContext = createContext({});
 
@@ -43,20 +44,20 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { data: user, mutate, error } = useSWR('/account/user');
+    const { data: user, mutate, error } = useSWR(ApiUserRoute);
 
-    const csrf = () => axios.get('/sanctum/csrf-cookie');
+    const csrf = () => axios.get(ApiCSRFTokenRoute);
 
     const login = async (formValues: LoginFormValues) => {
         await csrf();
-        const response = await axios.simplePost('/account/login', formValues);
+        const response = await axios.simplePost(ApiLoginRoute, formValues);
         await mutate();
         return response;
     };
 
     const logout = async () => {
         if (user) {
-            const response = await axios.simplePost('/account/logout');
+            const response = await axios.simplePost(ApiLogoutRoute);
             await mutate(null);
             return response;
         }

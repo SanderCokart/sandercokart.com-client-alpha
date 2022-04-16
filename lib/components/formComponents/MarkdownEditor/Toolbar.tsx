@@ -11,6 +11,7 @@ import Papa from 'papaparse';
 import type {ChangeEvent, MouseEvent} from 'react';
 import {useCallback, useEffect} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
+import {ApiFilesRoute} from '@/constants/api-routes';
 
 
 interface ToolbarProps {
@@ -158,7 +159,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
         const formData = new FormData();
         formData.set('file', files[0]);
 
-        const { data } = await axios.simplePost<FileModel>('files', formData);
+        const { data } = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
 
         if (editorRef.current) {
             const { value, selectionStart, selectionEnd } = editorRef.current;

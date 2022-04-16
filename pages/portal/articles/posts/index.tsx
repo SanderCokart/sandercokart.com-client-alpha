@@ -27,7 +27,7 @@ const Posts = () => {
 
     return (
         <PaginatedModelProvider middleware="auth" modelName="articles" url="/articles/posts">
-            {(isLoadingAuth || shouldRedirect) && <Loader/>}
+            {(isLoadingAuth || shouldRedirect) && <Loader visible={true}/>}
             <PostTable/>
         </PaginatedModelProvider>
     );

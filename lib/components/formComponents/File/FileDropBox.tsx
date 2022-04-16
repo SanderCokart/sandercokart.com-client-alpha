@@ -3,6 +3,7 @@ import styles from './FileDropBox.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
 import type {ChangeEvent, DragEvent} from 'react';
 import {useFormContext} from 'react-hook-form';
+import {ApiFilesRoute} from '@/constants/api-routes';
 
 interface FileDropBoxProps {
     editMode?: boolean;
@@ -27,13 +28,13 @@ const FileDropBox = (props: FileDropBoxProps) => {
             const formData = new FormData();
             return files.map(async (file) => {
                 formData.set('file', file);
-                const { data, error } = await axios.simplePost<FileModel[]>('/files', formData);
+                const { data, error } = await axios.simplePost<FileModel[]>(ApiFilesRoute, formData);
                 if (!error) setValue(name, [...currentValues, data], { shouldDirty: true, shouldValidate: true });
             });
         } else {
             const formData = new FormData();
             formData.append('file', files[0]);
-            const { data: file, error } = await axios.simplePost<FileModel>('/files', formData);
+            const { data: file, error } = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
             if (!error) setValue(name, [file], { shouldDirty: true, shouldValidate: true });
         }
 

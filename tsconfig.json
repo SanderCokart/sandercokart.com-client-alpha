@@ -25,6 +25,7 @@
       "@/layouts/*": ["lib/layouts/*"],
       "@/functions/*": ["lib/functions/*"],
       "@/data/*": ["lib/data/*"],
+      "@/constants/*": ["lib/constants/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

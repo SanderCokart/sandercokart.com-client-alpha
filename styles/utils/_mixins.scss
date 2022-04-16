@@ -1,112 +1,126 @@
-$xs: 0;
-$sm: 600px;
-$md: 900px;
-$lg: 1200px;
-$xl: 1536px;
+$xs : 0;
+$sm : 600px;
+$md : 900px;
+$lg : 1200px;
+$xl : 1536px;
 
 
 @mixin breakpoint($point) {
   @if ($point == xs) {
-    @media all and (min-width: $xs) {
+    @media all and (min-width : $xs) {
       @content;
     }
   } @else if $point == sm {
-    @media all and (min-width: $sm) {
+    @media all and (min-width : $sm) {
       @content;
     }
   } @else if $point == md {
-    @media all and (min-width: $md) {
+    @media all and (min-width : $md) {
       @content;
     }
   } @else if $point == l {
-    @media all and (min-width: $lg) {
+    @media all and (min-width : $lg) {
       @content;
     }
   } @else if $point == xl {
-    @media all and (min-width: $xl) {
+    @media all and (min-width : $xl) {
       @content;
     }
   }
 }
 
 @mixin between($a,$b) {
-  @media all and (min-width: $a) and (max-width: $b) {
+  @media all and (min-width : $a) and (max-width : $b) {
     @content;
   }
 }
 
 @mixin down($point) {
-  @media all and (max-width: $point) {
+  @media all and (max-width : $point) {
     @content;
   }
 }
 
 @mixin up($point) {
-  @media all and (min-width: $point) {
+  @media all and (min-width : $point) {
     @content;
   }
 }
 
 @mixin defaultButton {
-  background-color: var(--acc-inactive);
+  background-color : var(--acc-inactive);
 
-  border: none;
-  outline: none;
-  cursor: pointer;
-  user-select: none;
+  border           : none;
+  outline          : none;
+  cursor           : pointer;
+  user-select      : none;
 
-  padding: 8px;
+  padding          : 8px;
 
-  text-transform: inherit;
-  font-size: 1rem;
-  font-weight: bold;
+  text-transform   : inherit;
+  font-size        : 1rem;
+  font-weight      : bold;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  display          : flex;
+  align-items      : center;
+  justify-content  : center;
+  gap              : 8px;
 
-  transition: background-color 150ms ease;
-  pointer-events: auto;
+  transition       : background-color 150ms ease;
+  pointer-events   : auto;
 
   &.fullWidth {
-    width: 100%;
+    width : 100%;
   }
 
   &:hover, &:focus {
-    background-color: var(--acc);
-    color: var(--acc-contrast-text);
+    background-color : var(--acc);
+    color            : var(--acc-contrast-text);
   }
 
   &:disabled {
-    background-color: var(--acc-disabled);
-    color: var(--acc-disabled-contrast-text);
-    pointer-events: none;
+    background-color : var(--acc-disabled);
+    color            : var(--acc-disabled-contrast-text);
+    pointer-events   : none;
   }
 }
 
-@mixin animate($name, $duration: 1s) {
+@mixin animate($name, $duration: 1s, $times: infinite) {
   @if ($name == pulse) {
-    animation: pulse $duration infinite ease-in-out;
+    animation : pulse $duration $times ease-in-out;
     @keyframes pulse {
       0% {
-        transform: scale(1);
+        transform : scale(1);
       }
       50% {
-        transform: scale(1.1);
+        transform : scale(1.1);
       }
       100% {
-        transform: scale(1);
+        transform : scale(1);
       }
     }
   } @else if ($name == spin) {
-    animation: spin $duration infinite ease-in-out;
+    animation : spin $duration $times ease-in-out;
     @keyframes spin {
       0% {
-        transform: rotate(0deg);
+        transform : rotate(0deg);
       }
       100% {
-        transform: rotate(360deg);
+        transform : rotate(360deg);
+      }
+    }
+  } @else if ($name == notice) {
+    animation : notice $duration $times ease-in-out;
+
+    @keyframes notice {
+      0% {
+        color : #ffffff;
+      }
+      50% {
+        color : var(--acc);
+      }
+      100% {
+        color : #ffffff;
       }
     }
   }

@@ -32,7 +32,7 @@ const EditPost = () => {
 
     return (
         <PortalContainer>
-            {(isLoadingAuth || shouldRedirect) && <Loader/>}
+            <Loader visible={isLoadingAuth || shouldRedirect}/>
             <div className={styles.desktop}>
                 <header className={styles.header}>
                     {post && !error ?

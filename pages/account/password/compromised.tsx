@@ -9,6 +9,7 @@ import setFormErrors from '@/functions/client/setFormErrors';
 import type {PasswordCompromisedFormValues} from '@/types/FormValueTypes';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import {LoadingOverlay} from '@mantine/core';
+import {ApiPasswordCompromisedRoute} from '@/constants/api-routes';
 
 
 const PasswordCompromisedPage = () => {
@@ -34,7 +35,7 @@ const PasswordCompromisedPage = () => {
     const { formState: { isValid, isDirty, isSubmitting }, register, handleSubmit, setError } = passwordCompromisedForm;
 
     const onSubmitCompromisedPassword = async (formValues: PasswordCompromisedFormValues) => {
-        const response = await axios.simplePatch(`/account/password/compromised`, formValues, { params: { ...router.query } });
+        const response = await axios.simplePatch(ApiPasswordCompromisedRoute, formValues, { params: { ...router.query } });
         switch (response.type) {
             case 'success':
                 router.push('/login');
@@ -49,7 +50,7 @@ const PasswordCompromisedPage = () => {
 
     return (
         <FormProvider {...passwordCompromisedForm}>
-            <form onSubmit={handleSubmit(onSubmitCompromisedPassword)}>
+            <form noValidate onSubmit={handleSubmit(onSubmitCompromisedPassword)}>
                 <CenteredFormLayout title="Reset Compromised Password">
                     <Input label="New password" placeholder="Type your new password"
                            registerFormHook={{ ...register('password') }}

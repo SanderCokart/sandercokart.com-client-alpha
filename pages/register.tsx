@@ -41,7 +41,7 @@ const RegisterPage = () => {
     return (
         <FormProvider {...registerForm}>
             <CenteredFormLayout title="Register">
-                <form className={styles.form} onSubmit={handleSubmit(onSubmitRegister)}>
+                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitRegister)}>
                     <Input autoComplete="name"
                            label="Full name"
                            placeholder="Type your full name"

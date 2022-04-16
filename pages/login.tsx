@@ -15,6 +15,7 @@ import setFormErrors from '@/functions/client/setFormErrors';
 import {useBooleanToggle} from '@/hooks/useToggle';
 import Loader from '@/components/Loader';
 import BoxContainer from '@/components/BoxContainer';
+import {LocalPasswordForgotPageRoute, LocalRegisterPageRoute} from '@/constants/local-routes';
 
 export const Login = () => {
     const router = useRouter();
@@ -63,10 +64,10 @@ export const Login = () => {
     const footer = (
         <footer className={styles.footer}>
             <div className={styles.links}>
-                <Link href="/password/forgot">
+                <Link href={LocalPasswordForgotPageRoute}>
                     <a className={styles.link}>Forgot password?</a>
                 </Link>
-                <Link href="/register">
+                <Link href={LocalRegisterPageRoute}>
                     <a className={styles.link}>Don't have an account yet?</a>
                 </Link>
             </div>
@@ -77,7 +78,7 @@ export const Login = () => {
             <Loader visible={isLoadingAuth || shouldRedirect}/>
             <FormProvider {...loginForm}>
                 <CenteredFormLayout footer={footer} title="Login">
-                    <form className={styles.form} onSubmit={handleSubmit(onSubmitLogin)}>
+                    <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitLogin)}>
                         <Input
                             autoComplete="email"
                             label="E-Mail"

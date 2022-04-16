@@ -8,6 +8,7 @@ import {serialize} from 'next-mdx-remote/serialize';
 import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 import {ArticleModel} from '@/types/ModelTypes';
+import {ApiArticleTypeSlugsRoute} from '@/constants/api-routes';
 
 const PostPage = ({ post, mdxSource }: BlogPostProps) => {
     const MDXComponents = useMDXComponents();
@@ -28,7 +29,7 @@ interface BlogPostProps {
 export default PostPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const { data } = await axios.simpleGet<PostsSlugsResponse[]>('/posts/slugs');
+    const { data } = await axios.simpleGet<PostsSlugsResponse[]>(ApiArticleTypeSlugsRoute('posts'));
 
     return {
         paths: data,

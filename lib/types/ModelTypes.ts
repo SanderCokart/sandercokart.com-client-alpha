@@ -15,7 +15,6 @@ export interface ArticleModel {
     slug: string;
     author: UserModel;
     banner: FileModel;
-    status: StatusModel;
 }
 
 export interface UserModel {
@@ -26,14 +25,13 @@ export interface UserModel {
     emailVerifiedAt: string;
     email: string;
     roles: RoleModel[];
-    // [key: string]: any;
 }
 
 export type RoleModel = 'admin' | 'user';
 
 export interface ArticleType {
     id: number;
-    name: string;
+    name: 'courses' | 'posts' | 'tips-&-tutorials';
 }
 
 export interface FileModel {
@@ -41,9 +39,4 @@ export interface FileModel {
     original_name: string;
     relative_url?: string;
     created_at: string;
-}
-
-export interface StatusModel {
-    id: number;
-    name: 'unlisted' | 'published' | 'archived';
 }

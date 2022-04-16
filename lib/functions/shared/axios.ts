@@ -17,8 +17,8 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
     try {
         const { data, status } = await promise;
         if (data.message) toast.success(data.message, {
-            autoClose: 3000,
-            closeButton: false,
+            autoClose: 5000,
+            closeButton: true,
             position: 'bottom-center'
         });
         return { data, status, error: null, type: 'success' };
@@ -32,7 +32,11 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
         };
 
         if (error?.response?.data?.message || error?.response?.data) {
-            toast.error(error.response.data.message || error.response.data);
+            toast.error(error.response.data.message || error.response.data, {
+                autoClose: 5000,
+                closeButton: true,
+                position: 'bottom-center'
+            });
             return {
                 data: null,
                 status: error.response.status,
@@ -41,7 +45,11 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
             };
         }
 
-        toast.error(error.message);
+        toast.error(error.message, {
+            autoClose: 5000,
+            closeButton: true,
+            position: 'bottom-center'
+        });
         return { data: null, status: 400, error: error.message, type: 'default' };
     }
 };

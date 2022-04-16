@@ -1,14 +1,5 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .notice {
-  animation: flash 1s ease-in-out infinite alternate;
-
-  @keyframes flash {
-    0% {
-      color: #fff;
-    }
-    100% {
-      color: var(--acc);
-    }
-  }
+  @include utils.animate(notice);
 }

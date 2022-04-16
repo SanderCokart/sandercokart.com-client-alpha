@@ -7,16 +7,25 @@ import styles from '@/styles/pages/account/Account.module.scss';
 import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import BoxContainer from '@/components/BoxContainer';
+import {ApiPasswordChangeRoute} from '@/constants/api-routes';
 
-const VerificationNotification = () => (
-    <h1 className={styles.verificationNotification}>Please verify your email to gain access too all features.</h1>
-);
+const VerificationNotification = () => {
+    const requestNewVerificationLink = async () => await axios.simplePost('/account/email/verify/retry');
+
+    return (
+        <>
+            <h1 className={styles.verificationNotification}>Please verify your email to gain access too all
+                features</h1>
+            <Button fullWidth onClick={requestNewVerificationLink}>Request New Verification Link</Button>
+        </>
+    );
+};
 
 const BlockedFeature = () => {
     return <div className={styles.blocked}>
@@ -57,7 +66,6 @@ export const AccountPage = () => {
 };
 
 
-
 const PasswordForm = () => {
     const { isVerified } = useAuth();
     const changePasswordForm = useForm({
@@ -76,10 +84,10 @@ const PasswordForm = () => {
 
 
     const onSubmitPasswordChange = async (formValues: PasswordChangeFormValues) => {
-        const response = await axios.simplePatch('/account/password/change', formValues);
+        const response = await axios.simplePatch(ApiPasswordChangeRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
-            changePasswordForm.reset();
+            reset();
         }
         reset();
     };

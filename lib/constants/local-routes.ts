@@ -1,0 +1,22 @@
+import {ArticleType} from '@/types/ModelTypes';
+
+export const LocalAccountPageRoute = '/account';
+export const LocalEmailVerifyPageRoute = '/account/email/verify';
+
+export const LocalLoginPageRoute = '/login';
+export const LocalRegisterPageRoute = '/register';
+
+export const LocalPasswordForgotPageRoute = '/account/password/forgot';
+export const LocalPasswordResetPageRoute = '/account/password/reset';
+export const LocalPasswordCompromisedPageRoute = '/account/password/compromised';
+
+export const LocalPortalPageRoute = '/portal';
+
+export const LocalPortalArticlesPageRoute = (articleTypeName: ArticleType['name']) => `/portal/posts/articles/${articleTypeName}`;
+export const LocalPortalArticlesCreatePageRoute = (articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}/create`;
+export const LocalPortalArticlesEditPageRoute = (slug: string, articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}/edit/${slug}`;
+
+
+export const LocalPortalUsersPageRoute = '/portal/users';
+export const LocalLibraryPageRoute = (articleTypeName?: ArticleType['name']) => '/portal/library/' + (articleTypeName ? articleTypeName : '');
+export const LocalContactPageRoute = '/contact';

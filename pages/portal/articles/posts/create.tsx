@@ -8,7 +8,6 @@ import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
-import {StatusModel} from '@/types/ModelTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
 import {useEffect} from 'react';
@@ -53,10 +52,10 @@ const CreatePostPage = () => {
 
     return (
         <>
-            {(isLoadingAuth || shouldRedirect) && <Loader/>}
+            <Loader visible={isLoadingAuth || shouldRedirect}/>
             <main className={styles.desktop}>
                 <FormProvider {...methods}>
-                    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+                    <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                         <Input label="Title" name="title"/>
                         <TextArea label="Excerpt" name="excerpt"/>
                         <NewFile name="banner"/>
