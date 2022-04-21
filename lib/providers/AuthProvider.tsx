@@ -44,7 +44,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { data: user, mutate, error } = useSWR(ApiUserRoute);
+    const { data: user, mutate, error } = useSWR<UserModel | null>(ApiUserRoute);
 
     const csrf = () => axios.get(ApiCSRFTokenRoute);
 
@@ -72,7 +72,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         <AuthContext.Provider value={{
             mutate,
             isLoading,
-            isAdmin: user?.roles?.includes('admin'),
+            isAdmin: !!user?.roles?.find((role) => role.name === 'Admin') ?? false,
             isVerified: !!user?.emailVerifiedAt,
             isLoggedIn: !!user,
             user,

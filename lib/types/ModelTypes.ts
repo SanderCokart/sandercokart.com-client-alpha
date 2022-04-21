@@ -27,7 +27,7 @@ export interface UserModel {
     roles: RoleModel[];
 }
 
-export type RoleModel = 'admin' | 'user';
+export type RoleModel = { id: number, name: 'Admin' | 'User' };
 
 export interface ArticleType {
     id: number;

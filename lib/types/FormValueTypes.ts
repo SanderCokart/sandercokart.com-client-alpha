@@ -1,10 +1,9 @@
-import {FileModel, StatusModel} from '@/types/ModelTypes';
+import {FileModel, RoleModel} from '@/types/ModelTypes';
 
 export interface CreatePostFormValues {
     title: string;
     excerpt: string;
     banner: FileModel[];
-    status: StatusModel;
     markdown: string;
 }
 
@@ -49,4 +48,17 @@ export interface EmailCompromisedFormValues {
     email: string;
     password: string,
     password_confirmation: string
+}
+
+export interface CreateUserFormValues {
+    name: string;
+    email: string;
+    password: string;
+    roles: RoleModel[];
+}
+
+export interface EditUserFormValues {
+    name: string;
+    email: string;
+    roles: number[];
 }

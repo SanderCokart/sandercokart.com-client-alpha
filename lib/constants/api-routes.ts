@@ -24,7 +24,7 @@ export const ApiArticlesDestroyRoute = '/articles/{article}';
 
 //RESOURCES
 export const ApiFilesRoute = '/files';
-export const ApiUsersRoute = '/users';
+export const ApiUsersRoute =  (id?: number) => `/users/${id || ''}`;
 export const ApiArticleTypesRoute = '/articleTypes';
 export const ApiRolesRoute = '/roles';
 

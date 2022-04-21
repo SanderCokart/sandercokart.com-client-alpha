@@ -1,0 +1,28 @@
+@use "/styles/utils";
+
+.root {
+  margin-top: utils.$navHeight;
+  margin-left: utils.$navWidth;
+  position: relative;
+  width: utils.$navWidthCalc;
+  height: utils.$navHeightCalc;
+  overflow: auto;
+}
+
+.container {
+  max-width: utils.$lg - utils.$navWidth;
+  min-width: utils.$sm - utils.$navWidth;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative
+}

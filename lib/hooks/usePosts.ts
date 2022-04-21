@@ -44,7 +44,7 @@ const UsePosts = () => {
         prevPage,
         hasMore,
         hasLess,
-        onDelete,
+        handleDeleteUser: onDelete,
         onEdit
     };
 };

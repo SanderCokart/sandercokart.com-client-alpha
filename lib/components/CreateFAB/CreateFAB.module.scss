@@ -1,0 +1,10 @@
+@use '/styles/utils';
+
+.createFAB {
+  position: fixed;
+  bottom: 32px;
+  left: 32px + utils.$navWidth;
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+}

@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import styles from './BoxContainer.module.scss';
+import classnames from 'classnames';
 
 interface BoxContainerProps {
     children: ReactNode;
@@ -8,21 +9,20 @@ interface BoxContainerProps {
 }
 
 const BoxContainer = (props: BoxContainerProps) => {
-    const classNames = [
+    const classNames = classnames([
         styles.root,
         (props.center && styles.center),
         (props.className && props.className)
-    ];
+    ]);
 
     return (
-        <div className={classNames.join(' ')}>
+        <div className={classNames}>
             {props.center ?
              (<div>
                  {props.children}
              </div>) :
              (props.children)
             }
-
         </div>
     );
 };

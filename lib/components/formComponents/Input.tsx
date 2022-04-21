@@ -7,6 +7,7 @@ import {useCallback, useEffect, useRef} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import {UseFormRegisterReturn} from 'react-hook-form';
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
+import classnames from 'classnames';
 
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -34,6 +35,7 @@ const Input = (props: InputProps) => {
         label = undefined,
         onChange = undefined,
         onBlur = undefined,
+        className = undefined,
         registerFormHook,
         ...restOfProps
     } = props;
@@ -66,10 +68,12 @@ const Input = (props: InputProps) => {
 
     const nameAndId = registerFormHook?.name || name || '';
 
-    let inputClassName = styles.input;
-
-    prependIcon && (inputClassName += ' ' + styles.withPrependIcon);
-    appendIcon && (inputClassName += ' ' + styles.withAppendIcon);
+    const classNames = classnames([
+        styles.input,
+        (prependIcon) && styles.withPrependIcon,
+        (appendIcon) && styles.withAppendIcon,
+        className
+    ]);
 
     return (
         <div className={styles.control} {...containerProps}>
@@ -108,7 +112,7 @@ const Input = (props: InputProps) => {
                          registerFormHook?.ref(el);
                          inputRef.current = el;
                      }} className={
-                         inputClassName
+                         classNames
                      } onBlur={(e) => {
                          registerFormHook?.onBlur(e);
                          onBlur?.(e);

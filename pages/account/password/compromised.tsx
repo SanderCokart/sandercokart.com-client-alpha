@@ -8,8 +8,8 @@ import {Button} from '@/components/Button';
 import setFormErrors from '@/functions/client/setFormErrors';
 import type {PasswordCompromisedFormValues} from '@/types/FormValueTypes';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import {LoadingOverlay} from '@mantine/core';
 import {ApiPasswordCompromisedRoute} from '@/constants/api-routes';
+import styles from '@/styles/pages/account/password/CompromisedPassword.module.scss';
 
 
 const PasswordCompromisedPage = () => {
@@ -32,7 +32,7 @@ const PasswordCompromisedPage = () => {
         mode: 'all'
     });
 
-    const { formState: { isValid, isDirty, isSubmitting }, register, handleSubmit, setError } = passwordCompromisedForm;
+    const { formState: { isValid, isDirty }, register, handleSubmit, setError } = passwordCompromisedForm;
 
     const onSubmitCompromisedPassword = async (formValues: PasswordCompromisedFormValues) => {
         const response = await axios.simplePatch(ApiPasswordCompromisedRoute, formValues, { params: { ...router.query } });
@@ -50,8 +50,8 @@ const PasswordCompromisedPage = () => {
 
     return (
         <FormProvider {...passwordCompromisedForm}>
-            <form noValidate onSubmit={handleSubmit(onSubmitCompromisedPassword)}>
-                <CenteredFormLayout title="Reset Compromised Password">
+            <CenteredFormLayout title="Reset Compromised Password">
+                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitCompromisedPassword)}>
                     <Input label="New password" placeholder="Type your new password"
                            registerFormHook={{ ...register('password') }}
                            type="password"/>
@@ -59,8 +59,8 @@ const PasswordCompromisedPage = () => {
                            registerFormHook={{ ...register('password_confirmation') }}
                            type="password"/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>
-                </CenteredFormLayout>
-            </form>
+                </form>
+            </CenteredFormLayout>
         </FormProvider>
     );
 };

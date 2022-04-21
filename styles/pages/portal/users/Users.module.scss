@@ -1,4 +1,4 @@
-@use '../../utils';
+@use "/styles/utils";
 
 .users {
   margin-top: utils.$navHeight;
@@ -46,16 +46,14 @@
 }
 
 td.actions {
-  > div {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    gap: 16px;
-  }
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 16px;
 }
 
 .roleTag {
-  background: var(--acc);
+  background: var(--acc-inactive);
   border-radius: 16px;
   text-align: center;
   font-weight: bold;
@@ -70,6 +68,7 @@ td.actions {
   align-items: center;
   justify-content: center;
   gap: 30px;
+
 
   button {
     @include utils.defaultButton;
@@ -98,23 +97,21 @@ td.actions {
   }
 }
 
-.unlisted, .published, .archived {
-  font-weight: bold;
-}
-
-.unlisted {
-  color: var(--warning);
-}
-
-.published {
-  color: var(--success);
-}
-
-.archived {
-  color: var(--info);
-}
-
 .deleteModalActions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalHeader {
+
+}
+
+.modalMain {
+
+}
+
+.modalFooter {
+  margin-top: 24px;
   display: flex;
   justify-content: space-between;
 }

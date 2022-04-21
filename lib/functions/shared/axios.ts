@@ -24,12 +24,14 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
         return { data, status, error: null, type: 'success' };
     } catch (error) {
         /*form errors*/
-        if (error?.response?.data?.errors) return {
-            data: null,
-            status: error.response.status,
-            errors: error.response.data.errors,
-            type: 'form'
-        };
+        if (error?.response?.data?.errors) {
+            return {
+                data: null,
+                status: error.response.status,
+                errors: error.response.data.errors,
+                type: 'form'
+            };
+        }
 
         if (error?.response?.data?.message || error?.response?.data) {
             toast.error(error.response.data.message || error.response.data, {

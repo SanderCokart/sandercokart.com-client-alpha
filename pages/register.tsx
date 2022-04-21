@@ -27,7 +27,7 @@ const RegisterPage = () => {
         })),
         mode: 'all'
     });
-    const { formState: { isValid, isDirty, isSubmitting }, handleSubmit, register, setError } = registerForm;
+    const { formState: { isValid, isDirty }, handleSubmit, register, setError } = registerForm;
 
     const onSubmitRegister = async (formValues: RegisterFormValues) => {
         const response = await axios.simplePost('/account/register', formValues);

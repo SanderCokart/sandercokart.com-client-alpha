@@ -7,13 +7,14 @@ import styles from '@/styles/pages/account/Account.module.scss';
 import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import BoxContainer from '@/components/BoxContainer';
 import {ApiPasswordChangeRoute} from '@/constants/api-routes';
+import useAuthPage from '@/hooks/useAuthPage';
+import {useEffect} from 'react';
 
 const VerificationNotification = () => {
     const requestNewVerificationLink = async () => await axios.simplePost('/account/email/verify/retry');
@@ -34,13 +35,10 @@ const BlockedFeature = () => {
 };
 
 export const AccountPage = () => {
-    const { logout, shouldRedirect, isLoading: isLoadingAuth, isVerified } = useAuth({ middleware: 'auth' });
+    const { logout, isVerified } = useAuth({ middleware: 'auth' });
     const router = useRouter();
+    const visible = useAuthPage();
 
-
-    useEffect(() => {
-        if (shouldRedirect) router.push('/login');
-    }, [shouldRedirect]);
 
     const onClickLogout = async () => {
         const response = await logout();
@@ -53,7 +51,7 @@ export const AccountPage = () => {
     return (
         <BoxContainer className={styles.root}>
             {!isVerified && <VerificationNotification/>}
-            <Loader visible={isLoadingAuth || shouldRedirect}/>
+            <Loader visible={visible}/>
             <div className={styles.forms}>
                 <PasswordForm/>
                 <EmailForm/>
@@ -125,12 +123,9 @@ const EmailForm = () => {
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
         })),
-        mode: 'all',
-        defaultValues: {
-            email: user?.email
-        }
+        mode: 'all'
     });
-    const { formState: { isDirty, isValid }, handleSubmit, register, setError } = changeEmailForm;
+    const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changeEmailForm;
 
     const onSubmitEmailChange = async (formValues: EmailChangeFormValues) => {
         const response = await axios.simplePatch(`/account/email/change`, formValues);
@@ -139,6 +134,10 @@ const EmailForm = () => {
             return;
         }
     };
+
+    useEffect(() => {
+        reset({ email: user?.email });
+    }, [user]);
 
     return (
         <FormProvider {...changeEmailForm}>

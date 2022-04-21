@@ -3,13 +3,15 @@ import {useAuth} from '@/providers/AuthProvider';
 import {UsersResponse} from '@/types/ResponseTypes';
 import {useEffect, useState} from 'react';
 import useSWR from 'swr';
+import {UserModel} from '@/types/ModelTypes';
 
 const UseUsers = () => {
         const [pageIndex, setPageIndex] = useState(1);
         const [hasMore, setHasMore] = useState(true);
         const [hasLess, setHasLess] = useState(false);
+        const [showDeleteModalForUser, setShowDeleteModalForUser] = useState<null | UserModel>(null);
         const { isAdmin } = useAuth({ middleware: 'auth' });
-        const { data, error, mutate, isValidating } = useSWR<UsersResponse>(isAdmin ? `/users?page=${pageIndex}` : null);
+        const { data, error, mutate } = useSWR<UsersResponse>(isAdmin ? `/users?page=${pageIndex}` : null);
         const { users = [], links = [], meta = [] } = data || { users: [], links: [], meta: [] };
 
         useEffect(() => {
@@ -26,18 +28,14 @@ const UseUsers = () => {
             setPageIndex(prev => prev - 1);
         };
 
-        const onDelete = async (id: number) => {
-            await axios.simpleDelete(`/users/${id}`);
-            mutate(currentValue => {
-                if (currentValue) return { ...currentValue, users: users.filter(user => user.id !== id) };
-            });
-
+        const handleDeleteUser = async (userToDelete: UserModel | null) => {
+            if (userToDelete) {
+                await axios.simpleDelete(`/users/${userToDelete.id}`);
+                mutate(currentValue => {
+                    if (currentValue) return { ...currentValue, users: users.filter(user => user !== userToDelete) };
+                });
+            }
         };
-
-        const onEdit = async (id: number) => {
-            await axios.simplePatch(`/users/${id}`);
-        };
-
 
         return {
             users,
@@ -49,8 +47,9 @@ const UseUsers = () => {
             prevPage,
             hasMore,
             hasLess,
-            onDelete,
-            onEdit
+            handleDeleteUser,
+            showDeleteModalForUser,
+            setShowDeleteModalForUser
         };
     }
 ;

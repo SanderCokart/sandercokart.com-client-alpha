@@ -4851,6 +4851,11 @@ multipipe@^1.0.2:
     duplexer2 "^0.1.2"
     object-assign "^4.1.0"
 
+multiselect-react-dropdown@^2.0.21:
+  version "2.0.21"
+  resolved "https://registry.yarnpkg.com/multiselect-react-dropdown/-/multiselect-react-dropdown-2.0.21.tgz#a025753aae27fa6441aa7d38344defd75ff29033"
+  integrity sha512-HvyM1rdpwlBylxORbxjY0XADYOyIfAebhOuLJOfjZFBnp8OA8kc07QbqVN5yVYue01aJF1svB55qAFngZavU5A==
+
 nanoclone@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/nanoclone/-/nanoclone-0.2.1.tgz#dd4090f8f1a110d26bb32c49ed2f5b9235209ed4"

@@ -1,7 +1,7 @@
 import Loader from '@/components/Loader';
 import {useAuth} from '@/providers/AuthProvider';
 import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
-import styles from '@/styles/pages/portal/Users.module.scss';
+import styles from '@/styles/pages/portal/users/Users.module.scss';
 import type {ArticleModel} from '@/types/ModelTypes';
 import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -134,7 +134,6 @@ const PostRow = ({ post }: PostRowProps) => {
             <td>{moment(post.createdAt).calendar()}</td>
             <td>{moment(post.updatedAt).calendar()}</td>
             <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
-            <td className={styles[post.status.name]}>{post.status.name}</td>
 
             <td className={styles.actions}>
                 <div>
