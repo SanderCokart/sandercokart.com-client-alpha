@@ -1,143 +1,33 @@
-import Loader from '@/components/Loader';
-import useUsers from '@/hooks/useUsers';
-import styles from '@/styles/pages/portal/users/Users.module.scss';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import moment from 'moment';
-import Skeleton from 'react-loading-skeleton';
-import {UserModel, RoleModel} from '@/types/ModelTypes';
+import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
 import useAuthPage from '@/hooks/useAuthPage';
-import {Button} from '@/components/Button';
-import CreateFAB from '@/components/CreateFAB';
+import Loader from '@/components/Loader';
 import {LocalPortalUsersCreatePageRoute} from '@/constants/local-routes';
-import {Modal} from 'react-responsive-modal';
-import {useBooleanToggle} from '@/hooks/useToggle';
-import {useState} from 'react';
-import Input from '@/components/formComponents/Input';
-import {useForm, FormProvider} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
-import * as Yup from 'yup';
-
-const Users = () => {
-    const {
-        users,
-        isLoading,
-        nextPage,
-        prevPage,
-        hasMore,
-        hasLess,
-        handleDeleteUser
-    } = useUsers();
-    const visible = useAuthPage();
-    const deleteUserForm = useForm({
-        resolver: yupResolver(Yup.object().shape({
-            email_confirmation: Yup.string().test('email-match', 'Email must match', (value) => {
-                return value === userToDelete?.email;
-            })
-        })),
-        defaultValues: {
-            email_confirmation: ''
-        }
-    });
-    const { register, handleSubmit, reset, formState: { isDirty } } = deleteUserForm;
-
-    const keys = ['id', 'name', 'email', 'roles', 'createdAt', 'updatedAt', 'emailVerifiedAt', 'actions'];
-
-    const [showDeleteModal, toggleDeleteModal] = useBooleanToggle(false);
-    const [userToDelete, setUserToDelete] = useState<UserModel | null>(null);
-    const [deleteConfirmValue, setDeleteConfirmValue] = useState('');
-
-
-    const closeModal = () => {
-        toggleDeleteModal();
-        reset();
-    };
-
-    const openModal = (user: UserModel) => {
-        toggleDeleteModal();
-        setUserToDelete(user);
-    };
-
-    const onSubmitUserDelete = () => {
-        handleDeleteUser(userToDelete);
-        closeModal();
-        reset();
-    };
-
-    return (
-        <>
-            <Loader visible={visible}/>
-            <main className={styles.users}>
-                <table>
-                    <thead>
-                    <tr>
-                        {keys.map(key => (
-                            <td key={key}>{key}</td>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    {isLoading ? [...Array(100)].map((_, index) => (
-                        <tr key={index}>
-                            {[...Array(8)].map((_, index2) =>
-                                <td key={index2}><Skeleton width="100%"/></td>
-                            )}
-                        </tr>
-                    )) : users.map(user => (
-                        <UserRow key={user.id} openModal={openModal} user={user}/>
-                    ))}
-
-                    </tbody>
-                </table>
-
-                <div className={styles.pageControls}>
-                    <button disabled={!hasLess} onClick={prevPage}>
-                        <FontAwesomeIcon icon="arrow-left"/>
-                    </button>
-                    <button disabled={!hasMore} onClick={nextPage}>
-                        <FontAwesomeIcon icon="arrow-right"/>
-                    </button>
-                </div>
-                <CreateFAB href={LocalPortalUsersCreatePageRoute}/>
-            </main>
-
-
-            <Modal closeIcon={<FontAwesomeIcon fixedWidth icon="times"/>} open={showDeleteModal}
-                   onClose={closeModal}>
-                <FormProvider {...deleteUserForm}>
-                    <form noValidate onSubmit={handleSubmit(onSubmitUserDelete)}>
-                        <header className={styles.modalHeader}>
-                            <h2>Delete User {userToDelete?.name}</h2>
-                        </header>
-                        <main className={styles.modalMain}>
-                            <p>
-                                Are you sure you want to delete this user?
-                                <br/>
-                                Please confirm by typing in the users email address.
-                            </p>
-                            <Input autoFocus label={userToDelete?.email}
-                                   registerFormHook={{ ...register('email_confirmation') }}
-                                   value={deleteConfirmValue}
-                                   onChange={(e) => setDeleteConfirmValue(e.target.value)}/>
-                        </main>
-                        <footer className={styles.modalFooter}>
-                            <Button onClick={() => closeModal()}>Cancel</Button>
-                            <Button disabled={!isDirty} type="submit">Delete</Button>
-                        </footer>
-                    </form>
-                </FormProvider>
-            </Modal>
-        </>
-    );
-};
-
+import CreateFAB from '@/components/CreateFAB';
+import styles from '@/styles/pages/portal/users/Users.module.scss';
+import Skeleton from 'react-loading-skeleton';
+import {UserModel} from '@/types/ModelTypes';
+import moment from 'moment';
+import {Button} from '@/components/Button';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import DeleteConfirmationContextProvider, {
+    useDeleteConfirmationContext,
+    ConfirmDeleteModal
+} from '@/providers/DeleteConfirmationProvider';
+import axios from '@/functions/shared/axios';
+import {ApiUsersRoute} from '@/constants/api-routes';
 
 interface UserRowProps {
-    user: UserModel;
-    openModal: (user: UserModel) => void;
+    user: UserModel,
 }
 
-const UserRow = ({ user, openModal }: UserRowProps) => {
+const UserRow = ({ user }: UserRowProps) => {
+    const { toggleDeleteModal, setItemToDelete } = useDeleteConfirmationContext<UserModel>();
+
+    const handleTrashClick = () => {
+        toggleDeleteModal();
+        setItemToDelete(user);
+    };
+
     return (
         <tr>
             <td>{user.id}</td>
@@ -145,17 +35,16 @@ const UserRow = ({ user, openModal }: UserRowProps) => {
             <td>{user.email}</td>
             <td>
                 <ul>
-                    {user.roles?.map((role: RoleModel) => (
-                        <li key={role.id} className={styles.roleTag}>{role.name}</li>
+                    {user.roles?.map(role => (
+                        <li key={role.id} className={styles.roleChip}>{role.name}</li>
                     ))}
                 </ul>
             </td>
-            <td>{moment(user.createdAt).calendar()}</td>
-            <td>{moment(user.updatedAt).calendar()}</td>
-            <td>{user.emailVerifiedAt ? moment(user.emailVerifiedAt).calendar() : 'Unverified'}</td>
-
+            <td>{moment(user.created_at).calendar()}</td>
+            <td>{moment(user.updated_at).calendar()}</td>
+            <td>{user.email_verified_at ? moment(user.email_verified_at).calendar() : 'Unverified'}</td>
             <td className={styles.actions}>
-                <Button circle onClick={() => openModal(user)}>
+                <Button circle onClick={handleTrashClick}>
                     <FontAwesomeIcon fixedWidth icon="trash"/>
                 </Button>
             </td>
@@ -163,4 +52,77 @@ const UserRow = ({ user, openModal }: UserRowProps) => {
     );
 };
 
-export default Users;
+
+function UsersTable() {
+    const { data, isLoading, mutate } = usePaginatedContext<UserModel>();
+
+    const { itemToDelete, toggleDeleteModal} = useDeleteConfirmationContext<UserModel>();
+
+    const columnNames = ['id', 'name', 'email', 'roles', 'created_at', 'updated_at', 'email_verified_at', 'actions'];
+
+    const handleSubmitDeleteUser = async () => {
+        await axios.simpleDelete(ApiUsersRoute(itemToDelete.id));
+        await mutate(currentValue => {
+            if (currentValue) return {
+                ...currentValue,
+                users: currentValue.users.filter((user: UserModel) => user !== itemToDelete)
+            };
+        });
+        toggleDeleteModal();
+    };
+
+    return (
+        <main className={styles.table}>
+            <table>
+                <colgroup>
+                    <col width="100"/>
+                    <col width="100"/>
+                    <col width="100"/>
+                    <col width="100"/>
+                    <col width="250"/>
+                    <col width="250"/>
+                    <col width="250"/>
+                    <col width="100"/>
+                </colgroup>
+                <thead>
+                <tr>
+                    {columnNames.map((columnName) => (
+                        <th key={columnName}>{columnName}</th>
+                    ))}
+                </tr>
+                </thead>
+                <tbody>
+                {isLoading ? [...Array(100)].map((_, rowIndex) => (
+                    <tr key={rowIndex}>
+                        <td colSpan={8}><Skeleton height="100%" width="100%"/></td>
+                    </tr>
+                )) : data.map(user => (
+                    <UserRow key={user.id} user={user}/>
+                ))}
+                </tbody>
+            </table>
+
+            <PageControls/>
+            <ConfirmDeleteModal<UserModel>
+                confirmationErrorMessage="Email must match"
+                keyOfModelAsTitle="name"
+                keyOfModelToConfirm="email"
+                onSubmitDelete={handleSubmitDeleteUser}/>
+        </main>
+    );
+}
+
+const UsersPortalPage = () => {
+    const visible = useAuthPage();
+
+    return (
+        <PaginatedModelProvider middleware="auth" resourceDataKey="users" url="/users">
+            <Loader visible={visible}/>
+            <DeleteConfirmationContextProvider<UserModel>>
+                <UsersTable/>
+            </DeleteConfirmationContextProvider>
+            <CreateFAB href={LocalPortalUsersCreatePageRoute}/>
+        </PaginatedModelProvider>
+    );
+};
+export default UsersPortalPage;

@@ -45,6 +45,9 @@ export default function CreateUserPage() {
             case 'form':
                 setFormErrors(setError, response.errors);
                 break;
+            case 'success':
+                reset();
+                break;
         }
     }
 

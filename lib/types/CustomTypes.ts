@@ -46,6 +46,3 @@ export type PaginatedModels = UserModel | ArticleModel;
 export type CursorPaginatedModels = ArticleModel;
 
 export type Middleware = 'auth' | 'guest';
-
-export type WithChildren<T = {}> =
-    { children?: ReactNode } & T;

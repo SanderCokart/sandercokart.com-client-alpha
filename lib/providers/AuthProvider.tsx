@@ -73,7 +73,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             mutate,
             isLoading,
             isAdmin: !!user?.roles?.find((role) => role.name === 'Admin') ?? false,
-            isVerified: !!user?.emailVerifiedAt,
+            isVerified: !!user?.email_verified_at,
             isLoggedIn: !!user,
             user,
             login,

@@ -9,8 +9,8 @@ export interface ArticleModel {
     title: string;
     markdown: string;
     excerpt: string;
-    createdAt: string;
-    updatedAt: string;
+    created_at: string;
+    updated_at: string;
     publishedAt: string;
     slug: string;
     author: UserModel;
@@ -20,9 +20,9 @@ export interface ArticleModel {
 export interface UserModel {
     id: number;
     name: string;
-    createdAt: string;
-    updatedAt: string;
-    emailVerifiedAt: string;
+    created_at: string;
+    updated_at: string;
+    email_verified_at: string;
     email: string;
     roles: RoleModel[];
 }
@@ -40,3 +40,5 @@ export interface FileModel {
     relative_url?: string;
     created_at: string;
 }
+
+export type Models = ArticleModel | UserModel | RoleModel | FileModel;

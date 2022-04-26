@@ -1,34 +1,27 @@
 import Loader from '@/components/Loader';
-import {useAuth} from '@/providers/AuthProvider';
 import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
 import styles from '@/styles/pages/portal/users/Users.module.scss';
 import type {ArticleModel} from '@/types/ModelTypes';
-import type {PostRowProps} from '@/types/PropTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import {useRouter} from 'next/router';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Skeleton from 'react-loading-skeleton';
-import {useSWRConfig} from 'swr';
 import {IconButton, IconButtonWithLink} from '@/components/IconButton';
 import {Modal} from 'react-responsive-modal';
 import axios from '@/functions/shared/axios';
 import {Button} from '@/components/Button';
+import CreateFAB from '@/components/CreateFAB';
+import {LocalPortalArticlesCreatePageRoute} from '@/constants/local-routes';
+import useAuthPage from '@/hooks/useAuthPage';
 
 const Posts = () => {
-    const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
-    const router = useRouter();
-    const { mutate } = useSWRConfig();
-
-    useEffect(() => {
-        if (shouldRedirect) router.push('/login');
-        mutate('/user');
-    }, [shouldRedirect]);
+    const visible = useAuthPage();
 
     return (
-        <PaginatedModelProvider middleware="auth" modelName="articles" url="/articles/posts">
-            {(isLoadingAuth || shouldRedirect) && <Loader visible={true}/>}
+        <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
+            <Loader visible={visible}/>
             <PostTable/>
+            <CreateFAB href={LocalPortalArticlesCreatePageRoute('posts')}/>
         </PaginatedModelProvider>
     );
 };
@@ -40,7 +33,7 @@ const PostTable = () => {
         nextPage, prevPage, setPageIndex
     } = usePaginatedContext<ArticleModel>();
 
-    const keys = ['id', 'title', 'slug', 'author', 'createdAt', 'updatedAt', 'publishedAt', 'status', 'actions'];
+    const columnNames = ['id', 'title', 'slug', 'author', 'created_at', 'updated_at', 'publishedAt', 'status', 'actions'];
 
     return (
         <main className={styles.users}>
@@ -58,7 +51,7 @@ const PostTable = () => {
                 </colgroup>
                 <thead>
                 <tr>
-                    {keys.map(key => (
+                    {columnNames.map(key => (
                         <td key={key}>{key}</td>
                     ))}
                 </tr>
@@ -93,7 +86,7 @@ const PostTable = () => {
     );
 };
 
-const PostRow = ({ post }: PostRowProps) => {
+const PostRow = ({ post }: { post: ArticleModel }) => {
     const { mutate } = usePaginatedContext<ArticleModel>();
     const [deleteModalActive, setDeleteModalActive] = useState(false);
 
@@ -131,8 +124,8 @@ const PostRow = ({ post }: PostRowProps) => {
             <td data-tooltip={post.title}>{post.title}</td>
             <td>{post.slug}</td>
             <td>{post.author.name}</td>
-            <td>{moment(post.createdAt).calendar()}</td>
-            <td>{moment(post.updatedAt).calendar()}</td>
+            <td>{moment(post.created_at).calendar()}</td>
+            <td>{moment(post.updated_at).calendar()}</td>
             <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
 
             <td className={styles.actions}>

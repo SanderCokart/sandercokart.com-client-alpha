@@ -1,3 +1,4 @@
+@use './variables';
 $xs : 0;
 $sm : 600px;
 $md : 900px;
@@ -121,6 +122,53 @@ $xl : 1536px;
       }
       100% {
         color : #ffffff;
+      }
+    }
+  }
+}
+
+@mixin portalTable {
+  .table {
+    margin-top: variables.$navHeight;
+    margin-left: variables.$navWidth;
+    position: relative;
+    width: variables.$navWidthCalc;
+    height: variables.$navHeightCalc;
+    overflow: auto;
+
+    table {
+      border-collapse: collapse;
+      min-width: 100%;
+    }
+
+    thead {
+      background-color: var(--acc);
+      color: var(--acc-contrast-text);
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    tr:hover {
+      background-color: var(--highlight-trans);
+    }
+
+    td {
+      padding: 8px;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
     }
   }
