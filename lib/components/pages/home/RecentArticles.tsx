@@ -90,16 +90,19 @@ interface PostProps {
 
 const Post = ({ post }: PostProps) => {
     const { getUrl } = useImage();
-    const { url } = getUrl(post.banner);
+    const { url, isPrivate } = getUrl(post.banner);
 
     return (
         <div className={styles.post}>
             <figure className={styles.figure}>
-                <Image priority unoptimized alt="alt" layout="fill" objectFit="cover" src={url}/>
+                <Image priority alt="alt" layout="fill" objectFit="cover" src={url} unoptimized={isPrivate}/>
                 <figcaption className={styles.caption}>
                     <h1>{post.title}</h1>
                     <p>{post.excerpt}</p>
                 </figcaption>
+                {isPrivate && <div className={styles.privateIcon}>
+                    <FontAwesomeIcon icon="eye-slash"/>
+                </div>}
             </figure>
 
             <h1>{post.title}</h1>

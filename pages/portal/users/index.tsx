@@ -3,7 +3,7 @@ import useAuthPage from '@/hooks/useAuthPage';
 import Loader from '@/components/Loader';
 import {LocalPortalUsersCreatePageRoute} from '@/constants/local-routes';
 import CreateFAB from '@/components/CreateFAB';
-import styles from '@/styles/pages/portal/users/Users.module.scss';
+import styles from '@/styles/pages/portal/PortalTable.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import {UserModel} from '@/types/ModelTypes';
 import moment from 'moment';

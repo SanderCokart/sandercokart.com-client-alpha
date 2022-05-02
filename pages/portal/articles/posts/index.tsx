@@ -1,42 +1,73 @@
 import Loader from '@/components/Loader';
-import PaginatedModelProvider, {usePaginatedContext} from '@/providers/PaginatedModelProvider';
-import styles from '@/styles/pages/portal/users/Users.module.scss';
+import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
 import type {ArticleModel} from '@/types/ModelTypes';
+import {UserModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import {useState} from 'react';
 import Skeleton from 'react-loading-skeleton';
-import {IconButton, IconButtonWithLink} from '@/components/IconButton';
-import {Modal} from 'react-responsive-modal';
-import axios from '@/functions/shared/axios';
-import {Button} from '@/components/Button';
 import CreateFAB from '@/components/CreateFAB';
-import {LocalPortalArticlesCreatePageRoute} from '@/constants/local-routes';
+import {LocalPortalArticlesCreatePageRoute, LocalPortalArticlesEditPageRoute} from '@/constants/local-routes';
 import useAuthPage from '@/hooks/useAuthPage';
+import DeleteConfirmationProvider, {
+    useDeleteConfirmationContext,
+    ConfirmDeleteModal
+} from '@/providers/DeleteConfirmationProvider';
+import {Button, LinkButton} from '@/components/Button';
+import styles from '@/styles/pages/portal/PortalTable.module.scss';
+import axios from '@/functions/shared/axios';
+import {ApiUsersRoute} from '@/constants/api-routes';
 
-const Posts = () => {
-    const visible = useAuthPage();
+const PostRow = ({ article }: { article: ArticleModel }) => {
+    const { toggleDeleteModal, setItemToDelete } = useDeleteConfirmationContext<ArticleModel>();
+
+
+    const handleTrashClick = () => {
+        toggleDeleteModal();
+        setItemToDelete(article);
+    };
 
     return (
-        <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
-            <Loader visible={visible}/>
-            <PostTable/>
-            <CreateFAB href={LocalPortalArticlesCreatePageRoute('posts')}/>
-        </PaginatedModelProvider>
+        <tr>
+            <td>{article.id}</td>
+            <td data-tooltip={article.title}>{article.title}</td>
+            <td>{article.slug}</td>
+            <td>{article.author.name}</td>
+            <td>{moment(article.created_at).calendar()}</td>
+            <td>{moment(article.updated_at).calendar()}</td>
+            <td>{article.publishedAt ? moment(article.publishedAt).calendar() : 'NULL'}</td>
+
+            <td className={styles.actions}>
+                <Button circle onClick={handleTrashClick}>
+                    <FontAwesomeIcon icon="trash"/>
+                </Button>
+                <LinkButton circle href={LocalPortalArticlesEditPageRoute(article.slug, 'posts')}>
+                    <FontAwesomeIcon icon="pen"/>
+                </LinkButton>
+            </td>
+        </tr>
     );
 };
 
 
 const PostTable = () => {
-    const {
-        data, isLoading, hasMore, hasLess, meta,
-        nextPage, prevPage, setPageIndex
-    } = usePaginatedContext<ArticleModel>();
+    const { data: articles, isLoading, mutate } = usePaginatedContext<ArticleModel>();
+    const { itemToDelete, toggleDeleteModal } = useDeleteConfirmationContext<UserModel>();
 
-    const columnNames = ['id', 'title', 'slug', 'author', 'created_at', 'updated_at', 'publishedAt', 'status', 'actions'];
+    const columnNames = ['id', 'title', 'slug', 'author', 'created_at', 'updated_at', 'publishedAt', 'actions'];
+
+    const handleSubmitDeletePost = async () => {
+        await axios.simpleDelete(ApiUsersRoute(itemToDelete.id));
+        await mutate(currentValue => {
+            if (currentValue) return {
+                ...currentValue,
+                users: currentValue.users.filter((user: UserModel) => user !== itemToDelete)
+            };
+        });
+        toggleDeleteModal();
+    };
 
     return (
-        <main className={styles.users}>
+        <main className={styles.table}>
             <table>
                 <colgroup>
                     <col width="100"/>
@@ -47,102 +78,48 @@ const PostTable = () => {
                     <col width="250"/>
                     <col width="250"/>
                     <col width="100"/>
-                    <col width="100"/>
                 </colgroup>
                 <thead>
                 <tr>
-                    {columnNames.map(key => (
-                        <td key={key}>{key}</td>
+                    {columnNames.map((columnName) => (
+                        <th key={columnName}>{columnName}</th>
                     ))}
                 </tr>
                 </thead>
                 <tbody>
                 {isLoading ? [...Array(100)].map((_, rowIndex) => (
                     <tr key={rowIndex}>
-                        <td colSpan={9}><Skeleton height="100%" width="100%"/></td>
+                        <td colSpan={8}><Skeleton height="100%" width="100%"/></td>
                     </tr>
-                )) : data.map(post => (
-                    <PostRow key={post.id} post={post}/>
+                )) : articles.map(article => (
+                    <PostRow key={article.id} article={article}/>
                 ))}
 
                 </tbody>
             </table>
 
-            <div className={styles.pageControls}>
-                <button disabled={!hasLess} onClick={prevPage}>
-                    <FontAwesomeIcon icon="arrow-left"/>
-                </button>
-                {meta?.links?.slice(1, meta.links.length - 1).map(link => (
-                    <button key={link.label} disabled={link.active || link.label === '...'}
-                            onClick={() => setPageIndex(Number(link.label))}>
-                        {link.label}
-                    </button>
-                ))}
-                <button disabled={!hasMore} onClick={nextPage}>
-                    <FontAwesomeIcon icon="arrow-right"/>
-                </button>
-            </div>
+            <PageControls/>
+            <ConfirmDeleteModal<ArticleModel>
+                confirmationErrorMessage="title must match"
+                keyOfModelAsTitle="title"
+                keyOfModelToConfirm="title"
+                onSubmitDelete={handleSubmitDeletePost}/>
         </main>
     );
 };
 
-const PostRow = ({ post }: { post: ArticleModel }) => {
-    const { mutate } = usePaginatedContext<ArticleModel>();
-    const [deleteModalActive, setDeleteModalActive] = useState(false);
-
-    const confirmDelete = async () => {
-        const { status } = await axios.simpleDelete(`/articles/${post.id}`);
-        if (status !== 204) return;
-        mutate((data) => ({
-            ...data,
-            articles: data?.articles.filter((item: ArticleModel) => item.id !== post.id)
-        }), false);
-    };
-
-    const closeDeleteModal = () => setDeleteModalActive(false);
-    const openDeleteModal = () => setDeleteModalActive(true);
-
-    const ConfirmDeleteModal = () => (
-        <Modal center
-               closeIcon={<FontAwesomeIcon icon="times"/>}
-               open={deleteModalActive}
-               onClose={closeDeleteModal}>
-            <h1>Confirm Deletion</h1>
-
-            <p>Are you sure you wish to delete <b>{post.title}</b>?</p>
-
-            <div className={styles.deleteModalActions}>
-                <Button onClick={closeDeleteModal}>Cancel</Button>
-                <Button onClick={confirmDelete}>Confirm</Button>
-            </div>
-        </Modal>
-    );
+const ArticlesPortalPage = () => {
+    const visible = useAuthPage();
 
     return (
-        <tr>
-            <td>{post.id}</td>
-            <td data-tooltip={post.title}>{post.title}</td>
-            <td>{post.slug}</td>
-            <td>{post.author.name}</td>
-            <td>{moment(post.created_at).calendar()}</td>
-            <td>{moment(post.updated_at).calendar()}</td>
-            <td>{post.publishedAt ? moment(post.publishedAt).calendar() : 'NULL'}</td>
-
-            <td className={styles.actions}>
-                <div>
-                    <IconButton
-                        accentColor="var(--error)"
-                        icon={<FontAwesomeIcon icon="trash"/>}
-                        onClick={openDeleteModal}/>
-                    <ConfirmDeleteModal/>
-                    <IconButtonWithLink
-                        accentColor="var(--success)"
-                        href={`/portal/articles/posts/edit/${post.slug}`}
-                        icon={<FontAwesomeIcon icon="pen"/>}/>
-                </div>
-            </td>
-        </tr>
+        <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
+            <Loader visible={visible}/>
+            <DeleteConfirmationProvider<ArticleModel>>
+                <PostTable/>
+            </DeleteConfirmationProvider>
+            <CreateFAB href={LocalPortalArticlesCreatePageRoute('posts')}/>
+        </PaginatedModelProvider>
     );
 };
 
-export default Posts;
+export default ArticlesPortalPage;

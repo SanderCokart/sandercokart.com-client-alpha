@@ -15,6 +15,7 @@ export interface ArticleModel {
     slug: string;
     author: UserModel;
     banner: FileModel;
+    article_type?: ArticleType;
 }
 
 export interface UserModel {

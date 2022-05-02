@@ -4,22 +4,13 @@ import {ApiRolesRoute} from '@/constants/api-routes';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import MultiSelect from '@/components/formComponents/MultiSelect';
 import {Button} from '@/components/Button';
-
-const options = [
-    { id: 1, name: 'Admin' },
-    { id: 2, name: 'User' }
-];
-
+import File from '@/components/formComponents/File';
 
 const Test = () => {
-    const form = useForm({
-        defaultValues: {
-            roles: []
-        }
-    });
+    const form = useForm();
     const { data: rolesData, error: rolesError } = useSWR(ApiRolesRoute);
 
-    const onSubmit = (formValues: typeof options[]) => {
+    const onSubmit = (formValues: any) => {
         console.log(formValues);
     };
 
@@ -28,8 +19,7 @@ const Test = () => {
             <FormProvider {...form}>
                 <CenteredFormLayout title="Roles">
                     <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
-                        <MultiSelect displayValue="name" loading={!rolesData && !rolesError} name="roles" options={rolesData}
-                                     setValue={form.setValue}/>
+                        <File name="file" />
                         <Button type="submit">Submit</Button>
                     </form>
                 </CenteredFormLayout>

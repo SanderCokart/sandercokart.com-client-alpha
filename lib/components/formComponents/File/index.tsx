@@ -22,7 +22,7 @@ const File = (props: FileProps) => {
 
     return (
         <div className={styles.file}>
-            {files?.length && <FilePreviewCarousel editMode={editMode} multiple={multiple} name={name}/>}
+            {!!files?.length && <FilePreviewCarousel editMode={editMode} multiple={multiple} name={name}/>}
             {(multiple || !isDirty) && <FileDropBox editMode={editMode} multiple={multiple} name={name}/>}
         </div>
     );
