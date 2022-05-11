@@ -1,5 +1,11 @@
+@use "/styles/utils";
+
 .container {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  max-width: utils.$md;
+  margin: 0 auto;
+  position: relative;
+  padding: 32px 0;
 }

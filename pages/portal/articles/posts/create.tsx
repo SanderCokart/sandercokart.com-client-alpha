@@ -1,23 +1,20 @@
-import Input from '@/components/formComponents/Input';
+import Input from '@/components/formComponents/Input/Input';
 import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
 import NewFile from '@/components/formComponents/File';
-import Select from '@/components/formComponents/Select';
-import TextArea from '@/components/formComponents/Textarea';
-import Loader from '@/components/Loader';
+import TextArea from '@/components/formComponents/Textarea/Textarea';
+import Loader from '@/components/Loader/Loader';
 import axios from '@/functions/shared/axios';
-import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
 import {useRouter} from 'next/router';
-import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
-import useSWR from 'swr';
 import * as Yup from 'yup';
+import useAuthPage from '@/hooks/useAuthPage';
 
 
 const CreatePostPage = () => {
-    const { shouldRedirect, isLoading: isLoadingAuth } = useAuth({ middleware: 'auth' });
+    const visible = useAuthPage();
     const router = useRouter();
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
@@ -37,14 +34,7 @@ const CreatePostPage = () => {
         }
     });
 
-    const { data: statuses, error } = useSWR<StatusModel[]>('/status/post');
-
-
     const { handleSubmit } = methods;
-
-    useEffect(() => {
-        if (shouldRedirect) router.push('/login');
-    }, [shouldRedirect]);
 
     const onSubmit = async (formValues: CreatePostFormValues) => {
         await axios.simplePost('/posts', { ...formValues, banner: formValues.banner[0].id });
@@ -52,18 +42,13 @@ const CreatePostPage = () => {
 
     return (
         <>
-            <Loader visible={isLoadingAuth || shouldRedirect}/>
+            <Loader visible={visible}/>
             <main className={styles.desktop}>
                 <FormProvider {...methods}>
                     <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmit)}>
                         <Input label="Title" name="title"/>
                         <TextArea label="Excerpt" name="excerpt"/>
                         <NewFile name="banner"/>
-                        <Select name="status">
-                            {(statuses && !error) && statuses.map(status => (
-                                <option key={status.id} value={status.id}>{status.name}</option>
-                            ))}
-                        </Select>
                         <MarkdownEditor name="markdown"/>
                         <button className={styles.submitButton} type="submit">Submit</button>
                     </form>

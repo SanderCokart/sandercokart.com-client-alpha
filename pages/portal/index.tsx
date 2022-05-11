@@ -1,4 +1,4 @@
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import styles from '@/styles/pages/portal/Portal.module.scss';
 import Head from 'next/head';
 import {useRouter} from 'next/router';

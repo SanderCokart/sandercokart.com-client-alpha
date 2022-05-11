@@ -7,7 +7,7 @@ import {
     MobileItem,
     MobileMenu
 } from '@/components/Navigation';
-import PortalNavigation from '@/components/PortalNavigation';
+import PortalNavigation from '@/components/PortalNavigation/PortalNavigation';
 import ThemeControl from '@/components/ThemeControl/ThemeControl';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {useAuth} from '@/providers/AuthProvider';

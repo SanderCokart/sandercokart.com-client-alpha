@@ -1,5 +1,9 @@
 @use '../utils';
 
+:target {
+  scroll-margin-top: 40px;
+}
+
 a {
   color: inherit;
   text-decoration: none;

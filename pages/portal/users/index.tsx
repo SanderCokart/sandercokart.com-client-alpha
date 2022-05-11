@@ -1,13 +1,13 @@
 import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
 import useAuthPage from '@/hooks/useAuthPage';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import {LocalPortalUsersCreatePageRoute} from '@/constants/local-routes';
 import CreateFAB from '@/components/CreateFAB';
 import styles from '@/styles/pages/portal/PortalTable.module.scss';
 import Skeleton from 'react-loading-skeleton';
 import {UserModel} from '@/types/ModelTypes';
 import moment from 'moment';
-import {Button} from '@/components/Button';
+import {Button} from '@/components/Button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import DeleteConfirmationContextProvider, {
     useDeleteConfirmationContext,

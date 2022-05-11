@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -15,19 +19,51 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/styles/*": ["styles/*"],
-      "@/public/*": ["public/*"],
-      "@/components/*": ["lib/components/*"],
-      "@/providers/*": ["lib/providers/*"],
-      "@/types/*": ["lib/types/*"],
-      "@/config/*": ["lib/config/*"],
-      "@/hooks/*": ["lib/hooks/*"],
-      "@/layouts/*": ["lib/layouts/*"],
-      "@/functions/*": ["lib/functions/*"],
-      "@/data/*": ["lib/data/*"],
-      "@/constants/*": ["lib/constants/*"],
-    }
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/public/*": [
+        "public/*"
+      ],
+      "@/components/*": [
+        "lib/components/*"
+      ],
+      "@/providers/*": [
+        "lib/providers/*"
+      ],
+      "@/types/*": [
+        "lib/types/*"
+      ],
+      "@/config/*": [
+        "lib/config/*"
+      ],
+      "@/hooks/*": [
+        "lib/hooks/*"
+      ],
+      "@/layouts/*": [
+        "lib/layouts/*"
+      ],
+      "@/functions/*": [
+        "lib/functions/*"
+      ],
+      "@/data/*": [
+        "lib/data/*"
+      ],
+      "@/custom/*": [
+        "lib/custom/*"
+      ],
+      "@/constants/*": [
+        "lib/constants/*"
+      ]
+    },
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

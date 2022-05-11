@@ -1,0 +1,51 @@
+@use "/styles/utils";
+.nextButton, .prevButton {
+  @include utils.defaultButton;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  bottom: 0;
+  width: 50px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-trans);
+  z-index: 10;
+  cursor: pointer;
+
+  @include utils.down(utils.$sm) {
+    height: 50px;
+    border-radius: 50%;
+    right: 16px;
+  }
+
+  &:disabled {
+    background-color: var(--bg-trans);
+  }
+}
+
+.prevButton {
+  right: auto;
+  left: 0;
+
+  @include utils.down(utils.$sm) {
+    left: 16px;
+  }
+}
+
+.swiper {
+  width: 100%;
+  padding: 0 50px;
+  @include utils.down(utils.$sm) {
+    padding: 0;
+  }
+}
+
+.slide {
+  width: 500px;
+  @include utils.down(utils.$sm) {
+    width: 100%;
+  }
+}

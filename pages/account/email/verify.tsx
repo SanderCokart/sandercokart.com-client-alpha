@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import BoxContainer from '@/components/BoxContainer';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';

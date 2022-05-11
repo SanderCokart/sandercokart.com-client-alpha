@@ -1,4 +1,4 @@
-import Radio from '@/components/formComponents/Radio';
+import Radio from '@/components/formComponents/Radio/Radio';
 import {useTheme} from '@/providers/ThemeProvider';
 import {ChangeEvent} from 'react';
 import styles from './ThemeControl.module.scss';

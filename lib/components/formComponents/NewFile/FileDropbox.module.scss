@@ -1,0 +1,43 @@
+.root {
+  min-height: 150px;
+  position: relative;
+}
+
+.input {
+  color: transparent;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border: 2px dotted var(--acc);
+  top: 0;
+  left: 0;
+  cursor: pointer;
+
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+}
+
+.root:hover .messageContainer {
+  color: var(--success);
+}
+
+.highlight {
+  border: 2px solid var(--success);
+}
+
+.messageContainer {
+  color: var(--bg-contrast-text);
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}

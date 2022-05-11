@@ -1,4 +1,4 @@
-import Input from '@/components/formComponents/Input';
+import Input from '@/components/formComponents/Input/Input';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
@@ -7,7 +7,7 @@ import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import {Button} from '@/components/Button';
+import {Button} from '@/components/Button/Button';
 import setFormErrors from '@/functions/client/setFormErrors';
 
 const ChangePassword = () => {

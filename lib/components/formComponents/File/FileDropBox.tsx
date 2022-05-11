@@ -4,6 +4,8 @@ import type {FileModel} from '@/types/ModelTypes';
 import type {ChangeEvent, DragEvent} from 'react';
 import {useFormContext} from 'react-hook-form';
 import {ApiFilesRoute} from '@/constants/api-routes';
+import setFormErrors from '@/functions/client/setFormErrors';
+import {useEffect} from 'react';
 
 interface FileDropBoxProps {
     editMode?: boolean;
@@ -13,29 +15,46 @@ interface FileDropBoxProps {
 
 const FileDropBox = (props: FileDropBoxProps) => {
     const { name, multiple } = props;
-    const { register, setValue, getValues, resetField } = useFormContext();
+    const { setValue, getValues, setError, resetField, control: {_defaultValues} } = useFormContext();
     const toggleHighlight = (e: DragEvent<HTMLInputElement>) => {
         e.currentTarget.parentElement?.parentElement?.classList.toggle(styles.highlight);
     };
 
-    const { onChange: registerOnChange, ...restOfRegister } = register(name);
+    useEffect(() => {
+        resetField(name, {defaultValue: _defaultValues[name] ?? []});
+    }, [])
 
     const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        const currentValues = getValues(name);
         const files = Array.from(e.target.files ?? []);
 
         if (multiple) {
             const formData = new FormData();
-            return files.map(async (file) => {
+            for (const file of files) {
                 formData.set('file', file);
-                const { data, error } = await axios.simplePost<FileModel[]>(ApiFilesRoute, formData);
-                if (!error) setValue(name, [...currentValues, data], { shouldDirty: true, shouldValidate: true });
-            });
+                const response = await axios.simplePost<FileModel[]>(ApiFilesRoute, formData);
+                switch (response.type) {
+                    case 'form':
+                        setFormErrors(setError, response.errors);
+                        break;
+                    case 'success': {
+                        setValue(name,
+                            [...getValues(name), response.data],
+                            { shouldDirty: true, shouldValidate: true }
+                        );
+                    }
+                }
+            }
         } else {
             const formData = new FormData();
-            formData.append('file', files[0]);
-            const { data: file, error } = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
-            if (!error) setValue(name, [file], { shouldDirty: true, shouldValidate: true });
+            formData.set('file', files[0]);
+            const response = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
+            switch (response.type) {
+                case 'form':
+                    setFormErrors(setError, response.errors);
+                    break;
+                case 'success':
+                    setValue(name, [response.data], { shouldDirty: true, shouldValidate: true });
+            }
         }
 
         e.target.value = '';
@@ -47,7 +66,7 @@ const FileDropBox = (props: FileDropBoxProps) => {
                 <span>CLICK HERE</span>
                 <span>OR</span>
                 <span>DRAG AND DROP</span>
-                <input {...restOfRegister} className={styles.dropbox} multiple={multiple} type="file"
+                <input className={styles.dropbox} multiple={multiple} type="file"
                        onBlur={undefined}
                        onChange={onChange} onDragEnter={toggleHighlight} onDragLeave={toggleHighlight}
                        onDrop={toggleHighlight}/>

@@ -1,0 +1,27 @@
+@use "../../../styles/utils/index";
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+
+.errorCode {
+  width: 100%;
+  text-align: center;
+}
+
+.line {
+  border-color: var(--acc);
+  width: 100%;
+  margin: 16px 0;
+}
+
+.errorMessage {
+  width: 100%;
+  text-align: center;
+}

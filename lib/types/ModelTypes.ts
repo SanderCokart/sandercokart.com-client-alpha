@@ -38,7 +38,7 @@ export interface ArticleType {
 export interface FileModel {
     id: number,
     original_name: string;
-    relative_url?: string;
+    relative_path?: string;
     created_at: string;
 }
 

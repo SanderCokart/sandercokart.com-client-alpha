@@ -1,4 +1,4 @@
-import {ArticleType, UserModel} from '@/types/ModelTypes';
+import {ArticleType, UserModel, ArticleModel} from '@/types/ModelTypes';
 
 export const LocalAccountPageRoute = '/account';
 export const LocalEmailVerifyPageRoute = '/account/email/verify';
@@ -14,7 +14,7 @@ export const LocalPortalPageRoute = '/portal';
 
 export const LocalPortalArticlesPageRoute = (articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}`;
 export const LocalPortalArticlesCreatePageRoute = (articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}/create`;
-export const LocalPortalArticlesEditPageRoute = (slug: string, articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}/edit/${slug}`;
+export const LocalPortalArticlesEditPageRoute = (slug: ArticleModel['slug'], articleTypeName: ArticleType['name']) => `/portal/articles/${articleTypeName}/edit/${slug}`;
 
 
 export const LocalPortalUsersPageRoute = '/portal/users';
@@ -24,3 +24,5 @@ export const LocalPortalUsersEditPageRoute = (id: UserModel['id']) => `/portal/u
 
 export const LocalLibraryPageRoute = (articleTypeName?: ArticleType['name']) => '/portal/library/' + (articleTypeName ? articleTypeName : '');
 export const LocalContactPageRoute = '/contact';
+
+export const LocalArticlePageRoute = (articleTypeName: ArticleType['name'], slug: ArticleModel['slug']) => `/library/${articleTypeName}/${slug}`;

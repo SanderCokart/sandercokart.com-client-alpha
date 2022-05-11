@@ -7,8 +7,8 @@ import * as Yup from 'yup';
 import Modal from 'react-responsive-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import styles from './ConfirmDeleteModal.module.scss';
-import Input from '@/components/formComponents/Input';
-import {Button} from '@/components/Button';
+import Input from '@/components/formComponents/Input/Input';
+import {Button} from '@/components/Button/Button';
 
 const DeleteConfirmationContext = createContext({});
 

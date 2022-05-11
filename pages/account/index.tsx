@@ -1,6 +1,6 @@
-import {Button} from '@/components/Button';
-import Input from '@/components/formComponents/Input';
-import Loader from '@/components/Loader';
+import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+import Loader from '@/components/Loader/Loader';
 import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/Account.module.scss';
@@ -76,7 +76,12 @@ const PasswordForm = () => {
                 .matches(/[!@#$%^&*]/, 'must contain a special case character'),
             password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('This field is required')
         })),
-        mode: 'all'
+        mode: 'all',
+        defaultValues: {
+            current_password: '',
+            password: '',
+            password_confirmation: ''
+        }
     });
     const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changePasswordForm;
 
@@ -85,7 +90,6 @@ const PasswordForm = () => {
         const response = await axios.simplePatch(ApiPasswordChangeRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
-            reset();
         }
         reset();
     };
@@ -123,7 +127,10 @@ const EmailForm = () => {
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
         })),
-        mode: 'all'
+        mode: 'all',
+        defaultValues: {
+            email: ''
+        }
     });
     const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changeEmailForm;
 

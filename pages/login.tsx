@@ -1,6 +1,6 @@
-import {Button} from '@/components/Button';
-import Checkbox from '@/components/formComponents/Checkbox';
-import Input from '@/components/formComponents/Input';
+import {Button} from '@/components/Button/Button';
+import Checkbox from '@/components/formComponents/Checkbox/Checkbox';
+import Input from '@/components/formComponents/Input/Input';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
 import type {LoginFormValues} from '@/types/FormValueTypes';
@@ -13,7 +13,7 @@ import * as Yup from 'yup';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import setFormErrors from '@/functions/client/setFormErrors';
 import {useBooleanToggle} from '@/hooks/useToggle';
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import BoxContainer from '@/components/BoxContainer';
 import {LocalPasswordForgotPageRoute, LocalRegisterPageRoute} from '@/constants/local-routes';
 

@@ -1,6 +1,6 @@
 import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar';
 import useMDXComponents from '@/components/MDXComponents';
-import styles from '@/styles/components/formComponents/MarkdownEditor/MarkdownEditor.module.scss';
+import styles from './MarkdownEditor.module.scss';
 // @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
 import type {Dispatch, MouseEvent, MutableRefObject, SetStateAction} from 'react';

@@ -13,8 +13,8 @@ interface FilePreviewCarouselProps {
 }
 
 const FilePreviewCarousel = (props: FilePreviewCarouselProps) => {
-    const { name, multiple, editMode } = props;
-    const { formState: { dirtyFields }, resetField, watch } = useFormContext();
+    const { name, editMode } = props;
+    const { formState: { dirtyFields }, resetField, watch, setValue } = useFormContext();
     const { getUrl } = useImage();
 
     const files: FileModel[] = watch(name, []);
@@ -32,10 +32,11 @@ const FilePreviewCarousel = (props: FilePreviewCarouselProps) => {
         if (editMode) {
             await onReset();
         } else {
+            setValue(name, files.filter(f => f.id !== file.id));
             await axios.simpleDelete(`/files/${file.id}`);
         }
     };
-
+    
     return (
         <div className={styles.carouselContainer}>
             {isDirty && (

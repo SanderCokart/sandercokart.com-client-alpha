@@ -1,4 +1,4 @@
-import Input from '@/components/formComponents/Input';
+import Input from '@/components/formComponents/Input/Input';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/password/Forgot.module.scss';
 import type {PasswordForgotFormValues} from '@/types/FormValueTypes';
@@ -7,7 +7,7 @@ import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import {Button} from '@/components/Button';
+import {Button} from '@/components/Button/Button';
 import {ApiPasswordForgotRoute} from '@/constants/api-routes';
 
 export const ForgotPasswordPage = () => {

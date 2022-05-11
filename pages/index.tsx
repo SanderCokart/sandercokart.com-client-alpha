@@ -2,8 +2,7 @@ import RecentArticles from '@/components/pages/home/RecentArticles';
 import styles from '@/styles/pages/Home.module.scss';
 import {GetStaticProps} from 'next';
 import axios from '@/functions/shared/axios';
-import {SWRConfig} from 'swr';
-import {ApiArticleTypeRecentRoute} from '@/constants/api-routes';
+import {ApiArticleRecentRoute} from '@/constants/api-routes';
 
 interface HomeProps {
     fallbacks: {
@@ -16,20 +15,19 @@ interface HomeProps {
 const HomePage = (props: HomeProps) => {
     return (
         <div className={styles.home}>
-            <SWRConfig value={{ fallback: { ...props.fallbacks.posts } }}>
-                <RecentArticles title="posts" url={ApiArticleTypeRecentRoute('posts')}/>
-            </SWRConfig>
+            <RecentArticles fallback={{ ...props.fallbacks.posts }} title="posts"
+                            url={ApiArticleRecentRoute('posts')}/>
         </div>
     );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
     const { data: postsData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleTypeRecentRoute('posts'));
+        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleRecentRoute('posts'));
     const { data: tipsAndTutorialsData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleTypeRecentRoute('tips-&-tutorials'));
+        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleRecentRoute('tips-&-tutorials'));
     const { data: CoursesData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleTypeRecentRoute('courses'));
+        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiArticleRecentRoute('courses'));
 
     return {
         props: {

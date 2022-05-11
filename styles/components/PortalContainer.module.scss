@@ -1,8 +1,0 @@
-@use '../utils';
-
-.container {
-  margin-top: utils.$navHeight;
-  margin-left: utils.$navWidth;
-  width: utils.$navWidthCalc;
-  height: utils.$navHeightCalc;
-}

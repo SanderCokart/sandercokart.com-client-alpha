@@ -1,4 +1,4 @@
-import Loader from '@/components/Loader';
+import Loader from '@/components/Loader/Loader';
 import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
 import type {ArticleModel} from '@/types/ModelTypes';
 import {UserModel} from '@/types/ModelTypes';
@@ -12,14 +12,13 @@ import DeleteConfirmationProvider, {
     useDeleteConfirmationContext,
     ConfirmDeleteModal
 } from '@/providers/DeleteConfirmationProvider';
-import {Button, LinkButton} from '@/components/Button';
+import {Button, LinkButton} from '@/components/Button/Button';
 import styles from '@/styles/pages/portal/PortalTable.module.scss';
 import axios from '@/functions/shared/axios';
 import {ApiUsersRoute} from '@/constants/api-routes';
 
 const PostRow = ({ article }: { article: ArticleModel }) => {
     const { toggleDeleteModal, setItemToDelete } = useDeleteConfirmationContext<ArticleModel>();
-
 
     const handleTrashClick = () => {
         toggleDeleteModal();

@@ -6,7 +6,7 @@ import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import styles from './PageControls.module.scss';
-import {Button} from '@/components/Button';
+import {Button} from '@/components/Button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const Context = createContext({});

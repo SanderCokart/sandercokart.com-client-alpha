@@ -1,30 +1,37 @@
 import {useForm, FormProvider} from 'react-hook-form';
-import useSWR from 'swr';
-import {ApiRolesRoute} from '@/constants/api-routes';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import MultiSelect from '@/components/formComponents/MultiSelect';
 import {Button} from '@/components/Button';
-import File from '@/components/formComponents/File';
+import File from '@/components/formComponents/NewFile';
+import styles from '@/styles/pages/test.module.scss';
+import useSWR from 'swr';
+import {ApiArticleShowRoute} from '@/constants/api-routes';
+import {useEffect} from 'react';
+import {ArticleModel, FileModel} from '@/types/ModelTypes';
 
 const Test = () => {
-    const form = useForm();
-    const { data: rolesData, error: rolesError } = useSWR(ApiRolesRoute);
+    const { data } = useSWR<ArticleModel>(ApiArticleShowRoute('posts', 'litzy-wolf'));
+    const form = useForm({
+        defaultValues: {
+            banner: [] as FileModel[]
+        }
+    });
 
     const onSubmit = (formValues: any) => {
         console.log(formValues);
     };
 
+    useEffect(() => {
+        form.reset({
+            banner: data?.banner ? [data.banner] : [] as FileModel[]
+        });
+    }, [data]);
+
     return (
-        <>
-            <FormProvider {...form}>
-                <CenteredFormLayout title="Roles">
-                    <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
-                        <File name="file" />
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </CenteredFormLayout>
-            </FormProvider>
-        </>
+        <FormProvider {...form}>
+            <form noValidate className={styles.form} onSubmit={form.handleSubmit(onSubmit)}>
+                <File multiple name="banner"/>
+                <Button type="submit">Submit</Button>
+            </form>
+        </FormProvider>
     );
 };
 

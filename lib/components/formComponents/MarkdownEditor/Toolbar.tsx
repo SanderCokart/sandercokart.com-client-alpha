@@ -1,9 +1,9 @@
-import {Button} from '@/components/Button';
-import Input from '@/components/formComponents/Input';
+import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import axios from '@/functions/shared/axios';
 import useImage from '@/hooks/useImage';
-import styles from '@/styles/components/formComponents/MarkdownEditor/Toolbar.module.scss';
+import styles from '@/components/formComponents/MarkdownEditor/Toolbar.module.scss';
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

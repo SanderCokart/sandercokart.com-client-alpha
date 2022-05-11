@@ -1,5 +1,5 @@
 import Code from '@/components/MDXComponents/Code';
-import styles from '@/styles/components/MDXComponents.module.scss';
+import styles from './MDXComponents.module.scss';
 import {Property} from 'csstype';
 import NextImage from 'next/image';
 import type {FC} from 'react';

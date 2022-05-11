@@ -1,0 +1,91 @@
+@use "/styles/utils";
+
+.title {
+  border-top: var(--acc) solid 4px;
+  border-bottom: var(--acc) solid 4px;
+  width: 100%;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 4rem;
+  text-transform: capitalize;
+}
+
+.h1 {
+
+}
+
+.h2 {
+  background-color: var(--acc);
+  color: var(--acc-contrast-text);
+  padding: 4px 16px;
+}
+
+.h3 {
+  border-left: solid 8px var(--acc);
+  color: var(--acc-contrast-text);
+
+  padding-left: 8px;
+}
+
+.h4 {
+  border-left: solid 4px var(--acc);
+  color: var(--acc-contrast-text);
+
+  padding-left: 8px;
+}
+
+.table {
+  border-collapse: collapse;
+
+  thead {
+    background-color: var(--acc);
+    color: var(--acc-contrast-text);
+
+
+    th {
+      padding: 8px 0;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 2px var(--acc) solid;
+
+      td {
+        padding: 8px 0;
+      }
+    }
+  }
+}
+
+
+.a {
+  color: var(--bg-contrast-text);
+  font-weight: bold;
+
+  &:hover {
+    color: var(--acc);
+  }
+}
+
+.ul {
+  margin: revert;
+  padding: revert;
+}
+
+.ol {
+  list-style: revert;
+  padding: revert;
+}
+
+.li {
+
+}
+
+.img {
+  width: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+}
