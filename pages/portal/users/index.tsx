@@ -56,7 +56,7 @@ const UserRow = ({ user }: UserRowProps) => {
 function UsersTable() {
     const { data, isLoading, mutate } = usePaginatedContext<UserModel>();
 
-    const { itemToDelete, toggleDeleteModal} = useDeleteConfirmationContext<UserModel>();
+    const { itemToDelete, toggleDeleteModal } = useDeleteConfirmationContext<UserModel>();
 
     const columnNames = ['id', 'name', 'email', 'roles', 'created_at', 'updated_at', 'email_verified_at', 'actions'];
 

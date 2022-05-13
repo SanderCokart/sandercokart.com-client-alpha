@@ -4,7 +4,7 @@ import Input from '@/components/formComponents/Input/Input';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/Login.module.scss';
 import type {LoginFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useEffect} from 'react';

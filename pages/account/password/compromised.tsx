@@ -1,5 +1,5 @@
 import axios from '@/functions/shared/axios';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import * as Yup from 'yup';
 import {useForm, FormProvider} from 'react-hook-form';

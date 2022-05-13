@@ -5,7 +5,7 @@ import axios from '@/functions/shared/axios';
 import {useAuth} from '@/providers/AuthProvider';
 import styles from '@/styles/pages/account/Account.module.scss';
 import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';

@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 import axios from '@/functions/shared/axios';
 import {useSWRConfig} from 'swr';
 import useRedirect from '@/hooks/useRedirect';
-import {ApiEmailVerifyRoute, ApiUserRoute} from '@/constants/api-routes';
+import {ApiEmailVerifyRoute, ApiGetUserRoute} from '@/constants/api-routes';
 
 const UserMustLogin = () => {
     useRedirect('/login', true);
@@ -63,7 +63,7 @@ const VerifyEmailPage = () => {
         const response = await axios.simplePost(ApiEmailVerifyRoute, { identifier, token });
         if (response.type === 'success') {
             setVerificationCompleted(true);
-            mutate(ApiUserRoute);
+            mutate(ApiGetUserRoute);
         }
     };
 

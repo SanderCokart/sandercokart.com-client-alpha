@@ -10,6 +10,7 @@ import {ArticleModel} from '@/types/ModelTypes';
 import useImage from '@/hooks/useImage';
 import Link from 'next/link';
 import {LocalArticlePageRoute} from '@/constants/local-routes';
+import ClampLines from 'react-clamp-lines';
 
 //<editor-fold desc="Swiper Navigation Buttons">
 const Previous = () => {
@@ -39,6 +40,7 @@ const Next = () => {
         </button>
     );
 };
+
 //</editor-fold>
 
 interface PostProps {
@@ -55,8 +57,8 @@ const Post = ({ post }: PostProps) => {
                     <figure className={styles.figure}>
                         <Image priority unoptimized alt="alt" layout="fill" objectFit="cover" src={url}/>
                         <figcaption className={styles.caption}>
-                            <h1>{post.title}</h1>
-                            <p>{post.excerpt}</p>
+                            <h1 className={styles.captionTitle} title={post.title}>{post.title}</h1>
+                            <p className={styles.captionExcerpt}>{post.excerpt}</p>
                         </figcaption>
                     </figure>
 

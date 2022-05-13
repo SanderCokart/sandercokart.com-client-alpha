@@ -2,7 +2,6 @@ import {useAuth} from '@/providers/AuthProvider';
 import {PaginatedModelContext} from '@/types/ContextTypes';
 import type {PaginatedModels, PaginatedResponses} from '@/types/CustomTypes';
 import type {PaginatedModelProviderProps} from '@/types/PropTypes';
-import type {FC} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
 import styles from './PageControls.module.scss';
@@ -13,8 +12,9 @@ const Context = createContext({});
 //----------------------------------------------------------------------------------------------------------------------
 export const usePaginatedContext = <T extends PaginatedModels>() => useContext(Context) as PaginatedModelContext<T>;
 //----------------------------------------------------------------------------------------------------------------------
-const PaginatedModelProvider: FC<PaginatedModelProviderProps> =
-    ({ children, resourceDataKey, url, middleware = 'auth' }) => {
+const PaginatedModelProvider =
+    (props: PaginatedModelProviderProps) => {
+        const { children, resourceDataKey, url, middleware = 'auth' } = props;
         const [pageIndex, setPageIndex] = useState(1);
         const [hasMore, setHasMore] = useState(true);
         const [hasLess, setHasLess] = useState(false);

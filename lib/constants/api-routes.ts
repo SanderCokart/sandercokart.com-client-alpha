@@ -17,7 +17,7 @@ export const ApiEmailChangeRoute = '/account/email/change';
 export const ApiEmailVerifyRoute = '/account/email/verify';
 export const ApiEmailVerifyRetryRoute = '/account/email/verify/retry';
 export const ApiPasswordChangeRoute = '/account/password/change';
-export const ApiUserRoute = '/account/user';
+export const ApiGetUserRoute = '/account/user';
 export const ApiLogoutRoute = '/account/logout';
 export const ApiArticleStoreRoute = '/articles/store';
 export const ApiArticleUpdateRoute = (id: number) => `/articles/${id}`;

@@ -6,7 +6,7 @@ import axios from '../functions/shared/axios';
 import {UserModel} from '@/types/ModelTypes';
 import {AxiosError} from 'axios';
 import {CustomApiPromise} from '@/types/CustomTypes';
-import {ApiLogoutRoute, ApiCSRFTokenRoute, ApiUserRoute, ApiLoginRoute} from '@/constants/api-routes';
+import {ApiLogoutRoute, ApiCSRFTokenRoute, ApiGetUserRoute, ApiLoginRoute} from '@/constants/api-routes';
 
 const AuthContext = createContext({});
 
@@ -44,7 +44,7 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { data: user, mutate, error } = useSWR<UserModel | null>(ApiUserRoute);
+    const { data: user, mutate, error } = useSWR<UserModel | null>(ApiGetUserRoute);
 
     const csrf = () => axios.get(ApiCSRFTokenRoute);
 

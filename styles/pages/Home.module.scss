@@ -83,19 +83,23 @@
   bottom: 0;
   left: 0;
   background-color: var(--bg-trans);
+  height: 60%;
+  width: 100%;
+  padding: 8px;
 }
 
-.privateIcon {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  background-color: var(--acc);
-  border-radius: 50%;
-  color: #ffffff;
-  padding: 8px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.captionTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 36px;
+}
+
+.captionExcerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 24px;
 }

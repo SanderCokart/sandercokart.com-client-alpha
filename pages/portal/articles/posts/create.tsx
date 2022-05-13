@@ -6,7 +6,7 @@ import Loader from '@/components/Loader/Loader';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';

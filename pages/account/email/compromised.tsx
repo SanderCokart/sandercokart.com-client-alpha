@@ -2,7 +2,7 @@ import Input from '@/components/formComponents/Input/Input';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
@@ -12,7 +12,7 @@ import setFormErrors from '@/functions/client/setFormErrors';
 
 const ChangePassword = () => {
     const router = useRouter();
-    const emailCompromisedForm = useForm({
+    const emailCompromisedForm = useForm<EmailCompromisedFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string()
                 .email('Must be a valid email')
@@ -35,7 +35,7 @@ const ChangePassword = () => {
     const { formState: { isValid, isDirty }, handleSubmit, register, setError, reset } = emailCompromisedForm;
     const { query: { user: qUser, token: qToken } } = router;
 
-    const onSubmit = async (formValues: EmailCompromisedFormValues) => {
+    const onSubmit = handleSubmit(async (formValues) => {
         const response = await axios.simplePatch('/account/email/compromised', formValues, {
             params: { user: qUser, token: qToken }
         });
@@ -50,11 +50,11 @@ const ChangePassword = () => {
             default:
                 return;
         }
-    };
+    });
 
     return (
         <FormProvider {...emailCompromisedForm}>
-            <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <form noValidate className={styles.form} onSubmit={onSubmit}>
                 <CenteredFormLayout title="Reset Compromised Email">
                     <Input autoComplete="email" label="Email" placeholder="Type your email address"
                            registerFormHook={{ ...register('email') }}

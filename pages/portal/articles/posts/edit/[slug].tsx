@@ -10,7 +10,7 @@ import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 import {ArticleModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';

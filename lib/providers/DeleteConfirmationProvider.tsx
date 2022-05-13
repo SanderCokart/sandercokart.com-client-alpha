@@ -2,7 +2,7 @@ import {createContext, ReactNode, useState, useContext, useEffect} from 'react';
 import {Models} from '@/types/ModelTypes';
 import {useBooleanToggle} from '@/hooks/useToggle';
 import {useForm, FormProvider} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup/dist/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import Modal from 'react-responsive-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
@@ -60,6 +60,7 @@ export const ConfirmDeleteModal = <T extends Models>(props: ConfirmDeleteModalPr
         confirmationValue,
         setConfirmationValue
     } = useDeleteConfirmationContext<T>();
+
     const deleteUserForm = useForm({
         resolver: yupResolver(Yup.object().shape({
             confirmation: Yup.string().test('must-match', props.confirmationErrorMessage, (value) => {
@@ -79,7 +80,7 @@ export const ConfirmDeleteModal = <T extends Models>(props: ConfirmDeleteModalPr
 
     useEffect(() => {
         if (!showDeleteModal) reset();
-    }, [showDeleteModal,itemToDelete]);
+    }, [showDeleteModal, itemToDelete]);
 
     return (
         <Modal closeIcon={<FontAwesomeIcon fixedWidth icon="times"/>} open={showDeleteModal}
@@ -87,7 +88,7 @@ export const ConfirmDeleteModal = <T extends Models>(props: ConfirmDeleteModalPr
             <FormProvider {...deleteUserForm}>
                 <form noValidate onSubmit={handleSubmit(props.onSubmitDelete)}>
                     <header className={styles.header}>
-                        <h2>Delete User {itemToDelete?.[props.keyOfModelAsTitle]}</h2>
+                        <h2>{`Delete User ${itemToDelete?.[props.keyOfModelAsTitle]}`}</h2>
                     </header>
                     <main className={styles.main}>
                         <p>
