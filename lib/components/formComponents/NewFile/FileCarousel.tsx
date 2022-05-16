@@ -7,7 +7,7 @@ import {FileModel} from '@/types/ModelTypes';
 import useImage from '@/hooks/useImage';
 import {Button} from '@/components/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {ApiFilesRoute} from '@/constants/api-routes';
+import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';
 import axios from '@/functions/shared/axios';
 
 interface CarouselItemProps {
@@ -22,7 +22,7 @@ function CarouselItem(props: CarouselItemProps) {
     const deleteItem = async () => {
         setValue(props.name, [...getValues(props.name).filter((item: FileModel) => item !== props.file)]);
         if (!_defaultValues[props.name].find((item: FileModel) => item.id === props.file.id)) {
-            await axios.simpleDelete(ApiFilesRoute(props.file.id));
+            await axios.simpleDelete(ApiDeleteFilesDestroyRoute(props.file.id));
         }
     };
 

@@ -8,7 +8,7 @@ import {Button} from '@/components/Button/Button';
 import setFormErrors from '@/functions/client/setFormErrors';
 import type {PasswordCompromisedFormValues} from '@/types/FormValueTypes';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import {ApiPasswordCompromisedRoute} from '@/constants/api-routes';
+import {ApiPatchCompromisedPasswordRoute} from '@/constants/api-routes';
 import styles from '@/styles/pages/account/password/CompromisedPassword.module.scss';
 
 
@@ -35,7 +35,7 @@ const PasswordCompromisedPage = () => {
     const { formState: { isValid, isDirty }, register, handleSubmit, setError } = passwordCompromisedForm;
 
     const onSubmitCompromisedPassword = async (formValues: PasswordCompromisedFormValues) => {
-        const response = await axios.simplePatch(ApiPasswordCompromisedRoute, formValues, { params: { ...router.query } });
+        const response = await axios.simplePatch(ApiPatchCompromisedPasswordRoute, formValues, { params: { ...router.query } });
         switch (response.type) {
             case 'success':
                 router.push('/login');

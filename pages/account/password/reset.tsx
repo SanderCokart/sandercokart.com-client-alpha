@@ -10,7 +10,7 @@ import {toast} from 'react-toastify';
 import {Button} from '@/components/Button/Button';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import setFormErrors from '@/functions/client/setFormErrors';
-import {ApiPasswordResetRoute} from '@/constants/api-routes';
+import {ApiPatchResetPasswordRoute} from '@/constants/api-routes';
 import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 export const PasswordResetPage = () => {
@@ -30,7 +30,7 @@ export const PasswordResetPage = () => {
 
     const onSubmitPasswordReset = async (formValues: PasswordResetFormValues) => {
         const { query: { identifier, token } } = router;
-        const response = await axios.simplePatch(ApiPasswordResetRoute, formValues, { params: { identifier, token } });
+        const response = await axios.simplePatch(ApiPatchResetPasswordRoute, formValues, { params: { identifier, token } });
         switch (response.type) {
             case 'form':
                 setFormErrors(setError, response.errors);

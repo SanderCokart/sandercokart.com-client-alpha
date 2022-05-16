@@ -2,7 +2,6 @@ import {Button} from '@/components/Button/Button';
 import Input from '@/components/formComponents/Input/Input';
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import axios from '@/functions/shared/axios';
-import useImage from '@/hooks/useImage';
 import styles from '@/components/formComponents/MarkdownEditor/Toolbar.module.scss';
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
@@ -11,19 +10,76 @@ import Papa from 'papaparse';
 import type {ChangeEvent, MouseEvent} from 'react';
 import {useCallback, useEffect} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
-import {ApiFilesRoute} from '@/constants/api-routes';
+import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
+import Select from '@/components/formComponents/Select';
 
 
 interface ToolbarProps {
     name: string;
 }
 
+interface InsertTableProps {
+    onMouseEnter: (e: MouseEvent<HTMLInputElement>) => void;
+    onMouseLeave: (e: MouseEvent<HTMLInputElement>) => void;
+    onClick: () => void;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const InsertTable = (props: InsertTableProps) => {
+    return (
+        <>
+            <Input defaultValue={1}
+                   label="Rows"
+                   min={1}
+                   name="tableRows"
+                   type="number"
+                   onMouseEnter={props.onMouseEnter}
+                   onMouseLeave={props.onMouseLeave}/>
+
+            <Input defaultValue={1}
+                   label="Columns"
+                   min={1}
+                   name="tableColumns"
+                   type="number"
+                   onMouseEnter={props.onMouseEnter}
+                   onMouseLeave={props.onMouseLeave}/>
+            <Button className={styles.dropdownInteractionButton}
+                    onClick={props.onClick}>Insert
+            </Button>
+            <label className={styles.uploadCSVLabel}
+                   htmlFor="uploadCSV">Import CSV</label>
+            <input className={styles.uploadCSVInput} id="uploadCSV" type="file" onChange={props.onChange}/>
+        </>
+    );
+};
+
+interface InsertImageProps {
+    onClick: () => void,
+    onChange: (e: ChangeEvent<HTMLInputElement>) => Promise<void>
+}
+
+function InsertImage(props: InsertImageProps) {
+    return (
+        <>
+            <FontAwesomeIcon icon="images"/>
+            <div className={styles.toolbarItemImageDropdown}>
+                <Button className={styles.dropdownInteractionButton} onClick={props.onClick}>
+                    External image
+                </Button>
+                <label className={styles.uploadCustomImageLabel}
+                       htmlFor="uploadCustomImage">Upload Image</label>
+                <input className={styles.uploadCustomImageInput} id="uploadCustomImage" type="file"
+                       onChange={props.onChange}/>
+            </div>
+        </>
+    );
+}
+
 const Toolbar = ({ name }: ToolbarProps) => {
     const { setValue } = useFormContext();
     const toolbarForm = useForm();
-    const { getValues } = toolbarForm;
+    const { getValues, register } = toolbarForm;
     const { editorRef, tableRows, tableColumns, gridRows, gridColumns, fontSize, setState } = useEditorContext();
-    const { getUrl } = useImage();
 
     const selectWordUnderCursor = useCallback(() => {
         if (editorRef.current) {
@@ -159,7 +215,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
         const formData = new FormData();
         formData.set('file', files[0]);
 
-        const { data } = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
+        const { data } = await axios.simplePost<FileModel>(ApiPostFilesStoreRoute, formData);
 
         if (editorRef.current) {
             const { value, selectionStart, selectionEnd } = editorRef.current;
@@ -227,14 +283,13 @@ const Toolbar = ({ name }: ToolbarProps) => {
         }
     }, []);
 
-    const insertComponent = (e: MouseEvent<HTMLButtonElement>) => {
-        const { name: component } = e.currentTarget;
+    const insertGrid = (e: MouseEvent<HTMLButtonElement>) => {
         if (editorRef.current) {
             selectWordUnderCursor();
             const { value, selectionStart, selectionEnd } = editorRef.current;
-            const [gridRows, gridColumns] = getValues(['gridRows', 'gridColumns']);
+            const [gridColumns, gridGap, alignment] = getValues(['gridColumns', 'gridGap', 'alignment']);
 
-            const newValue = value.substring(0, selectionEnd) + `\n\n<${component} columns="${gridColumns}" rows="${gridRows}">\n\n\n\n</${component}>\n\n` + value.substring(selectionEnd);
+            const newValue = value.substring(0, selectionEnd) + `\n\n<Grid gap="${gridGap}" alignment="${alignment}" columns="${gridColumns}">\n\n\n\n</Grid>\n\n` + value.substring(selectionEnd);
             setValue(name, newValue);
 
             editorRef.current.focus();
@@ -318,7 +373,6 @@ const Toolbar = ({ name }: ToolbarProps) => {
                         <Button key={index}
                                 className={styles.toolbarItem}
                                 title={item.title}
-                                type="button"
                                 onClick={item.onClick}>
                             <FontAwesomeIcon icon={item.icon}/>
                         </Button>
@@ -327,41 +381,13 @@ const Toolbar = ({ name }: ToolbarProps) => {
                     <div className={styles.toolbarItem}>
                         <FontAwesomeIcon icon="table"/>
                         <div className={styles.toolbarItemTableDropdown}>
-                            <Input defaultValue={1}
-                                   label="Rows"
-                                   min={1}
-                                   name="tableRows"
-                                   type="number"
-                                   onMouseEnter={AutoFocus}
-                                   onMouseLeave={AutoBlur}/>
-
-                            <Input defaultValue={1}
-                                   label="Columns"
-                                   min={1}
-                                   name="tableColumns"
-                                   type="number"
-                                   onMouseEnter={AutoFocus}
-                                   onMouseLeave={AutoBlur}/>
-                            <Button className={styles.dropdownInteractionButton} type="button"
-                                    onClick={insertTable}>Insert
-                            </Button>
-                            <label className={styles.uploadCSVLabel}
-                                   htmlFor="uploadCSV">Import CSV</label>
-                            <input className={styles.uploadCSVInput} id="uploadCSV" type="file" onChange={importCSV}/>
+                            <InsertTable onChange={importCSV} onClick={insertTable} onMouseEnter={AutoFocus}
+                                         onMouseLeave={AutoBlur}/>
                         </div>
                     </div>
 
                     <div className={styles.toolbarItem}>
-                        <FontAwesomeIcon icon="images"/>
-                        <div className={styles.toolbarItemImageDropdown}>
-                            <Button className={styles.dropdownInteractionButton} type="button" onClick={imageMd}>
-                                External image
-                            </Button>
-                            <label className={styles.uploadCustomImageLabel}
-                                   htmlFor="uploadCustomImage">Upload Image</label>
-                            <input className={styles.uploadCustomImageInput} id="uploadCustomImage" type="file"
-                                   onChange={onImageUpload}/>
-                        </div>
+                        <InsertImage onChange={onImageUpload} onClick={imageMd}/>
                     </div>
 
                     <div className={styles.toolbarItem}>
@@ -371,20 +397,26 @@ const Toolbar = ({ name }: ToolbarProps) => {
                                 Grid
                                 <div className={styles.componentSelectionItem}>
                                     <Input defaultValue={1}
-                                           label="Rows"
-                                           min={1}
-                                           name="gridRows"
-                                           type="number"
-                                           onMouseEnter={AutoFocus}
-                                           onMouseLeave={AutoBlur}/>
-                                    <Input defaultValue={1}
                                            label="Columns"
                                            min={1}
-                                           name="gridColumns"
+                                           registerFormHook={{ ...register('gridColumns') }}
                                            type="number"
                                            onMouseEnter={AutoFocus}
                                            onMouseLeave={AutoBlur}/>
-                                    <Button name="Grid" type="button" onClick={insertComponent}>
+                                    <Input defaultValue={16}
+                                           label="Gap"
+                                           min={0}
+                                           registerFormHook={{ ...register('gridGap') }}
+                                           type="number"
+                                           onMouseEnter={AutoFocus}
+                                           onMouseLeave={AutoBlur}/>
+                                    <Select defaultValue="center" label="Alignment" registerFormHook={{...register('alignment')}}>
+                                        <option value="normal">Normal</option>
+                                        <option value="flex-start">Left</option>
+                                        <option value="flex-end">Right</option>
+                                        <option value="center">Center</option>
+                                    </Select>
+                                    <Button fullWidth name="Grid" onClick={insertGrid}>
                                         Insert
                                     </Button>
                                 </div>
@@ -397,7 +429,6 @@ const Toolbar = ({ name }: ToolbarProps) => {
                     {rightToolbarItems.map((item, index) => (
                         <Button key={index}
                                 className={styles.toolbarItem}
-                                type="button"
                                 onClick={item.onClick}>
                             <FontAwesomeIcon icon={item.icon}/>
                         </Button>

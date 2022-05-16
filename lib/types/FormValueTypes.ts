@@ -3,8 +3,8 @@ import {FileModel, RoleModel} from '@/types/ModelTypes';
 export interface CreatePostFormValues {
     title: string;
     excerpt: string;
-    banner: FileModel[];
     markdown: string;
+    banner: FileModel[];
 }
 
 export interface LoginFormValues {

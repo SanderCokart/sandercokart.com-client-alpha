@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import BoxContainer from '@/components/BoxContainer';
-import {ApiPasswordChangeRoute} from '@/constants/api-routes';
+import {ApiPatchChangePasswordRoute} from '@/constants/api-routes';
 import useAuthPage from '@/hooks/useAuthPage';
 import {useEffect} from 'react';
 
@@ -87,7 +87,7 @@ const PasswordForm = () => {
 
 
     const onSubmitPasswordChange = async (formValues: PasswordChangeFormValues) => {
-        const response = await axios.simplePatch(ApiPasswordChangeRoute, formValues);
+        const response = await axios.simplePatch(ApiPatchChangePasswordRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
         }

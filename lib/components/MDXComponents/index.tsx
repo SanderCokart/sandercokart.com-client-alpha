@@ -1,23 +1,34 @@
-import Code from '@/components/MDXComponents/Code';
 import styles from './MDXComponents.module.scss';
 import {Property} from 'csstype';
 import NextImage from 'next/image';
-import type {FC} from 'react';
+import {withChildren} from '@/types/CustomTypes';
+import Code from '@/components/MDXComponents/Code';
 
-const P: FC = (props) => <p className={styles.p} {...props}/>;
+const P = (props: withChildren) => <p className={styles.p} {...props}/>;
 
-const Title: FC = (props) => <h1 className={styles.title} {...props}/>;
+const Title = (props: withChildren) => <h1 className={styles.title} {...props}/>;
 
-const H1: FC = (props) => <h1 className={styles.h1} {...props}/>;
+const H1 = (props: withChildren) => <h1 className={styles.h1} {...props}/>;
 
-const H2: FC = (props) => <h2 className={styles.h2} {...props}/>;
+const H2 = (props: withChildren) => <h2 className={styles.h2} {...props}/>;
 
-const H3: FC = (props) => <h3 className={styles.h3} {...props}/>;
+const H3 = (props: withChildren) => <h3 className={styles.h3} {...props}/>;
 
-const H4: FC = (props) => <h4 className={styles.h4} {...props}/>;
+const H4 = (props: withChildren) => <h4 className={styles.h4} {...props}/>;
 
-const Grid: FC<{ columns?: number, alignment?: Property.PlaceItems, gap?: number }> =
-    ({ columns = 3, alignment = 'center', gap = 0, ...props }) =>
+interface GridProps {
+    columns?: number,
+    alignment?: Property.PlaceItems,
+    gap?: number
+};
+
+const Grid =
+    ({
+         columns = 3,
+         alignment = 'center',
+         gap = 0,
+         ...props
+     }: GridProps) =>
         <div style={{
             display: 'grid',
             gap: `${gap}px`,
@@ -25,20 +36,22 @@ const Grid: FC<{ columns?: number, alignment?: Property.PlaceItems, gap?: number
             placeItems: alignment
         }} {...props}/>;
 
-const Table: FC = (props) => <table className={styles.table} {...props}/>;
+const Table = (props: withChildren) => <table className={styles.table} {...props}/>;
 
-const A: FC = (props) => <a className={styles.a} {...props}/>;
+const A = (props: withChildren) => <a className={styles.a} {...props}/>;
 
-const UL: FC = (props) => <ul className={styles.ul} {...props}/>;
-const LI: FC = (props) => <li className={styles.li} {...props}/>;
-const OL: FC = (props) => <ol className={styles.ol} {...props}/>;
+const UL = (props: withChildren) => <ul className={styles.ul} {...props}/>;
+const LI = (props: withChildren) => <li className={styles.li} {...props}/>;
+const OL = (props: withChildren) => <ol className={styles.ol} {...props}/>;
 
 //@ts-ignore
-const Image: FC<Partial<HTMLImageElement>> = (props) => <img {...props} className={styles.img} title={props.alt}/>;
+const Image = (props: withChildren & Partial<HTMLImageElement>) => <img {...props} alt={props.alt}
+                                                                        className={styles.img} title={props.alt}/>;
 
-const CustomImage: FC<{ src: string }> = (props) => (
+const CustomImage = (props: withChildren & { src: string; }) => (
     <div className={styles.imageWrapper}>
-        <NextImage {...props} layout="fill" objectFit="contain" unoptimized={props.src.includes('/files')}/>
+        <NextImage {...props} layout="fill" objectFit="contain"
+                   unoptimized={props.src.includes('/files') || props.src.includes('unsplash.it')}/>
     </div>
 );
 

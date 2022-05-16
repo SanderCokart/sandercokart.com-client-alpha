@@ -4,6 +4,7 @@ import type {ChangeEvent} from 'react';
 import {TextareaHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import {UseFormRegisterReturn} from 'react-hook-form';
+import classnames from 'classnames';
 
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -13,17 +14,20 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     registerFormHook?: UseFormRegisterReturn;
     containerProps?: HTMLAttributes<HTMLDivElement>;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    autogrow?: boolean;
 }
 
 const Textarea = (props: TextareaProps) => {
     const {
-        loading = false,
+        autogrow = true,
+        className = undefined,
         containerProps = undefined,
-        labelProps = undefined,
-        name = undefined,
         label = undefined,
-        onChange = undefined,
+        labelProps = undefined,
+        loading = false,
+        name = undefined,
         onBlur = undefined,
+        onChange = undefined,
         registerFormHook,
         ...restOfProps
     } = props;
@@ -51,7 +55,7 @@ const Textarea = (props: TextareaProps) => {
                          ref={(el) => {
                              registerFormHook?.ref(el);
                          }}
-                         className={styles.textarea}
+                         className={classnames([styles.textarea, className])}
                          onBlur={(e) => {
                              registerFormHook?.onBlur(e);
                              onBlur?.(e);
@@ -59,7 +63,7 @@ const Textarea = (props: TextareaProps) => {
                          onChange={(e) => {
                              registerFormHook?.onChange(e);
                              onChange?.(e);
-                             autoGrow(e);
+                             autogrow && autoGrow(e);
                          }}
                          {...restOfProps}
                          id={nameAndId}

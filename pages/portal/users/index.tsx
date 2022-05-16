@@ -14,7 +14,7 @@ import DeleteConfirmationContextProvider, {
     ConfirmDeleteModal
 } from '@/providers/DeleteConfirmationProvider';
 import axios from '@/functions/shared/axios';
-import {ApiUsersRoute} from '@/constants/api-routes';
+import {ApiDeleteUsersDestroyRoute} from '@/constants/api-routes';
 
 interface UserRowProps {
     user: UserModel,
@@ -61,7 +61,7 @@ function UsersTable() {
     const columnNames = ['id', 'name', 'email', 'roles', 'created_at', 'updated_at', 'email_verified_at', 'actions'];
 
     const handleSubmitDeleteUser = async () => {
-        await axios.simpleDelete(ApiUsersRoute(itemToDelete.id));
+        await axios.simpleDelete(ApiDeleteUsersDestroyRoute(itemToDelete.id));
         await mutate(currentValue => {
             if (currentValue) return {
                 ...currentValue,

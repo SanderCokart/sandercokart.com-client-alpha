@@ -8,7 +8,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {FileModel} from '@/types/ModelTypes';
 import getDifference from '@/functions/shared/getDifference';
 import axios from '@/functions/shared/axios';
-import {ApiFilesRoute} from '@/constants/api-routes';
+import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';
+import classnames from 'classnames';
 
 interface FileProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string;
@@ -21,25 +22,19 @@ const File = (props: FileProps) => {
     const handleReset = async () => {
         const nonDefaultFiles = getDifference<FileModel>(getValues(props.name), _defaultValues[props.name]);
         for (const file of nonDefaultFiles) {
-            await axios.simpleDelete(ApiFilesRoute(file.id));
+            await axios.simpleDelete(ApiDeleteFilesDestroyRoute(file.id));
         }
         reset();
     };
 
     return (
-        <>
-            <div className={styles.controls}>
-                <Button onClick={() => setValue(props.name, [])}>Empty</Button>
-            </div>
-
-            <div className={styles.root}>
-                <Button circle className={styles.reset} onClick={handleReset}>
-                    <FontAwesomeIcon icon="history"/>
-                </Button>
-                {files.length > 0 && <FileCarousel name={props.name}/>}
-                {(props.multiple || files.length === 0) && <FileDropbox multiple={props.multiple} name={props.name}/>}
-            </div>
-        </>
+        <div className={classnames([styles.root, props.className])}>
+            <Button circle className={styles.reset} onClick={handleReset}>
+                <FontAwesomeIcon icon="history"/>
+            </Button>
+            {files.length > 0 && <FileCarousel name={props.name}/>}
+            {(props.multiple || files.length === 0) && <FileDropbox multiple={props.multiple} name={props.name}/>}
+        </div>
     );
 };
 

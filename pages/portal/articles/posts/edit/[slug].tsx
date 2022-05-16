@@ -18,7 +18,7 @@ import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import * as Yup from 'yup';
 import useAuthPage from '@/hooks/useAuthPage';
-import {ApiArticleShowRoute} from '@/constants/api-routes';
+import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
 import {useAuth} from '@/providers/AuthProvider';
 
 const EditPost = () => {
@@ -29,7 +29,7 @@ const EditPost = () => {
     const {
         data: post,
         error
-    } = useSWR<ArticleModel>((slug && isAdmin) ? ApiArticleShowRoute('posts', slug) : null);
+    } = useSWR<ArticleModel>((slug && isAdmin) ? ApiGetArticlesShowRoute('posts', slug) : null);
 
     return (
         <PortalContainer>

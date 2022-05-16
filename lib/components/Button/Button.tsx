@@ -34,8 +34,8 @@ export const Button = (props: ButtonProps) => {
 
     const classNames = classnames(
         styles.button,
-        className,
         (fullWidth && styles.fullWidth),
+        className,
         (navigationButton && styles.navigationButton),
         (circle && styles.circularButton)
     );
@@ -53,6 +53,7 @@ export const LinkButton = (props: LinkButtonProps) => {
         circle,
         ...restOfProps
     } = props;
+
     const classNames = classnames(
         styles.button,
         (fullWidth && styles.fullWidth),

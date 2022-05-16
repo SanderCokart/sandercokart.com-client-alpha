@@ -15,7 +15,11 @@ import setFormErrors from '@/functions/client/setFormErrors';
 import {useBooleanToggle} from '@/hooks/useToggle';
 import Loader from '@/components/Loader/Loader';
 import BoxContainer from '@/components/BoxContainer';
-import {LocalPasswordForgotPageRoute, LocalRegisterPageRoute} from '@/constants/local-routes';
+import {
+    LocalPasswordForgotPageRoute,
+    LocalRegisterPageRoute,
+    LocalEmailVerifyPageRoute
+} from '@/constants/local-routes';
 
 export const Login = () => {
     const router = useRouter();
@@ -34,7 +38,7 @@ export const Login = () => {
         })),
         mode: 'all'
     });
-    const { formState: { isValid, isDirty, isSubmitting }, handleSubmit, register, setError } = loginForm;
+    const { formState: { isValid, isDirty }, handleSubmit, register, setError } = loginForm;
 
     useEffect(() => {
         if (shouldRedirect) router.push('/');
@@ -51,7 +55,7 @@ export const Login = () => {
         switch (qType) {
             case'verify': {
                 return router.push({
-                    pathname: `/account/email/verify`,
+                    pathname: LocalEmailVerifyPageRoute,
                     query: router.query
                 });
             }

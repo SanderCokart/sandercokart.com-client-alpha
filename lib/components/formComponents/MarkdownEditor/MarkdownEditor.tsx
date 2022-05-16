@@ -1,9 +1,8 @@
-import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar';
 import useMDXComponents from '@/components/MDXComponents';
 import styles from './MarkdownEditor.module.scss';
 // @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
-import type {Dispatch, MouseEvent, MutableRefObject, SetStateAction} from 'react';
+import type {Dispatch, MutableRefObject, SetStateAction} from 'react';
 import {
     createContext,
     createElement,
@@ -19,16 +18,17 @@ import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 // @ts-ignore
 import remarkUnderline from 'remark-underline';
+import NewToolbar from '@/components/formComponents/MarkdownEditor/NewToolbar';
+import syncScroll from '@/functions/client/syncScroll';
 
 const EditorContext = createContext({});
 export const useEditorContext = () => useContext(EditorContext) as {
-    editorRef: MutableRefObject<HTMLTextAreaElement | null>,
-    previewRef: MutableRefObject<HTMLTextAreaElement | null>,
+    editorRef: MutableRefObject<any>,
+    previewRef: MutableRefObject<any>,
     tableRows: number,
     tableColumns: number,
     fontSize: number,
     gridColumns: number,
-    gridRows: number,
     setState: Dispatch<SetStateAction<{ tableRows: number, tableColumns: number, fontSize: number, gridColumns: number, gridRows: number }>>
 };
 
@@ -52,49 +52,22 @@ const MarkdownEditor = ({ name, textareaProps, ...restOfProps }: MarkdownEditorP
         gridRows: 1
     });
 
-    const syncTextAreaWithPreview = (e: MouseEvent<HTMLTextAreaElement>) => {
-        if (previewRef.current && editorRef.current) {
-            const elements = Array.from(document.querySelectorAll(':hover'));
-            const hovering = elements.includes(editorRef.current);
-
-            if (hovering) {
-                //total height
-                const textareaHeight = editorRef.current.scrollHeight;
-                const previewHeight = previewRef.current.scrollHeight;
-
-                //amount actually scrolled
-                const textareaScrolled = editorRef.current.scrollTop;
-
-                //inner height
-                const textareaInnerHeight = editorRef.current.clientHeight;
-                const previewInnerHeight = previewRef.current.clientHeight;
-
-                //available scroll hight on both
-                const textareaScrollArea = textareaHeight - textareaInnerHeight;
-                const previewScrollArea = previewHeight - previewInnerHeight;
-
-                //amount scrolled converted from textarea to preview
-                const percentageScrolledOnTextarea = (100 / textareaScrollArea) * textareaScrolled;
-
-                previewRef.current.scrollTop = (previewScrollArea / 100) * percentageScrolledOnTextarea;
-            }
-        }
-    };
-
 
     return (
         <EditorContext.Provider value={{ editorRef, previewRef, ...state, setState }}>
             <div {...restOfProps} className={styles.container}>
-                <Toolbar name={name}/>
+                <NewToolbar/>
                 <div className={styles.editorContainer}>
-                <textarea {...restOfRegister} ref={el => {
-                    ref(el);
-                    editorRef.current = el;
-                }}
-                          className={styles.editor}
-                          name={name}
-                          onScroll={syncTextAreaWithPreview}
-                          {...textareaProps}/>
+                <textarea
+                    {...restOfRegister}
+                    ref={el => {
+                        ref(el);
+                        editorRef.current = el;
+                    }}
+                    className={styles.editor}
+                    name={name}
+                    onScroll={() => syncScroll(editorRef, previewRef)}
+                    {...textareaProps}/>
                     <Preview name={name}/>
                 </div>
             </div>
@@ -114,43 +87,13 @@ const Preview = ({ name, ...props }: PreviewProps) => {
     const { watch } = useFormContext();
     const [markdown, title, excerpt]: string[] = watch([name, 'title', 'excerpt']);
 
-    const syncPreviewWithTextArea = () => {
-
-        if (previewRef.current && editorRef.current) {
-            const elements = Array.from(document.querySelectorAll(':hover'));
-            const hovering = elements.includes(previewRef.current);
-
-            if (hovering) {
-                //total height
-                const textareaHeight = editorRef.current.scrollHeight;
-                const previewHeight = previewRef.current.scrollHeight;
-
-                //amount actually scrolled
-                const previewScrolled = previewRef.current.scrollTop;
-
-                //inner height
-                const textareaInnerHeight = editorRef.current.clientHeight;
-                const previewInnerHeight = previewRef.current.clientHeight;
-
-                //available scroll hight on both
-                const textareaScrollArea = textareaHeight - textareaInnerHeight;
-                const previewScrollArea = previewHeight - previewInnerHeight;
-
-                //amount scrolled converted from preview to textarea
-                const percentageScrolledOnPreview = (100 / previewScrollArea) * previewScrolled;
-                const result = (textareaScrollArea / 100) * percentageScrolledOnPreview;
-
-                editorRef.current.scrollTop = result;
-            }
-        }
-    };
 
     try {
         return createElement(
             'div', {
                 ...props,
                 ref: previewRef,
-                onScroll: syncPreviewWithTextArea,
+                onScroll: () => syncScroll(previewRef, editorRef),
                 className: styles.preview,
                 dangerouslySetInnerHTML: {
                     __html: renderToStaticMarkup(

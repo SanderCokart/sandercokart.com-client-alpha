@@ -1,23 +1,24 @@
-import useMDXComponents from '@/components/MDXComponents';
 import axios from '@/functions/shared/axios';
 import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
 import {PostsSlugsResponse} from '@/types/ResponseTypes';
 import {GetStaticPaths, GetStaticProps} from 'next';
 import {MDXRemoteSerializeResult, MDXRemote} from 'next-mdx-remote';
 import {ArticleModel} from '@/types/ModelTypes';
-import {ApiArticleSlugRoute, ApiArticleShowRoute} from '@/constants/api-routes';
-import {serialize} from 'next-mdx-remote/serialize';
+import {ApiGetArticlesSlugsRoute, ApiGetArticlesShowRoute} from '@/constants/api-routes';
+import {ParsedUrlQuery} from 'querystring';
+import {useMemo} from 'react';
+import {getMDXComponent} from 'mdx-bundler/client';
 import remarkToc from 'remark-toc';
 import rehypeSlug from 'rehype-slug';
-import {ParsedUrlQuery} from 'querystring';
+import {serialize} from 'next-mdx-remote/serialize';
+import useMDXComponents from '@/components/MDXComponents';
+import MDXComponents from '@/components/MDXComponents';
 
-const PostPage = ({ post, mdxSource }: BlogPostProps) => {
-    const MDXComponents = useMDXComponents();
-    const { Title } = MDXComponents;
+const PostPage = ({ post }: BlogPostProps) => {
     return (
         <div className={styles.container}>
-            <Title>{post.title}</Title>
-            <MDXRemote components={MDXComponents} {...mdxSource}/>
+            {/*<Title>{post.title}</Title>*/}
+            {/*<MDXRemote components={MDXComponents} {...post.markdown}/>*/}
         </div>
     );
 };
@@ -30,7 +31,7 @@ interface BlogPostProps {
 export default PostPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const response = await axios.simpleGet<PostsSlugsResponse[]>(ApiArticleSlugRoute('posts'));
+    const response = await axios.simpleGet<PostsSlugsResponse[]>(ApiGetArticlesSlugsRoute('posts'));
     switch (response.type) {
         case 'success':
             return {
@@ -54,18 +55,17 @@ interface Props {
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
     if (!context.params?.slug) throw new Error('No params');
 
-    const { data: post } = await axios.simpleGet(ApiArticleShowRoute('posts', context.params.slug));
-    const mdxSource = await serialize(post.markdown, {
+    const { data: post } = await axios.simpleGet(ApiGetArticlesShowRoute('posts', context.params.slug));
+    post.markdown = await serialize(post.markdown, {
         mdxOptions: {
             remarkPlugins: [remarkToc],
             rehypePlugins: [rehypeSlug]
         }
     });
 
-    delete post.markdown;
 
     return {
-        props: { post, mdxSource },
+        props: { post },
         revalidate: 60
     };
 };

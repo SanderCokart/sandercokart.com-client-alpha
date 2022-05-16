@@ -6,7 +6,11 @@ import type {ReactNode} from 'react';
 export type FontAwesomeIconType = [IconPrefix, IconName] | IconName
 
 
-export type CustomApiResponse<DATA = any> = SuccessResponse<DATA> | FormErrorResponse | StringErrorResponse | DefaultErrorResponse;
+export type CustomApiResponse<DATA = any> =
+    SuccessResponse<DATA>
+    | FormErrorResponse
+    | StringErrorResponse
+    | DefaultErrorResponse;
 export type CustomApiPromise<DATA = any> = Promise<SuccessResponse<DATA> | FormErrorResponse | StringErrorResponse | DefaultErrorResponse>;
 
 export interface SuccessResponse<T> {
@@ -46,3 +50,7 @@ export type PaginatedModels = UserModel | ArticleModel;
 export type CursorPaginatedModels = ArticleModel;
 
 export type Middleware = 'auth' | 'guest';
+
+export interface withChildren {
+    children: ReactNode;
+}

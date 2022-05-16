@@ -15,7 +15,7 @@ import DeleteConfirmationProvider, {
 import {Button, LinkButton} from '@/components/Button/Button';
 import styles from '@/styles/pages/portal/PortalTable.module.scss';
 import axios from '@/functions/shared/axios';
-import {ApiUsersRoute} from '@/constants/api-routes';
+import {ApiDeleteArticlesDestroyRoute} from '@/constants/api-routes';
 
 const PostRow = ({ article }: { article: ArticleModel }) => {
     const { toggleDeleteModal, setItemToDelete } = useDeleteConfirmationContext<ArticleModel>();
@@ -50,16 +50,16 @@ const PostRow = ({ article }: { article: ArticleModel }) => {
 
 const PostTable = () => {
     const { data: articles, isLoading, mutate } = usePaginatedContext<ArticleModel>();
-    const { itemToDelete, toggleDeleteModal } = useDeleteConfirmationContext<UserModel>();
+    const { itemToDelete, toggleDeleteModal } = useDeleteConfirmationContext<ArticleModel>();
 
     const columnNames = ['id', 'title', 'slug', 'author', 'created_at', 'updated_at', 'publishedAt', 'actions'];
 
     const handleSubmitDeletePost = async () => {
-        await axios.simpleDelete(ApiUsersRoute(itemToDelete.id));
+        await axios.simpleDelete(ApiDeleteArticlesDestroyRoute('posts', itemToDelete.slug));
         await mutate(currentValue => {
             if (currentValue) return {
                 ...currentValue,
-                users: currentValue.users.filter((user: UserModel) => user !== itemToDelete)
+                users: currentValue.articles.filter((article: ArticleModel) => article !== itemToDelete)
             };
         });
         toggleDeleteModal();

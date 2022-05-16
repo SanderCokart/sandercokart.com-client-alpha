@@ -1,0 +1,10 @@
+@use "/styles/utils";
+
+.root {
+  height: utils.$navHeightCalc;
+}
+
+.editorArea {
+  display: flex;
+  height: 100%;
+}

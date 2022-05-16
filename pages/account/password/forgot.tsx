@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import setFormErrors from '@/functions/client/setFormErrors';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import {Button} from '@/components/Button/Button';
-import {ApiPasswordForgotRoute} from '@/constants/api-routes';
+import {ApiPostForgotPasswordRoute} from '@/constants/api-routes';
 
 export const ForgotPasswordPage = () => {
     const forgotPasswordForm = useForm({
@@ -21,7 +21,7 @@ export const ForgotPasswordPage = () => {
     const { formState: { isValid, isDirty }, register, setError } = forgotPasswordForm;
 
     const onSubmitPasswordForgot = async (formValues: PasswordForgotFormValues) => {
-        const response = await axios.simplePost(ApiPasswordForgotRoute, formValues);
+        const response = await axios.simplePost(ApiPostForgotPasswordRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
             return;

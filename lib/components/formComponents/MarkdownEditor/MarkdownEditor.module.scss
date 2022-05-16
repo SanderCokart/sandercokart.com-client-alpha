@@ -1,14 +1,13 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .container {
-  position: relative;
+  //position: relative;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
   height: utils.$navHeightCalc;
   margin: 0 -16px -16px -16px;
 }
-
 
 .editorContainer {
   width: 100%;
@@ -28,11 +27,9 @@
   color: var(--bg-contrast-text);
   overflow-y: auto;
   font-size: 1.25rem;
-  overscroll-behavior: contain;
 }
 
 .preview {
-  overscroll-behavior: contain;
   width: 100%;
   height: 100%;
   background-color: var(--bg);
@@ -41,6 +38,10 @@
   flex-direction: column;
   gap: 20px;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
 
 .error {

@@ -2,10 +2,10 @@ import axios from '@/functions/shared/axios';
 import styles from './FileDropBox.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
 import type {ChangeEvent, DragEvent} from 'react';
-import {useFormContext} from 'react-hook-form';
-import {ApiFilesRoute} from '@/constants/api-routes';
-import setFormErrors from '@/functions/client/setFormErrors';
 import {useEffect} from 'react';
+import {useFormContext} from 'react-hook-form';
+import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
+import setFormErrors from '@/functions/client/setFormErrors';
 
 interface FileDropBoxProps {
     editMode?: boolean;
@@ -15,14 +15,14 @@ interface FileDropBoxProps {
 
 const FileDropBox = (props: FileDropBoxProps) => {
     const { name, multiple } = props;
-    const { setValue, getValues, setError, resetField, control: {_defaultValues} } = useFormContext();
+    const { setValue, getValues, setError, resetField, control: { _defaultValues } } = useFormContext();
     const toggleHighlight = (e: DragEvent<HTMLInputElement>) => {
         e.currentTarget.parentElement?.parentElement?.classList.toggle(styles.highlight);
     };
 
     useEffect(() => {
-        resetField(name, {defaultValue: _defaultValues[name] ?? []});
-    }, [])
+        resetField(name, { defaultValue: _defaultValues[name] ?? [] });
+    }, []);
 
     const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files ?? []);
@@ -31,7 +31,7 @@ const FileDropBox = (props: FileDropBoxProps) => {
             const formData = new FormData();
             for (const file of files) {
                 formData.set('file', file);
-                const response = await axios.simplePost<FileModel[]>(ApiFilesRoute, formData);
+                const response = await axios.simplePost<FileModel[]>(ApiPostFilesStoreRoute, formData);
                 switch (response.type) {
                     case 'form':
                         setFormErrors(setError, response.errors);
@@ -47,7 +47,7 @@ const FileDropBox = (props: FileDropBoxProps) => {
         } else {
             const formData = new FormData();
             formData.set('file', files[0]);
-            const response = await axios.simplePost<FileModel>(ApiFilesRoute, formData);
+            const response = await axios.simplePost<FileModel>(ApiPostFilesStoreRoute, formData);
             switch (response.type) {
                 case 'form':
                     setFormErrors(setError, response.errors);

@@ -3,12 +3,12 @@ import {Button} from '@/components/Button';
 import File from '@/components/formComponents/NewFile';
 import styles from '@/styles/pages/test.module.scss';
 import useSWR from 'swr';
-import {ApiArticleShowRoute} from '@/constants/api-routes';
+import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
 import {useEffect} from 'react';
 import {ArticleModel, FileModel} from '@/types/ModelTypes';
 
 const Test = () => {
-    const { data } = useSWR<ArticleModel>(ApiArticleShowRoute('posts', 'litzy-wolf'));
+    const { data } = useSWR<ArticleModel>(ApiGetArticlesShowRoute('posts', 'litzy-wolf'));
     const form = useForm({
         defaultValues: {
             banner: [] as FileModel[]

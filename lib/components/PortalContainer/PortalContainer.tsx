@@ -1,13 +1,15 @@
-import type {ReactNode} from 'react';
+import type {ReactNode, HTMLAttributes} from 'react';
 import styles from '@/components/PortalContainer/PortalContainer.module.scss';
+import classnames from 'classnames';
 
-interface PortalContainerProps {
+interface PortalContainerProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;
 }
 
-const PortalContainer = ({ children }: PortalContainerProps) => {
+const PortalContainer = (props: PortalContainerProps) => {
+    const { children, className, ...restOfProps } = props;
     return (
-        <div className={styles.container}>
+        <div className={classnames([styles.container, props.className])} {...restOfProps}>
             {children}
         </div>
     );

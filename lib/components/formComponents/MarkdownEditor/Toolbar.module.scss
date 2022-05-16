@@ -164,18 +164,21 @@
 }
 
 .componentSelectionItem {
+  width: 150px;
+  padding: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
   position: absolute;
   left: 100%;
-  width: 300px;
   top: 0;
-  gap: 8px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
+
   background-color: var(--bg-nav);
+  border: var(--acc) solid 2px;
+
+  transform-origin: left;
   transform: scaleX(0);
   transition: transform 150ms ease;
-  transform-origin: left;
-  padding: 16px;
-  border: var(--acc) solid 2px;
 }
