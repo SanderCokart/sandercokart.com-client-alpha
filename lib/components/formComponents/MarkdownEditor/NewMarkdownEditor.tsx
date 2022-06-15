@@ -1,7 +1,7 @@
 import styles from './NewMarkdownEditor.module.scss';
 import NewToolbar, {ToolbarProps} from '@/components/formComponents/MarkdownEditor/NewToolbar';
 import Editor from '@/components/formComponents/MarkdownEditor/Editor';
-import {useRef, createContext, useContext, Dispatch, SetStateAction, useState, RefObject} from 'react';
+import {useRef, createContext, useContext, RefObject, SetStateAction, Dispatch, useState} from 'react';
 import Preview from '@/components/formComponents/MarkdownEditor/Preview';
 import {PreviewProps} from '@/components/formComponents/MarkdownEditor/Preview/Preview';
 import {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
@@ -17,35 +17,39 @@ interface MarkdownEditorProps {
 
 const EditorContext = createContext({});
 export const useEditorContext = () => useContext(EditorContext) as {
-    editorRef: RefObject<HTMLTextAreaElement>,
-    previewRef: RefObject<HTMLTextAreaElement>,
-    tableColumns: number,
-    gridColumns: number,
-    fontSize: number,
-    setState: Dispatch<SetStateAction<{ tableRows: number, tableColumns: number, fontSize: number, gridColumns: number, gridRows: number }>>
+    editorRef: RefObject<HTMLTextAreaElement | null>;
+    setEditorRef: (element: HTMLTextAreaElement | null) => void;
+    previewRef: RefObject<HTMLDivElement | null>;
+    setPreviewRef: (element: HTMLDivElement | null) => void;
+    nameAndId: string;
+    fontSize: number;
+    setFontSize: Dispatch<SetStateAction<number>>;
 };
 
 const NewMarkdownEditor = (props: MarkdownEditorProps) => {
-    const { toolbarProps, editorProps, previewProps } = props;
-    const editorRef = useRef<HTMLTextAreaElement>(null);
-    const previewRef = useRef<HTMLDivElement>(null);
+    const editorRef = useRef<HTMLTextAreaElement | null>(null);
+    const previewRef = useRef<HTMLDivElement | null>(null);
 
-    const [state, setState] = useState({
-        tableRows: 1,
-        tableColumns: 1,
-        gridColumns: 1,
-        fontSize: 20
-    });
+    const [fontSize, setFontSize] = useState(20);
+
+    const setEditorRef = (element: HTMLTextAreaElement) => {
+        editorRef.current = element;
+    };
+
+    const setPreviewRef = (element: HTMLDivElement) => {
+        previewRef.current = element;
+    };
 
     const nameAndId = props.registerFormHook?.name || props.name || '';
 
     return (
-        <EditorContext.Provider value={{ editorRef, previewRef, ...state, setState }}>
+        <EditorContext.Provider
+            value={{ editorRef, setEditorRef, previewRef, setPreviewRef, nameAndId, fontSize, setFontSize }}>
             <div className={styles.root}>
-                <NewToolbar {...toolbarProps}/>
+                <NewToolbar {...props.toolbarProps}/>
                 <div className={styles.editorArea}>
-                    <Editor ref={editorRef} name={nameAndId} registerFormHook={props.registerFormHook} {...editorProps}/>
-                    <Preview {...previewProps}/>
+                    <Editor registerFormHook={props.registerFormHook} {...props.editorProps}/>
+                    <Preview {...props.previewProps}/>
                 </div>
             </div>
         </EditorContext.Provider>

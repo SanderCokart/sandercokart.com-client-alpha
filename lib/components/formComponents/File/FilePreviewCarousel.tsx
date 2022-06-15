@@ -1,5 +1,5 @@
 import axios from '@/functions/shared/axios';
-import useImage from '@/hooks/useImage';
+import useImage from '@/hooks/useFile';
 import styles from './FilePreviewCarousel.module.scss';
 import type {FileModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

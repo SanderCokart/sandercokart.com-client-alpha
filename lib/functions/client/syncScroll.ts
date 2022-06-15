@@ -1,7 +1,10 @@
-import {MutableRefObject} from 'react';
+import {MutableRefObject, RefObject, ForwardedRef} from 'react';
 
 
-export default function syncScroll<A extends HTMLElement | null, B extends HTMLElement | null>(sync: MutableRefObject<A>, syncWith: MutableRefObject<B>) {
+type Refs<A> = MutableRefObject<A>/* | RefObject<A> | ForwardedRef<A>*/;
+type RefValues = HTMLElement | null;
+
+export default function syncScroll<A extends RefValues, B extends RefValues | null>(sync: Refs<A>, syncWith: Refs<B>) {
 
     if (sync.current && syncWith.current) {
         const elements = Array.from(document.querySelectorAll(':hover'));

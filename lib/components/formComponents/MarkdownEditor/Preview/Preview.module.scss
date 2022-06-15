@@ -5,3 +5,21 @@
   height: 100%;
   background-color: #a00;
 }
+
+.previewContainer {
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  overflow-y: auto;
+}
+
+.preview {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg);
+  color: var(--bg-contrast-text);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  direction: ltr;
+}

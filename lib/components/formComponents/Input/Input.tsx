@@ -20,6 +20,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     appendIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
     containerProps?: HTMLAttributes<HTMLDivElement>;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
+    centered?: boolean;
 }
 
 const Input = (props: InputProps) => {
@@ -27,6 +28,7 @@ const Input = (props: InputProps) => {
     const {
         type = 'text',
         loading = false,
+        centered = false,
         appendIcon = undefined,
         prependIcon = undefined,
         containerProps = undefined,
@@ -48,11 +50,19 @@ const Input = (props: InputProps) => {
         const min = Number(target.min);
         const value = Number(target.value);
 
+        const dispatchOnChange = () => {
+            target.dispatchEvent(new Event('change', { bubbles: true }));
+        };
+
         if ((e.deltaY < 0) && (!!max ? value < max : true)) {
             inputRef.current?.stepUp();
+            dispatchOnChange();
         } else if ((e.deltaY > 0) && (!!min ? value > min : true)) {
             inputRef.current?.stepDown();
+            dispatchOnChange();
         }
+
+
     }, []);
 
     useEffect(() => {
@@ -72,6 +82,7 @@ const Input = (props: InputProps) => {
         styles.input,
         (prependIcon) && styles.withPrependIcon,
         (appendIcon) && styles.withAppendIcon,
+        (centered) && styles.centered,
         className
     ]);
 
@@ -108,18 +119,24 @@ const Input = (props: InputProps) => {
                         height="31px"
                         style={{ padding: 0 }}/>
                 ) : (
-                     <input ref={(el) => {
-                         registerFormHook?.ref(el);
-                         inputRef.current = el;
-                     }} className={
-                         classNames
-                     } onBlur={(e) => {
-                         registerFormHook?.onBlur(e);
-                         onBlur?.(e);
-                     }} onChange={(e) => {
-                         registerFormHook?.onChange(e);
-                         onChange?.(e);
-                     }} {...restOfProps} id={nameAndId} name={nameAndId} type={type}/>
+                     <input
+                         ref={(el) => {
+                             registerFormHook?.ref(el);
+                             inputRef.current = el;
+                         }}
+                         className={classNames}
+                         onBlur={(e) => {
+                             registerFormHook?.onBlur(e);
+                             onBlur?.(e);
+                         }}
+                         onChange={(e) => {
+                             registerFormHook?.onChange(e);
+                             onChange?.(e);
+                         }}
+                         {...restOfProps}
+                         id={nameAndId}
+                         name={nameAndId}
+                         type={type}/>
                  )}
 
                 {appendIcon && (
@@ -127,7 +144,7 @@ const Input = (props: InputProps) => {
                         className={styles.iconButtonAppend}
                         condition={!!appendIcon.onClick}
                         onClick={() => {
-                            !!appendIcon.onClick && appendIcon.onClick(inputRef);
+                            !!appendIcon.onClick && appendIcon?.onClick(inputRef);
                         }}>
                         <FontAwesomeIcon className={!!appendIcon.onClick ? undefined : styles.iconAppend}
                                          icon={appendIcon.icon}/>

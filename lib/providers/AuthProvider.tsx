@@ -44,7 +44,18 @@ interface AuthProviderProps {
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [isLoading, setIsLoading] = useState(true);
-    const { data: user, mutate, error } = useSWR<UserModel | null>(ApiGetUserRoute);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const {
+        data: user,
+        mutate,
+        error
+    } = useSWR<UserModel | null>(isLoggedIn ? ApiGetUserRoute : null, {
+        onError: () => {
+            localStorage.removeItem('isLoggedIn');
+            setIsLoggedIn(false);
+        }
+    });
 
     const csrf = () => axios.get(ApiCSRFTokenRoute);
 
@@ -52,20 +63,29 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         await csrf();
         const response = await axios.simplePost(ApiPostLoginRoute, formValues);
         await mutate();
+        localStorage.setItem('isLoggedIn', '1');
+        setIsLoggedIn(true);
         return response;
     };
 
     const logout = async () => {
         if (user) {
             const response = await axios.simplePost(ApiPostLogoutRoute);
-            await mutate(null);
+            localStorage.removeItem('isLoggedIn');
+            setIsLoggedIn(false);
+            await mutate(null, {revalidate: false});
             return response;
         }
     };
 
+    //check on initial load if the user has logged in before
+    useEffect(() => {
+        !!localStorage.getItem('isLoggedIn') && setIsLoggedIn(true);
+    }, []);
+
     useEffect(() => {
         if (user && error) mutate(null);
-        else if (user || error) setTimeout(() => setIsLoading(false), 1000);
+        else setTimeout(() => setIsLoading(false), 1000);
     }, [user, error]);
 
     return (
@@ -74,7 +94,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             isLoading,
             isAdmin: !!user?.roles?.find((role) => role.name === 'Admin') ?? false,
             isVerified: !!user?.email_verified_at,
-            isLoggedIn: !!user,
+            isLoggedIn,
             user,
             login,
             csrf,

@@ -1,4 +1,4 @@
-import useImage from '@/hooks/useImage';
+import useImage from '@/hooks/useFile';
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';

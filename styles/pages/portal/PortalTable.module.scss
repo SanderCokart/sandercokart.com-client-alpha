@@ -10,7 +10,8 @@
 }
 
 .roleChip {
-  background: var(--acc-inactive);
+  background: var(--acc);
+  color: var(--acc-contrast-text);
   border-radius: 16px;
   text-align: center;
   font-weight: bold;

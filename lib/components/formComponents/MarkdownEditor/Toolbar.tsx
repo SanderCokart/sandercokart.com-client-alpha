@@ -285,7 +285,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
     const insertGrid = (e: MouseEvent<HTMLButtonElement>) => {
         if (editorRef.current) {
-            selectWordUnderCursor();
+            selectWordUnderCursor();``
             const { value, selectionStart, selectionEnd } = editorRef.current;
             const [gridColumns, gridGap, alignment] = getValues(['gridColumns', 'gridGap', 'alignment']);
 

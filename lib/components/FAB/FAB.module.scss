@@ -1,7 +1,6 @@
 @use "/styles/utils";
 
 .root {
-  position: fixed;
   top: utils.$navHeight;
   left: 0;
   width: 100%;
@@ -11,6 +10,5 @@
 
 .button {
   pointer-events: auto;
-  position: absolute;
 }
 

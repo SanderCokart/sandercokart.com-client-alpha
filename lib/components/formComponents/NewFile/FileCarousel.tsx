@@ -4,7 +4,7 @@ import {Mousewheel, Keyboard} from 'swiper';
 import Image from 'next/image';
 import {useFormContext} from 'react-hook-form';
 import {FileModel} from '@/types/ModelTypes';
-import useImage from '@/hooks/useImage';
+import useImage from '@/hooks/useFile';
 import {Button} from '@/components/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';

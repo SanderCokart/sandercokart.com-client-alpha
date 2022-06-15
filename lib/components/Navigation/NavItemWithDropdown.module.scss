@@ -1,8 +1,9 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .navItemWithDropdown {
   @include utils.defaultButton;
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
   height: 100%;
   position: relative;
 }

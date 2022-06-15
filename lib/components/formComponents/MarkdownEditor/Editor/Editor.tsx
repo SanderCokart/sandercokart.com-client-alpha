@@ -1,28 +1,28 @@
 import styles from './Editor.module.scss';
-import {forwardRef, FocusEventHandler, ChangeEventHandler} from 'react';
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import {FocusEventHandler, ChangeEventHandler} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
+import syncScroll from '@/functions/client/syncScroll';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 
 export interface EditorProps {
     registerFormHook?: UseFormRegisterReturn;
-    name: string;
     onChange?: ChangeEventHandler<HTMLTextAreaElement>;
     onBlur?: FocusEventHandler<HTMLTextAreaElement>;
 }
 
-const Editor = forwardRef<HTMLTextAreaElement, EditorProps>(function Editor(props, editorRef) {
-    const { registerFormHook, onChange, onBlur, ...restOfProps } = props;
-    const {} = useEditorContext();
+const Editor = (props: EditorProps) => {
+    const { registerFormHook, onChange, onBlur } = props;
+    const { previewRef, setEditorRef, editorRef, nameAndId: name, fontSize } = useEditorContext();
 
     return (
         <div className={styles.root}>
             <textarea
                 ref={el => {
-                    // @ts-ignore
-                    editorRef.current = el;
+                    setEditorRef(el);
                     registerFormHook?.ref(el);
                 }}
                 className={styles.textarea}
+                name={name}
                 onBlur={event => {
                     onBlur?.(event);
                     registerFormHook?.onBlur(event);
@@ -30,9 +30,9 @@ const Editor = forwardRef<HTMLTextAreaElement, EditorProps>(function Editor(prop
                 onChange={event => {
                     onChange?.(event);
                     registerFormHook?.onChange(event);
-                }} {...restOfProps}/>
+                }} onScroll={() => syncScroll(editorRef, previewRef)}/>
         </div>
     );
-});
+};
 
 export default Editor;

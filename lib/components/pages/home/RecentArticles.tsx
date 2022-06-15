@@ -7,10 +7,9 @@ import useSWRInfinite from 'swr/infinite';
 import Image from 'next/image';
 import {CursorPaginationResponse} from '@/types/ResponseTypes';
 import {ArticleModel} from '@/types/ModelTypes';
-import useImage from '@/hooks/useImage';
+import useImage from '@/hooks/useFile';
 import Link from 'next/link';
 import {LocalArticlePageRoute} from '@/constants/local-routes';
-import ClampLines from 'react-clamp-lines';
 
 //<editor-fold desc="Swiper Navigation Buttons">
 const Previous = () => {
@@ -48,8 +47,8 @@ interface PostProps {
 }
 
 const Post = ({ post }: PostProps) => {
-    const { url } = useImage(post.banner);
-
+    const { getUrl } = useImage();
+    const { url } = getUrl(post.banner);
     return (
         <Link href={LocalArticlePageRoute('posts', post.slug)}>
             <a>

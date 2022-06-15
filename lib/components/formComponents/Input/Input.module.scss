@@ -21,7 +21,7 @@
   padding: 8px;
   font-size: 1rem;
   width: 100%;
-  background-color: var(--bg);
+  background-color: transparent;
   color: var(--bg-contrast-text);
 
   &.withPrependIcon {
@@ -103,4 +103,8 @@
   @extend .line;
   transform: none;
   background-color: #fff;
+}
+
+.centered {
+  text-align: center;
 }

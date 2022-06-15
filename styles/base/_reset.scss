@@ -12,6 +12,7 @@ a {
 *,
 *::before,
 *::after {
+  transition: background-color 150ms ease, color 50ms ease;
   box-sizing: border-box;
   margin: 0;
   padding: 0;

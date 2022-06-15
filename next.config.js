@@ -6,7 +6,7 @@ module.exports = {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         domains: ['api.sandercokart.com', '192.168.2.160', '192.168.2.15'],
-        formats: ['image/avif', 'image/webp']
+        formats: ['image/webp', 'image/avif']
 
     },
     sassOptions: {
@@ -21,9 +21,9 @@ module.exports = {
         config.module.rules.push({
             test: /\.svg$/i,
             issuer: /\.[jt]sx?$/,
-            use: ['@svgr/webpack'],
+            use: ['@svgr/webpack']
         });
 
         return config;
-    },
+    }
 };

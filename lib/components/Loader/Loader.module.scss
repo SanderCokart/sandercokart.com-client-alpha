@@ -5,7 +5,7 @@
   bottom: 0;
   right: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
   background-color: var(--bg);
   z-index: map-get(utils.$z-indexes, 'loader');
   display: flex;

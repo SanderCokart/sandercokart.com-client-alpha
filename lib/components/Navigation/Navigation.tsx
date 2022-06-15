@@ -81,7 +81,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { isLoggedIn, isAdmin, isLoading: authIsLoading } = useAuth();
+    const { isLoggedIn, isAdmin} = useAuth();
     const isPortalPage = pathname.includes('portal');
 
     return (

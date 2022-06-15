@@ -1,37 +1,11 @@
-import {useForm, FormProvider} from 'react-hook-form';
-import {Button} from '@/components/Button';
-import File from '@/components/formComponents/NewFile';
-import styles from '@/styles/pages/test.module.scss';
-import useSWR from 'swr';
-import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
-import {useEffect} from 'react';
-import {ArticleModel, FileModel} from '@/types/ModelTypes';
+import {Swiper, SwiperSlide} from 'swiper/react';
+import {Navigation, Scrollbar, Mousewheel} from 'swiper';
 
-const Test = () => {
-    const { data } = useSWR<ArticleModel>(ApiGetArticlesShowRoute('posts', 'litzy-wolf'));
-    const form = useForm({
-        defaultValues: {
-            banner: [] as FileModel[]
-        }
-    });
-
-    const onSubmit = (formValues: any) => {
-        console.log(formValues);
-    };
-
-    useEffect(() => {
-        form.reset({
-            banner: data?.banner ? [data.banner] : [] as FileModel[]
-        });
-    }, [data]);
-
+const Test = (props: {}) => {
     return (
-        <FormProvider {...form}>
-            <form noValidate className={styles.form} onSubmit={form.handleSubmit(onSubmit)}>
-                <File multiple name="banner"/>
-                <Button type="submit">Submit</Button>
-            </form>
-        </FormProvider>
+        <>
+
+        </>
     );
 };
 

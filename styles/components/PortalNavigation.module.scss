@@ -1,99 +1,15 @@
 @use '/styles/utils';
-//
-///*PORTAL*/
-//.portalNav {
-//  z-index: 1;
-//  position: fixed;
-//  top: utils.$navHeight;
-//  width: utils.$navWidth;
-//  background: var(--bg-nav);
-//  min-height: utils.$navHeightCalc;
-//
-//  ul {
-//    width: 100%;
-//    list-style: none;
-//  }
-//
-//  > ul {
-//    display: flex;
-//    flex-direction: column;
-//  }
-//}
-//
-//
-//.portalNavItem {
-//  text-transform: capitalize;
-//  width: 100%;
-//  height: 100%;
-//  position: relative;
-//
-//  > a {
-//    position: relative;
-//    z-index: 1;
-//    @include utils.defaultButton;
-//    display: flex;
-//    justify-content: center;
-//    align-items: baseline;
-//    width: 100%;
-//    height: 100%;
-//    padding: 8px;
-//    transition: background 200ms ease;
-//    background-color: var(--bg-nav);
-//  }
-//
-//  &:hover {
-//    > a {
-//      background-color: var(--acc);
-//    }
-//
-//    > ul {
-//      transform: translateX(100%);
-//    }
-//  }
-//}
-//
-//
-//ul.expansion {
-//  transition: 200ms 1000ms;
-//  position: absolute;
-//  top: 0;
-//  left: 0;
-//  right: 0;
-//  bottom: 0;
-//  display: flex;
-//  z-index: 0;
-//  justify-content: center;
-//  align-items: center;
-//}
-//
-//li.expansionItem {
-//  width: 100%;
-//  height: 100%;
-//  background-color: var(--bg-nav);
-//
-//  a {
-//    @include utils.defaultButton;
-//    width: 100%;
-//    height: 100%;
-//    display: flex;
-//    justify-content: center;
-//
-//    &:hover {
-//      background-color: var(--acc);
-//    }
-//  }
-//}
-
-
 .root {
   width: utils.$navWidth;
   height: 100%;
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
   position:fixed;
 }
 
 .search {
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
 }
 
 .list {

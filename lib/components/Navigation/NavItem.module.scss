@@ -10,6 +10,7 @@
   @include utils.defaultButton;
   position: relative;
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
   height: 100%;
   min-width: 85px;
 }
