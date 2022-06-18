@@ -1,4 +1,4 @@
-@use '../utils';
+@use "../utils";
 
 :target {
   scroll-margin-top: 40px;
@@ -12,7 +12,14 @@ a {
 *,
 *::before,
 *::after {
-  transition: background-color 150ms ease, color 50ms ease;
+  color-scheme: light;
+  transition: background-color 150ms ease,
+  color 50ms ease,
+  border-bottom-color 50ms ease,
+  border-right-color 50ms ease,
+  border-left-color 50ms ease,
+  border-top-color 50ms ease;
+
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -47,5 +54,5 @@ body {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #555555;
 }

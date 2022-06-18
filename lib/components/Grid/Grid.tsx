@@ -1,6 +1,6 @@
 import {CSSProperties, ReactNode} from 'react';
 
-interface GridProps {
+export interface GridProps {
     children: ReactNode;
     columns?: number;
     alignment?: CSSProperties['placeItems'];

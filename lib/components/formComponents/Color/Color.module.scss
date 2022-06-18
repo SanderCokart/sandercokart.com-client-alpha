@@ -1,0 +1,56 @@
+@use "/styles/utils";
+
+.control {
+  margin-bottom: 2px;
+  text-align: center;
+  width: 160px;
+  height: 40px;
+}
+
+
+.label {
+  font-weight: bold;
+
+}
+
+.inputContainer {
+  position: relative;
+  width: min-content;
+}
+
+.input {
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
+  border: none;
+  outline: none;
+
+  &::-webkit-color-swatch-wrapper {
+    padding: 0;
+    margin: 0;
+  }
+
+  &::-webkit-color-swatch {
+    border: var(--bg-contrast-text) solid 2px;
+  }
+}
+
+.icon {
+  user-select: none;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hex {
+  position: absolute;
+  top: 45%;
+  left: 120%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 1;
+}

@@ -1,25 +1,18 @@
 import Input from '@/components/formComponents/Input/Input';
 import styles from '@/styles/components/PortalNavigation.module.scss';
 import {useState} from 'react';
-import useSWR from 'swr';
-import type {ArticleType} from '@/types/ModelTypes';
 import {LinkButton} from '@/components/Button/Button';
-import {useRouter} from 'next/router';
 import {LocalPortalUsersPageRoute, LocalPortalArticlesPageRoute} from '@/constants/local-routes';
 
 const PortalNavigation = () => {
     const [search, setSearch] = useState('');
-    const router = useRouter();
-    const { data: articleTypes } = useSWR<ArticleType[]>('/articleTypes');
 
     const pages = [
-        { href: LocalPortalUsersPageRoute, text: 'users' }
+        { href: LocalPortalUsersPageRoute, text: 'users' },
+        { href: LocalPortalArticlesPageRoute('posts'), text: 'posts' },
+        { href: LocalPortalArticlesPageRoute('courses'), text: 'courses' },
+        { href: LocalPortalArticlesPageRoute('tips-&-tutorials'), text: 'tips-&-tutorials' }
     ];
-
-    articleTypes?.forEach(articleType => {
-        pages.push({ href: LocalPortalArticlesPageRoute(articleType.name), text: articleType.name });
-    });
-
 
     return (
         <nav className={styles.root}>

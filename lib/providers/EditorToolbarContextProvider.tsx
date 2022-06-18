@@ -8,6 +8,7 @@ import {FileModel} from '@/types/ModelTypes';
 import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
 import convertObjectToPropsString from '@/functions/client/ConvertObjectToPropsString';
 import Papa from 'papaparse';
+import {GridProps} from '@/components/Grid/Grid';
 
 export const EditorToolbarContext = createContext({});
 
@@ -21,6 +22,9 @@ export interface EditorToolbarContextType {
     handleTableInsertion: () => void;
     insertComponent: (params: InsertableComponents) => void;
     wrap: (wrapWith: string) => void;
+    insert: (toInsert: string) => void;
+
+    handleLinkInsertion: () => void;
 
     fontSize: number;
     setFontSize: (fontSize: number) => void;
@@ -31,18 +35,28 @@ export interface EditorToolbarContextType {
     setTableRows: (rows: number) => void;
 }
 
-type  InsertableComponents = Grid | Align;
+type  InsertableComponents = Grid | Align | Mark | Color;
 
-interface Grid {
+interface Mark {
+    componentName: 'Mark';
+    color: string;
+}
+
+interface Color {
+    componentName: 'Color';
+    color: string;
+}
+
+interface Grid extends Omit<GridProps, 'children'> {
     componentName: 'Grid';
-    columns?: number;
-    gap?: number;
 }
 
 interface Align {
     componentName: 'Align';
     align?: CSSProperties['textAlign'];
 }
+
+const componentsWithChildren = ['Grid', 'Align', 'Mark', 'Color'];
 
 export const useEditorToolbar = () => useContext(EditorToolbarContext) as EditorToolbarContextType;
 
@@ -108,6 +122,20 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
 
             setValue(name, pre + center + post);
+        }
+    }, [editor]);
+
+    const insert = useCallback((toInsert: string) => {
+        if (editor) {
+            const { value, selectionStart, selectionEnd } = editor;
+            const pre = value.substring(0, selectionStart);
+            const post = value.substring(selectionEnd);
+
+            setValue(name, pre + toInsert + post);
+
+            editor.selectionStart = selectionStart + toInsert.length;
+            editor.selectionEnd = selectionEnd + toInsert.length;
+            editor.focus();
         }
     }, [editor]);
 
@@ -215,7 +243,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
     const insertComponent = useCallback((params: InsertableComponents) => {
         const { componentName, ...props } = params;
         const propsString = convertObjectToPropsString(props);
-        const shouldHaveChildren = ['Grid', 'Align'].includes(componentName);
+        const shouldHaveChildren = componentsWithChildren.includes(componentName);
 
         if (editor) {
 
@@ -258,18 +286,38 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
+    const handleLinkInsertion = useCallback(() => {
+        if (editor) {
+            const url = prompt('Enter the link URL or leave empty:') ?? '';
+            const { value, selectionStart, selectionEnd } = editor;
+
+            const pre = value.substring(0, selectionStart);
+            const post = value.substring(selectionEnd);
+
+            const newValue = pre + `[${url}](${url})` + post;
+
+            setValue(name, newValue);
+
+            editor.selectionStart = selectionEnd + 1;
+            editor.selectionEnd = selectionEnd + 1 + url.length;
+            editor.focus();
+        }
+    }, [editor]);
+
     return (
         <EditorToolbarContext.Provider value={{
-            fontSize,
-            setFontSize: changeFontSize,
             autoBlur,
             autoFocus,
+            fontSize,
             gridColumns,
             handleCSVImport,
             handleImageUpload,
+            handleLinkInsertion,
             handleMarkdownImage,
             handleTableInsertion,
+            insert,
             insertComponent,
+            setFontSize: changeFontSize,
             setGridColumns,
             setTableColumns,
             setTableRows,

@@ -76,7 +76,7 @@ $xl: 1536px;
     width: 100%;
   }
 
-  &:hover, &:focus {
+  &:hover, &:focus, &:focus-within {
     background-color: var(--acc);
     color: var(--acc-contrast-text);
   }

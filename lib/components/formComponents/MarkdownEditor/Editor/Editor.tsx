@@ -12,7 +12,7 @@ export interface EditorProps {
 
 const Editor = (props: EditorProps) => {
     const { registerFormHook, onChange, onBlur } = props;
-    const { previewRef, setEditorRef, editorRef, nameAndId: name, fontSize } = useEditorContext();
+    const { previewRef, setEditorRef, editorRef, nameAndId: name } = useEditorContext();
 
     return (
         <div className={styles.root}>

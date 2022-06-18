@@ -4,6 +4,7 @@
   height: 40px;
   width: 100%;
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
   position: sticky;
   display: flex;
   top: 40px;
@@ -22,10 +23,14 @@
 
 .toolbarButton {
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
 }
 
 .divider {
-  border-color: var(--bg);
+  border: none;
+  height: 40px;
+  width: 1px;
+  background-color: var(--bg-contrast-text);
 }
 
 .dropdownContainer {
@@ -39,9 +44,10 @@
     .toolbarDropdownButton {
       background-color: var(--acc);
     }
+
     .toolbarDropdown {
       cursor: auto;
-      transform: scaleY(1);
+      transform: scaleY(1) translateX(50%);
       pointer-events: auto;
     }
   }
@@ -50,21 +56,24 @@
 .toolbarDropdown {
   position: absolute;
   top: 100%;
-  right: 0;
+  right: 50%;
   //width: 185px;
   width: max-content;
-  min-width: 185px;
+  //min-width: 185px;
   max-width: 250px;
-  transform: scaleY(0);
+  transform: scaleY(0) translateX(50%);
   transform-origin: top;
   transition: transform 150ms ease;
   pointer-events: none;
   border: var(--acc) solid 1px;
+
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
 }
 
 .toolbarDropdownButton {
   background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
   width: 100%;
   height: 100%;
 }
@@ -84,4 +93,38 @@
   &::-webkit-file-upload-button {
     display: none;
   }
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+.componentList {
+  width: 185px;
+  overflow-y: auto;
+}
+
+.componentItemContainer {
+  width: 185px;
+
+  &:hover, &:focus-within {
+    .componentItem {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.componentItemButton {
+
+}
+
+.componentItem {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 185px;
+  border: var(--acc) solid 1px;
+  background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 150ms ease;
 }

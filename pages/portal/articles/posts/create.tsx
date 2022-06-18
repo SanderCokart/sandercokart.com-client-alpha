@@ -48,7 +48,8 @@ const CreatePostPage = () => {
                         <div className={styles.inputsContainer}>
                             <div className={styles.inputs}>
                                 <Input label="Title" name="title" registerFormHook={register('title')}/>
-                                <Textarea autogrow={false} className={styles.excerpt} label="Excerpt" name="excerpt" registerFormHook={register('excerpt')}/>
+                                <Textarea autogrow={false} className={styles.excerpt} label="Excerpt" name="excerpt"
+                                          registerFormHook={register('excerpt')}/>
                             </div>
                             <File className={styles.filesContainer} name="banner"/>
                         </div>
@@ -58,7 +59,6 @@ const CreatePostPage = () => {
                              right={16}
                              size={42}
                              type="submit"/>
-                        {/*<button className={styles.submitButton} type="submit">Submit</button>*/}
                     </form>
                 </FormProvider>
             </PortalContainer>

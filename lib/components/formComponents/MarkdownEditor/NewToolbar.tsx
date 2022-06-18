@@ -2,29 +2,53 @@ import styles from './NewToolbar.module.scss';
 import {Button} from '@/components/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
-import type {ButtonHTMLAttributes, ReactNode} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties} from 'react';
+import {useState} from 'react';
 import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/EditorToolbarContextProvider';
 import Input from '@/components/formComponents/Input';
 import Grid from '@/components/Grid';
+import Color from '@/components/formComponents/Color';
+import Flex from '@/components/Flex';
+import useColorDebounce from '@/hooks/useColorDebounce';
+import Select from '@/components/formComponents/Select';
 
 interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-    icon: FontAwesomeIconType;
+    children?: ReactNode;
+    icon?: FontAwesomeIconType;
 }
 
-const ToolbarButton = ({ icon, ...restOfProps }: ToolbarButtonProps) => <Button
-    className={styles.toolbarButton} {...restOfProps}><FontAwesomeIcon fixedWidth icon={icon}/></Button>;
+const ToolbarButton = ({ icon, children, ...restOfProps }: ToolbarButtonProps) => {
+    return (
+        <Button className={styles.toolbarButton} {...restOfProps}>
+            {icon && <FontAwesomeIcon fixedWidth icon={icon}/>}
+            {children}
+        </Button>
+    );
+};
 
 const Divider = () => <hr className={styles.divider}/>;
 
 interface DropdownProps {
     children: ReactNode;
     icon: FontAwesomeIconType;
+    title?: string;
 }
 
 const Dropdown = (props: DropdownProps) => (
     <div className={styles.dropdownContainer}>
-        <Button className={styles.toolbarDropdownButton}><FontAwesomeIcon fixedWidth icon={props.icon}/></Button>
+        <Button className={styles.toolbarDropdownButton} title={props.title}><FontAwesomeIcon fixedWidth
+                                                                                              icon={props.icon}/></Button>
         <div className={styles.toolbarDropdown}>
+            {props.children}
+        </div>
+    </div>
+);
+
+const ComponentItem = (props: { text: string, children: ReactNode }) => (
+    <div className={styles.componentItemContainer}>
+        <Button fullWidth className={styles.componentItemButton} title={props.text}
+                onMouseEnter={(e) => e.currentTarget.focus()}>{props.text}</Button>
+        <div className={styles.componentItem}>
             {props.children}
         </div>
     </div>
@@ -33,7 +57,7 @@ const Dropdown = (props: DropdownProps) => (
 const InsertImage = () => {
     const { handleImageUpload, handleMarkdownImage } = useEditorToolbar();
     return (
-        <Dropdown icon="images">
+        <Dropdown icon="images" title="Images">
             <Button fullWidth onClick={handleMarkdownImage}>
                 External image
             </Button>
@@ -58,7 +82,7 @@ const InsertTable = () => {
     } = useEditorToolbar();
 
     return (
-        <Dropdown icon="table">
+        <Dropdown icon="table" title="Tables">
             <Grid alignment="normal" columns={2} gap={0}>
                 <Input
                     centered label="Rows"
@@ -87,28 +111,116 @@ const InsertTable = () => {
     );
 };
 
-export interface ToolbarProps {
+const Headers = () => {
+    const { insert } = useEditorToolbar();
+    return (
+        <>
+            <ToolbarButton onClick={() => insert('# ')}>H1</ToolbarButton>
+            <ToolbarButton onClick={() => insert('## ')}>H2</ToolbarButton>
+            <ToolbarButton onClick={() => insert('### ')}>H3</ToolbarButton>
+            <ToolbarButton onClick={() => insert('#### ')}>H4</ToolbarButton>
+        </>
+    );
+};
 
+
+const InsertLink = () => {
+    const { handleLinkInsertion } = useEditorToolbar();
+    return (
+        <ToolbarButton icon="chain" onClick={handleLinkInsertion}/>
+    );
+};
+
+const TextColor = () => (
+    <Dropdown icon="font" title="Text Color">
+        <Flex>
+            <Color/>
+            <Button>Insert</Button>
+        </Flex>
+    </Dropdown>
+);
+
+const HighlightColor = () => {
+    const { insertComponent } = useEditorToolbar();
+    const { color, onChange } = useColorDebounce();
+
+    return (
+        <Dropdown icon="paint-brush" title="Highlight Color">
+            <Flex>
+                <Color value={color} onChange={onChange}/>
+                <Button onClick={() => {
+                    insertComponent({ componentName: 'Mark', color });
+                }}>Insert</Button>
+            </Flex>
+        </Dropdown>
+    );
+};
+
+function InsertGrid() {
+    const { autoFocus, insertComponent } = useEditorToolbar();
+    const [gap, setGap] = useState(0);
+    const [columns, setColumns] = useState(2);
+    const [alignment, setAlignment] = useState<CSSProperties['placeItems']>('center');
+
+    return (
+        <>
+            <Flex>
+                <Input centered label="Columns" min={1} type="number"
+                       onChange={e => setColumns(Number(e.target.value))} onMouseEnter={autoFocus}/>
+                <Input centered label="Gap" min={0} type="number"
+                       onChange={e => setGap(Number(e.target.value))} onMouseEnter={autoFocus}/>
+            </Flex>
+            <Select style={{ placeItems: '' }} value={alignment} onChange={e => setAlignment(e.target.value)}>
+                {['center', 'flex-end', 'flex-start', 'normal'].map(item => (
+                    <option key={item} value={item}>{item}</option>
+                ))}
+            </Select>
+            <Button fullWidth onClick={() => insertComponent({ componentName: 'Grid', columns, gap, alignment })}>
+                Insert Grid
+            </Button>
+        </>
+    );
 }
 
+const InsertComponent = () => {
+    return (
+        <Dropdown icon="boxes" title="Insert Component">
+            <div className={styles.componentList}>
+                <ComponentItem text="Grid">
+                    <InsertGrid/>
+                </ComponentItem>
+            </div>
+        </Dropdown>
+    );
+};
+
 const Left = () => {
-    const { wrap, insertComponent } = useEditorToolbar();
+    const { wrap, insertComponent, insert } = useEditorToolbar();
 
     return (
         <div className={styles.left}>
-            <ToolbarButton icon="bold" onClick={() => wrap('**')}/>
-            <ToolbarButton icon="italic" onClick={() => wrap('*')}/>
-            <ToolbarButton icon="underline" onClick={() => wrap('__')}/>
-            <ToolbarButton icon="strikethrough" onClick={() => wrap('~~')}/>
+            <ToolbarButton icon="table-list" title="Table Of Contents" onClick={() => insert('## Table Of Contents')}/>
+            <Divider/>
+            <Headers/>
+            <Divider/>
+            <ToolbarButton icon="bold" title="Bold" onClick={() => wrap('**')}/>
+            <ToolbarButton icon="italic" title="Italic" onClick={() => wrap('*')}/>
+            <ToolbarButton icon="underline" title="Underline" onClick={() => wrap('__')}/>
+            <ToolbarButton icon="strikethrough" title="Strikethrough" onClick={() => wrap('~~')}/>
+            <Divider/>
+            <TextColor/>
+            <HighlightColor/>
             <Divider/>
             <InsertImage/>
             <InsertTable/>
+            <InsertLink/>
+            <InsertComponent/>
             <Divider/>
-            <ToolbarButton icon="align-left"
+            <ToolbarButton icon="align-left" title="Align Left"
                            onClick={() => insertComponent({ componentName: 'Align', align: 'left' })}/>
-            <ToolbarButton icon="align-center"
+            <ToolbarButton icon="align-center" title="Align Center"
                            onClick={() => insertComponent({ componentName: 'Align', align: 'center' })}/>
-            <ToolbarButton icon="align-right"
+            <ToolbarButton icon="align-right" title="Align Right"
                            onClick={() => insertComponent({ componentName: 'Align', align: 'right' })}/>
         </div>
     );
@@ -142,6 +254,10 @@ function Right() {
             <FontSize/>
         </div>
     );
+}
+
+export interface ToolbarProps {
+
 }
 
 const NewToolbar = (props: ToolbarProps) => {
