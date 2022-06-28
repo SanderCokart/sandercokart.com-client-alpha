@@ -47,8 +47,12 @@
 
     .toolbarDropdown {
       cursor: auto;
-      transform: scaleY(1) translateX(50%);
+      transform: scaleY(1);
       pointer-events: auto;
+
+      &.center {
+        transform: scaleY(1) translateX(-50%);
+      }
     }
   }
 }
@@ -56,12 +60,11 @@
 .toolbarDropdown {
   position: absolute;
   top: 100%;
-  right: 50%;
   //width: 185px;
   width: max-content;
   //min-width: 185px;
   max-width: 250px;
-  transform: scaleY(0) translateX(50%);
+  transform: scaleY(0);
   transform-origin: top;
   transition: transform 150ms ease;
   pointer-events: none;
@@ -69,6 +72,19 @@
 
   background-color: var(--bg-nav);
   color: var(--bg-nav-contrast-text);
+
+  &.left {
+    left: 0;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  &.center {
+    left: 50%;
+    transform: scaleY(0) translateX(-50%);
+  }
 }
 
 .toolbarDropdownButton {

@@ -11,6 +11,7 @@ import Color from '@/components/formComponents/Color';
 import Flex from '@/components/Flex';
 import useColorDebounce from '@/hooks/useColorDebounce';
 import Select from '@/components/formComponents/Select';
+import classnames from 'classnames';
 
 interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
@@ -32,17 +33,26 @@ interface DropdownProps {
     children: ReactNode;
     icon: FontAwesomeIconType;
     title?: string;
+    align?: 'left' | 'right' | 'center';
 }
 
-const Dropdown = (props: DropdownProps) => (
-    <div className={styles.dropdownContainer}>
-        <Button className={styles.toolbarDropdownButton} title={props.title}><FontAwesomeIcon fixedWidth
-                                                                                              icon={props.icon}/></Button>
-        <div className={styles.toolbarDropdown}>
-            {props.children}
+const Dropdown = (props: DropdownProps) => {
+    const { align = 'right' } = props;
+
+    const className = classnames([
+        styles.toolbarDropdown,
+        styles[align]
+    ]);
+    return (
+        <div className={styles.dropdownContainer}>
+            <Button className={styles.toolbarDropdownButton} title={props.title}><FontAwesomeIcon fixedWidth
+                                                                                                  icon={props.icon}/></Button>
+            <div className={className}>
+                {props.children}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const ComponentItem = (props: { text: string, children: ReactNode }) => (
     <div className={styles.componentItemContainer}>
@@ -132,7 +142,7 @@ const InsertLink = () => {
 };
 
 const TextColor = () => (
-    <Dropdown icon="font" title="Text Color">
+    <Dropdown align="center" icon="font" title="Text Color">
         <Flex>
             <Color/>
             <Button>Insert</Button>
@@ -145,7 +155,7 @@ const HighlightColor = () => {
     const { color, onChange } = useColorDebounce();
 
     return (
-        <Dropdown icon="paint-brush" title="Highlight Color">
+        <Dropdown align="center" icon="paint-brush" title="Highlight Color">
             <Flex>
                 <Color value={color} onChange={onChange}/>
                 <Button onClick={() => {
@@ -165,12 +175,12 @@ function InsertGrid() {
     return (
         <>
             <Flex>
-                <Input centered label="Columns" min={1} type="number"
+                <Input centered label="Columns" min={1} type="number" value={columns}
                        onChange={e => setColumns(Number(e.target.value))} onMouseEnter={autoFocus}/>
-                <Input centered label="Gap" min={0} type="number"
+                <Input centered label="Gap" min={0} type="number" value={gap}
                        onChange={e => setGap(Number(e.target.value))} onMouseEnter={autoFocus}/>
             </Flex>
-            <Select style={{ placeItems: '' }} value={alignment} onChange={e => setAlignment(e.target.value)}>
+            <Select value={alignment} onChange={e => setAlignment(e.target.value)}>
                 {['center', 'flex-end', 'flex-start', 'normal'].map(item => (
                     <option key={item} value={item}>{item}</option>
                 ))}
@@ -184,7 +194,7 @@ function InsertGrid() {
 
 const InsertComponent = () => {
     return (
-        <Dropdown icon="boxes" title="Insert Component">
+        <Dropdown align="center" icon="boxes" title="Insert Component">
             <div className={styles.componentList}>
                 <ComponentItem text="Grid">
                     <InsertGrid/>
@@ -230,7 +240,7 @@ function FontSize() {
     const { autoFocus, setFontSize, fontSize } = useEditorToolbar();
 
     return (
-        <Dropdown icon="text-height">
+        <Dropdown align="right" icon="text-height">
             <Input
                 appendIcon={{
                     icon: 'undo',

@@ -255,9 +255,9 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
                 const pre = value.substring(0, selectionStart);
                 const post = value.substring(selectionEnd);
                 const selection = value.substring(selectionStart, selectionEnd);
-                const calculatedLength = selectionEnd + componentName.length + propsString.length + 3;
+                const calculatedLength = selectionEnd + componentName.length + propsString.length + 3 + 2;
 
-                const newValue = pre + `<${componentName} ${propsString}>${selection}</${componentName}>` + post;
+                const newValue = pre + `<${componentName} ${propsString}>${selection}\n\n\n\n</${componentName}>` + post;
                 setValue(name, newValue);
 
                 editor.selectionStart = calculatedLength;
