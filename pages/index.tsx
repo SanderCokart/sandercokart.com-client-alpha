@@ -15,7 +15,7 @@ interface HomeProps {
 const HomePage = (props: HomeProps) => {
     return (
         <div className={styles.home}>
-            <RecentArticles fallback={{ ...props.fallbacks.posts }} title="posts"
+            <RecentArticles fallback={{ ...props.fallbacks.posts }}
                             url={ApiGetArticlesRecentRoute('posts')}/>
         </div>
     );

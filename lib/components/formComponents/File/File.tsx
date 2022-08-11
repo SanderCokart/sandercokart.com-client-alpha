@@ -1,5 +1,5 @@
-import FileDropbox from '@/components/formComponents/NewFile/FileDropbox';
-import FileCarousel from '@/components/formComponents/NewFile/FileCarousel';
+import FileDropbox from '@/components/formComponents/File/FileDropbox';
+import FileCarousel from '@/components/formComponents/File/FileCarousel';
 import styles from './File.module.scss';
 import {InputHTMLAttributes} from 'react';
 import {useFormContext} from 'react-hook-form';

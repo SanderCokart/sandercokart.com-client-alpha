@@ -16,7 +16,7 @@ interface CarouselItemProps {
 }
 
 function CarouselItem(props: CarouselItemProps) {
-    const { url } = useImage(props.file);
+    const { getUrl } = useImage();
     const { setValue, getValues, control: { _defaultValues } } = useFormContext();
 
     const deleteItem = async () => {
@@ -25,6 +25,8 @@ function CarouselItem(props: CarouselItemProps) {
             await axios.simpleDelete(ApiDeleteFilesDestroyRoute(props.file.id));
         }
     };
+
+    const { url } = getUrl(props.file);
 
     return (
         <div className={styles.carouselItem}>

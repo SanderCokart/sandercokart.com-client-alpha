@@ -70,7 +70,6 @@ const Post = ({ post }: PostProps) => {
 
 interface RecentArticlesProps {
     url: string;
-    title: string;
     fallback: { [key: string]: any };
 }
 
@@ -94,7 +93,6 @@ const RecentArticles = (props: RecentArticlesProps) => {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>{props.title}</h1>
             <Swiper keyboard
                     mousewheel
                     className={styles.swiper}

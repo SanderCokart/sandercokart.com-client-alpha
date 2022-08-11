@@ -8,7 +8,7 @@ import useAuthPage from '@/hooks/useAuthPage';
 import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import Input from '@/components/formComponents/Input';
 import Textarea from '@/components/formComponents/Textarea';
-import File from '@/components/formComponents/NewFile';
+import File from '@/components/formComponents/File';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 import FAB from '@/components/FAB';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';

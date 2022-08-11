@@ -1,8 +1,22 @@
-@use '/styles/utils';
+.root {
+  min-height: 300px;
+  display: grid;
+  grid-gap: 16px;
+  position: relative;
+}
 
-.file {
+.reset {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   display: flex;
-  flex-direction: column;
-  min-height: 400px;
-  height: 400px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
