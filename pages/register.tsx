@@ -10,11 +10,14 @@ import Input from '@/components/formComponents/Input/Input';
 import useFieldVisibility from '@/hooks/useFieldVisibility';
 import setFormErrors from '@/functions/client/setFormErrors';
 import styles from '@/styles/pages/Register.module.scss';
+import Loader from '@/components/Loader/Loader';
+import {LocalHomePageRoute} from '@/constants/local-routes';
+import {ApiPostRegisterRoute} from '@/constants/api-routes';
 
 const RegisterPage = () => {
     const router = useRouter();
     const { togglePasswordVisibility, showPasswordAsText } = useFieldVisibility();
-    const registerForm = useForm({
+    const registerForm = useForm<RegisterFormValues>({
         resolver: yupResolver(Yup.object().shape({
             name: Yup.string().min(2).required('This field is required'),
             email: Yup.string().email('Must be a valid email').required('This field is required'),
@@ -29,19 +32,20 @@ const RegisterPage = () => {
     });
     const { formState: { isValid, isDirty }, handleSubmit, register, setError } = registerForm;
 
-    const onSubmitRegister = async (formValues: RegisterFormValues) => {
-        const response = await axios.simplePost('/account/register', formValues);
+    const onSubmitRegister = handleSubmit(async (formValues) => {
+        const response = await axios.simplePost(ApiPostRegisterRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
             return;
         }
         router.push('/login');
-    };
+    });
 
     return (
         <FormProvider {...registerForm}>
+            <Loader middleware="guest" redirectTo={LocalHomePageRoute}/>
             <CenteredFormLayout title="Register">
-                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitRegister)}>
+                <form noValidate className={styles.form} onSubmit={onSubmitRegister}>
                     <Input autoComplete="name"
                            label="Full name"
                            placeholder="Type your full name"

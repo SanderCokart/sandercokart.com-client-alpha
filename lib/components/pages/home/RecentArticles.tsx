@@ -49,6 +49,7 @@ interface PostProps {
 const Post = ({ post }: PostProps) => {
     const { getUrl } = useImage();
     const { url } = getUrl(post.banner);
+
     return (
         <Link href={LocalArticlePageRoute('posts', post.slug)}>
             <a>

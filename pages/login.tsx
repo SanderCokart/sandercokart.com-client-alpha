@@ -7,7 +7,6 @@ import type {LoginFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
-import {useEffect} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 import * as Yup from 'yup';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
@@ -23,9 +22,9 @@ import {
 
 export const Login = () => {
     const router = useRouter();
-    const { login, isLoading: isLoadingAuth, shouldRedirect } = useAuth({ middleware: 'guest' });
+    const { login } = useAuth({ middleware: 'guest' });
     const [showPassword, toggleShowPassword] = useBooleanToggle();
-    const loginForm = useForm({
+    const loginForm = useForm<LoginFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string()
                 .min(5)
@@ -40,11 +39,20 @@ export const Login = () => {
     });
     const { formState: { isValid, isDirty }, handleSubmit, register, setError } = loginForm;
 
-    useEffect(() => {
-        if (shouldRedirect) router.push('/');
-    }, [shouldRedirect]);
+    const footer = (
+        <footer className={styles.footer}>
+            <div className={styles.links}>
+                <Link href={LocalPasswordForgotPageRoute}>
+                    <a className={styles.link}>Forgot password?</a>
+                </Link>
+                <Link href={LocalRegisterPageRoute}>
+                    <a className={styles.link}>Don't have an account yet?</a>
+                </Link>
+            </div>
+        </footer>
+    );
 
-    const onSubmitLogin = async (formValues: LoginFormValues) => {
+    const onSubmitLogin = handleSubmit(async (formValues) => {
         const response = await login(formValues);
         const { type: qType } = router.query;
         if (response.type === 'form') {
@@ -63,26 +71,14 @@ export const Login = () => {
                 return router.push('/');
             }
         }
-    };
+    });
 
-    const footer = (
-        <footer className={styles.footer}>
-            <div className={styles.links}>
-                <Link href={LocalPasswordForgotPageRoute}>
-                    <a className={styles.link}>Forgot password?</a>
-                </Link>
-                <Link href={LocalRegisterPageRoute}>
-                    <a className={styles.link}>Don't have an account yet?</a>
-                </Link>
-            </div>
-        </footer>
-    );
     return (
         <BoxContainer>
-            <Loader visible={isLoadingAuth || shouldRedirect}/>
+            <Loader middleware="guest"/>
             <FormProvider {...loginForm}>
                 <CenteredFormLayout footer={footer} title="Login">
-                    <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitLogin)}>
+                    <form noValidate className={styles.form} onSubmit={onSubmitLogin}>
                         <Input
                             autoComplete="email"
                             label="E-Mail"

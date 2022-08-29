@@ -32,7 +32,7 @@ export const useAuth = ({ middleware }: useAuthProps = {}) => {
 
     const shouldRedirect = () => {
         if (middleware === 'guest' && user) return true;
-        return !!(middleware === 'auth' && !user && error);
+        return !!(middleware === 'auth' && (error || !user));
     };
 
     return { ...context, isLoading, shouldRedirect: shouldRedirect() };
@@ -73,7 +73,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             const response = await axios.simplePost(ApiPostLogoutRoute);
             localStorage.removeItem('isLoggedIn');
             setIsLoggedIn(false);
-            await mutate(null, {revalidate: false});
+            await mutate(null, { revalidate: false });
             return response;
         }
     };

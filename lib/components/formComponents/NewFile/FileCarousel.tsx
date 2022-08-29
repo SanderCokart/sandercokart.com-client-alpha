@@ -16,7 +16,8 @@ interface CarouselItemProps {
 }
 
 function CarouselItem(props: CarouselItemProps) {
-    const { url } = useImage(props.file);
+    const { getUrl } = useImage();
+    const { url } = getUrl(props.file);
     const { setValue, getValues, control: { _defaultValues } } = useFormContext();
 
     const deleteItem = async () => {

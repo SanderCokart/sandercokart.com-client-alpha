@@ -35,7 +35,7 @@ const CreatePostPage = () => {
     const { handleSubmit, register } = createPostForm;
 
     const onSubmit = handleSubmit(async (formValues) => {
-        alert(formValues.markdown);
+        alert(JSON.stringify(formValues, null ,2));
         // await axios.simplePost('/posts', { ...formValues, banner: formValues.banner[0].id });
     });
 

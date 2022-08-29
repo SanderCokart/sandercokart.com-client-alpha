@@ -1,5 +1,7 @@
 import {ArticleType, UserModel, ArticleModel} from '@/types/ModelTypes';
 
+export const LocalHomePageRoute = '/';
+
 export const LocalAccountPageRoute = '/account';
 export const LocalEmailVerifyPageRoute = '/account/email/verify';
 

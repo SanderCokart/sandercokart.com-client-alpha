@@ -1,9 +1,10 @@
 import {useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {useAuth} from '@/providers/AuthProvider';
+import {Middleware} from '@/types/CustomTypes';
 
-const UseAuthPage = () => {
-    const { isLoading, shouldRedirect } = useAuth({middleware:'auth'});
+const UseAuthRedirect = (middleware: Middleware) => {
+    const { isLoading, shouldRedirect } = useAuth({ middleware });
     const router = useRouter();
 
     useEffect(() => {
@@ -13,4 +14,4 @@ const UseAuthPage = () => {
     return isLoading || shouldRedirect;
 };
 
-export default UseAuthPage;
+export default UseAuthRedirect;
