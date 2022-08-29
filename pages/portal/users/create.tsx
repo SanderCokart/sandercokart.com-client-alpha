@@ -5,20 +5,20 @@ import styles from '@/styles/pages/portal/users/CreateUserPage.module.scss';
 import axios from '@/functions/shared/axios';
 import {CreateUserFormValues} from '@/types/FormValueTypes';
 import setFormErrors from '@/functions/client/setFormErrors';
-import Input from '../../../lib/components/formComponents/Input/Input';
+import Input from '@/components/formComponents/Input/Input';
 import useMediaQuery from '@/hooks/useMediaQuery';
 import {Button} from '@/components/Button/Button';
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 import useAuthPage from '@/hooks/useAuthPage';
 import Loader from '@/components/Loader/Loader';
-import MultiSelect from '../../../lib/components/formComponents/MultiSelect';
-import {RoleModel} from '../../../lib/types/ModelTypes';
+import MultiSelect from '@/components/formComponents/MultiSelect';
+import {RoleModel} from '@/types/ModelTypes';
 import {useEffect} from 'react';
 
 export default function CreateUserPage() {
     const visible = useAuthPage();
     const { data: rolesData, error: rolesError } = useSWR<RoleModel[]>('/roles');
-    const createUserForm = useForm();
+    const createUserForm = useForm<CreateUserFormValues>();
     const { handleSubmit, setValue, setError, formState: { isDirty }, register, reset } = createUserForm;
     const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
 
@@ -36,7 +36,7 @@ export default function CreateUserPage() {
         </BoxContainer>
     );
 
-    async function onSubmitUserCreateForm(formValues: CreateUserFormValues) {
+    const onSubmitUserCreateForm = handleSubmit(async (formValues) => {
         const response = await axios.simplePost('/users', {
             ...formValues,
             roles: formValues.roles.map(role => role.id)
@@ -49,7 +49,7 @@ export default function CreateUserPage() {
                 reset();
                 break;
         }
-    }
+    });
 
     return (
         <>
@@ -57,7 +57,7 @@ export default function CreateUserPage() {
             <BoxContainer className={styles.root}>
                 <FormProvider {...createUserForm}>
                     <CenteredFormLayout title="Create user">
-                        <form className={styles.form} onSubmit={handleSubmit(onSubmitUserCreateForm)}>
+                        <form className={styles.form} onSubmit={onSubmitUserCreateForm}>
                             <Input label="Name" registerFormHook={{ ...register('name') }}/>
                             <Input label="Email" registerFormHook={{ ...register('email') }}/>
                             <Input label="Password" registerFormHook={{ ...register('password') }}/>

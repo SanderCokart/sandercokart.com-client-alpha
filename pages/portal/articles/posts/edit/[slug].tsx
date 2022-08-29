@@ -95,7 +95,7 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
                 <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitEditArticleForm)}>
                     <Input label="Title" registerFormHook={{ ...register('title') }}/>
                     <Textarea label="Excerpt" registerFormHook={{ ...register('excerpt') }}/>
-                    <File editMode name="banner"/>
+                    <File name="banner"/>
                     <MarkdownEditor name="markdown"/>
                     <Button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">
                         <FontAwesomeIcon icon="paper-plane"/>
