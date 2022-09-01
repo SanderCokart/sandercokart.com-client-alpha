@@ -15,16 +15,14 @@ import Textarea from '@/components/formComponents/Textarea';
 import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 
-
 import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
-import useAuthPage from '@/hooks/useAuthPage';
-
 import {useAuth} from '@/providers/AuthProvider';
 
-import {CreatePostFormValues} from '@/types/FormValueTypes';
+import {EditPostFormValues} from '@/types/FormValueTypes';
 import {ArticleModel} from '@/types/ModelTypes';
 
 import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
@@ -33,7 +31,6 @@ const EditPost = () => {
     const router = useRouter();
     const slug = router.query.slug as string;
     const { isAdmin } = useAuth();
-    const visible = useAuthPage();
     const {
         data: post,
         error
@@ -41,7 +38,7 @@ const EditPost = () => {
 
     return (
         <PortalContainer>
-            <SmartLoader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <div className={styles.desktop}>
                 <header className={styles.header}>
                     {post && !error ?
@@ -65,7 +62,7 @@ interface EditPostFormProps {
 
 const EditPostForm = ({ post }: EditPostFormProps) => {
     const [loading, setLoading] = useState(true);
-    const editArticleForm = useForm({
+    const editArticleForm = useForm<EditPostFormValues>({
         resolver: yupResolver(Yup.object().shape({
             title: Yup.string().required('This field is required'),
             excerpt: Yup.string().required('This field is required'),
@@ -86,21 +83,22 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
         }
     }, [post]);
 
-    const onSubmitEditArticleForm = async (formValues: CreatePostFormValues) => {
+    const { formState: { isDirty, isValid }, register, handleSubmit } = editArticleForm;
+
+    const onSubmitEditArticleForm = handleSubmit(async (formValues) => {
         const transformedData = {
             ...formValues,
             banner: formValues.banner[0].id
         };
 
         await axios.simplePatch(`/articles/posts/${post?.id}`, transformedData);
-    };
+    });
 
-    const { formState: { isDirty, isValid }, register, handleSubmit } = editArticleForm;
 
     return (
         <FormProvider {...editArticleForm}>
             {!loading && (
-                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitEditArticleForm)}>
+                <form noValidate className={styles.form} onSubmit={onSubmitEditArticleForm}>
                     <Input label="Title" registerFormHook={{ ...register('title') }}/>
                     <Textarea label="Excerpt" registerFormHook={{ ...register('excerpt') }}/>
                     <File name="banner"/>

@@ -7,6 +7,10 @@ export interface CreatePostFormValues {
     banner: FileModel[];
 }
 
+export interface EditPostFormValues extends CreatePostFormValues {
+
+}
+
 export interface LoginFormValues {
     email: string;
     password: string;

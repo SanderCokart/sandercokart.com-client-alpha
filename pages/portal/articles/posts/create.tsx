@@ -3,7 +3,6 @@ import {yupResolver} from '@hookform/resolvers/yup';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 
-
 import FAB from '@/components/FAB';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
@@ -12,7 +11,7 @@ import Textarea from '@/components/formComponents/Textarea';
 import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 
-import useAuthPage from '@/hooks/useAuthPage';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 
@@ -20,7 +19,6 @@ import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 
 
 const CreatePostPage = () => {
-    const visible = useAuthPage();
     const createPostForm = useForm<CreatePostFormValues>({
         resolver: yupResolver(Yup.object().shape({
             // title: Yup.string().required('This field is required'),
@@ -46,7 +44,7 @@ const CreatePostPage = () => {
 
     return (
         <>
-            <SmartLoader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <PortalContainer className={styles.desktop}>
                 <FormProvider {...createPostForm}>
                     <form noValidate className={styles.form} onSubmit={onSubmit}>

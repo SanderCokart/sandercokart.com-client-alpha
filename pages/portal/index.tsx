@@ -4,12 +4,11 @@ import {useSWRConfig} from 'swr';
 
 import {SmartLoader} from '@/components/Loader/SmartLoader';
 
-import useAuthPage from '@/hooks/useAuthPage';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import styles from '@/styles/pages/portal/Portal.module.scss';
 
 const PortalPage = () => {
-    const visible = useAuthPage();
     const router = useRouter();
     const { mutate } = useSWRConfig();
 
@@ -18,7 +17,7 @@ const PortalPage = () => {
             <Head>
                 <title>portal</title>
             </Head>
-            <SmartLoader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <div className={styles.portal}>
                 <main className={styles.main}>
 
