@@ -1,8 +1,11 @@
-import Input from '@/components/formComponents/Input/Input';
-import styles from '@/styles/components/PortalNavigation.module.scss';
 import {useState} from 'react';
+
 import {LinkButton} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+
 import {LocalPortalUsersPageRoute, LocalPortalArticlesPageRoute} from '@/constants/local-routes';
+
+import styles from '@/styles/components/PortalNavigation.module.scss';
 
 const PortalNavigation = () => {
     const [search, setSearch] = useState('');

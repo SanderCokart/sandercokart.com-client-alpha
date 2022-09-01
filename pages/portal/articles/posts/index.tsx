@@ -1,21 +1,29 @@
-import Loader from '@/components/Loader/Loader';
-import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
-import type {ArticleModel} from '@/types/ModelTypes';
-import {UserModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
+
+import {Button, LinkButton} from '@/components/Button/Button';
 import CreateFAB from '@/components/CreateFAB';
-import {LocalPortalArticlesCreatePageRoute, LocalPortalArticlesEditPageRoute} from '@/constants/local-routes';
-import useAuthPage from '@/hooks/useAuthPage';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
+import {ApiDeleteArticlesDestroyRoute} from '@/constants/api-routes';
+import {
+    LocalPortalArticlesCreatePageRoute,
+    LocalPortalArticlesEditPageRoute,
+    LocalLoginPageRoute
+} from '@/constants/local-routes';
+
+import axios from '@/functions/shared/axios';
+
 import DeleteConfirmationProvider, {
     useDeleteConfirmationContext,
     ConfirmDeleteModal
 } from '@/providers/DeleteConfirmationProvider';
-import {Button, LinkButton} from '@/components/Button/Button';
+import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
+
+import type {ArticleModel} from '@/types/ModelTypes';
+
 import styles from '@/styles/pages/portal/PortalTable.module.scss';
-import axios from '@/functions/shared/axios';
-import {ApiDeleteArticlesDestroyRoute} from '@/constants/api-routes';
 
 const PostRow = ({ article }: { article: ArticleModel }) => {
     const { toggleDeleteModal, setItemToDelete } = useDeleteConfirmationContext<ArticleModel>();
@@ -108,11 +116,10 @@ const PostTable = () => {
 };
 
 const ArticlesPortalPage = () => {
-    const visible = useAuthPage();
 
     return (
         <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
-            <Loader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <DeleteConfirmationProvider<ArticleModel>>
                 <PostTable/>
             </DeleteConfirmationProvider>

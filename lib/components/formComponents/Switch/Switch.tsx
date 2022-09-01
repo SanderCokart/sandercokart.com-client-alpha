@@ -1,8 +1,10 @@
-import styles from './Switch.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {ChangeEvent} from 'react';
 import {useState} from 'react';
+
 import {FontAwesomeIconType} from '@/types/CustomTypes';
+
+import styles from './Switch.module.scss';
 
 interface SwitchProps {
     name: string;

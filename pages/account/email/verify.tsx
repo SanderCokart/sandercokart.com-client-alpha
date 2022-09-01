@@ -1,16 +1,23 @@
 import {useRouter} from 'next/router';
-import Loader from '@/components/Loader/Loader';
-import BoxContainer from '@/components/BoxContainer';
-import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 import {useEffect, useState} from 'react';
-import axios from '@/functions/shared/axios';
 import {useSWRConfig} from 'swr';
-import useRedirect from '@/hooks/useRedirect';
+
+import BoxContainer from '@/components/BoxContainer';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
 import {ApiGetUserRoute, ApiPostEmailVerifyRoute} from '@/constants/api-routes';
+import {LocalLoginPageRoute, LocalHomePageRoute} from '@/constants/local-routes';
+
+import axios from '@/functions/shared/axios';
+
+import useRedirect from '@/hooks/useRedirect';
+
+import {useAuth} from '@/providers/AuthProvider';
+
+import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 
 const UserMustLogin = () => {
-    useRedirect('/login', true);
+    useRedirect(LocalLoginPageRoute, true);
     return (
         <BoxContainer center>
             <h1>Please login to verify your email.</h1>
@@ -21,7 +28,7 @@ const UserMustLogin = () => {
 };
 
 const UserIsAlreadyVerified = () => {
-    useRedirect('/');
+    useRedirect(LocalHomePageRoute);
     return (
         <BoxContainer center>
             <h1>You are already verified!</h1>
@@ -31,7 +38,7 @@ const UserIsAlreadyVerified = () => {
 };
 
 const UserHasBeenVerified = () => {
-    useRedirect('/');
+    useRedirect(LocalHomePageRoute);
     return (
         <BoxContainer center>
             <h1>Your email has been verified!</h1>
@@ -76,7 +83,7 @@ const VerifyEmailPage = () => {
     }
     return (
         <BoxContainer>
-            <Loader visible={true}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
         </BoxContainer>
     );
 };

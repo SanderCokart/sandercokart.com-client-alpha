@@ -1,14 +1,20 @@
-import styles from './FileCarousel.module.scss';
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {Mousewheel, Keyboard} from 'swiper';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import {useFormContext} from 'react-hook-form';
-import {FileModel} from '@/types/ModelTypes';
-import useImage from '@/hooks/useFile';
+import {Mousewheel, Keyboard} from 'swiper';
+import {Swiper, SwiperSlide} from 'swiper/react';
+
 import {Button} from '@/components/Button';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
 import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';
+
 import axios from '@/functions/shared/axios';
+
+import useImage from '@/hooks/useFile';
+
+import {FileModel} from '@/types/ModelTypes';
+
+import styles from './FileCarousel.module.scss';
 
 interface CarouselItemProps {
     name: string;

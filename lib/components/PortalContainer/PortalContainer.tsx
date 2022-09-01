@@ -1,6 +1,7 @@
-import type {ReactNode, HTMLAttributes} from 'react';
-import styles from '@/components/PortalContainer/PortalContainer.module.scss';
 import classnames from 'classnames';
+import type {ReactNode, HTMLAttributes} from 'react';
+
+import styles from '@/components/PortalContainer/PortalContainer.module.scss';
 
 interface PortalContainerProps extends HTMLAttributes<HTMLDivElement> {
     children: ReactNode;

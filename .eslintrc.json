@@ -1,0 +1,45 @@
+{
+  "extends": ["next", "next/core-web-vitals"],
+  "plugins": [
+    "eslint-plugin-import-helpers"
+  ],
+  "rules": {
+    "react/jsx-sort-props": [
+      "error", {
+        "callbacksLast": true,
+        "shorthandFirst": true,
+        "shorthandLast": false,
+        "ignoreCase": false,
+        "noSortAlphabetically": false,
+        "reservedFirst": true
+      }
+    ],
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "off",
+    "import-helpers/order-imports": [
+      "warn",
+      {
+        "newlinesBetween": "always",
+        // new line between groups
+        "groups": [
+          "absolute",
+          "module",
+          "/^@\/components/",
+          "/^@\/constants/",
+          "/^@\/functions/",
+          "/^@\/hooks/",
+          "/^@\/layouts/",
+          "/^@\/providers/",
+          "/^@\/types/",
+          "/^@\/public/",
+          "/(webp|png|jpg|jpeg)$/",
+          "/(scss|css)$/"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
+      }
+    ]
+  }
+}

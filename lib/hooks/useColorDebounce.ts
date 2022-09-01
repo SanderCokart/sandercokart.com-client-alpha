@@ -1,5 +1,5 @@
-import {useState, useCallback, ChangeEvent} from 'react';
 import {debounce} from 'lodash';
+import {useState, useCallback, ChangeEvent} from 'react';
 
 const UseColorDebounce = () => {
     const [color, setColor] = useState('#f00505');

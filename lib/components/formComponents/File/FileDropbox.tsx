@@ -1,10 +1,12 @@
-import styles from './FileDropbox.module.scss';
+import classnames from 'classnames';
 import type {DragEvent, ChangeEvent} from 'react';
 import {useState} from 'react';
-import classnames from 'classnames';
-import axios from '@/functions/shared/axios';
 import {useFormContext} from 'react-hook-form';
+
 import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import styles from './FileDropbox.module.scss';
 
 interface FileDropboxProps {
     name: string;

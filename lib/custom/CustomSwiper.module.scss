@@ -1,24 +1,25 @@
 @use "/styles/utils";
+
 .nextButton, .prevButton {
   @include utils.defaultButton;
   position: absolute;
+  z-index: 10;
   top: 50%;
-  transform: translateY(-50%);
   right: 0;
   bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50px;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--bg-trans);
-  z-index: 10;
   cursor: pointer;
+  transform: translateY(-50%);
+  background-color: var(--bg-trans);
 
   @include utils.down(utils.$sm) {
+    right: 16px;
     height: 50px;
     border-radius: 50%;
-    right: 16px;
   }
 
   &:disabled {

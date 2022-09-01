@@ -1,14 +1,19 @@
+import Papa from 'papaparse';
 import type {ReactNode, SetStateAction, Dispatch, CSSProperties} from 'react';
 import {createContext, useContext, useState, MouseEvent, useCallback, ChangeEvent} from 'react';
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import {useFormContext} from 'react-hook-form';
-import useFile from '@/hooks/useFile';
-import axios from '@/functions/shared/axios';
-import {FileModel} from '@/types/ModelTypes';
-import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
-import convertObjectToPropsString from '@/functions/client/ConvertObjectToPropsString';
-import Papa from 'papaparse';
+
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import {GridProps} from '@/components/Grid/Grid';
+
+import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
+
+import convertObjectToPropsString from '@/functions/client/ConvertObjectToPropsString';
+import axios from '@/functions/shared/axios';
+
+import useFile from '@/hooks/useFile';
+
+import {FileModel} from '@/types/ModelTypes';
 
 export const EditorToolbarContext = createContext({});
 

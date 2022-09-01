@@ -1,11 +1,14 @@
-import styles from './MDXComponents.module.scss';
-import {withChildren} from '@/types/CustomTypes';
-import Code from '@/components/MDXComponents/Code';
-import {CSSProperties, ReactNode} from 'react';
 import type {ImageProps as NextImageProps} from 'next/image';
 import NextImage from 'next/image';
-import Grid from '@/components/Grid';
+import {CSSProperties, ReactNode} from 'react';
+
 import Flex from '@/components/Flex';
+import Grid from '@/components/Grid';
+import Code from '@/components/MDXComponents/Code';
+
+import {withChildren} from '@/types/CustomTypes';
+
+import styles from './MDXComponents.module.scss';
 
 
 export const Title = (props: withChildren) => <h1 className={styles.title} {...props}/>;

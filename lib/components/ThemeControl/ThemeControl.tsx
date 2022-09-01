@@ -1,6 +1,9 @@
-import Radio from '@/components/formComponents/Radio/Radio';
-import {useTheme} from '@/providers/ThemeProvider';
 import {ChangeEvent} from 'react';
+
+import Radio from '@/components/formComponents/Radio/Radio';
+
+import {useTheme} from '@/providers/ThemeProvider';
+
 import styles from './ThemeControl.module.scss';
 
 const ThemeControl = () => {

@@ -1,8 +1,9 @@
-import styles from './MultiSelect.module.scss';
 import {Multiselect} from 'multiselect-react-dropdown';
-import {CSSProperties, InputHTMLAttributes, useRef, useEffect} from 'react';
 import {IMultiselectProps} from 'multiselect-react-dropdown/dist/multiselect/interface';
+import {CSSProperties, InputHTMLAttributes, useRef, useEffect} from 'react';
 import {UseFormSetValue} from 'react-hook-form/dist/types/form';
+
+import styles from './MultiSelect.module.scss';
 
 const style: { [key: string]: CSSProperties } = {
 
@@ -31,7 +32,7 @@ const style: { [key: string]: CSSProperties } = {
         backgroundColor: 'var(--bg-nav)'
     },
     option: { // To change css for dropdown options
-        backgroundColor: 'var(--bg-nav)',
+        backgroundColor: 'var(--bg-nav)'
     },
     groupHeading: { // To chanage group heading style
 
@@ -54,7 +55,7 @@ export default function MultiSelect(props: MultiSelectProps & IMultiselectProps)
 
     useEffect(() => {
         if (setValue && ref.current) setValue(name, ref.current?.getSelectedItems());
-    }, [])
+    }, []);
 
     const handleChange = () => {
         if (!!setValue && !name) throw new Error('MultiSelect: name is required when using setValue');

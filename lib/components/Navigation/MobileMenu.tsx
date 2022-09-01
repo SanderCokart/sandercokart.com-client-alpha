@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {ReactNode} from 'react';
+
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
 
 
 interface MobileMenuProps {

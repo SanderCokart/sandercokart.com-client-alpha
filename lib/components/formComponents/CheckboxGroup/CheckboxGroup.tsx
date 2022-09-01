@@ -1,8 +1,10 @@
-import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
-import styles from './CheckboxGroup.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Fragment, InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
+
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
+
+import styles from './CheckboxGroup.module.scss';
 
 
 interface CheckboxGroupProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
@@ -21,7 +23,7 @@ interface CheckboxOptions {
     value: string;
 }
 
-const CheckboxGroup = (props:CheckboxGroupProps) => {
+const CheckboxGroup = (props: CheckboxGroupProps) => {
     const {
         loading = false,
         containerProps = undefined,

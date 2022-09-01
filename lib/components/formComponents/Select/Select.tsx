@@ -1,11 +1,14 @@
-import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper/ConditionalButtonWrapper';
-import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
-import styles from './Select.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useRef, SelectHTMLAttributes, MutableRefObject, HTMLAttributes, LabelHTMLAttributes} from 'react';
-import Skeleton from 'react-loading-skeleton';
 import {UseFormRegisterReturn} from 'react-hook-form';
+import Skeleton from 'react-loading-skeleton';
+
+import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper/ConditionalButtonWrapper';
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
+
 import {FontAwesomeIconType} from '@/types/CustomTypes';
+
+import styles from './Select.module.scss';
 
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {

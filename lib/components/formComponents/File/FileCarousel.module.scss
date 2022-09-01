@@ -1,9 +1,9 @@
 .root {
-  min-height: 200px;
-  $border: 2px solid var(--acc);
   position: relative;
-  border-left: $border;
+  $border: 2px solid var(--acc);
+  min-height: 200px;
   border-right: $border;
+  border-left: $border;
 }
 
 .swiper {
@@ -11,9 +11,9 @@
 }
 
 .slide {
-  height: 200px;
-  width: 200px;
   position: relative;
+  width: 200px;
+  height: 200px;
   margin: auto 0;
 }
 

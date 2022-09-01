@@ -1,9 +1,10 @@
 .multiSelectContainer {
   position: relative;
+
   &:focus-within {
     .line {
-      transform-origin: left;
       transform: scaleX(1);
+      transform-origin: left;
     }
   }
 }
@@ -12,13 +13,13 @@
   position: absolute;
   top: 100%;
   left: 0;
-  height: 2px;
   width: 100%;
-  background-color: var(--acc);
-  border: none;
-  transform-origin: right;
-  transform: scaleX(0);
+  height: 2px;
   transition: transform 250ms ease;
+  transform: scaleX(0);
+  transform-origin: right;
+  border: none;
+  background-color: var(--acc);
 }
 
 .whiteLine {

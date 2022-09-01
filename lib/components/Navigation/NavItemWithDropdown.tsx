@@ -1,7 +1,9 @@
 import {ReactNode, useState} from 'react';
 import {useDetectClickOutside} from 'react-detect-click-outside';
-import styles from './NavItemWithDropdown.module.scss';
+
 import {DropdownMenuContext} from '@/components/Navigation';
+
+import styles from './NavItemWithDropdown.module.scss';
 
 
 interface NavItemDropdownProps {

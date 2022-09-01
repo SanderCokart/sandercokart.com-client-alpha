@@ -1,23 +1,34 @@
-import {Button} from '@/components/Button/Button';
-import Input from '@/components/formComponents/Input/Input';
-import Loader from '@/components/Loader/Loader';
-import axios from '@/functions/shared/axios';
-import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/pages/account/Account.module.scss';
-import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
+import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import setFormErrors from '@/functions/client/setFormErrors';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
 import BoxContainer from '@/components/BoxContainer';
-import {ApiPatchChangePasswordRoute} from '@/constants/api-routes';
-import useAuthPage from '@/hooks/useAuthPage';
-import {useEffect} from 'react';
+import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
+import {
+    ApiPatchChangePasswordRoute,
+    ApiPostEmailVerifyRetryRoute,
+    ApiPatchEmailChangeRoute
+} from '@/constants/api-routes';
+import {LocalLoginPageRoute, LocalHomePageRoute} from '@/constants/local-routes';
+
+import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import {useAuth} from '@/providers/AuthProvider';
+
+import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/account/Account.module.scss';
+
 
 const VerificationNotification = () => {
-    const requestNewVerificationLink = async () => await axios.simplePost('/account/email/verify/retry');
+    const requestNewVerificationLink = async () => await axios.simplePost(ApiPostEmailVerifyRetryRoute);
 
     return (
         <>
@@ -37,13 +48,12 @@ const BlockedFeature = () => {
 export const AccountPage = () => {
     const { logout, isVerified } = useAuth({ middleware: 'auth' });
     const router = useRouter();
-    const visible = useAuthPage();
 
 
     const onClickLogout = async () => {
         const response = await logout();
         if (response.type === 'success') {
-            router.push('/');
+            router.push(LocalHomePageRoute);
         }
     };
 
@@ -51,7 +61,7 @@ export const AccountPage = () => {
     return (
         <BoxContainer className={styles.root}>
             {!isVerified && <VerificationNotification/>}
-            <Loader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <div className={styles.forms}>
                 <PasswordForm/>
                 <EmailForm/>
@@ -66,7 +76,7 @@ export const AccountPage = () => {
 
 const PasswordForm = () => {
     const { isVerified } = useAuth();
-    const changePasswordForm = useForm({
+    const changePasswordForm = useForm<PasswordChangeFormValues>({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
             password: Yup.string().min(8).max(50).required('This field is required')
@@ -85,18 +95,17 @@ const PasswordForm = () => {
     });
     const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changePasswordForm;
 
-
-    const onSubmitPasswordChange = async (formValues: PasswordChangeFormValues) => {
+    const onSubmitPasswordChange = handleSubmit(async (formValues) => {
         const response = await axios.simplePatch(ApiPatchChangePasswordRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
         }
         reset();
-    };
+    });
 
     return (
         <FormProvider {...changePasswordForm}>
-            <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitPasswordChange)}>
+            <form noValidate className={styles.form} onSubmit={onSubmitPasswordChange}>
 
                 {!isVerified && <BlockedFeature/>}
 
@@ -123,7 +132,7 @@ const PasswordForm = () => {
 
 const EmailForm = () => {
     const { user, isVerified } = useAuth();
-    const changeEmailForm = useForm({
+    const changeEmailForm = useForm<EmailChangeFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
         })),
@@ -134,13 +143,13 @@ const EmailForm = () => {
     });
     const { formState: { isDirty, isValid }, handleSubmit, register, setError, reset } = changeEmailForm;
 
-    const onSubmitEmailChange = async (formValues: EmailChangeFormValues) => {
-        const response = await axios.simplePatch(`/account/email/change`, formValues);
+    const onSubmitEmailChange = handleSubmit(async (formValues) => {
+        const response = await axios.simplePatch(ApiPatchEmailChangeRoute, formValues);
         if (response.type === 'form') {
             setFormErrors(setError, response.errors);
             return;
         }
-    };
+    });
 
     useEffect(() => {
         reset({ email: user?.email });
@@ -148,7 +157,7 @@ const EmailForm = () => {
 
     return (
         <FormProvider {...changeEmailForm}>
-            <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitEmailChange)}>
+            <form noValidate className={styles.form} onSubmit={onSubmitEmailChange}>
 
                 {!isVerified && <BlockedFeature/>}
 

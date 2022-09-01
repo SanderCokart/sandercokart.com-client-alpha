@@ -1,21 +1,26 @@
-import Input from '@/components/formComponents/Input/Input';
-import axios from '@/functions/shared/axios';
-import styles from '@/styles/pages/account/PasswordReset.module.scss';
-import type {PasswordResetFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {useForm, FormProvider} from 'react-hook-form';
 import * as Yup from 'yup';
-import {toast} from 'react-toastify';
+
 import {Button} from '@/components/Button/Button';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import setFormErrors from '@/functions/client/setFormErrors';
+import Input from '@/components/formComponents/Input/Input';
+
 import {ApiPatchResetPasswordRoute} from '@/constants/api-routes';
 import {LocalLoginPageRoute} from '@/constants/local-routes';
 
+import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import type {PasswordResetFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/account/PasswordReset.module.scss';
+
 export const PasswordResetPage = () => {
     const router = useRouter();
-    const resetPasswordForm = useForm({
+    const resetPasswordForm = useForm<PasswordResetFormValues>({
         resolver: yupResolver(Yup.object().shape({
             password: Yup.string().min(8).max(50).required('This field is required')
                 .matches(/[a-z]/, 'must contain a lower case character')
@@ -28,9 +33,15 @@ export const PasswordResetPage = () => {
     });
     const { handleSubmit, register, formState: { isValid, isDirty }, setError } = resetPasswordForm;
 
-    const onSubmitPasswordReset = async (formValues: PasswordResetFormValues) => {
+
+    const onSubmitPasswordReset = handleSubmit(async (formValues) => {
         const { query: { identifier, token } } = router;
-        const response = await axios.simplePatch(ApiPatchResetPasswordRoute, formValues, { params: { identifier, token } });
+        const response = await axios.simplePatch(ApiPatchResetPasswordRoute, formValues, {
+            params: {
+                identifier,
+                token
+            }
+        });
         switch (response.type) {
             case 'form':
                 setFormErrors(setError, response.errors);
@@ -39,12 +50,12 @@ export const PasswordResetPage = () => {
                 router.push(LocalLoginPageRoute);
                 return;
         }
-    };
+    });
 
     return (
         <FormProvider {...resetPasswordForm}>
             <CenteredFormLayout title="Reset Password">
-                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitPasswordReset)}>
+                <form noValidate className={styles.form} onSubmit={onSubmitPasswordReset}>
                     <Input autoComplete="new-password" label="New password" placeholder="Type your new password..."
                            prependIcon={{ icon: ['fas', 'lock'] }}
                            registerFormHook={{ ...register('password') }}

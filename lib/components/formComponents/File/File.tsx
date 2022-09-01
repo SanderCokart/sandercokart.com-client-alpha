@@ -1,15 +1,21 @@
-import FileDropbox from '@/components/formComponents/File/FileDropbox';
-import FileCarousel from '@/components/formComponents/File/FileCarousel';
-import styles from './File.module.scss';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import classnames from 'classnames';
 import {InputHTMLAttributes} from 'react';
 import {useFormContext} from 'react-hook-form';
+
 import {Button} from '@/components/Button';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {FileModel} from '@/types/ModelTypes';
-import getDifference from '@/functions/shared/getDifference';
-import axios from '@/functions/shared/axios';
+import FileCarousel from '@/components/formComponents/File/FileCarousel';
+import FileDropbox from '@/components/formComponents/File/FileDropbox';
+
 import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';
-import classnames from 'classnames';
+
+import axios from '@/functions/shared/axios';
+import getDifference from '@/functions/shared/getDifference';
+
+import {FileModel} from '@/types/ModelTypes';
+
+import styles from './File.module.scss';
+
 
 interface FileProps extends InputHTMLAttributes<HTMLInputElement> {
     name: string;

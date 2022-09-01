@@ -1,18 +1,18 @@
-import axios from '@/functions/shared/axios';
-import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
-import {PostsSlugsResponse} from '@/types/ResponseTypes';
 import {GetStaticPaths, GetStaticProps} from 'next';
-import {MDXRemoteSerializeResult, MDXRemote} from 'next-mdx-remote';
-import {ArticleModel} from '@/types/ModelTypes';
-import {ApiGetArticlesSlugsRoute, ApiGetArticlesShowRoute} from '@/constants/api-routes';
-import {ParsedUrlQuery} from 'querystring';
-import {useMemo} from 'react';
-import {getMDXComponent} from 'mdx-bundler/client';
-import remarkToc from 'remark-toc';
-import rehypeSlug from 'rehype-slug';
+import {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {serialize} from 'next-mdx-remote/serialize';
-import useMDXComponents from '@/components/MDXComponents';
-import MDXComponents from '@/components/MDXComponents';
+import {ParsedUrlQuery} from 'querystring';
+import rehypeSlug from 'rehype-slug';
+import remarkToc from 'remark-toc';
+
+import {ApiGetArticlesSlugsRoute, ApiGetArticlesShowRoute} from '@/constants/api-routes';
+
+import axios from '@/functions/shared/axios';
+
+import {ArticleModel} from '@/types/ModelTypes';
+import {PostsSlugsResponse} from '@/types/ResponseTypes';
+
+import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
 
 const PostPage = ({ post }: BlogPostProps) => {
     return (

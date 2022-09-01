@@ -6,8 +6,8 @@
 
 
 .label {
-  width: auto;
   font-weight: bold;
+  width: auto;
   margin-bottom: 4px;
 }
 
@@ -16,17 +16,17 @@
 }
 
 .textarea {
-  outline: none;
-  padding: 8px;
   font-size: 1rem;
   min-width: 100%;
-  background-color: var(--bg);
-  color: var(--bg-contrast-text);
-  resize: vertical;
-  max-height: 50vh;
   min-height: 75px;
-  border: var(--bg-contrast-text) solid 2px;
+  max-height: 50vh;
+  padding: 8px;
+  resize: vertical;
   transition: border 250ms ease;
+  color: var(--bg-contrast-text);
+  border: var(--bg-contrast-text) solid 2px;
+  outline: none;
+  background-color: var(--bg);
 
   &:active, &:focus {
     border: var(--acc) solid 2px;

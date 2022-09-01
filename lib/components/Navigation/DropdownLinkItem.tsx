@@ -1,7 +1,8 @@
-import styles from './DropdownLinkItem.module.scss';
 import Link from 'next/link';
-import {ReactNode} from 'react';
 import {useRouter} from 'next/router';
+import {ReactNode} from 'react';
+
+import styles from './DropdownLinkItem.module.scss';
 
 
 interface DropdownLinkItemProps {

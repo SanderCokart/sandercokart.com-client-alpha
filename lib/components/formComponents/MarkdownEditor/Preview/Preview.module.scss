@@ -3,23 +3,23 @@
 .root {
   width: 100%;
   height: 100%;
-  background-color: #a00;
+  background-color: #aa0000;
 }
 
 .previewContainer {
+  overflow-y: auto;
   width: 100%;
   height: 100%;
   direction: rtl;
-  overflow-y: auto;
 }
 
 .preview {
-  width: 100%;
-  height: 100%;
-  background-color: var(--bg);
-  color: var(--bg-contrast-text);
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: var(--bg-contrast-text);
+  background-color: var(--bg);
   gap: 20px;
   direction: ltr;
 }

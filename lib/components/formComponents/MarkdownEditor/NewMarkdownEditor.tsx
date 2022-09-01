@@ -1,11 +1,14 @@
-import styles from './NewMarkdownEditor.module.scss';
-import NewToolbar, {ToolbarProps} from '@/components/formComponents/MarkdownEditor/NewToolbar';
-import Editor from '@/components/formComponents/MarkdownEditor/Editor';
 import {useRef, createContext, useContext, RefObject} from 'react';
+import {UseFormRegisterReturn} from 'react-hook-form';
+
+import Editor from '@/components/formComponents/MarkdownEditor/Editor';
+import {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
+import NewToolbar, {ToolbarProps} from '@/components/formComponents/MarkdownEditor/NewToolbar';
 import Preview from '@/components/formComponents/MarkdownEditor/Preview';
 import {PreviewProps} from '@/components/formComponents/MarkdownEditor/Preview/Preview';
-import {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
-import {UseFormRegisterReturn} from 'react-hook-form';
+
+
+import styles from './NewMarkdownEditor.module.scss';
 
 interface MarkdownEditorProps {
     name?: string;

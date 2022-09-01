@@ -1,17 +1,23 @@
-import styles from './NewToolbar.module.scss';
-import {Button} from '@/components/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {FontAwesomeIconType} from '@/types/CustomTypes';
+import classnames from 'classnames';
 import type {ButtonHTMLAttributes, ReactNode, CSSProperties} from 'react';
 import {useState} from 'react';
-import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/EditorToolbarContextProvider';
-import Input from '@/components/formComponents/Input';
-import Grid from '@/components/Grid';
-import Color from '@/components/formComponents/Color';
+
+import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
-import useColorDebounce from '@/hooks/useColorDebounce';
+import Color from '@/components/formComponents/Color';
+import Input from '@/components/formComponents/Input';
 import Select from '@/components/formComponents/Select';
-import classnames from 'classnames';
+import Grid from '@/components/Grid';
+
+import useColorDebounce from '@/hooks/useColorDebounce';
+
+import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/EditorToolbarContextProvider';
+
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
+
+
+import styles from './NewToolbar.module.scss';
 
 interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;

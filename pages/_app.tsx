@@ -1,4 +1,4 @@
-//INITIAL CSS
+//LOADED CSS BEFORE PACKAGES
 import '@/styles/globals.before.scss';
 //PACKAGES
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -7,20 +7,22 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-responsive-modal/styles.css';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
-//LAST CSS
+//CSS AFTER PACKAGES
 import '@/styles/globals.after.scss';
 //----------------------------------------------------------------------------------------------------------------------
-import AuthProvider from '@/providers/AuthProvider';
 import GlobalSWRConfig from '@/config/GlobalSWRConfig';
-import Head from 'next/head';
-import Navigation from '@/components/Navigation/Navigation';
-import ThemeProvider from '@/providers/ThemeProvider';
 import icons from '@/data/icons';
+import {library, config} from '@fortawesome/fontawesome-svg-core';
 import type {AppProps} from 'next/app';
-import {SWRConfig} from 'swr';
+import Head from 'next/head';
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {ToastContainer} from 'react-toastify';
-import {library, config} from '@fortawesome/fontawesome-svg-core';
+import {SWRConfig} from 'swr';
+
+import Navigation from '@/components/Navigation/Navigation';
+
+import AuthProvider from '@/providers/AuthProvider';
+import ThemeProvider from '@/providers/ThemeProvider';
 
 config.autoAddCss = false;
 library.add(...icons);

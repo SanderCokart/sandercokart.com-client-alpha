@@ -10,7 +10,7 @@ const UseFieldVisibility = () => {
         }
     };
 
-    return {showPasswordAsText, togglePasswordVisibility};
+    return { showPasswordAsText, togglePasswordVisibility };
 };
 
 export default UseFieldVisibility;

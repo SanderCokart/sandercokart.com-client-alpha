@@ -1,7 +1,7 @@
 import {FileModel} from '@/types/ModelTypes';
 
 const UseFile = () => {
-    const getUrl = (file:FileModel) => {
+    const getUrl = (file: FileModel) => {
         if (!!file?.relative_path) {
             return { url: `${process.env.NEXT_PUBLIC_API_URL}/storage/${file.relative_path}`, isPrivate: false };
         }

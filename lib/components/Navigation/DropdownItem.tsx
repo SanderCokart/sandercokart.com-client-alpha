@@ -1,6 +1,8 @@
 import {ReactNode, MouseEvent} from 'react';
-import styles from './DropdownItem.module.scss';
+
 import {useDropdownMenu} from '@/components/Navigation';
+
+import styles from './DropdownItem.module.scss';
 
 
 interface DropdownItemProps {

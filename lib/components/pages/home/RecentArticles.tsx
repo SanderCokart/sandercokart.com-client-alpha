@@ -1,15 +1,20 @@
-import styles from '@/styles/pages/Home.module.scss';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
+import Link from 'next/link';
+import {useState} from 'react';
 import {Mousewheel, Navigation, Keyboard, default as SwiperType} from 'swiper';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useState} from 'react';
 import useSWRInfinite from 'swr/infinite';
-import Image from 'next/image';
-import {CursorPaginationResponse} from '@/types/ResponseTypes';
-import {ArticleModel} from '@/types/ModelTypes';
-import useImage from '@/hooks/useFile';
-import Link from 'next/link';
+
 import {LocalArticlePageRoute} from '@/constants/local-routes';
+
+import useImage from '@/hooks/useFile';
+
+import {ArticleModel} from '@/types/ModelTypes';
+import {CursorPaginationResponse} from '@/types/ResponseTypes';
+
+
+import styles from '@/styles/pages/Home.module.scss';
 
 //<editor-fold desc="Swiper Navigation Buttons">
 const Previous = () => {

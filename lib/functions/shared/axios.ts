@@ -1,7 +1,8 @@
-import type {CustomApiResponse} from '@/types/CustomTypes';
 import type {AxiosInstance, AxiosPromise, AxiosRequestConfig} from 'axios';
 import axios from 'axios';
 import {toast} from 'react-toastify';
+
+import type {CustomApiResponse} from '@/types/CustomTypes';
 
 
 const axiosInstance = axios.create({

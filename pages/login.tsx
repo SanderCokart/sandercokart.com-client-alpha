@@ -1,24 +1,33 @@
-import {Button} from '@/components/Button/Button';
-import Checkbox from '@/components/formComponents/Checkbox/Checkbox';
-import Input from '@/components/formComponents/Input/Input';
-import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/pages/Login.module.scss';
-import type {LoginFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 import {useForm, FormProvider} from 'react-hook-form';
 import * as Yup from 'yup';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import setFormErrors from '@/functions/client/setFormErrors';
-import {useBooleanToggle} from '@/hooks/useToggle';
-import Loader from '@/components/Loader/Loader';
+
 import BoxContainer from '@/components/BoxContainer';
+import {Button} from '@/components/Button/Button';
+import Checkbox from '@/components/formComponents/Checkbox/Checkbox';
+import Input from '@/components/formComponents/Input/Input';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
 import {
     LocalPasswordForgotPageRoute,
     LocalRegisterPageRoute,
-    LocalEmailVerifyPageRoute
+    LocalEmailVerifyPageRoute,
+    LocalHomePageRoute
 } from '@/constants/local-routes';
+
+import setFormErrors from '@/functions/client/setFormErrors';
+
+import {useBooleanToggle} from '@/hooks/useToggle';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import {useAuth} from '@/providers/AuthProvider';
+
+import type {LoginFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/Login.module.scss';
 
 export const Login = () => {
     const router = useRouter();
@@ -68,14 +77,14 @@ export const Login = () => {
                 });
             }
             default: {
-                return router.push('/');
+                return router.push(LocalHomePageRoute);
             }
         }
     });
 
     return (
         <BoxContainer>
-            <Loader middleware="guest"/>
+            <SmartLoader middleware="guest" redirectTo={LocalHomePageRoute}/>
             <FormProvider {...loginForm}>
                 <CenteredFormLayout footer={footer} title="Login">
                     <form noValidate className={styles.form} onSubmit={onSubmitLogin}>

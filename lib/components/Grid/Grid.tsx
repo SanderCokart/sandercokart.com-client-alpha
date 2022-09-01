@@ -5,7 +5,7 @@ export interface GridProps {
     columns?: number;
     alignment?: CSSProperties['placeItems'];
     gap?: CSSProperties['gap'];
-};
+}
 
 const Grid = ({ columns = 3, alignment = 'center', gap = 0, children }: GridProps) => {
     return (

@@ -6,8 +6,8 @@
 
 
 .label {
-  width: auto;
   font-weight: bold;
+  width: auto;
   margin-bottom: 4px;
 }
 
@@ -17,14 +17,14 @@
 }
 
 .select {
-  outline: none;
-  border: none;
-  padding: 8px;
   font-size: 1rem;
   width: 100%;
-  background-color: var(--bg);
-  color: var(--bg-contrast-text);
   height: 100%;
+  padding: 8px;
+  color: var(--bg-contrast-text);
+  border: none;
+  outline: none;
+  background-color: var(--bg);
 
   &.withPrependIcon {
     padding-left: 1.75rem;
@@ -36,8 +36,8 @@
 
   &:active, &:focus {
     & ~ .line {
-      transform-origin: left;
       transform: scaleX(1);
+      transform-origin: left;
     }
   }
 
@@ -47,20 +47,20 @@
 }
 
 .iconPrepend {
-  color: #fffa;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   left: 8px;
   transition: color 150ms ease;
+  transform: translateY(-50%);
+  color: #fffa;
 }
 
 .iconButtonPrepend {
   @extend .iconPrepend;
   cursor: pointer;
-  background-color: transparent;
-  outline: none;
   border: none;
+  outline: none;
+  background-color: transparent;
 
   &:hover, &:active, &:focus {
     color: var(--acc);
@@ -68,20 +68,20 @@
 }
 
 .iconAppend {
-  color: #fffa;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   right: 8px;
   transition: color 150ms ease;
+  transform: translateY(-50%);
+  color: #fffa;
 }
 
 .iconButtonAppend {
   @extend .iconAppend;
   cursor: pointer;
-  background-color: transparent;
-  outline: none;
   border: none;
+  outline: none;
+  background-color: transparent;
 
   &:hover, &:active, &:focus {
     color: var(--acc);
@@ -92,17 +92,17 @@
   position: absolute;
   top: 100%;
   left: 0;
-  height: 2px;
   width: 100%;
-  background-color: var(--acc);
-  border: none;
-  transform-origin: right;
-  transform: scaleX(0);
+  height: 2px;
   transition: transform 250ms ease;
+  transform: scaleX(0);
+  transform-origin: right;
+  border: none;
+  background-color: var(--acc);
 }
 
 .whiteLine {
   @extend .line;
   transform: none;
-  background-color: #fff;
+  background-color: #ffffff;
 }

@@ -3,20 +3,20 @@
 .root {
   width: 100%;
   height: 100%;
-  background-color: #0a0;
+  background-color: #00aa00;
 }
 
 .textarea {
-  outline: none;
-  border:none;
-  background-color: var(--bg);
-  color: var(--bg-contrast-text);
-  padding: 16px;
   font-size: 20px; //TODO CSS IN JS
-  resize: none;
-
+  overflow-y: auto;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  padding: 16px;
+  resize: none;
   vertical-align: top;
+
+  color: var(--bg-contrast-text);
+  border: none;
+  outline: none;
+  background-color: var(--bg);
 }

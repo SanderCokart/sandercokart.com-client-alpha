@@ -1,5 +1,7 @@
 import {ReactNode} from 'react';
+
 import {useDropdownMenu} from '@/components/Navigation';
+
 import styles from './DropdownMenu.module.scss';
 
 interface DropdownMenuProps {

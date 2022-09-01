@@ -1,18 +1,25 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import type {RegisterFormValues} from '@/types/FormValueTypes';
-import axios from '@/functions/shared/axios';
-import {useRouter} from 'next/router';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
 import {Button} from '@/components/Button/Button';
 import Input from '@/components/formComponents/Input/Input';
-import useFieldVisibility from '@/hooks/useFieldVisibility';
-import setFormErrors from '@/functions/client/setFormErrors';
-import styles from '@/styles/pages/Register.module.scss';
-import Loader from '@/components/Loader/Loader';
-import {LocalHomePageRoute} from '@/constants/local-routes';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
 import {ApiPostRegisterRoute} from '@/constants/api-routes';
+import {LocalHomePageRoute, LocalLoginPageRoute} from '@/constants/local-routes';
+
+import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import useFieldVisibility from '@/hooks/useFieldVisibility';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import type {RegisterFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/Register.module.scss';
 
 const RegisterPage = () => {
     const router = useRouter();
@@ -38,12 +45,12 @@ const RegisterPage = () => {
             setFormErrors(setError, response.errors);
             return;
         }
-        router.push('/login');
+        router.push(LocalLoginPageRoute);
     });
 
     return (
         <FormProvider {...registerForm}>
-            <Loader middleware="guest" redirectTo={LocalHomePageRoute}/>
+            <SmartLoader middleware="guest" redirectTo={LocalHomePageRoute}/>
             <CenteredFormLayout title="Register">
                 <form noValidate className={styles.form} onSubmit={onSubmitRegister}>
                     <Input autoComplete="name"

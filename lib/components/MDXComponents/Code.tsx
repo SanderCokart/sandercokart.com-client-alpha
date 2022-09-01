@@ -1,9 +1,12 @@
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import type {HTMLAttributes} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import {atomOneDark} from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import type {HTMLAttributes} from 'react';
+
 import {Button} from '@/components/Button';
+
 import styles from './Code.module.scss';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+
 
 interface CodeProps extends HTMLAttributes<HTMLUnknownElement> {
     children: string;

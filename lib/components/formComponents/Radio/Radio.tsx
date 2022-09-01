@@ -1,8 +1,10 @@
-import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
-import styles from './Radio.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {Fragment, InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
+
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
+
+import styles from './Radio.module.scss';
 
 
 interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {

@@ -1,12 +1,16 @@
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {createContext, useContext, useEffect, useState} from 'react';
+import useSWR from 'swr';
+
+import {Button} from '@/components/Button/Button';
+
 import {useAuth} from '@/providers/AuthProvider';
+
 import {PaginatedModelContext} from '@/types/ContextTypes';
 import type {PaginatedModels, PaginatedResponses} from '@/types/CustomTypes';
 import type {PaginatedModelProviderProps} from '@/types/PropTypes';
-import {createContext, useContext, useEffect, useState} from 'react';
-import useSWR from 'swr';
+
 import styles from './PageControls.module.scss';
-import {Button} from '@/components/Button/Button';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 const Context = createContext({});
 //----------------------------------------------------------------------------------------------------------------------

@@ -1,17 +1,17 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .button {
   @include utils.defaultButton;
 }
 
 .navigationButton {
-  background-color: var(--bg-nav);
   color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
 }
 
 .circularButton {
-  border-radius: 50%;
-  padding: 8px;
   width: 32px;
   height: 32px;
+  padding: 8px;
+  border-radius: 50%;
 }

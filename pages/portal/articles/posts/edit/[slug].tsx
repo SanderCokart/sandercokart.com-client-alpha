@@ -1,14 +1,3 @@
-import {Button} from '@/components/Button';
-import File from '@/components/formComponents/File';
-import Input from '@/components/formComponents/Input';
-import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
-import Textarea from '@/components/formComponents/Textarea';
-import Loader from '@/components/Loader/Loader';
-import PortalContainer from '@/components/PortalContainer/PortalContainer';
-import axios from '@/functions/shared/axios';
-import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
-import {CreatePostFormValues} from '@/types/FormValueTypes';
-import {ArticleModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
@@ -17,9 +6,28 @@ import {FormProvider, useForm} from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 import useSWR from 'swr';
 import * as Yup from 'yup';
-import useAuthPage from '@/hooks/useAuthPage';
+
+import {Button} from '@/components/Button';
+import File from '@/components/formComponents/File';
+import Input from '@/components/formComponents/Input';
+import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
+import Textarea from '@/components/formComponents/Textarea';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+import PortalContainer from '@/components/PortalContainer/PortalContainer';
+
+
 import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
+
+import axios from '@/functions/shared/axios';
+
+import useAuthPage from '@/hooks/useAuthPage';
+
 import {useAuth} from '@/providers/AuthProvider';
+
+import {CreatePostFormValues} from '@/types/FormValueTypes';
+import {ArticleModel} from '@/types/ModelTypes';
+
+import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 
 const EditPost = () => {
     const router = useRouter();
@@ -33,7 +41,7 @@ const EditPost = () => {
 
     return (
         <PortalContainer>
-            <Loader visible={visible}/>
+            <SmartLoader visible={visible}/>
             <div className={styles.desktop}>
                 <header className={styles.header}>
                     {post && !error ?

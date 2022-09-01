@@ -1,6 +1,7 @@
-import styles from './LabelErrorAccessory.module.scss';
 import type {HTMLAttributes} from 'react';
 import {useFormState} from 'react-hook-form';
+
+import styles from './LabelErrorAccessory.module.scss';
 
 interface LabelErrorAccessoryProps extends HTMLAttributes<HTMLSpanElement> {
     name: string;

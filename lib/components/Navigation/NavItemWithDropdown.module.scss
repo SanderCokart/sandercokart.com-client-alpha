@@ -2,16 +2,16 @@
 
 .navItemWithDropdown {
   @include utils.defaultButton;
-  background-color: var(--bg-nav);
-  color: var(--bg-nav-contrast-text);
-  height: 100%;
   position: relative;
+  height: 100%;
+  color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
 }
 
 .dropdownMenu {
   position: absolute;
-  cursor: auto;
-  background-color: var(--bg-nav);
-  color: var(--bg-contrast-text);
   overflow: hidden;
+  cursor: auto;
+  color: var(--bg-contrast-text);
+  background-color: var(--bg-nav);
 }

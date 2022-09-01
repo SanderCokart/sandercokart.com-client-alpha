@@ -1,12 +1,15 @@
-import type {LoginFormValues} from '@/types/FormValueTypes';
+import {AxiosError} from 'axios';
 import type {ReactNode} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
-import axios from '../functions/shared/axios';
-import {UserModel} from '@/types/ModelTypes';
-import {AxiosError} from 'axios';
-import {CustomApiPromise} from '@/types/CustomTypes';
+
 import {ApiCSRFTokenRoute, ApiGetUserRoute, ApiPostLoginRoute, ApiPostLogoutRoute} from '@/constants/api-routes';
+
+import {CustomApiPromise} from '@/types/CustomTypes';
+import type {LoginFormValues} from '@/types/FormValueTypes';
+import {UserModel} from '@/types/ModelTypes';
+
+import axios from '../functions/shared/axios';
 
 const AuthContext = createContext({});
 

@@ -1,3 +1,8 @@
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useRouter} from 'next/router';
+import {memo} from 'react';
+import {CSSTransition} from 'react-transition-group';
+
 import {
     DropdownItem,
     NavItem,
@@ -9,19 +14,21 @@ import {
 } from '@/components/Navigation';
 import PortalNavigation from '@/components/PortalNavigation/PortalNavigation';
 import ThemeControl from '@/components/ThemeControl/ThemeControl';
-import useMediaQuery from '@/hooks/useMediaQuery';
-import {useAuth} from '@/providers/AuthProvider';
-import styles from '@/styles/components/Navigation.module.scss';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useRouter} from 'next/router';
-import {memo} from 'react';
-import {CSSTransition} from 'react-transition-group';
+
 import {
     LocalAccountPageRoute,
     LocalLoginPageRoute,
     LocalPortalPageRoute,
-    LocalLibraryPageRoute, LocalContactPageRoute
+    LocalLibraryPageRoute,
+    LocalContactPageRoute
 } from '@/constants/local-routes';
+
+import useMediaQuery from '@/hooks/useMediaQuery';
+
+import {useAuth} from '@/providers/AuthProvider';
+
+import styles from '@/styles/components/Navigation.module.scss';
+
 
 const Navigation = () => {
         const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
@@ -81,7 +88,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { isLoggedIn, isAdmin} = useAuth();
+    const { isLoggedIn, isAdmin } = useAuth();
     const isPortalPage = pathname.includes('portal');
 
     return (

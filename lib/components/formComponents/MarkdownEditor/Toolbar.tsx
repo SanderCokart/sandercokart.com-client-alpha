@@ -1,17 +1,21 @@
-import {Button} from '@/components/Button/Button';
-import Input from '@/components/formComponents/Input/Input';
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
-import axios from '@/functions/shared/axios';
-import styles from '@/components/formComponents/MarkdownEditor/Toolbar.module.scss';
-import type {FontAwesomeIconType} from '@/types/CustomTypes';
-import type {FileModel} from '@/types/ModelTypes';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Papa from 'papaparse';
 import type {ChangeEvent, MouseEvent} from 'react';
 import {useCallback, useEffect} from 'react';
 import {FormProvider, useForm, useFormContext} from 'react-hook-form';
-import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
+
+import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
+import styles from '@/components/formComponents/MarkdownEditor/Toolbar.module.scss';
 import Select from '@/components/formComponents/Select';
+
+import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
+
+import axios from '@/functions/shared/axios';
+
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
+import type {FileModel} from '@/types/ModelTypes';
 
 
 interface ToolbarProps {
@@ -285,7 +289,8 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
     const insertGrid = (e: MouseEvent<HTMLButtonElement>) => {
         if (editorRef.current) {
-            selectWordUnderCursor();``
+            selectWordUnderCursor();
+            ``;
             const { value, selectionStart, selectionEnd } = editorRef.current;
             const [gridColumns, gridGap, alignment] = getValues(['gridColumns', 'gridGap', 'alignment']);
 
@@ -410,7 +415,8 @@ const Toolbar = ({ name }: ToolbarProps) => {
                                            type="number"
                                            onMouseEnter={AutoFocus}
                                            onMouseLeave={AutoBlur}/>
-                                    <Select defaultValue="center" label="Alignment" registerFormHook={{...register('alignment')}}>
+                                    <Select defaultValue="center" label="Alignment"
+                                            registerFormHook={{ ...register('alignment') }}>
                                         <option value="normal">Normal</option>
                                         <option value="flex-start">Left</option>
                                         <option value="flex-end">Right</option>

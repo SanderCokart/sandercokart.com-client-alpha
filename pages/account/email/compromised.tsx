@@ -1,14 +1,22 @@
-import Input from '@/components/formComponents/Input/Input';
-import axios from '@/functions/shared/axios';
-import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
-import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
 import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+
+import {ApiPatchEmailCompromisedRoute} from '@/constants/api-routes';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
+
 import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import type {EmailCompromisedFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/account/password/ChangePassword.module.scss';
 
 const ChangePassword = () => {
     const router = useRouter();
@@ -36,7 +44,7 @@ const ChangePassword = () => {
     const { query: { user: qUser, token: qToken } } = router;
 
     const onSubmit = handleSubmit(async (formValues) => {
-        const response = await axios.simplePatch('/account/email/compromised', formValues, {
+        const response = await axios.simplePatch(ApiPatchEmailCompromisedRoute, formValues, {
             params: { user: qUser, token: qToken }
         });
 
@@ -45,7 +53,7 @@ const ChangePassword = () => {
                 setFormErrors(setError, response.errors);
                 return;
             case 'success':
-                router.push('/login');
+                router.push(LocalLoginPageRoute);
                 return;
             default:
                 return;

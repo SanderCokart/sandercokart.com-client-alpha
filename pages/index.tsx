@@ -1,8 +1,13 @@
-import RecentArticles from '@/components/pages/home/RecentArticles';
-import styles from '@/styles/pages/Home.module.scss';
 import {GetStaticProps} from 'next';
-import axios from '@/functions/shared/axios';
+
+import RecentArticles from '@/components/pages/home/RecentArticles';
+
 import {ApiGetArticlesRecentRoute} from '@/constants/api-routes';
+
+import axios from '@/functions/shared/axios';
+
+import styles from '@/styles/pages/Home.module.scss';
+
 
 interface HomeProps {
     fallbacks: {

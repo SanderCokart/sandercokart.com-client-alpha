@@ -1,5 +1,3 @@
-import useMDXComponents from '@/components/MDXComponents';
-import styles from './MarkdownEditor.module.scss';
 // @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
 import type {Dispatch, MutableRefObject, SetStateAction} from 'react';
@@ -18,8 +16,13 @@ import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 // @ts-ignore
 import remarkUnderline from 'remark-underline';
+
 import NewToolbar from '@/components/formComponents/MarkdownEditor/NewToolbar';
+import useMDXComponents from '@/components/MDXComponents';
+
 import syncScroll from '@/functions/client/syncScroll';
+
+import styles from './MarkdownEditor.module.scss';
 
 const EditorContext = createContext({});
 export const useEditorContext = () => useContext(EditorContext) as {

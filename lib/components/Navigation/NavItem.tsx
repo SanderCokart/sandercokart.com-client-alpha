@@ -1,7 +1,9 @@
 import Link from 'next/link';
-import styles from './NavItem.module.scss';
-import type {ReactNode} from 'react';
 import {useRouter} from 'next/router';
+import type {ReactNode} from 'react';
+
+import styles from './NavItem.module.scss';
+
 
 interface NavItemTypeAnchorProps {
     icon: ReactNode;

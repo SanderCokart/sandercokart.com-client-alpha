@@ -1,11 +1,13 @@
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import classnames from 'classnames';
+import type {ReactNode} from 'react';
+import {useState} from 'react';
 import {Mousewheel, Navigation, Keyboard} from 'swiper';
 import type {SwiperProps, SwiperSlideProps} from 'swiper/react';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
-import type {ReactNode} from 'react';
-import {useState} from 'react';
+
 import styles from './CustomSwiper.module.scss';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import classnames from 'classnames';
+
 
 const Previous = () => {
     const swiper = useSwiper();

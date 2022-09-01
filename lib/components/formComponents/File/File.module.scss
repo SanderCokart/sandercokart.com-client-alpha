@@ -1,15 +1,15 @@
 .root {
-  min-height: 300px;
-  display: grid;
-  grid-gap: 16px;
   position: relative;
+  display: grid;
+  min-height: 300px;
+  grid-gap: 16px;
 }
 
 .reset {
   position: absolute;
+  z-index: 2;
   top: 16px;
   right: 16px;
-  z-index: 2;
 }
 
 .controls {
@@ -17,6 +17,6 @@
   bottom: 0;
   left: 0;
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
 }

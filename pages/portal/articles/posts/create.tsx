@@ -1,17 +1,22 @@
-import Loader from '@/components/Loader/Loader';
-import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
-import {CreatePostFormValues} from '@/types/FormValueTypes';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
-import useAuthPage from '@/hooks/useAuthPage';
-import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
-import Input from '@/components/formComponents/Input';
-import Textarea from '@/components/formComponents/Textarea';
-import File from '@/components/formComponents/File';
-import PortalContainer from '@/components/PortalContainer/PortalContainer';
+
+
 import FAB from '@/components/FAB';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import File from '@/components/formComponents/File';
+import Input from '@/components/formComponents/Input';
+import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import Textarea from '@/components/formComponents/Textarea';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+import PortalContainer from '@/components/PortalContainer/PortalContainer';
+
+import useAuthPage from '@/hooks/useAuthPage';
+
+import {CreatePostFormValues} from '@/types/FormValueTypes';
+
+import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 
 
 const CreatePostPage = () => {
@@ -41,7 +46,7 @@ const CreatePostPage = () => {
 
     return (
         <>
-            <Loader visible={visible}/>
+            <SmartLoader visible={visible}/>
             <PortalContainer className={styles.desktop}>
                 <FormProvider {...createPostForm}>
                     <form noValidate className={styles.form} onSubmit={onSubmit}>

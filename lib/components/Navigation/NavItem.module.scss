@@ -1,30 +1,30 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .navItem {
+  width: 100px;
   height: 100%;
   min-height: 40px;
-  width: 100px;
 }
 
 .navItemLink {
   @include utils.defaultButton;
   position: relative;
-  background-color: var(--bg-nav);
-  color: var(--bg-nav-contrast-text);
-  height: 100%;
   min-width: 85px;
+  height: 100%;
+  color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
 }
 
 .active {
-  background-color: var(--acc);
-  color: var(--acc-contrast-text);
   transition: background-color 150ms ease;
+  color: var(--acc-contrast-text);
+  background-color: var(--acc);
 }
 
 .skeleton {
   position: absolute;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
 }

@@ -1,7 +1,8 @@
-import styles from './Button.module.scss';
+import classnames from 'classnames';
 import Link from 'next/link';
 import type {ButtonHTMLAttributes, AnchorHTMLAttributes} from 'react';
-import classnames from 'classnames';
+
+import styles from './Button.module.scss';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     navigationButton?: boolean;

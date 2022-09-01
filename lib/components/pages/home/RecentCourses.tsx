@@ -1,4 +1,3 @@
-import styles from '@/styles/components/pages/home/Home.module.scss';
 interface RecentCoursesProps {
 
 }

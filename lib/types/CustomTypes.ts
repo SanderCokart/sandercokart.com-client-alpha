@@ -1,10 +1,10 @@
-import type {ArticleModel, UserModel} from '@/types/ModelTypes';
-import type {ArticleResponse, UsersResponse} from '@/types/ResponseTypes';
 import type {IconName, IconPrefix} from '@fortawesome/fontawesome-svg-core';
 import type {ReactNode} from 'react';
 
-export type FontAwesomeIconType = [IconPrefix, IconName] | IconName
+import type {ArticleModel, UserModel} from '@/types/ModelTypes';
+import type {ArticleResponse, UsersResponse} from '@/types/ResponseTypes';
 
+export type FontAwesomeIconType = [IconPrefix, IconName] | IconName
 
 export type CustomApiResponse<DATA = any> =
     SuccessResponse<DATA>
@@ -22,7 +22,7 @@ export interface SuccessResponse<T> {
 
 export interface FormErrors {
     [key: string]: string[];
-};
+}
 
 export interface FormErrorResponse {
     data: null;

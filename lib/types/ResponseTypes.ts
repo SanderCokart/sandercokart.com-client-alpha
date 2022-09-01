@@ -1,4 +1,5 @@
 import type {AxiosResponse} from 'axios';
+
 import type {ArticleModel, UserModel} from './ModelTypes';
 
 export interface Links {

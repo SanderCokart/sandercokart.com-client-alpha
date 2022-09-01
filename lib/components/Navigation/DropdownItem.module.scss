@@ -1,28 +1,28 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .dropdownItem {
+  font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: bold;
   padding: 0;
-  background-color: var(--bg-nav);
   color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
+  gap: 8px;
 }
 
 .dropdownItemButton {
-  cursor: pointer;
+  font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: bold;
   padding: 0;
-  background-color: var(--bg-nav);
+  cursor: pointer;
   color: var(--bg-contrast-text);
+  background-color: var(--bg-nav);
+  gap: 8px;
 
   &:hover, &:active, &:focus {
-    background-color: var(--acc-inactive);
     color: var(--acc-contrast-text);
+    background-color: var(--acc-inactive);
 
     .leftIcon {
       background-color: var(--acc);
@@ -34,16 +34,16 @@
   @include utils.defaultButton;
   width: 40px;
   height: 40px;
-  background-color: var(--acc-inactive);
   color: var(--acc-contrast-text);
+  background-color: var(--acc-inactive);
 }
 
 .rightIcon {
-  margin-left: auto;
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
 }
 

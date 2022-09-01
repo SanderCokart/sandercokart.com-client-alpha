@@ -1,17 +1,17 @@
 .root {
-  min-height: 150px;
   position: relative;
+  min-height: 150px;
 }
 
 .input {
-  color: transparent;
-  width: 100%;
-  height: 100%;
   position: absolute;
-  border: 2px dotted var(--acc);
   top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
   cursor: pointer;
+  color: transparent;
+  border: 2px dotted var(--acc);
 
   &::-webkit-file-upload-button {
     display: none;
@@ -27,17 +27,17 @@
 }
 
 .messageContainer {
-  color: var(--bg-contrast-text);
-  text-transform: uppercase;
   font-size: 1.5rem;
   font-weight: bold;
-
-  background-color: var(--bg);
   display: flex;
+  align-content: center;
+
   flex-direction: column;
   justify-content: center;
-  align-content: center;
-  text-align: center;
   width: 100%;
   height: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--bg-contrast-text);
+  background-color: var(--bg);
 }

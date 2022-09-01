@@ -1,14 +1,18 @@
-import {createContext, ReactNode, useState, useContext, useEffect} from 'react';
-import {Models} from '@/types/ModelTypes';
-import {useBooleanToggle} from '@/hooks/useToggle';
-import {useForm, FormProvider} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
-import Modal from 'react-responsive-modal';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import styles from './ConfirmDeleteModal.module.scss';
-import Input from '@/components/formComponents/Input/Input';
+import {yupResolver} from '@hookform/resolvers/yup';
+import {createContext, ReactNode, useState, useContext, useEffect} from 'react';
+import {useForm, FormProvider} from 'react-hook-form';
+import Modal from 'react-responsive-modal';
+import * as Yup from 'yup';
+
 import {Button} from '@/components/Button/Button';
+import Input from '@/components/formComponents/Input/Input';
+
+import {useBooleanToggle} from '@/hooks/useToggle';
+
+import {Models} from '@/types/ModelTypes';
+
+import styles from './ConfirmDeleteModal.module.scss';
 
 const DeleteConfirmationContext = createContext({});
 

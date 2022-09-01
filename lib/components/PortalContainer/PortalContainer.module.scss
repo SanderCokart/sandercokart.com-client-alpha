@@ -1,6 +1,6 @@
 @use "/styles/utils";
 
 .container {
-  margin-left: utils.$navWidth;
   width: utils.$navWidthCalc;
+  margin-left: utils.$navWidth;
 }

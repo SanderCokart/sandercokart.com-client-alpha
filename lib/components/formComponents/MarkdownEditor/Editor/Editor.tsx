@@ -1,8 +1,11 @@
-import styles from './Editor.module.scss';
 import {FocusEventHandler, ChangeEventHandler} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
-import syncScroll from '@/functions/client/syncScroll';
+
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+
+import syncScroll from '@/functions/client/syncScroll';
+
+import styles from './Editor.module.scss';
 
 export interface EditorProps {
     registerFormHook?: UseFormRegisterReturn;

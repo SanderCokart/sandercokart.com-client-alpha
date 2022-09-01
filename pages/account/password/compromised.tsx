@@ -1,20 +1,27 @@
-import axios from '@/functions/shared/axios';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
-import * as Yup from 'yup';
 import {useForm, FormProvider} from 'react-hook-form';
-import Input from '@/components/formComponents/Input/Input';
+import * as Yup from 'yup';
+
 import {Button} from '@/components/Button/Button';
-import setFormErrors from '@/functions/client/setFormErrors';
-import type {PasswordCompromisedFormValues} from '@/types/FormValueTypes';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+import Input from '@/components/formComponents/Input/Input';
+
 import {ApiPatchCompromisedPasswordRoute} from '@/constants/api-routes';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
+
+import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import type {PasswordCompromisedFormValues} from '@/types/FormValueTypes';
+
 import styles from '@/styles/pages/account/password/CompromisedPassword.module.scss';
 
 
 const PasswordCompromisedPage = () => {
     const router = useRouter();
-    const passwordCompromisedForm = useForm({
+    const passwordCompromisedForm = useForm<PasswordCompromisedFormValues>({
         resolver: yupResolver(Yup.object().shape({
             password: Yup.string()
                 .min(8)
@@ -34,11 +41,11 @@ const PasswordCompromisedPage = () => {
 
     const { formState: { isValid, isDirty }, register, handleSubmit, setError } = passwordCompromisedForm;
 
-    const onSubmitCompromisedPassword = async (formValues: PasswordCompromisedFormValues) => {
+    const onSubmitCompromisedPassword = handleSubmit(async (formValues) => {
         const response = await axios.simplePatch(ApiPatchCompromisedPasswordRoute, formValues, { params: { ...router.query } });
         switch (response.type) {
             case 'success':
-                router.push('/login');
+                router.push(LocalLoginPageRoute);
                 return;
             case 'form':
                 setFormErrors(setError, response.errors);
@@ -46,12 +53,12 @@ const PasswordCompromisedPage = () => {
             default:
                 return;
         }
-    };
+    });
 
     return (
         <FormProvider {...passwordCompromisedForm}>
             <CenteredFormLayout title="Reset Compromised Password">
-                <form noValidate className={styles.form} onSubmit={handleSubmit(onSubmitCompromisedPassword)}>
+                <form noValidate className={styles.form} onSubmit={onSubmitCompromisedPassword}>
                     <Input label="New password" placeholder="Type your new password"
                            registerFormHook={{ ...register('password') }}
                            type="password"/>

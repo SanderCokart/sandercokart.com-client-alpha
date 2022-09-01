@@ -1,19 +1,19 @@
-@use '/styles/utils';
+@use "/styles/utils";
 
 .root {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
   position: fixed;
-  background-color: var(--bg);
-  z-index: map-get(utils.$z-indexes, 'loader');
+  z-index: map-get(utils.$z-indexes, "loader");
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100%;
+  justify-content: center;
   width: 100%;
+  height: 100%;
   user-select: none;
+  background-color: var(--bg);
 }
 
 .transparent {

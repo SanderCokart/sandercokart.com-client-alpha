@@ -1,9 +1,13 @@
-import axios from '@/functions/shared/axios';
-import {useAuth} from '@/providers/AuthProvider';
-import {UsersResponse} from '@/types/ResponseTypes';
 import {useEffect, useState} from 'react';
 import useSWR from 'swr';
+
+import axios from '@/functions/shared/axios';
+
+import {useAuth} from '@/providers/AuthProvider';
+
 import {UserModel} from '@/types/ModelTypes';
+import {UsersResponse} from '@/types/ResponseTypes';
+
 
 const UseUsers = () => {
         const [pageIndex, setPageIndex] = useState(1);

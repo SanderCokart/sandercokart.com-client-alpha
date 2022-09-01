@@ -16,8 +16,8 @@
 }
 
 .error {
-  color: var(--error);
   font-weight: bold;
+  color: var(--error);
 }
 
 .nestedLabel {
@@ -42,35 +42,35 @@
 
 .checkbox {
   position: absolute;
-  left: 0;
   top: 50%;
-  transform: translateY(-50%);
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+
+  justify-content: center;
   width: 20px;
   height: 20px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
+  transform: translateY(-50%);
   border-radius: 4px;
   background-color: #f9f9f9;
-  overflow: hidden;
 
   &::before {
     position: absolute;
-    content: "";
     width: 100%;
     height: 100%;
-    background-color: var(--acc);
-    transform: scale(0);
+    content: "";
     transition: 150ms ease transform;
+    transform: scale(0);
+    background-color: var(--acc);
   }
 
   svg {
+    width: 70%;
+    height: 70%;
     transition: 150ms ease transform;
     transform: scale(0);
     color: #f9f9f9;
-    width: 70%;
-    height: 70%;
   }
 }

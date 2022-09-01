@@ -1,8 +1,10 @@
-import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
-import styles from './Checkbox.module.scss';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
+
+import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
+
+import styles from './Checkbox.module.scss';
 
 
 interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {

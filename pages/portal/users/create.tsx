@@ -1,22 +1,28 @@
+import {useEffect} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 import useSWR from 'swr';
+
 import BoxContainer from '@/components/BoxContainer';
-import styles from '@/styles/pages/portal/users/CreateUserPage.module.scss';
-import axios from '@/functions/shared/axios';
-import {CreateUserFormValues} from '@/types/FormValueTypes';
-import setFormErrors from '@/functions/client/setFormErrors';
-import Input from '@/components/formComponents/Input/Input';
-import useMediaQuery from '@/hooks/useMediaQuery';
 import {Button} from '@/components/Button/Button';
-import CenteredFormLayout from '@/layouts/CenteredFormLayout';
-import useAuthPage from '@/hooks/useAuthPage';
-import Loader from '@/components/Loader/Loader';
+import Input from '@/components/formComponents/Input/Input';
 import MultiSelect from '@/components/formComponents/MultiSelect';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
+import {LocalLoginPageRoute} from '@/constants/local-routes';
+
+import setFormErrors from '@/functions/client/setFormErrors';
+import axios from '@/functions/shared/axios';
+
+import useMediaQuery from '@/hooks/useMediaQuery';
+
+import CenteredFormLayout from '@/layouts/CenteredFormLayout';
+
+import {CreateUserFormValues} from '@/types/FormValueTypes';
 import {RoleModel} from '@/types/ModelTypes';
-import {useEffect} from 'react';
+
+import styles from '@/styles/pages/portal/users/CreateUserPage.module.scss';
 
 export default function CreateUserPage() {
-    const visible = useAuthPage();
     const { data: rolesData, error: rolesError } = useSWR<RoleModel[]>('/roles');
     const createUserForm = useForm<CreateUserFormValues>();
     const { handleSubmit, setValue, setError, formState: { isDirty }, register, reset } = createUserForm;
@@ -53,7 +59,7 @@ export default function CreateUserPage() {
 
     return (
         <>
-            <Loader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <BoxContainer className={styles.root}>
                 <FormProvider {...createUserForm}>
                     <CenteredFormLayout title="Create user">

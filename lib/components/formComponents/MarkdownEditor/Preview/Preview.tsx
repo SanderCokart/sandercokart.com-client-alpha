@@ -1,17 +1,20 @@
-import styles from './Preview.module.scss';
+import MDXRuntime from '@mdx-js/runtime';
+import {createElement} from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 //@ts-ignore
-import MDXRuntime from '@mdx-js/runtime';
 //@ts-ignore
 import remarkUnderline from 'remark-underline';
-import {createElement} from 'react';
-import syncScroll from '@/functions/client/syncScroll';
-import {renderToStaticMarkup} from 'react-dom/server';
-import MDXComponents from '@/components/MDXComponents';
+
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import MDXComponents from '@/components/MDXComponents';
 import {Title} from '@/components/MDXComponents/MDXComponents';
+
+import syncScroll from '@/functions/client/syncScroll';
+
+import styles from './Preview.module.scss';
 
 export interface PreviewProps {
 

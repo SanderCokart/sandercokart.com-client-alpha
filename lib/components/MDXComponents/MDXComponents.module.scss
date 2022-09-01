@@ -1,13 +1,13 @@
 @use "/styles/utils";
 
 .title {
+  font-size: 4rem;
+  width: 100%;
+  padding: 16px 0;
+  text-align: center;
+  text-transform: capitalize;
   border-top: var(--acc) solid 4px;
   border-bottom: var(--acc) solid 4px;
-  width: 100%;
-  text-align: center;
-  padding: 16px 0;
-  font-size: 4rem;
-  text-transform: capitalize;
 }
 
 .h1 {
@@ -15,31 +15,31 @@
 }
 
 .h2 {
-  background-color: var(--acc);
-  color: var(--acc-contrast-text);
   padding: 4px 16px;
+  color: var(--acc-contrast-text);
+  background-color: var(--acc);
 }
 
 .h3 {
-  border-left: solid 8px var(--acc);
+  padding-left: 8px;
   color: var(--acc-contrast-text);
 
-  padding-left: 8px;
+  border-left: solid 8px var(--acc);
 }
 
 .h4 {
-  border-left: solid 4px var(--acc);
+  padding-left: 8px;
   color: var(--acc-contrast-text);
 
-  padding-left: 8px;
+  border-left: solid 4px var(--acc);
 }
 
 .table {
   border-collapse: collapse;
 
   thead {
-    background-color: var(--acc);
     color: var(--acc-contrast-text);
+    background-color: var(--acc);
 
 
     th {
@@ -60,8 +60,8 @@
 
 
 .a {
-  color: var(--bg-contrast-text);
   font-weight: bold;
+  color: var(--bg-contrast-text);
 
   &:hover {
     color: var(--acc);
@@ -74,8 +74,8 @@
 }
 
 .ol {
-  list-style: revert;
   padding: revert;
+  list-style: revert;
 }
 
 .li {

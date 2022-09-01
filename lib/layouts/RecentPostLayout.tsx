@@ -1,8 +1,11 @@
-import useImage from '@/hooks/useFile';
-import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 import Image from 'next/image';
 import Link from 'next/link';
+
+import useImage from '@/hooks/useFile';
+
 import {ArticleModel} from '@/types/ModelTypes';
+
+import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 
 interface RecentPostLayoutProps {
     post: ArticleModel;

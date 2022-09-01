@@ -1,6 +1,7 @@
-import type {ReactNode} from 'react';
-import styles from './BoxContainer.module.scss';
 import classnames from 'classnames';
+import type {ReactNode} from 'react';
+
+import styles from './BoxContainer.module.scss';
 
 interface BoxContainerProps {
     children: ReactNode;

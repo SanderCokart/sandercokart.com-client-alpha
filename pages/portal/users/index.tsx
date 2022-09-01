@@ -1,20 +1,25 @@
-import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
-import useAuthPage from '@/hooks/useAuthPage';
-import Loader from '@/components/Loader/Loader';
-import {LocalPortalUsersCreatePageRoute} from '@/constants/local-routes';
-import CreateFAB from '@/components/CreateFAB';
-import styles from '@/styles/pages/portal/PortalTable.module.scss';
-import Skeleton from 'react-loading-skeleton';
-import {UserModel} from '@/types/ModelTypes';
-import moment from 'moment';
-import {Button} from '@/components/Button/Button';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import moment from 'moment';
+import Skeleton from 'react-loading-skeleton';
+
+import {Button} from '@/components/Button/Button';
+import CreateFAB from '@/components/CreateFAB';
+import {SmartLoader} from '@/components/Loader/SmartLoader';
+
+import {ApiDeleteUsersDestroyRoute} from '@/constants/api-routes';
+import {LocalPortalUsersCreatePageRoute, LocalLoginPageRoute} from '@/constants/local-routes';
+
+import axios from '@/functions/shared/axios';
+
 import DeleteConfirmationContextProvider, {
     useDeleteConfirmationContext,
     ConfirmDeleteModal
 } from '@/providers/DeleteConfirmationProvider';
-import axios from '@/functions/shared/axios';
-import {ApiDeleteUsersDestroyRoute} from '@/constants/api-routes';
+import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
+
+import {UserModel} from '@/types/ModelTypes';
+
+import styles from '@/styles/pages/portal/PortalTable.module.scss';
 
 interface UserRowProps {
     user: UserModel,
@@ -113,11 +118,9 @@ function UsersTable() {
 }
 
 const UsersPortalPage = () => {
-    const visible = useAuthPage();
-
     return (
         <PaginatedModelProvider middleware="auth" resourceDataKey="users" url="/users">
-            <Loader visible={visible}/>
+            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <DeleteConfirmationContextProvider<UserModel>>
                 <UsersTable/>
             </DeleteConfirmationContextProvider>

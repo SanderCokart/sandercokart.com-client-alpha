@@ -1,4 +1,5 @@
 import {SWRConfiguration} from 'swr';
+
 import axios from '@/functions/shared/axios';
 
 export default {
