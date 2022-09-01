@@ -11,7 +11,10 @@ import Textarea from '@/components/formComponents/Textarea';
 import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 
+import {ApiPostArticlesStoreRoute} from '@/constants/api-routes';
 import {LocalLoginPageRoute} from '@/constants/local-routes';
+
+import axios from '@/functions/shared/axios';
 
 import {CreatePostFormValues} from '@/types/FormValueTypes';
 
@@ -21,10 +24,10 @@ import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
 const CreatePostPage = () => {
     const createPostForm = useForm<CreatePostFormValues>({
         resolver: yupResolver(Yup.object().shape({
-            // title: Yup.string().required('This field is required'),
-            // markdown: Yup.string().required('This field is required'),
-            // excerpt: Yup.string().required('This field is required'),
-            // banner: Yup.mixed().required(),
+            title: Yup.string().required('This field is required'),
+            markdown: Yup.string().required('This field is required'),
+            excerpt: Yup.string().required('This field is required'),
+            banner: Yup.mixed().required()
         })),
         mode: 'all',
         defaultValues: {
@@ -38,8 +41,8 @@ const CreatePostPage = () => {
     const { handleSubmit, register } = createPostForm;
 
     const onSubmit = handleSubmit(async (formValues) => {
-        alert(JSON.stringify(formValues, null ,2));
-        // await axios.simplePost('/posts', { ...formValues, banner: formValues.banner[0].id });
+        // alert(JSON.stringify(formValues, null, 2));
+        await axios.simplePost(ApiPostArticlesStoreRoute, { ...formValues, banner: formValues.banner[0].id });
     });
 
     return (
