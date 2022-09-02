@@ -42,7 +42,7 @@ const CreatePostPage = () => {
 
     const onSubmit = handleSubmit(async (formValues) => {
         // alert(JSON.stringify(formValues, null, 2));
-        await axios.simplePost(ApiPostArticlesStoreRoute, { ...formValues, banner: formValues.banner[0].id });
+        await axios.simplePost(ApiPostArticlesStoreRoute('posts'), { ...formValues, banner: formValues.banner[0].id });
     });
 
     return (

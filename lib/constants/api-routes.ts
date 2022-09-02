@@ -23,7 +23,7 @@ export const ApiPatchArticleTypesUpdateRoute = (id: number) => `/articleTypes/${
 export const ApiDeleteArticleTypesDestroyRoute = (id: number) => `/articleTypes/${id}`;
 
 export const ApiGetArticlesIndexRoute = (articleTypeName: ArticleType['name']) => `/articles/${articleTypeName}`;
-export const ApiPostArticlesStoreRoute = '/articles';
+export const ApiPostArticlesStoreRoute = (articleTypeName: ArticleType['name']) => `/articles/${articleTypeName}`;
 export const ApiGetArticlesShowRoute = (articleTypeName: ArticleType['name'], slug: string) => `/articles/${articleTypeName}/${slug}`;
 export const ApiPatchArticlesUpdateRoute = (articleTypeName: ArticleType['name'], slug: string) => `/articles/${articleTypeName}/${slug}`;
 export const ApiDeleteArticlesDestroyRoute = (articleTypeName: ArticleType['name'], slug: string) => `/articles/${articleTypeName}/${slug}`;
