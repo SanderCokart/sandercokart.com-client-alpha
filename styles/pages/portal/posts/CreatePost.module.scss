@@ -26,6 +26,10 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 16px;
+
+    :nth-child(3) {
+      align-self: flex-end;
+    }
   }
 
   .excerpt {

@@ -1,9 +1,6 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import type {ChangeEvent} from 'react';
-import {useState, LabelHTMLAttributes, InputHTMLAttributes} from 'react';
+import classnames from 'classnames';
+import {useState, LabelHTMLAttributes, InputHTMLAttributes, ReactNode} from 'react';
 import {UseFormRegisterReturn} from 'react-hook-form';
-
-import {FontAwesomeIconType} from '@/types/CustomTypes';
 
 import styles from './Switch.module.scss';
 
@@ -12,29 +9,34 @@ interface SwitchProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
     registerFormHook?: UseFormRegisterReturn;
-    icon?: FontAwesomeIconType;
 
     onToggle?: (state: boolean) => void;
-
-    ToggledOnIcon?: FontAwesomeIconType;
-    ToggleOffIcon?: FontAwesomeIconType;
-    ToggledOffIconSameAsOn?: boolean;
-
 }
 
-const Switch = (props: SwitchProps) => {
+interface SameIconSwitchProps extends SwitchProps {
+    icons?: {
+        type: 'same';
+        icon: ReactNode;
+    };
+}
+
+interface DifferentIconSwitchProps extends SwitchProps {
+    icons?: {
+        type: 'different';
+        on: ReactNode;
+        off: ReactNode;
+    };
+}
+
+const Switch = (props: Omit<(SameIconSwitchProps | DifferentIconSwitchProps), 'type' | 'onChange'>) => {
     const {
         labelProps = undefined,
         name = undefined,
         label = undefined,
-        onChange = undefined,
         onBlur = undefined,
         className = undefined,
 
-        icon = undefined,
-        ToggleOffIcon = undefined,
-        ToggledOnIcon = undefined,
-        ToggledOffIconSameAsOn = true,
+        icons = undefined,
         onToggle,
 
         registerFormHook,
@@ -42,19 +44,42 @@ const Switch = (props: SwitchProps) => {
     } = props;
     const [toggled, setToggled] = useState(false);
 
-    const onToggleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setToggled(e.target.checked);
-        onToggle?.(e.target.checked);
-    };
+
+    const nameAndId = registerFormHook?.name || name || '';
+
+    const classNames = classnames([
+        styles.checkbox,
+        className
+    ]);
 
     return (
         <label className={styles.label}>
             {label}
             <div className={styles.switch}>
-                <input checked={toggled} className={styles.checkbox} type="checkbox" onChange={onToggleChange}/>
+                <input ref={registerFormHook?.ref}
+                       checked={!registerFormHook ? undefined : toggled}
+                       className={classNames}
+                       onBlur={(e) => {
+                           registerFormHook?.onBlur(e);
+                           onBlur?.(e);
+                       }}
+                       onChange={(e) => {
+                           setToggled(e.target.checked);
+                           onToggle?.(e.target.checked);
+
+                           registerFormHook?.onChange(e);
+                       }}
+                       {...restOfProps}
+                       id={nameAndId}
+                       name={nameAndId}
+                       type="checkbox"
+                />
                 <span className={styles.slider}>
-                        {icon && <FontAwesomeIcon icon={icon}/>}
-                    </span>
+
+                    {icons?.type === 'same' && icons.icon}
+                    {icons?.type === 'different' && (toggled ? icons.on : icons.off)}
+
+                </span>
             </div>
         </label>
     );

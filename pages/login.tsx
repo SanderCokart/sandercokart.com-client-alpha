@@ -76,9 +76,6 @@ export const Login = () => {
                     query: router.query
                 });
             }
-            default: {
-                return router.push(LocalHomePageRoute);
-            }
         }
     });
 

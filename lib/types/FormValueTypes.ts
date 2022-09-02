@@ -5,6 +5,7 @@ export interface CreatePostFormValues {
     excerpt: string;
     markdown: string;
     banner: FileModel[];
+    published: boolean;
 }
 
 export interface EditPostFormValues extends CreatePostFormValues {

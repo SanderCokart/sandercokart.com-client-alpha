@@ -15,7 +15,7 @@ import {
     ApiPostEmailVerifyRetryRoute,
     ApiPatchEmailChangeRoute
 } from '@/constants/api-routes';
-import {LocalLoginPageRoute, LocalHomePageRoute} from '@/constants/local-routes';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 import axios from '@/functions/shared/axios';
@@ -52,9 +52,6 @@ export const AccountPage = () => {
 
     const onClickLogout = async () => {
         const response = await logout();
-        if (response.type === 'success') {
-            router.push(LocalHomePageRoute);
-        }
     };
 
 

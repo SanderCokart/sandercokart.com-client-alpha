@@ -7,6 +7,7 @@ import FAB from '@/components/FAB';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import Switch from '@/components/formComponents/Switch';
 import Textarea from '@/components/formComponents/Textarea';
 import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
@@ -27,22 +28,24 @@ const CreatePostPage = () => {
             title: Yup.string().required('This field is required'),
             markdown: Yup.string().required('This field is required'),
             excerpt: Yup.string().required('This field is required'),
-            banner: Yup.mixed().required()
+            banner: Yup.mixed().required('This field is required'),
+            published: Yup.boolean().required('This field is required')
         })),
         mode: 'all',
         defaultValues: {
             banner: [],
             excerpt: '',
             markdown: '',
-            title: ''
+            title: '',
+            published: false
         }
     });
 
     const { handleSubmit, register } = createPostForm;
 
     const onSubmit = handleSubmit(async (formValues) => {
-        // alert(JSON.stringify(formValues, null, 2));
-        await axios.simplePost(ApiPostArticlesStoreRoute('posts'), { ...formValues, banner: formValues.banner[0].id });
+        await axios.simplePost(ApiPostArticlesStoreRoute('posts'),
+            { ...formValues, article_banner_id: formValues.banner[0].id });
     });
 
     return (
@@ -56,6 +59,13 @@ const CreatePostPage = () => {
                                 <Input label="Title" name="title" registerFormHook={register('title')}/>
                                 <Textarea autogrow={false} className={styles.excerpt} label="Excerpt" name="excerpt"
                                           registerFormHook={register('excerpt')}/>
+                                <Switch icons={{
+                                    type: 'different',
+                                    off: <FontAwesomeIcon icon="pen"/>,
+                                    on: <FontAwesomeIcon icon="paper-plane"/>
+                                }}
+                                        label="Published"
+                                        registerFormHook={register('published')}/>
                             </div>
                             <File className={styles.filesContainer} name="banner"/>
                         </div>
