@@ -1,0 +1,41 @@
+@use "/styles/utils";
+
+.container {
+  position: fixed;
+  bottom: 0;
+  height: 24px;
+  left: 0;
+  background-color: #333333;
+  z-index: 10000;
+  > button {
+    &:hover {
+      background-color: #aaa;
+    }
+
+    height: 24px;
+    cursor: pointer;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+    border: none;
+    outline: none;
+    padding: 0 8px;
+
+    &:not(&:last-of-type) {
+      border-right: solid black 2px;
+    }
+  }
+}
+
+
+.details {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: #333333;
+}
+
+.pre {
+
+}
+

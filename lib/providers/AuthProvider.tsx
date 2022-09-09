@@ -1,112 +1,129 @@
-import {AxiosError} from 'axios';
-import type {ReactNode} from 'react';
-import {createContext, useContext, useEffect, useState} from 'react';
+import {useRouter} from 'next/router';
+import type {ReactNode, Dispatch, SetStateAction} from 'react';
+import {createContext, useContext, useState, useEffect} from 'react';
 import useSWR from 'swr';
 
-import {ApiCSRFTokenRoute, ApiGetUserRoute, ApiPostLoginRoute, ApiPostLogoutRoute} from '@/constants/api-routes';
+import {DummyLoader} from '@/components/Loader/SmartLoader';
 
-import {CustomApiPromise} from '@/types/CustomTypes';
+import {
+    ApiCSRFTokenRoute,
+    ApiGetUserRoute,
+    ApiPostLoginRoute,
+    ApiPostLogoutRoute,
+    ApiClearSessionCookiesRoute
+} from '@/constants/api-routes';
+
+import axios from '@/functions/shared/axios';
+
+import useLocalStorage from '@/hooks/useLocalStorage';
+
+import type {CustomApiPromise} from '@/types/CustomTypes';
 import type {LoginFormValues} from '@/types/FormValueTypes';
-import {UserModel} from '@/types/ModelTypes';
-
-import axios from '../functions/shared/axios';
-
-const AuthContext = createContext({});
-
-interface useAuthProps {
-    middleware?: 'guest' | 'auth';
-}
-
-interface AuthContextType {
-    user: UserModel | null;
-    error: Error | AxiosError;
-    csrf: () => void;
-    logout: () => CustomApiPromise<{ message: string }>;
-    login: (props: LoginFormValues) => CustomApiPromise<{ message: string }>;
-    isLoading: boolean;
-    isAdmin: boolean;
-    isVerified: boolean;
-    isLoggedIn: boolean;
-}
-
-export const useAuth = ({ middleware }: useAuthProps = {}) => {
-    const context = useContext(AuthContext) as AuthContextType;
-    const { user, error, isLoading } = context;
-
-    const shouldRedirect = () => {
-        if (middleware === 'guest' && user) return true;
-        return !!(middleware === 'auth' && (error || !user));
-    };
-
-    return { ...context, isLoading, shouldRedirect: shouldRedirect() };
-};
+import type {UserModel} from '@/types/ModelTypes';
 
 interface AuthProviderProps {
     children: ReactNode;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
-    const [isLoading, setIsLoading] = useState(true);
+const AuthContext = createContext({});
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const {
-        data: user,
-        mutate,
-        error
-    } = useSWR<UserModel | null>(isLoggedIn ? ApiGetUserRoute : null, {
-        onError: () => {
-            localStorage.removeItem('isLoggedIn');
-            setIsLoggedIn(false);
-        }
-    });
+interface AuthContextType {
+    user: UserModel | null;
+    logout: () => CustomApiPromise<{ message: string }>;
+    login: (props: LoginFormValues) => CustomApiPromise<{ message: string }>;
+    quickMutate: () => void;
+    clearSessionStorage: () => void;
+    clearLocalStorage: () => void;
+    clearSessionCookies: () => void;
+    setShowLoading: Dispatch<SetStateAction<boolean>>;
+    ensureUserIsLoggedIn: () => void;
+    isAdmin: boolean;
+    isVerified: boolean;
+    isLoggedIn: boolean;
+    showLoading: boolean;
+}
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
+    const router = useRouter();
+    const [isLoggedIn, setLoggedIn] = useLocalStorage('loggedIn', false);
+    const [showLoading, setShowLoading] = useState(false);
+
+    const { data: user, mutate } =
+        useSWR<UserModel | null>(isLoggedIn ? ApiGetUserRoute : null, {
+            onError: async () => {
+                await router.replace('/login');
+                setLoggedIn(false);
+                setShowLoading(false);
+            },
+            onSuccess: async () => {
+                setLoggedIn(true);
+                setShowLoading(false);
+            }
+        });
 
     const csrf = () => axios.get(ApiCSRFTokenRoute);
 
     const login = async (formValues: LoginFormValues) => {
+        setShowLoading(true);
         await csrf();
         const response = await axios.simplePost(ApiPostLoginRoute, formValues);
         await mutate();
-        localStorage.setItem('isLoggedIn', '1');
-        setIsLoggedIn(true);
+        setLoggedIn(true);
         return response;
     };
 
     const logout = async () => {
         if (user) {
             const response = await axios.simplePost(ApiPostLogoutRoute);
-            localStorage.removeItem('isLoggedIn');
-            setIsLoggedIn(false);
             await mutate(null, { revalidate: false });
             return response;
         }
     };
 
-    //check on initial load if the user has logged in before
-    useEffect(() => {
-        !!localStorage.getItem('isLoggedIn') && setIsLoggedIn(true);
-    }, []);
+    const quickMutate = async () => {
+        await mutate(null, { revalidate: false });
+    };
 
-    useEffect(() => {
-        if (user && error) mutate(null);
-        else setTimeout(() => setIsLoading(false), 1000);
-    }, [user, error]);
+    const clearSessionStorage = () => {
+        sessionStorage.clear();
+    };
+
+    const clearLocalStorage = () => {
+        localStorage.clear();
+    };
+
+    const clearSessionCookies = async () => {
+        await axios.simplePost(ApiClearSessionCookiesRoute);
+    };
+
+    const ensureUserIsLoggedIn = async () => {
+        await mutate();
+    };
 
     return (
         <AuthContext.Provider value={{
-            mutate,
-            isLoading,
             isAdmin: !!user?.roles?.find((role) => role.name === 'Admin') ?? false,
             isVerified: !!user?.email_verified_at,
-            isLoggedIn,
             user,
+            isLoggedIn,
+            showLoading,
             login,
-            csrf,
-            error,
-            logout
+            logout,
+            quickMutate,
+            clearLocalStorage,
+            clearSessionStorage,
+            clearSessionCookies,
+            ensureUserIsLoggedIn,
+            setShowLoading
         }}>
+            <DummyLoader isVisible={showLoading}/>
             {children}
         </AuthContext.Provider>
     );
+};
+
+export const useAuth = () => {
+    return useContext(AuthContext) as AuthContextType;
 };
 
 export default AuthProvider;

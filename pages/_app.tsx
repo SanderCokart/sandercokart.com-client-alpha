@@ -15,11 +15,13 @@ import icons from '@/data/icons';
 import {library, config} from '@fortawesome/fontawesome-svg-core';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
+import Test from 'pages/test';
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {ToastContainer} from 'react-toastify';
 import {SWRConfig} from 'swr';
 
-import Navigation from '@/components/Navigation/Navigation';
+import Debugger from '@/components/Debugger';
+import Navigation from '@/components/Navigation';
 
 import AuthProvider from '@/providers/AuthProvider';
 import ThemeProvider from '@/providers/ThemeProvider';
@@ -37,10 +39,13 @@ function MyApp({ Component, pageProps }: AppProps) {
             <SWRConfig value={GlobalSWRConfig}>
                 <SkeletonTheme baseColor="var(--bg)" borderRadius="0" highlightColor="var(--acc)">
                     <AuthProvider>
-                        <ThemeProvider>
-                            <Navigation/>
-                            <Component {...pageProps} />
-                        </ThemeProvider>
+                        <Test>
+                            <ThemeProvider>
+                                <Navigation/>
+                                <Debugger/>
+                                <Component {...pageProps} />
+                            </ThemeProvider>
+                        </Test>
                     </AuthProvider>
                 </SkeletonTheme>
                 <ToastContainer autoClose={false}/>

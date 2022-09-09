@@ -29,14 +29,11 @@ import {useAuth} from '@/providers/AuthProvider';
 
 import styles from '@/styles/components/Navigation.module.scss';
 
-
 const Navigation = () => {
-        const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
+    const isMobile = useMediaQuery({ from: 'sm', option: 'down' });
 
-        return isMobile ? <Mobile/> : <Desktop/>;
-    }
-;
-
+    return isMobile ? <Mobile/> : <Desktop/>;
+};
 
 const Mobile = memo(function Mobile() {
     const { isLoggedIn, isAdmin } = useAuth();
@@ -88,7 +85,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { isLoggedIn, isAdmin } = useAuth();
+    const { isLoggedIn, isAdmin, showLoading } = useAuth();
     const isPortalPage = pathname.includes('portal');
 
     return (
@@ -181,7 +178,7 @@ const Desktop = memo(function Desktop() {
                 </ul>
             </nav>
             <div className={styles.margin}/>
-            {isPortalPage && <PortalNavigation/>}
+            {(isPortalPage && !showLoading) && <PortalNavigation/>}
         </>
     );
 });

@@ -1,21 +1,44 @@
 {
-  "extends": ["next", "next/core-web-vitals"],
+  "root": false,
+  "env": {
+  },
+  "globals": {
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "plugins": [
+    "@typescript-eslint",
     "eslint-plugin-import-helpers"
   ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+    }
+  },
+  "settings": {
+  },
+  "ignorePatterns": [],
+  "ecmaFeatures": {
+  },
+  "noInlineConfig": false,
   "rules": {
+    "react/no-unescaped-entities": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
     "react/jsx-sort-props": [
-      "error", {
+      "error",
+      {
         "callbacksLast": true,
         "shorthandFirst": true,
-        "shorthandLast": false,
+        "shorthandLast": true,
         "ignoreCase": false,
         "noSortAlphabetically": false,
         "reservedFirst": true
       }
     ],
-    "react/no-unescaped-entities": "off",
-    "@next/next/no-img-element": "off",
     "import-helpers/order-imports": [
       "warn",
       {
@@ -40,6 +63,8 @@
           "ignoreCase": true
         }
       }
-    ]
-  }
+    ],
+    "@typescript-eslint/consistent-type-imports": "warn"
+  },
+  "overrides": []
 }

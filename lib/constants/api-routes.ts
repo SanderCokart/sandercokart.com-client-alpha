@@ -46,3 +46,5 @@ export const ApiGetUsersIndexRoute = '/users';
 export const ApiPostUsersStoreRoute = '/users';
 export const ApiGetUsersShowRoute = (id: number) => `/users/${id}`;
 export const ApiDeleteUsersDestroyRoute = (id: number) => `/users/${id}`;
+
+export const ApiClearSessionCookiesRoute = '/removeSession';

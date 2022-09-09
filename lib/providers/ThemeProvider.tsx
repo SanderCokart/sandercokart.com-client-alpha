@@ -14,7 +14,6 @@ interface ThemeProviderProps {
 const ThemeProvider = (props: ThemeProviderProps) => {
     const [theme, setTheme] = useState('');
 
-
     useEffect(() => {
         const theme = localStorage.getItem('theme') || 'device';
         document.documentElement.setAttribute('data-theme', theme);

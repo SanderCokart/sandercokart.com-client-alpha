@@ -5,6 +5,7 @@
   background-color: var(--bg-nav);
   color: var(--bg-nav-contrast-text);
   position:fixed;
+  z-index: map-get(utils.$z-indexes, "navigation");
 }
 
 .search {

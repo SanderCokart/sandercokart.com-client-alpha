@@ -31,7 +31,7 @@ import styles from '@/styles/pages/Login.module.scss';
 
 export const Login = () => {
     const router = useRouter();
-    const { login } = useAuth({ middleware: 'guest' });
+    const { login, setShowLoading } = useAuth();
     const [showPassword, toggleShowPassword] = useBooleanToggle();
     const loginForm = useForm<LoginFormValues>({
         resolver: yupResolver(Yup.object().shape({
@@ -64,9 +64,17 @@ export const Login = () => {
     const onSubmitLogin = handleSubmit(async (formValues) => {
         const response = await login(formValues);
         const { type: qType } = router.query;
-        if (response.type === 'form') {
-            setFormErrors(setError, response.errors);
-            return;
+
+        switch (response.type) {
+            case 'success': {
+                await router.replace(LocalHomePageRoute);
+                setShowLoading(false);
+                return;
+            }
+            case 'form': {
+                setFormErrors(setError, response.errors);
+                return;
+            }
         }
 
         switch (qType) {

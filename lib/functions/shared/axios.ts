@@ -4,7 +4,6 @@ import {toast} from 'react-toastify';
 
 import type {CustomApiResponse} from '@/types/CustomTypes';
 
-
 const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
@@ -13,6 +12,17 @@ const axiosInstance = axios.create({
         'X-Requested-With': 'XMLHttpRequest'
     }
 });
+
+// axiosInstance.interceptors.response.use(
+//     (res) => {
+//         return res;
+//     },
+//     (error) => {
+//         switch (error.response.status) {
+//             case 401:
+//                 break;
+//         }
+//     }, {});
 
 const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
     try {
@@ -23,7 +33,7 @@ const handler = async (promise: AxiosPromise): Promise<CustomApiResponse> => {
             position: 'bottom-center'
         });
         return { data, status, error: null, type: 'success' };
-    } catch (error) {
+    } catch (error: any) {
         /*form errors*/
         if (error?.response?.data?.errors) {
             return {
@@ -87,6 +97,5 @@ interface CustomAxiosInstance extends AxiosInstance {
 
     simplePatch<DATA = any, RESPONSE = CustomApiResponse<DATA>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<RESPONSE>;
 }
-
 
 export default toExport;
