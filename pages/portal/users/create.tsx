@@ -6,9 +6,6 @@ import BoxContainer from '@/components/BoxContainer';
 import {Button} from '@/components/Button/Button';
 import Input from '@/components/formComponents/Input/Input';
 import MultiSelect from '@/components/formComponents/MultiSelect';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
-
-import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 import axios from '@/functions/shared/axios';
@@ -17,8 +14,8 @@ import useMediaQuery from '@/hooks/useMediaQuery';
 
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 
-import {CreateUserFormValues} from '@/types/FormValueTypes';
-import {RoleModel} from '@/types/ModelTypes';
+import type {CreateUserFormValues} from '@/types/FormValueTypes';
+import type {RoleModel} from '@/types/ModelTypes';
 
 import styles from '@/styles/pages/portal/users/CreateUserPage.module.scss';
 
@@ -58,26 +55,25 @@ export default function CreateUserPage() {
     });
 
     return (
-        <>
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
-            <BoxContainer className={styles.root}>
-                <FormProvider {...createUserForm}>
-                    <CenteredFormLayout title="Create user">
-                        <form className={styles.form} onSubmit={onSubmitUserCreateForm}>
-                            <Input label="Name" registerFormHook={{ ...register('name') }}/>
-                            <Input label="Email" registerFormHook={{ ...register('email') }}/>
-                            <Input label="Password" registerFormHook={{ ...register('password') }}/>
-                            <MultiSelect displayValue="name"
-                                         loading={!rolesData && !rolesError}
-                                         name="roles"
-                                         options={rolesData}
-                                         selectedValues={createUserForm.control._defaultValues.roles}
-                                         setValue={setValue}/>
-                            <Button disabled={!isDirty} type="submit">Submit</Button>
-                        </form>
-                    </CenteredFormLayout>
-                </FormProvider>
-            </BoxContainer>
-        </>
+        <BoxContainer className={styles.root}>
+            <FormProvider {...createUserForm}>
+                <CenteredFormLayout title="Create user">
+                    <form className={styles.form} onSubmit={onSubmitUserCreateForm}>
+                        <Input label="Name" registerFormHook={{ ...register('name') }}/>
+                        <Input label="Email" registerFormHook={{ ...register('email') }}/>
+                        <Input label="Password" registerFormHook={{ ...register('password') }}/>
+                        <MultiSelect displayValue="name"
+                                     loading={!rolesData && !rolesError}
+                                     name="roles"
+                                     options={rolesData}
+                                     selectedValues={createUserForm.control._defaultValues.roles}
+                                     setValue={setValue}/>
+                        <Button disabled={!isDirty} type="submit">Submit</Button>
+                    </form>
+                </CenteredFormLayout>
+            </FormProvider>
+        </BoxContainer>
     );
 }
+
+CreateUserPage.requireAuth = true;

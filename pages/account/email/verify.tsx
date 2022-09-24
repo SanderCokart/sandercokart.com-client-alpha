@@ -3,21 +3,24 @@ import {useEffect, useState} from 'react';
 import {useSWRConfig} from 'swr';
 
 import BoxContainer from '@/components/BoxContainer';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
+import {DummyLoader} from '@/components/Loader';
 
 import {ApiGetUserRoute, ApiPostEmailVerifyRoute} from '@/constants/api-routes';
-import {LocalLoginPageRoute, LocalHomePageRoute} from '@/constants/local-routes';
+import {LocalHomePageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
 import useRedirect from '@/hooks/useRedirect';
 
-import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
 import styles from '@/styles/pages/account/email/VerifyEmail.module.scss';
 
 const UserMustLogin = () => {
-    useRedirect(LocalLoginPageRoute, true);
+    const { setRedirect } = useAuthV2();
+    const { asPath } = useRouter();
+    setRedirect(asPath);
+
     return (
         <BoxContainer center>
             <h1>Please login to verify your email.</h1>
@@ -28,7 +31,7 @@ const UserMustLogin = () => {
 };
 
 const UserIsAlreadyVerified = () => {
-    useRedirect(LocalHomePageRoute);
+    useRedirect({ url: LocalHomePageRoute, timeout: 5000 });
     return (
         <BoxContainer center>
             <h1>You are already verified!</h1>
@@ -38,7 +41,7 @@ const UserIsAlreadyVerified = () => {
 };
 
 const UserHasBeenVerified = () => {
-    useRedirect(LocalHomePageRoute);
+    useRedirect({ url: LocalHomePageRoute, timeout: 5000 });
     return (
         <BoxContainer center>
             <h1>Your email has been verified!</h1>
@@ -48,7 +51,7 @@ const UserHasBeenVerified = () => {
 };
 
 const VerifyEmailPage = () => {
-    const { isLoggedIn, isVerified, isLoading: authIsLoading } = useAuth();
+    const { isLoggedIn, isVerified, initializing } = useAuthV2();
     const router = useRouter();
     const { mutate } = useSWRConfig();
     const { query } = router;
@@ -57,14 +60,13 @@ const VerifyEmailPage = () => {
     const [alreadyVerified, setAlreadyVerified] = useState(false);
     const [verificationCompleted, setVerificationCompleted] = useState(false);
 
-
     useEffect(() => {
-        if (router.isReady && !authIsLoading) {
+        if (router.isReady && !initializing) {
             if (!isLoggedIn) setIsNotLoggedIn(true);
             else if (isVerified) setAlreadyVerified(true);
             else if (!verificationCompleted) verifyEmail();
         }
-    }, [router.isReady, authIsLoading, verificationCompleted]);
+    }, [router.isReady, initializing, verificationCompleted]);
 
     const verifyEmail = async () => {
         const response = await axios.simplePost(ApiPostEmailVerifyRoute, { identifier, token });
@@ -74,18 +76,19 @@ const VerifyEmailPage = () => {
         }
     };
 
-    if (!authIsLoading) {
+    if (!initializing) {
         if (isNotLoggedIn) return <UserMustLogin/>;
         else if (alreadyVerified) return <UserIsAlreadyVerified/>;
         else if (!alreadyVerified && !isNotLoggedIn) {
             return <UserHasBeenVerified/>;
         }
     }
-    return (
-        <BoxContainer>
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
-        </BoxContainer>
-    );
+
+    return null;
 };
 
 export default VerifyEmailPage;
+
+VerifyEmailPage.requireAuth = true;
+VerifyEmailPage.redirectTimeout = 5000;
+VerifyEmailPage.disableLoader = true;

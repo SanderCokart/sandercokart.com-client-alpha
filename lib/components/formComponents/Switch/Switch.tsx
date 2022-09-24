@@ -1,6 +1,7 @@
 import classnames from 'classnames';
-import {useState, LabelHTMLAttributes, InputHTMLAttributes, ReactNode} from 'react';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type { LabelHTMLAttributes, InputHTMLAttributes, ReactNode} from 'react';
+import {useState} from 'react';
+import type {UseFormRegisterReturn} from 'react-hook-form';
 
 import styles from './Switch.module.scss';
 

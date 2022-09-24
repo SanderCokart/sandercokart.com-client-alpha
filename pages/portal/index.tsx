@@ -19,3 +19,5 @@ const PortalPage = () => {
 };
 
 export default PortalPage;
+
+PortalPage.requireAuth = true;

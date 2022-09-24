@@ -1,10 +1,10 @@
 import {useRouter} from 'next/router';
 
-const useRedirect = (url: string, withQuery?: boolean) => {
+const useRedirect = ({ url, withQuery, timeout }: { url: string, withQuery?: boolean, timeout?: number; }) => {
     const router = useRouter();
     setTimeout(() => {
         router.replace({ pathname: url, query: withQuery ? router.query : null });
-    }, 5000);
+    }, timeout);
 };
 
 export default useRedirect;

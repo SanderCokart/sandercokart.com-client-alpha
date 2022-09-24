@@ -4,10 +4,9 @@ import Skeleton from 'react-loading-skeleton';
 
 import {Button} from '@/components/Button/Button';
 import CreateFAB from '@/components/CreateFAB';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
 
-import {ApiDeleteUsersDestroyRoute} from '@/constants/api-routes';
-import {LocalPortalUsersCreatePageRoute, LocalLoginPageRoute} from '@/constants/local-routes';
+import {ApiDeleteUsersDestroyRoute, ApiGetUsersIndexRoute} from '@/constants/api-routes';
+import {LocalPortalUsersCreatePageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
@@ -17,7 +16,7 @@ import DeleteConfirmationContextProvider, {
 } from '@/providers/DeleteConfirmationProvider';
 import PaginatedModelProvider, {usePaginatedContext, PageControls} from '@/providers/PaginatedModelProvider';
 
-import {UserModel} from '@/types/ModelTypes';
+import type {UserModel} from '@/types/ModelTypes';
 
 import styles from '@/styles/pages/portal/PortalTable.module.scss';
 
@@ -56,7 +55,6 @@ const UserRow = ({ user }: UserRowProps) => {
         </tr>
     );
 };
-
 
 function UsersTable() {
     const { data, isLoading, mutate } = usePaginatedContext<UserModel>();
@@ -97,7 +95,7 @@ function UsersTable() {
                 </tr>
                 </thead>
                 <tbody>
-                {isLoading ? [...Array(100)].map((_, rowIndex) => (
+                {isLoading ? [...Array(20)].map((_, rowIndex) => (
                     <tr key={rowIndex}>
                         <td colSpan={8}><Skeleton height="100%" width="100%"/></td>
                     </tr>
@@ -119,8 +117,7 @@ function UsersTable() {
 
 const UsersPortalPage = () => {
     return (
-        <PaginatedModelProvider middleware="auth" resourceDataKey="users" url="/users">
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
+        <PaginatedModelProvider middleware="auth" resourceDataKey="users" url={ApiGetUsersIndexRoute}>
             <DeleteConfirmationContextProvider<UserModel>>
                 <UsersTable/>
             </DeleteConfirmationContextProvider>
@@ -129,3 +126,5 @@ const UsersPortalPage = () => {
     );
 };
 export default UsersPortalPage;
+
+UsersPortalPage.requireAuth = true;

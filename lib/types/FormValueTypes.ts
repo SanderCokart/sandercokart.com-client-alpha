@@ -1,4 +1,4 @@
-import {FileModel, RoleModel} from '@/types/ModelTypes';
+import type {FileModel, RoleModel} from '@/types/ModelTypes';
 
 export interface CreatePostFormValues {
     title: string;
@@ -8,9 +8,7 @@ export interface CreatePostFormValues {
     published: boolean;
 }
 
-export interface EditPostFormValues extends CreatePostFormValues {
-
-}
+export type EditPostFormValues = CreatePostFormValues
 
 export interface LoginFormValues {
     email: string;

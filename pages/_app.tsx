@@ -13,43 +13,62 @@ import '@/styles/globals.after.scss';
 import GlobalSWRConfig from '@/config/GlobalSWRConfig';
 import icons from '@/data/icons';
 import {library, config} from '@fortawesome/fontawesome-svg-core';
+import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
-import Test from 'pages/test';
 import {SkeletonTheme} from 'react-loading-skeleton';
 import {ToastContainer} from 'react-toastify';
 import {SWRConfig} from 'swr';
 
-import Debugger from '@/components/Debugger';
+import AuthGuard from '@/components/AuthGuard';
 import Navigation from '@/components/Navigation';
 
-import AuthProvider from '@/providers/AuthProvider';
+import AuthProviderV2 from '@/providers/AuthProviderV2';
 import ThemeProvider from '@/providers/ThemeProvider';
+
+import type {PropsWithChildren} from '@/types/CustomTypes';
 
 config.autoAddCss = false;
 library.add(...icons);
 
-function MyApp({ Component, pageProps }: AppProps) {
+const Providers = ({ children }: PropsWithChildren) => {
+    return <SWRConfig value={GlobalSWRConfig}>
+        <SkeletonTheme baseColor="var(--bg)" borderRadius="0" highlightColor="var(--acc)">
+            <AuthProviderV2>
+                <ThemeProvider>
+                    {children}
+                </ThemeProvider>
+            </AuthProviderV2>
+        </SkeletonTheme>
+        <ToastContainer autoClose={false}/>
+    </SWRConfig>;
+};
+
+export type NextApplicationPage<P = unknown, IP = P> = NextPage<P, IP> & {
+    requireAuth?: boolean;
+    redirectTimeout?: number;
+    disableLoader: boolean;
+}
+
+function MyApp({ Component, pageProps }: AppProps & { Component: NextApplicationPage; pageProps: unknown }) {
     return (
         <>
             <Head>
                 <title>SanderCokart.com</title>
                 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
             </Head>
-            <SWRConfig value={GlobalSWRConfig}>
-                <SkeletonTheme baseColor="var(--bg)" borderRadius="0" highlightColor="var(--acc)">
-                    <AuthProvider>
-                        <Test>
-                            <ThemeProvider>
-                                <Navigation/>
-                                <Debugger/>
-                                <Component {...pageProps} />
-                            </ThemeProvider>
-                        </Test>
-                    </AuthProvider>
-                </SkeletonTheme>
-                <ToastContainer autoClose={false}/>
-            </SWRConfig>
+            <Providers>
+                <Navigation/>
+                {/*<Debugger/>*/}
+                {Component.requireAuth ? (
+                    <AuthGuard disableLoader={Component.disableLoader} timeout={Component.redirectTimeout}>
+                        <Component {...pageProps} />
+                    </AuthGuard>
+                ) : (
+                     // public page
+                     <Component {...pageProps} />
+                 )}
+            </Providers>
         </>
     );
 }

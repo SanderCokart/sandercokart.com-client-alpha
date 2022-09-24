@@ -1,7 +1,7 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
-import {FontAwesomeIconType} from '@/types/CustomTypes';
+import type {FontAwesomeIconType} from '@/types/CustomTypes';
 
 interface MobileItemProps {
     href: string;

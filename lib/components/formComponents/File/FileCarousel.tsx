@@ -12,7 +12,7 @@ import axios from '@/functions/shared/axios';
 
 import useImage from '@/hooks/useFile';
 
-import {FileModel} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 
 import styles from './FileCarousel.module.scss';
 

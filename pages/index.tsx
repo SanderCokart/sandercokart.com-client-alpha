@@ -1,4 +1,5 @@
 import type {GetStaticProps} from 'next';
+import courses from 'pages/library/courses';
 
 import RecentArticles from '@/components/pages/home/RecentArticles';
 
@@ -7,7 +8,6 @@ import {ApiGetArticlesRecentRoute} from '@/constants/api-routes';
 import axios from '@/functions/shared/axios';
 
 import styles from '@/styles/pages/Home.module.scss';
-
 
 interface HomeProps {
     fallbacks: {
@@ -18,10 +18,15 @@ interface HomeProps {
 }
 
 const HomePage = (props: HomeProps) => {
+    console.log(props.fallbacks);
     return (
         <div className={styles.home}>
-            {/*<RecentArticles fallback={{ ...props.fallbacks.posts }}*/}
-            {/*                url={ApiGetArticlesRecentRoute('posts')}/>*/}
+            <RecentArticles fallback={props.fallbacks.posts}
+                            url={ApiGetArticlesRecentRoute('posts')}/>
+            <RecentArticles fallback={props.fallbacks.courses}
+                            url={ApiGetArticlesRecentRoute('courses')}/>
+            <RecentArticles fallback={props.fallbacks.tipsAndTutorials}
+                            url={ApiGetArticlesRecentRoute('tips-&-tutorials')}/>
         </div>
     );
 };
@@ -31,17 +36,24 @@ export const getStaticProps: GetStaticProps = async () => {
         await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('posts'));
     const { data: tipsAndTutorialsData } =
         await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('tips-&-tutorials'));
-    const { data: CoursesData } =
+    const { data: coursesData } =
         await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('courses'));
 
     return {
         props: {
             fallbacks: {
                 posts: {
-                    '/articles/posts/recent': postsData
+                    [ApiGetArticlesRecentRoute('posts')]: postsData
+                },
+                tipsAndTutorials: {
+                    [ApiGetArticlesRecentRoute('tips-&-tutorials')]: tipsAndTutorialsData
+                },
+                courses: {
+                    [ApiGetArticlesRecentRoute('courses')]: coursesData
                 }
             }
-        }
+        },
+        revalidate: 60
     };
 };
 

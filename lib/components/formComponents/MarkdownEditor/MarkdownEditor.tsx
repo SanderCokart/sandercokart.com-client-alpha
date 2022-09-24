@@ -1,15 +1,6 @@
-// @ts-ignore
 import MDXRuntime from '@mdx-js/runtime';
-import type {Dispatch, MutableRefObject, SetStateAction} from 'react';
-import {
-    createContext,
-    createElement,
-    useContext,
-    useRef,
-    useState,
-    HTMLAttributes,
-    TextareaHTMLAttributes
-} from 'react';
+import type {Dispatch, MutableRefObject, SetStateAction, HTMLAttributes, TextareaHTMLAttributes} from 'react';
+import {createContext, createElement, useContext, useRef, useState} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {useFormContext} from 'react-hook-form';
 import rehypeSlug from 'rehype-slug';
@@ -55,7 +46,6 @@ const MarkdownEditor = ({ name, textareaProps, ...restOfProps }: MarkdownEditorP
         gridRows: 1
     });
 
-
     return (
         <EditorContext.Provider value={{ editorRef, previewRef, ...state, setState }}>
             <div {...restOfProps} className={styles.container}>
@@ -78,7 +68,6 @@ const MarkdownEditor = ({ name, textareaProps, ...restOfProps }: MarkdownEditorP
     );
 };
 
-
 interface PreviewProps {
     name: string;
 }
@@ -89,7 +78,6 @@ const Preview = ({ name, ...props }: PreviewProps) => {
     const { editorRef, previewRef } = useEditorContext();
     const { watch } = useFormContext();
     const [markdown, title, excerpt]: string[] = watch([name, 'title', 'excerpt']);
-
 
     try {
         return createElement(

@@ -2,7 +2,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import type {InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import {useRef} from 'react';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type {UseFormRegisterReturn} from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';

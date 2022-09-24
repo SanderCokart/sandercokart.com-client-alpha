@@ -1,7 +1,8 @@
 import {Multiselect} from 'multiselect-react-dropdown';
-import {IMultiselectProps} from 'multiselect-react-dropdown/dist/multiselect/interface';
-import {CSSProperties, InputHTMLAttributes, useRef, useEffect} from 'react';
-import {UseFormSetValue} from 'react-hook-form/dist/types/form';
+import type {IMultiselectProps} from 'multiselect-react-dropdown/dist/multiselect/interface';
+import type {CSSProperties, InputHTMLAttributes} from 'react';
+import { useRef, useEffect} from 'react';
+import type {UseFormSetValue} from 'react-hook-form/dist/types/form';
 
 import styles from './MultiSelect.module.scss';
 

@@ -3,23 +3,22 @@ import useSWR from 'swr';
 
 import axios from '@/functions/shared/axios';
 
-import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
-import {ArticleResponse} from '@/types/ResponseTypes';
+import type {ArticleResponse} from '@/types/ResponseTypes';
 
 const UsePosts = () => {
     const [pageIndex, setPageIndex] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [hasLess, setHasLess] = useState(false);
-    const { isAdmin } = useAuth({ middleware: 'auth' });
+    const { isAdmin } = useAuthV2();
     const { data, error, mutate } = useSWR<ArticleResponse>(isAdmin ? `/posts?page=${pageIndex}` : null);
-    const { articles = [], links = [], meta = [] } = data || { posts: [], links: [], meta: [] };
+    const { articles = [] } = data || { posts: [], links: [], meta: [] };
 
     useEffect(() => {
         setHasMore(!!data?.links.next);
         setHasLess(!!data?.links.prev);
     }, [data]);
-
 
     const nextPage = () => {
         setPageIndex(prev => prev + 1);
@@ -37,7 +36,7 @@ const UsePosts = () => {
     };
 
     const onEdit = async (id: number) => {
-        await axios.simplePatch(`/users/${id}`);
+        await axios.simplePatch(`/posts/${id}`);
     };
 
     return {

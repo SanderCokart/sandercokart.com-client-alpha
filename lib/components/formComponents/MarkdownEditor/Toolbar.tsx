@@ -12,11 +12,11 @@ import Select from '@/components/formComponents/Select';
 
 import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
 
+import getUrl from '@/functions/client/getUrl';
 import axios from '@/functions/shared/axios';
 
 import type {FontAwesomeIconType} from '@/types/CustomTypes';
 import type {FileModel} from '@/types/ModelTypes';
-
 
 interface ToolbarProps {
     name: string;
@@ -83,7 +83,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
     const { setValue } = useFormContext();
     const toolbarForm = useForm();
     const { getValues, register } = toolbarForm;
-    const { editorRef, tableRows, tableColumns, gridRows, gridColumns, fontSize, setState } = useEditorContext();
+    const { editorRef /*tableColumns, gridColumns, fontSize, setState*/ } = useEditorContext();
 
     const selectWordUnderCursor = useCallback(() => {
         if (editorRef.current) {
@@ -92,15 +92,11 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
             editorRef.current.focus();
 
-            let lowestBackward = 0, lowestForward = value.length, forArray = [], backArray = [];
-
+            let lowestBackward = 0, lowestForward = value.length;
 
             check.forEach(char => {
                 const backward = value.lastIndexOf(char, selectionStart);
                 const forward = value.indexOf(char, selectionEnd);
-
-                forArray.push(char + ' ' + forward);
-                backArray.push(char + ' ' + backward);
 
                 if (backward !== -1 && (backward > lowestBackward)) {
                     lowestBackward = backward + 1;
@@ -116,7 +112,6 @@ const Toolbar = ({ name }: ToolbarProps) => {
             editorRef.current.selectionEnd = lowestForward;
         }
     }, []);
-
 
     const wrapSelection = useCallback((wrapWith: string) => {
         if (editorRef.current) {
@@ -198,7 +193,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
     const imageMd = useCallback(() => {
         if (editorRef.current) {
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const { value, selectionEnd } = editorRef.current;
 
             setValue(name, value.substring(0, editorRef.current.selectionStart) + '![alt](https://)' + value.substring(editorRef.current.selectionEnd));
 
@@ -221,7 +216,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
         const { data } = await axios.simplePost<FileModel>(ApiPostFilesStoreRoute, formData);
 
-        if (editorRef.current) {
+        if (editorRef.current && !!data) {
             const { value, selectionStart, selectionEnd } = editorRef.current;
             setValue(name, value.substring(0, selectionStart) + `![${data.original_name}](${getUrl(data)})\n` + value.substring(selectionEnd));
 
@@ -235,7 +230,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
 
     const insertTaskList = useCallback(() => {
         if (editorRef.current) {
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const { value, selectionEnd } = editorRef.current;
 
             const newValue = value.substring(0, selectionEnd) + '\n- [ ] task' + value.substring(selectionEnd);
             setValue(name, newValue);
@@ -249,7 +244,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
     /*BUGGED*/
     const insertOrderedList = useCallback(() => {
         if (editorRef.current) {
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const { value, selectionEnd } = editorRef.current;
 
             const newValue = value.substring(0, selectionEnd) + '\n1. item' + value.substring(selectionEnd);
             setValue(name, newValue);
@@ -263,7 +258,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
     const insertUnorderedList = useCallback(() => {
         if (editorRef.current) {
             editorRef.current.focus();
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const { value, selectionEnd } = editorRef.current;
 
             const newValue = value.substring(0, selectionEnd) + '\n- item' + value.substring(selectionEnd);
             setValue(name, newValue);
@@ -277,7 +272,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
         if (editorRef.current) {
             selectWordUnderCursor();
             editorRef.current.focus();
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+            const { value, selectionEnd } = editorRef.current;
 
             const newValue = value.substring(0, selectionEnd) + '[link](https://)' + value.substring(selectionEnd);
             setValue(name, newValue);
@@ -287,11 +282,11 @@ const Toolbar = ({ name }: ToolbarProps) => {
         }
     }, []);
 
-    const insertGrid = (e: MouseEvent<HTMLButtonElement>) => {
+    const insertGrid = () => {
         if (editorRef.current) {
             selectWordUnderCursor();
-            ``;
-            const { value, selectionStart, selectionEnd } = editorRef.current;
+
+            const { value, selectionEnd } = editorRef.current;
             const [gridColumns, gridGap, alignment] = getValues(['gridColumns', 'gridGap', 'alignment']);
 
             const newValue = value.substring(0, selectionEnd) + `\n\n<Grid gap="${gridGap}" alignment="${alignment}" columns="${gridColumns}">\n\n\n\n</Grid>\n\n` + value.substring(selectionEnd);
@@ -358,7 +353,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
         e.currentTarget.focus({ preventScroll: true });
     };
 
-    const AutoBlur = (e: MouseEvent<HTMLInputElement>) => {
+    const AutoBlur = () => {
         if (editorRef.current) {
             editorRef.current.focus({ preventScroll: true });
         }

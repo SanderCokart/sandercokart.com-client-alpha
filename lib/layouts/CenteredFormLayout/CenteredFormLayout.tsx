@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import {useFormState} from 'react-hook-form';
 
-import {DummyLoader} from '@/components/Loader/SmartLoader';
+import {DummyLoader} from '@/components/Loader';
 
 import styles from './CenteredFormLayout.module.scss';
 
@@ -16,7 +16,7 @@ const CenteredFormLayout = (props: CenteredFormLayoutProps) => {
     return (
         <div className={styles.root}>
             <div className={styles.box}>
-                <DummyLoader transparent isVisible={isSubmitting}/>
+                <DummyLoader transparent isVisible={isSubmitting} text="Login in progress..."/>
                 <header className={styles.header}>
                     <h1>{props.title}</h1>
                 </header>

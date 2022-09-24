@@ -1,4 +1,4 @@
-import {FileModel} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 
 const UseFile = () => {
     const getUrl = (file: FileModel) => {

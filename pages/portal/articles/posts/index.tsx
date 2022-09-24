@@ -4,7 +4,7 @@ import Skeleton from 'react-loading-skeleton';
 
 import {Button, LinkButton} from '@/components/Button/Button';
 import CreateFAB from '@/components/CreateFAB';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
+import {Loader} from '@/components/Loader/SmartLoader';
 
 import {ApiDeleteArticlesDestroyRoute} from '@/constants/api-routes';
 import {
@@ -119,7 +119,7 @@ const ArticlesPortalPage = () => {
 
     return (
         <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
+            <Loader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <DeleteConfirmationProvider<ArticleModel>>
                 <PostTable/>
             </DeleteConfirmationProvider>

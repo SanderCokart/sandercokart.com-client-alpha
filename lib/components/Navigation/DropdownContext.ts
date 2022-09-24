@@ -1,4 +1,5 @@
-import {createContext, useContext, Dispatch, SetStateAction} from 'react';
+import type { Dispatch, SetStateAction} from 'react';
+import {createContext, useContext} from 'react';
 
 export const DropdownMenuContext = createContext({});
 export const useDropdownMenu = () => useContext(DropdownMenuContext) as {

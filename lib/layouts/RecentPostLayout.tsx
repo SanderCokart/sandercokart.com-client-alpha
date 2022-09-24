@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import useImage from '@/hooks/useFile';
 
-import {ArticleModel} from '@/types/ModelTypes';
+import type {ArticleModel} from '@/types/ModelTypes';
 
 import styles from '@/styles/layouts/blog/RecentPostLayout.module.scss';
 

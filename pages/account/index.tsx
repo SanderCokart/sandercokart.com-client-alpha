@@ -1,6 +1,5 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {useRouter} from 'next/router';
 import {useEffect} from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import * as Yup from 'yup';
@@ -8,24 +7,21 @@ import * as Yup from 'yup';
 import BoxContainer from '@/components/BoxContainer';
 import {Button} from '@/components/Button/Button';
 import Input from '@/components/formComponents/Input/Input';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
 
 import {
     ApiPatchChangePasswordRoute,
     ApiPostEmailVerifyRetryRoute,
     ApiPatchEmailChangeRoute
 } from '@/constants/api-routes';
-import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 import axios from '@/functions/shared/axios';
 
-import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
 import type {EmailChangeFormValues, PasswordChangeFormValues} from '@/types/FormValueTypes';
 
 import styles from '@/styles/pages/account/Account.module.scss';
-
 
 const VerificationNotification = () => {
     const requestNewVerificationLink = async () => await axios.simplePost(ApiPostEmailVerifyRetryRoute);
@@ -46,33 +42,24 @@ const BlockedFeature = () => {
 };
 
 export const AccountPage = () => {
-    const { logout, isVerified } = useAuth({ middleware: 'auth' });
-    const router = useRouter();
-
-
-    const onClickLogout = async () => {
-        const response = await logout();
-    };
-
+    const { logout, isVerified } = useAuthV2();
 
     return (
         <BoxContainer className={styles.root}>
             {!isVerified && <VerificationNotification/>}
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <div className={styles.forms}>
                 <PasswordForm/>
                 <EmailForm/>
             </div>
             <div className={styles.actions}>
-                <Button fullWidth onClick={onClickLogout}>logout</Button>
+                <Button fullWidth onClick={logout}>logout</Button>
             </div>
         </BoxContainer>
     );
 };
 
-
 const PasswordForm = () => {
-    const { isVerified } = useAuth();
+    const { isVerified } = useAuthV2();
     const changePasswordForm = useForm<PasswordChangeFormValues>({
         resolver: yupResolver(Yup.object().shape({
             current_password: Yup.string().required('This field is required'),
@@ -128,7 +115,7 @@ const PasswordForm = () => {
 };
 
 const EmailForm = () => {
-    const { user, isVerified } = useAuth();
+    const { user, isVerified } = useAuthV2();
     const changeEmailForm = useForm<EmailChangeFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
@@ -171,3 +158,5 @@ const EmailForm = () => {
 };
 
 export default AccountPage;
+
+AccountPage.requireAuth = true;

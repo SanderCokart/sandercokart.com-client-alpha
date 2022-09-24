@@ -1,10 +1,10 @@
 import Papa from 'papaparse';
-import type {ReactNode, SetStateAction, Dispatch, CSSProperties} from 'react';
-import {createContext, useContext, useState, MouseEvent, useCallback, ChangeEvent} from 'react';
+import type {ReactNode, SetStateAction, Dispatch, CSSProperties, MouseEvent, ChangeEvent} from 'react';
+import {createContext, useContext, useState, useCallback} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
-import {GridProps} from '@/components/Grid/Grid';
+import type {GridProps} from '@/components/Grid/Grid';
 
 import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
 
@@ -13,7 +13,7 @@ import axios from '@/functions/shared/axios';
 
 import useFile from '@/hooks/useFile';
 
-import {FileModel} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 
 export const EditorToolbarContext = createContext({});
 
@@ -79,7 +79,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         e.currentTarget.focus({ preventScroll: true });
     };
 
-    const autoBlur = (e: MouseEvent<HTMLInputElement>) => {
+    const autoBlur = () => {
         if (editor) {
             editor.focus({ preventScroll: true });
         }
@@ -100,13 +100,10 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
 
             editor.focus();
 
-            let lowestBackward = 0, lowestForward = value.length, forArray = [], backArray = [];
+            let lowestBackward = 0, lowestForward = value.length;
             terminators.forEach(char => {
                 const backward = value.lastIndexOf(char, selectionStart);
                 const forward = value.indexOf(char, selectionEnd);
-
-                forArray.push(char + ' ' + forward);
-                backArray.push(char + ' ' + backward);
 
                 if (backward !== -1 && (backward > lowestBackward)) lowestBackward = backward + 1;
                 if (forward !== -1 && (forward < lowestForward)) lowestForward = forward;

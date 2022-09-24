@@ -1,4 +1,5 @@
-import {useState, MutableRefObject} from 'react';
+import type { MutableRefObject} from 'react';
+import {useState} from 'react';
 
 const UseFieldVisibility = () => {
     const [showPasswordAsText, setShowPasswordAsText] = useState(false);

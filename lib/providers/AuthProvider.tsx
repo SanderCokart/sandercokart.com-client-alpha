@@ -1,9 +1,7 @@
 import {useRouter} from 'next/router';
 import type {ReactNode, Dispatch, SetStateAction} from 'react';
-import {createContext, useContext, useState, useEffect} from 'react';
+import {createContext, useContext, useState} from 'react';
 import useSWR from 'swr';
-
-import {DummyLoader} from '@/components/Loader/SmartLoader';
 
 import {
     ApiCSRFTokenRoute,
@@ -75,6 +73,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const logout = async () => {
         if (user) {
             const response = await axios.simplePost(ApiPostLogoutRoute);
+            setLoggedIn(false);
             await mutate(null, { revalidate: false });
             return response;
         }
@@ -116,7 +115,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             ensureUserIsLoggedIn,
             setShowLoading
         }}>
-            <DummyLoader isVisible={showLoading}/>
             {children}
         </AuthContext.Provider>
     );

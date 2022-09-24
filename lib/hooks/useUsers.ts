@@ -3,18 +3,17 @@ import useSWR from 'swr';
 
 import axios from '@/functions/shared/axios';
 
-import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
-import {UserModel} from '@/types/ModelTypes';
-import {UsersResponse} from '@/types/ResponseTypes';
-
+import type {UserModel} from '@/types/ModelTypes';
+import type {UsersResponse} from '@/types/ResponseTypes';
 
 const UseUsers = () => {
         const [pageIndex, setPageIndex] = useState(1);
         const [hasMore, setHasMore] = useState(true);
         const [hasLess, setHasLess] = useState(false);
         const [showDeleteModalForUser, setShowDeleteModalForUser] = useState<null | UserModel>(null);
-        const { isAdmin } = useAuth({ middleware: 'auth' });
+        const { isAdmin } = useAuthV2();
         const { data, error, mutate } = useSWR<UsersResponse>(isAdmin ? `/users?page=${pageIndex}` : null);
         const { users = [], links = [], meta = [] } = data || { users: [], links: [], meta: [] };
 
@@ -22,7 +21,6 @@ const UseUsers = () => {
             setHasMore(!!data?.links.next);
             setHasLess(!!data?.links.prev);
         }, [data]);
-
 
         const nextPage = () => {
             setPageIndex(prev => prev + 1);

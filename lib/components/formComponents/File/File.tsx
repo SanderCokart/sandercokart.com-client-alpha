@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import {InputHTMLAttributes} from 'react';
+import type {InputHTMLAttributes} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 import {Button} from '@/components/Button';
@@ -12,7 +12,7 @@ import {ApiDeleteFilesDestroyRoute} from '@/constants/api-routes';
 import axios from '@/functions/shared/axios';
 import getDifference from '@/functions/shared/getDifference';
 
-import {FileModel} from '@/types/ModelTypes';
+import type {FileModel} from '@/types/ModelTypes';
 
 import styles from './File.module.scss';
 

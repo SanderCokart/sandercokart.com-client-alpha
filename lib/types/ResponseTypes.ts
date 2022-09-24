@@ -26,7 +26,7 @@ export interface ArticleResponse extends AxiosResponse {
     links: Links;
     meta: Meta;
 
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface UsersResponse extends AxiosResponse {
@@ -34,7 +34,7 @@ export interface UsersResponse extends AxiosResponse {
     links: Links;
     meta: Meta;
 
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface PostsSlugsResponse extends AxiosResponse {

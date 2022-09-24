@@ -2,7 +2,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useState} from 'react';
-import {Mousewheel, Navigation, Keyboard, default as SwiperType} from 'swiper';
+import type { default as SwiperType} from 'swiper';
+import {Mousewheel, Navigation, Keyboard} from 'swiper';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
 import useSWRInfinite from 'swr/infinite';
 
@@ -10,8 +11,8 @@ import {LocalArticlePageRoute} from '@/constants/local-routes';
 
 import useImage from '@/hooks/useFile';
 
-import {ArticleModel} from '@/types/ModelTypes';
-import {CursorPaginationResponse} from '@/types/ResponseTypes';
+import type {ArticleModel} from '@/types/ModelTypes';
+import type {CursorPaginationResponse} from '@/types/ResponseTypes';
 
 
 import styles from '@/styles/pages/Home.module.scss';
@@ -60,7 +61,7 @@ const Post = ({ post }: PostProps) => {
             <a>
                 <div className={styles.post}>
                     <figure className={styles.figure}>
-                        <Image priority unoptimized alt="alt" layout="fill" objectFit="cover" src={url}/>
+                        <Image priority alt="alt" layout="fill" objectFit="cover" src={url}/>
                         <figcaption className={styles.caption}>
                             <h1 className={styles.captionTitle} title={post.title}>{post.title}</h1>
                             <p className={styles.captionExcerpt}>{post.excerpt}</p>

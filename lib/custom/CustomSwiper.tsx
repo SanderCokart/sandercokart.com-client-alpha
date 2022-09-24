@@ -58,9 +58,7 @@ export const CustomSwiper = (props: CustomSwiperProps) => {
     );
 };
 
-interface CustomSwiperSlideProps extends SwiperSlideProps {
-
-}
+type CustomSwiperSlideProps = SwiperSlideProps
 
 export const CustomSwiperSlide = (props: CustomSwiperSlideProps) => {
     return (

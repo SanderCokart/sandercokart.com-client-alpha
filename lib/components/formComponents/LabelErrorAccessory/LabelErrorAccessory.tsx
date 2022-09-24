@@ -13,7 +13,7 @@ const LabelErrorAccessory = (props: LabelErrorAccessoryProps) => {
 
     if (error)
         return (
-            <span className={styles.error} {...restOfProps}> - {error.message}</span>
+            <span className={styles.error} {...restOfProps}> {' - ' + error.message}</span>
         );
     return null;
 };

@@ -1,7 +1,7 @@
-import {GetStaticPaths, GetStaticProps} from 'next';
-import {MDXRemoteSerializeResult} from 'next-mdx-remote';
+import type {GetStaticPaths, GetStaticProps} from 'next';
+import type {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {serialize} from 'next-mdx-remote/serialize';
-import {ParsedUrlQuery} from 'querystring';
+import type {ParsedUrlQuery} from 'querystring';
 import rehypeSlug from 'rehype-slug';
 import remarkToc from 'remark-toc';
 
@@ -9,8 +9,8 @@ import {ApiGetArticlesSlugsRoute, ApiGetArticlesShowRoute} from '@/constants/api
 
 import axios from '@/functions/shared/axios';
 
-import {ArticleModel} from '@/types/ModelTypes';
-import {PostsSlugsResponse} from '@/types/ResponseTypes';
+import type {ArticleModel} from '@/types/ModelTypes';
+import type {PostsSlugsResponse} from '@/types/ResponseTypes';
 
 import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
 

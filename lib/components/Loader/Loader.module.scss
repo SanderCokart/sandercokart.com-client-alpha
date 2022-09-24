@@ -16,6 +16,25 @@
   background-color: var(--bg);
 }
 
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.centerWithText {
+  @extend .center;
+  background-color: var(--bg-nav);
+  clip-path: circle(43%);
+}
+
+.text {
+  font-weight: bold;
+  position: absolute;
+}
+
 .transparent {
   background-color: var(--bg-trans);
 }

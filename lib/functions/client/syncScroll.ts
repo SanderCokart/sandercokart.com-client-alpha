@@ -1,4 +1,4 @@
-import {MutableRefObject} from 'react';
+import type {MutableRefObject} from 'react';
 
 
 type Refs<A> = MutableRefObject<A>/* | RefObject<A> | ForwardedRef<A>*/;
@@ -33,4 +33,4 @@ export default function syncScroll<A extends RefValues, B extends RefValues | nu
             syncWith.current.scrollTop = result;
         }
     }
-};
+}

@@ -5,15 +5,16 @@ import * as Yup from 'yup';
 
 import {Button} from '@/components/Button/Button';
 import Input from '@/components/formComponents/Input/Input';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
+import {DummyLoader} from '@/components/Loader';
 
 import {ApiPostRegisterRoute} from '@/constants/api-routes';
-import {LocalHomePageRoute, LocalLoginPageRoute} from '@/constants/local-routes';
+import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 import axios from '@/functions/shared/axios';
 
 import useFieldVisibility from '@/hooks/useFieldVisibility';
+import useRedirectSignedInUsers from '@/hooks/useRedirectSignedInUsers';
 
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 
@@ -23,6 +24,7 @@ import styles from '@/styles/pages/Register.module.scss';
 
 const RegisterPage = () => {
     const router = useRouter();
+    const { shouldShowLoadingScreen } = useRedirectSignedInUsers();
     const { togglePasswordVisibility, showPasswordAsText } = useFieldVisibility();
     const registerForm = useForm<RegisterFormValues>({
         resolver: yupResolver(Yup.object().shape({
@@ -50,7 +52,7 @@ const RegisterPage = () => {
 
     return (
         <FormProvider {...registerForm}>
-            <SmartLoader middleware="guest" redirectTo={LocalHomePageRoute}/>
+            <DummyLoader isVisible={shouldShowLoadingScreen} text="Initializing..."/>
             <CenteredFormLayout title="Register">
                 <form noValidate className={styles.form} onSubmit={onSubmitRegister}>
                     <Input autoComplete="name"

@@ -7,4 +7,5 @@
   left: 32px + utils.$navWidth;
   width: 48px;
   height: 48px;
+  z-index: map-get(utils.$z-indexes, 'fab');
 }

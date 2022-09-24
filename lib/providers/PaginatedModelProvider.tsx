@@ -5,8 +5,9 @@ import useSWR from 'swr';
 import {Button} from '@/components/Button/Button';
 
 import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
-import {PaginatedModelContext} from '@/types/ContextTypes';
+import type {PaginatedModelContext} from '@/types/ContextTypes';
 import type {PaginatedModels, PaginatedResponses} from '@/types/CustomTypes';
 import type {PaginatedModelProviderProps} from '@/types/PropTypes';
 
@@ -18,11 +19,11 @@ export const usePaginatedContext = <T extends PaginatedModels>() => useContext(C
 //----------------------------------------------------------------------------------------------------------------------
 const PaginatedModelProvider =
     (props: PaginatedModelProviderProps) => {
-        const { children, resourceDataKey, url, middleware = 'auth' } = props;
+        const { children, resourceDataKey, url } = props;
         const [pageIndex, setPageIndex] = useState(1);
         const [hasMore, setHasMore] = useState(true);
         const [hasLess, setHasLess] = useState(false);
-        const { isAdmin } = useAuth({ middleware });
+        const { isAdmin } = useAuthV2();
         const { data, error, mutate } = useSWR<PaginatedResponses>(isAdmin ? `${url}?page=${pageIndex}` : null);
         const { [resourceDataKey]: modelData = [], links = [], meta = [] } = data || {
             modelData: [],
@@ -34,7 +35,6 @@ const PaginatedModelProvider =
             setHasMore(!!data?.links.next);
             setHasLess(!!data?.links.prev);
         }, [data]);
-
 
         const nextPage = () => {
             setPageIndex(prev => prev + 1);
@@ -64,7 +64,7 @@ const PaginatedModelProvider =
     };
 //----------------------------------------------------------------------------------------------------------------------
 export const PageControls = () => {
-    const { prevPage, setPageIndex, nextPage, hasMore, hasLess, links, meta } = usePaginatedContext();
+    const { prevPage, setPageIndex, nextPage, hasMore, hasLess, meta } = usePaginatedContext();
     return (
         <div className={styles.pageControls}>
             <Button circle disabled={!hasLess} onClick={prevPage}>

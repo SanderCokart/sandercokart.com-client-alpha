@@ -8,31 +8,33 @@ import BoxContainer from '@/components/BoxContainer';
 import {Button} from '@/components/Button/Button';
 import Checkbox from '@/components/formComponents/Checkbox/Checkbox';
 import Input from '@/components/formComponents/Input/Input';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
+import {DummyLoader} from '@/components/Loader';
 
 import {
     LocalPasswordForgotPageRoute,
     LocalRegisterPageRoute,
-    LocalEmailVerifyPageRoute,
-    LocalHomePageRoute
+    LocalEmailVerifyPageRoute
 } from '@/constants/local-routes';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 
+import useRedirectSignedInUsers from '@/hooks/useRedirectSignedInUsers';
 import {useBooleanToggle} from '@/hooks/useToggle';
 
 import CenteredFormLayout from '@/layouts/CenteredFormLayout';
 
-import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
 import type {LoginFormValues} from '@/types/FormValueTypes';
 
 import styles from '@/styles/pages/Login.module.scss';
 
 export const Login = () => {
-    const router = useRouter();
-    const { login, setShowLoading } = useAuth();
+    const { login } = useAuthV2();
     const [showPassword, toggleShowPassword] = useBooleanToggle();
+    const router = useRouter();
+    const { shouldShowLoadingScreen } = useRedirectSignedInUsers();
+
     const loginForm = useForm<LoginFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string()
@@ -48,29 +50,11 @@ export const Login = () => {
     });
     const { formState: { isValid, isDirty }, handleSubmit, register, setError } = loginForm;
 
-    const footer = (
-        <footer className={styles.footer}>
-            <div className={styles.links}>
-                <Link href={LocalPasswordForgotPageRoute}>
-                    <a className={styles.link}>Forgot password?</a>
-                </Link>
-                <Link href={LocalRegisterPageRoute}>
-                    <a className={styles.link}>Don't have an account yet?</a>
-                </Link>
-            </div>
-        </footer>
-    );
-
     const onSubmitLogin = handleSubmit(async (formValues) => {
         const response = await login(formValues);
         const { type: qType } = router.query;
 
         switch (response.type) {
-            case 'success': {
-                await router.replace(LocalHomePageRoute);
-                setShowLoading(false);
-                return;
-            }
             case 'form': {
                 setFormErrors(setError, response.errors);
                 return;
@@ -87,10 +71,23 @@ export const Login = () => {
         }
     });
 
+    const footer = (
+        <footer className={styles.footer}>
+            <div className={styles.links}>
+                <Link href={LocalPasswordForgotPageRoute}>
+                    <a className={styles.link}>Forgot password?</a>
+                </Link>
+                <Link href={LocalRegisterPageRoute}>
+                    <a className={styles.link}>Don't have an account yet?</a>
+                </Link>
+            </div>
+        </footer>
+    );
+
     return (
         <BoxContainer>
-            <SmartLoader middleware="guest" redirectTo={LocalHomePageRoute}/>
             <FormProvider {...loginForm}>
+                <DummyLoader isVisible={shouldShowLoadingScreen} text="Initializing..."/>
                 <CenteredFormLayout footer={footer} title="Login">
                     <form noValidate className={styles.form} onSubmit={onSubmitLogin}>
                         <Input

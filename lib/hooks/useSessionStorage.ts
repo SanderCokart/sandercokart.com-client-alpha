@@ -1,18 +1,18 @@
 import type React from 'react';
 import {useDebugValue, useEffect, useState} from 'react';
 
-export const useLocalStorage = <State>
+export const useSessionStorage = <State>
 (key: string, initialState?: State | (() => State)): [State, React.Dispatch<React.SetStateAction<State>>] => {
     const [state, setState] = useState<State>(initialState as State);
     useDebugValue(state);
 
     useEffect(() => {
-        const item = localStorage.getItem(key);
+        const item = sessionStorage.getItem(key);
         if (item) setState(parse(item));
     }, []);
 
     useEffect(() => {
-        localStorage.setItem(key, JSON.stringify(state));
+        sessionStorage.setItem(key, JSON.stringify(state));
     }, [state]);
 
     return [state, setState];
@@ -26,4 +26,4 @@ const parse = (value: string) => {
     }
 };
 
-export default useLocalStorage;
+export default useSessionStorage;

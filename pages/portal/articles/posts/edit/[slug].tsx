@@ -12,18 +12,16 @@ import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
 import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
 import Textarea from '@/components/formComponents/Textarea';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 
 import {ApiGetArticlesShowRoute} from '@/constants/api-routes';
-import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
 import {useAuth} from '@/providers/AuthProvider';
 
-import {EditPostFormValues} from '@/types/FormValueTypes';
-import {ArticleModel} from '@/types/ModelTypes';
+import type {EditPostFormValues} from '@/types/FormValueTypes';
+import type {ArticleModel} from '@/types/ModelTypes';
 
 import styles from '@/styles/pages/portal/posts/EditPost.module.scss';
 
@@ -38,7 +36,6 @@ const EditPost = () => {
 
     return (
         <PortalContainer>
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <div className={styles.desktop}>
                 <header className={styles.header}>
                     {post && !error ?
@@ -54,7 +51,6 @@ const EditPost = () => {
         </PortalContainer>
     );
 };
-
 
 interface EditPostFormProps {
     post?: ArticleModel;
@@ -94,7 +90,6 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
         await axios.simplePatch(`/articles/posts/${post?.id}`, transformedData);
     });
 
-
     return (
         <FormProvider {...editArticleForm}>
             {!loading && (
@@ -113,3 +108,4 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
 };
 
 export default EditPost;
+EditPost.requireAuth = true;

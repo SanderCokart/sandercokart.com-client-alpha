@@ -1,4 +1,4 @@
-import {SWRConfiguration} from 'swr';
+import type {SWRConfiguration} from 'swr';
 
 import axios from '@/functions/shared/axios';
 

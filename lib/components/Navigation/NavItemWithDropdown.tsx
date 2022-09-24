@@ -1,4 +1,5 @@
-import {ReactNode, useState} from 'react';
+import type {ReactNode} from 'react';
+import { useState} from 'react';
 import {useDetectClickOutside} from 'react-detect-click-outside';
 
 import {DropdownMenuContext} from '@/components/Navigation';

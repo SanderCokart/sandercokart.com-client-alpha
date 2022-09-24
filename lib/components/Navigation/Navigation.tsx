@@ -26,6 +26,7 @@ import {
 import useMediaQuery from '@/hooks/useMediaQuery';
 
 import {useAuth} from '@/providers/AuthProvider';
+import {useAuthV2} from '@/providers/AuthProviderV2';
 
 import styles from '@/styles/components/Navigation.module.scss';
 
@@ -85,7 +86,7 @@ const Mobile = memo(function Mobile() {
 
 const Desktop = memo(function Desktop() {
     const { pathname } = useRouter();
-    const { isLoggedIn, isAdmin, showLoading } = useAuth();
+    const { isLoggedIn, isAdmin, initializing } = useAuthV2();
     const isPortalPage = pathname.includes('portal');
 
     return (
@@ -178,7 +179,7 @@ const Desktop = memo(function Desktop() {
                 </ul>
             </nav>
             <div className={styles.margin}/>
-            {(isPortalPage && !showLoading) && <PortalNavigation/>}
+            {(isPortalPage && !initializing) && <PortalNavigation/>}
         </>
     );
 });

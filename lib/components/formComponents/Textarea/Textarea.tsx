@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import type {ChangeEvent} from 'react';
-import {TextareaHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
-import {UseFormRegisterReturn} from 'react-hook-form';
+import type {TextareaHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
+import type {UseFormRegisterReturn} from 'react-hook-form';
 import Skeleton from 'react-loading-skeleton';
 
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';

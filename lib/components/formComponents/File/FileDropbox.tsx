@@ -1,10 +1,12 @@
 import classnames from 'classnames';
-import type {DragEvent, ChangeEvent} from 'react';
+import type {ChangeEvent} from 'react';
 import {useState} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 import setFormErrors from '@/functions/client/setFormErrors';
 import axios from '@/functions/shared/axios';
+
+import type {FileModel} from '@/types/ModelTypes';
 
 import styles from './FileDropbox.module.scss';
 
@@ -31,7 +33,7 @@ const FileDropbox = (props: FileDropboxProps) => {
     const [highlighted, setHighlighted] = useState(false);
     const { setValue, setError, getValues } = useFormContext();
 
-    const toggleHighlight = (e: DragEvent<HTMLInputElement>) => {
+    const toggleHighlight = () => {
         setHighlighted(prev => !prev);
     };
 
@@ -42,12 +44,12 @@ const FileDropbox = (props: FileDropboxProps) => {
 
     const onChange = async (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files ?? []);
-        const uploadedFiles = [];
+        const uploadedFiles: FileModel[] = [];
         for (const file of files) {
             const formData = new FormData();
             formData.set('file', file);
 
-            const response = await axios.simplePost('/files', formData);
+            const response = await axios.simplePost<FileModel>('/files', formData);
             switch (response.type) {
                 case 'success':
                     uploadedFiles.push(response.data);

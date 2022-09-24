@@ -1,4 +1,4 @@
-import {ArticleType, UserModel, ArticleModel} from '@/types/ModelTypes';
+import type {ArticleType, UserModel, ArticleModel} from '@/types/ModelTypes';
 
 export const LocalHomePageRoute = '/';
 

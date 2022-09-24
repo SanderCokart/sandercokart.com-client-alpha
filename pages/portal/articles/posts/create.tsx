@@ -9,18 +9,15 @@ import Input from '@/components/formComponents/Input';
 import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import Switch from '@/components/formComponents/Switch';
 import Textarea from '@/components/formComponents/Textarea';
-import {SmartLoader} from '@/components/Loader/SmartLoader';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
 
 import {ApiPostArticlesStoreRoute} from '@/constants/api-routes';
-import {LocalLoginPageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
-import {CreatePostFormValues} from '@/types/FormValueTypes';
+import type {CreatePostFormValues} from '@/types/FormValueTypes';
 
 import styles from '@/styles/pages/portal/posts/CreatePost.module.scss';
-
 
 const CreatePostPage = () => {
     const createPostForm = useForm<CreatePostFormValues>({
@@ -50,7 +47,6 @@ const CreatePostPage = () => {
 
     return (
         <>
-            <SmartLoader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <PortalContainer className={styles.desktop}>
                 <FormProvider {...createPostForm}>
                     <form noValidate className={styles.form} onSubmit={onSubmit}>
@@ -84,3 +80,4 @@ const CreatePostPage = () => {
 };
 
 export default CreatePostPage;
+CreatePostPage.requireAuth = true;

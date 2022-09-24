@@ -1,6 +1,7 @@
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {createContext, ReactNode, useState, useContext, useEffect} from 'react';
+import type { ReactNode} from 'react';
+import {createContext, useState, useContext, useEffect} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 import Modal from 'react-responsive-modal';
 import * as Yup from 'yup';
@@ -10,7 +11,7 @@ import Input from '@/components/formComponents/Input/Input';
 
 import {useBooleanToggle} from '@/hooks/useToggle';
 
-import {Models} from '@/types/ModelTypes';
+import type {Models} from '@/types/ModelTypes';
 
 import styles from './ConfirmDeleteModal.module.scss';
 

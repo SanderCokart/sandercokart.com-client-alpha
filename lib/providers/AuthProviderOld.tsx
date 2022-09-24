@@ -1,13 +1,13 @@
-import {AxiosError} from 'axios';
+import type {AxiosError} from 'axios';
 import type {ReactNode} from 'react';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
 
 import {ApiCSRFTokenRoute, ApiGetUserRoute, ApiPostLoginRoute, ApiPostLogoutRoute} from '@/constants/api-routes';
 
-import {CustomApiPromise} from '@/types/CustomTypes';
+import type {CustomApiPromise} from '@/types/CustomTypes';
 import type {LoginFormValues} from '@/types/FormValueTypes';
-import {UserModel} from '@/types/ModelTypes';
+import type {UserModel} from '@/types/ModelTypes';
 
 import axios from '../functions/shared/axios';
 

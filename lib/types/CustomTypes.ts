@@ -51,6 +51,6 @@ export type CursorPaginatedModels = ArticleModel;
 
 export type Middleware = 'auth' | 'guest';
 
-export interface withChildren {
+export type PropsWithChildren<T = Record<string, unknown>> = T & {
     children: ReactNode;
 }
