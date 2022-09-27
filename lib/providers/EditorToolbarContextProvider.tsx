@@ -172,9 +172,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             e.target.value = '';
         }
 
-
     }, [editor]);
-
 
     const handleTableInsertion = useCallback(() => {
         if (editor) {

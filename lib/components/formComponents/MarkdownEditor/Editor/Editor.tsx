@@ -15,7 +15,7 @@ export interface EditorProps {
 
 const Editor = (props: EditorProps) => {
     const { registerFormHook, onChange, onBlur } = props;
-    const { previewRef, setEditorRef, editorRef, nameAndId: name } = useEditorContext();
+    const { previewRef, setEditorRef, editorRef, nameAndId } = useEditorContext();
 
     return (
         <div className={styles.root}>
@@ -25,7 +25,8 @@ const Editor = (props: EditorProps) => {
                     registerFormHook?.ref(el);
                 }}
                 className={styles.textarea}
-                name={name}
+                id={nameAndId}
+                name={nameAndId}
                 onBlur={event => {
                     onBlur?.(event);
                     registerFormHook?.onBlur(event);
