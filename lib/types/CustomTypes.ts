@@ -54,3 +54,7 @@ export type Middleware = 'auth' | 'guest';
 export type PropsWithChildren<T = Record<string, unknown>> = T & {
     children: ReactNode;
 }
+
+export type Nullable<T> = {
+    [P in keyof T]?: T[P] | null;
+};

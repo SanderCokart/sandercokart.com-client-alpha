@@ -4,14 +4,9 @@ import Skeleton from 'react-loading-skeleton';
 
 import {Button, LinkButton} from '@/components/Button/Button';
 import CreateFAB from '@/components/CreateFAB';
-import {Loader} from '@/components/Loader/SmartLoader';
 
 import {ApiDeleteArticlesDestroyRoute} from '@/constants/api-routes';
-import {
-    LocalPortalArticlesCreatePageRoute,
-    LocalPortalArticlesEditPageRoute,
-    LocalLoginPageRoute
-} from '@/constants/local-routes';
+import {LocalPortalArticlesCreatePageRoute, LocalPortalArticlesEditPageRoute} from '@/constants/local-routes';
 
 import axios from '@/functions/shared/axios';
 
@@ -55,7 +50,6 @@ const PostRow = ({ article }: { article: ArticleModel }) => {
     );
 };
 
-
 const PostTable = () => {
     const { data: articles, isLoading, mutate } = usePaginatedContext<ArticleModel>();
     const { itemToDelete, toggleDeleteModal } = useDeleteConfirmationContext<ArticleModel>();
@@ -94,7 +88,7 @@ const PostTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {isLoading ? [...Array(100)].map((_, rowIndex) => (
+                {isLoading ? [...Array(20)].map((_, rowIndex) => (
                     <tr key={rowIndex}>
                         <td colSpan={8}><Skeleton height="100%" width="100%"/></td>
                     </tr>
@@ -119,7 +113,6 @@ const ArticlesPortalPage = () => {
 
     return (
         <PaginatedModelProvider middleware="auth" resourceDataKey="articles" url="/articles/posts">
-            <Loader middleware="auth" redirectTo={LocalLoginPageRoute}/>
             <DeleteConfirmationProvider<ArticleModel>>
                 <PostTable/>
             </DeleteConfirmationProvider>
@@ -129,3 +122,5 @@ const ArticlesPortalPage = () => {
 };
 
 export default ArticlesPortalPage;
+
+ArticlesPortalPage.requireAuth = true;

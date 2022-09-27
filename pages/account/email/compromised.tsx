@@ -40,12 +40,11 @@ const ChangePassword = () => {
         mode: 'all'
     });
 
-    const { formState: { isValid, isDirty }, handleSubmit, register, setError, reset } = emailCompromisedForm;
-    const { query: { user: qUser, token: qToken } } = router;
+    const { formState: { isValid, isDirty }, handleSubmit, register, setError } = emailCompromisedForm;
 
     const onSubmit = handleSubmit(async (formValues) => {
         const response = await axios.simplePatch(ApiPatchEmailCompromisedRoute, formValues, {
-            params: { user: qUser, token: qToken }
+            params: router.query
         });
 
         switch (response.type) {

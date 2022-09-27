@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import {createContext, useState, useContext} from 'react';
+import type {KeyedMutator} from 'swr';
 import useSWR from 'swr';
 
 import {ApiGetUserRoute, ApiPostLoginRoute, ApiPostLogoutRoute, ApiCSRFTokenRoute} from '@/constants/api-routes';
@@ -8,7 +9,7 @@ import axios from '@/functions/shared/axios';
 
 import useLocalStorage from '@/hooks/useLocalStorage';
 
-import type {CustomApiPromise} from '@/types/CustomTypes';
+import type {CustomApiPromise, Nullable} from '@/types/CustomTypes';
 import type {LoginFormValues} from '@/types/FormValueTypes';
 import type {UserModel} from '@/types/ModelTypes';
 
@@ -27,6 +28,7 @@ interface AuthContextType {
     setRedirect: (redirect: string) => void;
     getRedirect: () => string | null;
     clearRedirect: () => void;
+    mutate: KeyedMutator<Nullable<UserModel>>;
 }
 
 const redirectKey = 'sign_in_redirect';
@@ -91,7 +93,8 @@ function AuthProvider({ children }: AuthProviderProps) {
             logout,
             setRedirect,
             getRedirect,
-            clearRedirect
+            clearRedirect,
+            mutate
         }}>{children}</AuthContext.Provider>
     );
 

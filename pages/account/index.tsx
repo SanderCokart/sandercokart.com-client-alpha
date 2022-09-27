@@ -115,7 +115,7 @@ const PasswordForm = () => {
 };
 
 const EmailForm = () => {
-    const { user, isVerified } = useAuthV2();
+    const { user, isVerified, mutate: mutateUser } = useAuthV2();
     const changeEmailForm = useForm<EmailChangeFormValues>({
         resolver: yupResolver(Yup.object().shape({
             email: Yup.string().email().required()
@@ -129,9 +129,17 @@ const EmailForm = () => {
 
     const onSubmitEmailChange = handleSubmit(async (formValues) => {
         const response = await axios.simplePatch(ApiPatchEmailChangeRoute, formValues);
-        if (response.type === 'form') {
-            setFormErrors(setError, response.errors);
-            return;
+
+        switch (response.type) {
+            case 'form':
+                setFormErrors(setError, response.errors);
+                return;
+            case 'success':
+                mutateUser((currentData) => ({
+                    ...currentData,
+                    email_verified_at: null
+                }), { revalidate: false });
+                return;
         }
     });
 

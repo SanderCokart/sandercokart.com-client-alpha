@@ -42,7 +42,7 @@ const PasswordCompromisedPage = () => {
     const { formState: { isValid, isDirty }, register, handleSubmit, setError } = passwordCompromisedForm;
 
     const onSubmitCompromisedPassword = handleSubmit(async (formValues) => {
-        const response = await axios.simplePatch(ApiPatchCompromisedPasswordRoute, formValues, { params: { ...router.query } });
+        const response = await axios.simplePatch(ApiPatchCompromisedPasswordRoute, formValues, { params: router.query });
         switch (response.type) {
             case 'success':
                 router.push(LocalLoginPageRoute);
