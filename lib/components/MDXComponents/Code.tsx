@@ -1,3 +1,4 @@
+import {faCopy} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {HTMLAttributes} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
@@ -17,7 +18,7 @@ const Code = ({ children, className = 'language-text' }: CodeProps) => {
     return (
         <div className={styles.root}>
             <div className={styles.buttonContainer}>
-                <Button circle className={styles.button}><FontAwesomeIcon icon="copy"/></Button>
+                <Button circle className={styles.button}><FontAwesomeIcon icon={faCopy}/></Button>
             </div>
             <SyntaxHighlighter customStyle={{ padding: '16px' }} language={language} style={atomOneDark}>
                 {children.trim()}

@@ -1,3 +1,14 @@
+import {
+    faUser,
+    faRss,
+    faUserLock,
+    faDatabase,
+    faBook,
+    faLightbulb,
+    faEnvelope,
+    faBoxes,
+    faCaretLeft, faPaintBrush, faCaretRight, faCog, faHome, faCompass
+} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useRouter} from 'next/router';
 import {memo} from 'react';
@@ -56,27 +67,27 @@ const Mobile = memo(function Mobile() {
     return (
         <nav className={styles.mobile}>
             <ul className={styles.relative}>
-                <MobileMenu icon="compass" id="mobileMenuNavigation" name="compass" showSpan={false}
+                <MobileMenu icon={faCompass} id="mobileMenuNavigation" name="compass" showSpan={false}
                             onClick={openCompassNav}>
-                    <MobileItem href="/blog" icon="rss" name="blog" onClick={navigate}/>
+                    <MobileItem href="/blog" icon={faRss} name="blog" onClick={navigate}/>
 
                     {isLoggedIn ?
-                     (<MobileItem href={LocalAccountPageRoute} icon="user" name="account" onClick={navigate}/>)
+                     (<MobileItem href={LocalAccountPageRoute} icon={faUser} name="account" onClick={navigate}/>)
                                 :
-                     (<MobileItem href={LocalLoginPageRoute} icon="user-lock" name="login" onClick={navigate}/>)
+                     (<MobileItem href={LocalLoginPageRoute} icon={faUserLock} name="login" onClick={navigate}/>)
                     }
 
                     {isAdmin && (
-                        <MobileItem href={LocalPortalPageRoute} icon="database" name="portal" onClick={navigate}/>
+                        <MobileItem href={LocalPortalPageRoute} icon={faDatabase} name="portal" onClick={navigate}/>
                     )}
 
-                    <MobileMenu icon="boxes" name="library" onClick={openLibraryNav}>
-                        <MobileItem href={LocalLibraryPageRoute('courses')} icon="book" name="courses"
+                    <MobileMenu icon={faBoxes} name="library" onClick={openLibraryNav}>
+                        <MobileItem href={LocalLibraryPageRoute('courses')} icon={faBook} name="courses"
                                     onClick={navigate}/>
-                        <MobileItem href={LocalLibraryPageRoute('tips-&-tutorials')} icon="lightbulb" name="tips"
+                        <MobileItem href={LocalLibraryPageRoute('tips-&-tutorials')} icon={faLightbulb} name="tips"
                                     onClick={navigate}/>
                     </MobileMenu>
-                    <MobileItem href={LocalContactPageRoute} icon="envelope" name="contact" onClick={navigate}/>
+                    <MobileItem href={LocalContactPageRoute} icon={faEnvelope} name="contact" onClick={navigate}/>
                 </MobileMenu>
                 <div className={styles.backdrop}/>
             </ul>
@@ -94,24 +105,24 @@ const Desktop = memo(function Desktop() {
             <nav className={styles.desktop}>
                 <ul>
                     <div className={styles.left}>
-                        <NavItem href="/" icon={<FontAwesomeIcon icon="home"/>} text="Home"/>
+                        <NavItem href="/" icon={<FontAwesomeIcon icon={faHome}/>} text="Home"/>
                         <NavItemWithDropdown
                             align="bottom-left"
-                            icon={<FontAwesomeIcon icon="boxes"/>}
+                            icon={<FontAwesomeIcon icon={faBoxes}/>}
                             initialMenu="main"
                             text="Library" width="200px"
                         >
                             <DropdownMenu menuName="main">
                                 <DropdownLinkItem href={LocalLibraryPageRoute('posts')}
-                                                  leftIcon={<FontAwesomeIcon icon="rss"/>}>
+                                                  leftIcon={<FontAwesomeIcon icon={faRss}/>}>
                                     Posts
                                 </DropdownLinkItem>
                                 <DropdownLinkItem href={LocalLibraryPageRoute('courses')}
-                                                  leftIcon={<FontAwesomeIcon icon="book"/>}>
+                                                  leftIcon={<FontAwesomeIcon icon={faBook}/>}>
                                     Courses
                                 </DropdownLinkItem>
                                 <DropdownLinkItem href={LocalLibraryPageRoute('tips-&-tutorials')}
-                                                  leftIcon={<FontAwesomeIcon icon="lightbulb"/>}>
+                                                  leftIcon={<FontAwesomeIcon icon={faLightbulb}/>}>
                                     Tips & Tutorials
                                 </DropdownLinkItem>
                             </DropdownMenu>
@@ -126,7 +137,7 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={isAdmin} timeout={500}>
-                                <NavItem href={LocalPortalPageRoute} icon={<FontAwesomeIcon icon="database"/>}
+                                <NavItem href={LocalPortalPageRoute} icon={<FontAwesomeIcon icon={faDatabase}/>}
                                          text="Portal"/>
                             </CSSTransition>
                         </div>
@@ -138,7 +149,7 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={isLoggedIn} timeout={500}>
-                                <NavItem href={LocalAccountPageRoute} icon={<FontAwesomeIcon icon="user"/>}
+                                <NavItem href={LocalAccountPageRoute} icon={<FontAwesomeIcon icon={faUser}/>}
                                          text="Account"/>
                             </CSSTransition>
                             <CSSTransition unmountOnExit classNames={{
@@ -147,27 +158,27 @@ const Desktop = memo(function Desktop() {
                                 exit: styles.exit,
                                 exitActive: styles.exitActive
                             }} in={!isLoggedIn} timeout={500}>
-                                <NavItem href={LocalLoginPageRoute} icon={<FontAwesomeIcon icon="user-lock"/>}
+                                <NavItem href={LocalLoginPageRoute} icon={<FontAwesomeIcon icon={faUserLock}/>}
                                          text="Login"/>
                             </CSSTransition>
                         </div>
 
                         <NavItemWithDropdown align="bottom-right"
-                                             icon={<FontAwesomeIcon icon="cog"/>}
+                                             icon={<FontAwesomeIcon icon={faCog}/>}
                                              initialMenu="main"
                                              text="Settings" width="200px"
                         >
                             <DropdownMenu menuName="main">
                                 <DropdownItem
                                     goToMenu="theme"
-                                    leftIcon={<FontAwesomeIcon icon="paint-brush"/>}
-                                    rightIcon={<FontAwesomeIcon icon="caret-right"/>}
+                                    leftIcon={<FontAwesomeIcon icon={faPaintBrush}/>}
+                                    rightIcon={<FontAwesomeIcon icon={faCaretRight}/>}
                                 >
                                     Theme
                                 </DropdownItem>
                             </DropdownMenu>
                             <DropdownMenu menuName="theme">
-                                <DropdownItem goToMenu="main" leftIcon={<FontAwesomeIcon icon="caret-left"/>}>
+                                <DropdownItem goToMenu="main" leftIcon={<FontAwesomeIcon icon={faCaretLeft}/>}>
                                     Back to settings
                                 </DropdownItem>
                                 <DropdownItem>

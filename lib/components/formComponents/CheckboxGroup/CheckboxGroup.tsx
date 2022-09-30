@@ -1,3 +1,4 @@
+import {faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type { InputHTMLAttributes, HTMLAttributes, LabelHTMLAttributes} from 'react';
 import {Fragment} from 'react';
@@ -71,7 +72,7 @@ const CheckboxGroup = (props: CheckboxGroupProps) => {
                                         name={nameAndId}
                                         type="checkbox"/>
                                     <div className={styles.checkbox}>
-                                        <FontAwesomeIcon icon="check"/>
+                                        <FontAwesomeIcon icon={faCheck}/>
                                     </div>
                                 </label>
                             </Fragment>

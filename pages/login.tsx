@@ -1,3 +1,4 @@
+import {faEnvelope, faLock, faEyeSlash, faEye} from '@fortawesome/free-solid-svg-icons';
 import {yupResolver} from '@hookform/resolvers/yup';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
@@ -94,18 +95,18 @@ export const Login = () => {
                             autoComplete="email"
                             label="E-Mail"
                             placeholder="Enter your email here"
-                            prependIcon={{ icon: 'envelope', onClick: undefined }}
+                            prependIcon={{ icon: faEnvelope, onClick: undefined }}
                             registerFormHook={{ ...register('email') }}
                             type="text"/>
                         <Input
                             appendIcon={{
-                                icon: showPassword ? 'eye-slash' : 'eye',
+                                icon: showPassword ? faEyeSlash : faEye,
                                 onClick: toggleShowPassword
                             }}
                             autoComplete="current-password"
                             label="Password"
                             placeholder="Type your password here"
-                            prependIcon={{ icon: 'lock', onClick: undefined }}
+                            prependIcon={{ icon: faLock, onClick: undefined }}
                             registerFormHook={{ ...register('password') }}
                             type={showPassword ? 'text' : 'password'}/>
                         <Checkbox label="Remember me" registerFormHook={{ ...register('remember_me') }}/>

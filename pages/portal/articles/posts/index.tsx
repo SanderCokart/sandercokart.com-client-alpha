@@ -1,3 +1,4 @@
+import {faTrash, faPen} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
@@ -40,10 +41,10 @@ const PostRow = ({ article }: { article: ArticleModel }) => {
 
             <td className={styles.actions}>
                 <Button circle onClick={handleTrashClick}>
-                    <FontAwesomeIcon icon="trash"/>
+                    <FontAwesomeIcon icon={faTrash}/>
                 </Button>
                 <LinkButton circle href={LocalPortalArticlesEditPageRoute(article.slug, 'posts')}>
-                    <FontAwesomeIcon icon="pen"/>
+                    <FontAwesomeIcon icon={faPen}/>
                 </LinkButton>
             </td>
         </tr>

@@ -1,3 +1,4 @@
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import type { ReactNode} from 'react';
@@ -88,7 +89,7 @@ export const ConfirmDeleteModal = <T extends Models>(props: ConfirmDeleteModalPr
     }, [showDeleteModal, itemToDelete]);
 
     return (
-        <Modal closeIcon={<FontAwesomeIcon fixedWidth icon="times"/>} open={showDeleteModal}
+        <Modal closeIcon={<FontAwesomeIcon fixedWidth icon={faTimes}/>} open={showDeleteModal}
                onClose={handleCloseModal}>
             <FormProvider {...deleteUserForm}>
                 <form noValidate onSubmit={handleSubmit(props.onSubmitDelete)}>

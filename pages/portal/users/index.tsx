@@ -1,3 +1,4 @@
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
@@ -49,7 +50,7 @@ const UserRow = ({ user }: UserRowProps) => {
             <td>{user.email_verified_at ? moment(user.email_verified_at).calendar() : 'Unverified'}</td>
             <td className={styles.actions}>
                 <Button circle onClick={handleTrashClick}>
-                    <FontAwesomeIcon fixedWidth icon="trash"/>
+                    <FontAwesomeIcon fixedWidth icon={faTrash}/>
                 </Button>
             </td>
         </tr>

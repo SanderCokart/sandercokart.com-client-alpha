@@ -11,8 +11,7 @@ import 'swiper/scss/navigation';
 import '@/styles/globals.after.scss';
 //----------------------------------------------------------------------------------------------------------------------
 import GlobalSWRConfig from '@/config/GlobalSWRConfig';
-import icons from '@/data/icons';
-import {library, config} from '@fortawesome/fontawesome-svg-core';
+import {config} from '@fortawesome/fontawesome-svg-core';
 import type {NextPage} from 'next';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
@@ -29,7 +28,6 @@ import ThemeProvider from '@/providers/ThemeProvider';
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
 config.autoAddCss = false;
-library.add(...icons);
 
 const Providers = ({ children }: PropsWithChildren) => {
     return <SWRConfig value={GlobalSWRConfig}>

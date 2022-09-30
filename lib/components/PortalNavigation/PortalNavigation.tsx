@@ -1,3 +1,4 @@
+import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {useState} from 'react';
 
 import {LinkButton} from '@/components/Button/Button';
@@ -19,7 +20,7 @@ const PortalNavigation = () => {
 
     return (
         <nav className={styles.root}>
-            <Input className={styles.search} placeholder="Search" prependIcon={{ icon: 'search' }}
+            <Input className={styles.search} placeholder="Search" prependIcon={{ icon: faSearch }}
                    type="search"
                    value={search}
                    onChange={(e) => setSearch(e.target.value)}/>

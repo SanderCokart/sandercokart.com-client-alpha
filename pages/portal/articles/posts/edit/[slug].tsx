@@ -1,3 +1,4 @@
+import {faPaperPlane} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
@@ -99,7 +100,7 @@ const EditPostForm = ({ post }: EditPostFormProps) => {
                     <File name="banner"/>
                     <MarkdownEditor name="markdown"/>
                     <Button className={styles.submitButton} disabled={!isDirty || !isValid} type="submit">
-                        <FontAwesomeIcon icon="paper-plane"/>
+                        <FontAwesomeIcon icon={faPaperPlane}/>
                     </Button>
                 </form>
             )}

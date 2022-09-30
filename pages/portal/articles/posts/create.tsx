@@ -1,3 +1,4 @@
+import {faPaperPlane, faPen} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -57,8 +58,8 @@ const CreatePostPage = () => {
                                           registerFormHook={register('excerpt')}/>
                                 <Switch icons={{
                                     type: 'different',
-                                    off: <FontAwesomeIcon icon="pen"/>,
-                                    on: <FontAwesomeIcon icon="paper-plane"/>
+                                    off: <FontAwesomeIcon icon={faPen}/>,
+                                    on: <FontAwesomeIcon icon={faPaperPlane}/>
                                 }}
                                         label="Published"
                                         registerFormHook={register('published')}/>
@@ -67,7 +68,7 @@ const CreatePostPage = () => {
                         </div>
                         <NewMarkdownEditor registerFormHook={register('markdown')}/>
                         <FAB bottom={16}
-                             icon={<FontAwesomeIcon fixedWidth icon="paper-plane"/>}
+                             icon={<FontAwesomeIcon fixedWidth icon={faPaperPlane}/>}
                              right={16}
                              size={42}
                              type="submit"/>

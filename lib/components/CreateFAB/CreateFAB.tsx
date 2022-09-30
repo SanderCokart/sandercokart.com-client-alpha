@@ -1,3 +1,4 @@
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
 import {LinkButton} from '@/components/Button/Button';
@@ -10,6 +11,6 @@ interface CreateFABProps {
 
 export default function CreateFAB({ href }: CreateFABProps) {
     return <LinkButton circle className={styles.createFAB} href={href}>
-        <FontAwesomeIcon icon="plus"/>
+        <FontAwesomeIcon icon={faPlus}/>
     </LinkButton>;
 }

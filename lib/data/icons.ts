@@ -106,9 +106,9 @@
 //     faPaintBrush,
 // ];
 
-
 import {fab} from '@fortawesome/free-brands-svg-icons';
 import {fas} from '@fortawesome/free-solid-svg-icons';
 
+const icons = [fas, fab];
 
-export default [fas, fab];
+export default icons;

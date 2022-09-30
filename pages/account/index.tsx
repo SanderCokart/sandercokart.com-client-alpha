@@ -1,3 +1,4 @@
+import {faLock} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useEffect} from 'react';
@@ -37,7 +38,7 @@ const VerificationNotification = () => {
 
 const BlockedFeature = () => {
     return <div className={styles.blocked}>
-        <FontAwesomeIcon fixedWidth className={styles.blockedIcon} icon="lock"/>
+        <FontAwesomeIcon fixedWidth className={styles.blockedIcon} icon={faLock}/>
     </div>;
 };
 

@@ -1,3 +1,4 @@
+import {faEnvelope, faLock, faUser, faEyeSlash, faEye} from '@fortawesome/free-solid-svg-icons';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useRouter} from 'next/router';
 import {FormProvider, useForm} from 'react-hook-form';
@@ -58,29 +59,29 @@ const RegisterPage = () => {
                     <Input autoComplete="name"
                            label="Full name"
                            placeholder="Type your full name"
-                           prependIcon={{ icon: 'user' }}
+                           prependIcon={{ icon: faUser }}
                            registerFormHook={{ ...register('name') }}/>
                     <Input autoComplete="email"
                            label="Email"
                            placeholder="Type you email address"
-                           prependIcon={{ icon: 'envelope' }}
+                           prependIcon={{ icon: faEnvelope }}
                            registerFormHook={{ ...register('email') }}
                            type="email"/>
                     <Input
                         appendIcon={{
-                            icon: showPasswordAsText ? 'eye-slash' : 'eye',
+                            icon: showPasswordAsText ? faEyeSlash : faEye,
                             onClick: togglePasswordVisibility
                         }}
                         autoComplete="new-password"
                         label="Password"
                         placeholder="Type your password"
-                        prependIcon={{ icon: 'lock' }}
+                        prependIcon={{ icon: faLock }}
                         registerFormHook={{ ...register('password') }}
                         type="password"/>
                     <Input autoComplete="new-password"
                            label="Password"
                            placeholder="Type your password again"
-                           prependIcon={{ icon: 'lock' }}
+                           prependIcon={{ icon: faLock }}
                            registerFormHook={{ ...register('password_confirmation') }}
                            type="password"/>
                     <Button disabled={!isDirty || !isValid} type="submit">Submit</Button>

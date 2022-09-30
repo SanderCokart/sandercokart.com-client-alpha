@@ -1,3 +1,4 @@
+import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import {useFormContext} from 'react-hook-form';
@@ -37,7 +38,7 @@ function CarouselItem(props: CarouselItemProps) {
         <div className={styles.carouselItem}>
             <Image priority unoptimized alt="preview" layout="fill" objectFit="contain" src={url}/>
             <Button circle className={styles.removeCarouselItemButton} onClick={deleteItem}>
-                <FontAwesomeIcon icon="times"/>
+                <FontAwesomeIcon icon={faTimes}/>
             </Button>
         </div>
     );

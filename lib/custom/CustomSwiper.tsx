@@ -1,3 +1,4 @@
+import {faChevronRight, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import type {ReactNode} from 'react';
@@ -18,7 +19,7 @@ const Previous = () => {
     });
     return (
         <button className={styles.prevButton} disabled={isBeginning} type="button" onClick={() => swiper.slidePrev()}>
-            <FontAwesomeIcon icon="chevron-left"/>
+            <FontAwesomeIcon icon={faChevronLeft}/>
         </button>
     );
 };
@@ -32,7 +33,7 @@ const Next = () => {
     });
     return (
         <button className={styles.nextButton} disabled={isEnd} type="button" onClick={() => swiper.slideNext()}>
-            <FontAwesomeIcon icon="chevron-right"/>
+            <FontAwesomeIcon icon={faChevronRight}/>
         </button>
     );
 };

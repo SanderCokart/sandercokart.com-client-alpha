@@ -1,3 +1,4 @@
+import {faImages, faTable, faTextHeight} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Papa from 'papaparse';
 import type {ChangeEvent, MouseEvent} from 'react';
@@ -65,7 +66,7 @@ interface InsertImageProps {
 function InsertImage(props: InsertImageProps) {
     return (
         <>
-            <FontAwesomeIcon icon="images"/>
+            <FontAwesomeIcon icon={faImages}/>
             <div className={styles.toolbarItemImageDropdown}>
                 <Button className={styles.dropdownInteractionButton} onClick={props.onClick}>
                     External image
@@ -379,7 +380,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
                     ))}
 
                     <div className={styles.toolbarItem}>
-                        <FontAwesomeIcon icon="table"/>
+                        <FontAwesomeIcon icon={faTable}/>
                         <div className={styles.toolbarItemTableDropdown}>
                             <InsertTable onChange={importCSV} onClick={insertTable} onMouseEnter={AutoFocus}
                                          onMouseLeave={AutoBlur}/>
@@ -436,7 +437,7 @@ const Toolbar = ({ name }: ToolbarProps) => {
                     ))}
 
                     <div className={styles.toolbarItem} data-name="fontSize">
-                        <FontAwesomeIcon icon="text-height"/>
+                        <FontAwesomeIcon icon={faTextHeight}/>
                         <div className={styles.toolbarItemFontSizeDropdown}>
                             <Input defaultValue={20}
                                    label="Font Size"

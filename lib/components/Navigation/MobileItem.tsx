@@ -1,11 +1,10 @@
+import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 
-import type {FontAwesomeIconType} from '@/types/CustomTypes';
-
 interface MobileItemProps {
     href: string;
-    icon: FontAwesomeIconType;
+    icon: IconLookup;
     name: string;
     onClick: () => void;
 }

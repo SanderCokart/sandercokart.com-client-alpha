@@ -1,11 +1,13 @@
-import type {ReactNode} from 'react';
+import {faBell} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 
-const Test = ({ children }: { children: ReactNode }) => {
+import type {PropsWithChildren} from '@/types/CustomTypes';
 
+const Test = ({ children }: PropsWithChildren) => {
 
     return (
         <>
-            {children}
+            <FontAwesomeIcon icon={faBell}/>
         </>
     );
 };

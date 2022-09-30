@@ -1,3 +1,4 @@
+import {faArrowLeft, faArrowRight} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {createContext, useContext, useEffect, useState} from 'react';
 import useSWR from 'swr';
@@ -68,7 +69,7 @@ export const PageControls = () => {
     return (
         <div className={styles.pageControls}>
             <Button circle disabled={!hasLess} onClick={prevPage}>
-                <FontAwesomeIcon icon="arrow-left"/>
+                <FontAwesomeIcon icon={faArrowLeft}/>
             </Button>
             {meta?.links?.slice(1, meta.links.length - 1).map(link => (
                 <Button key={link.label}
@@ -79,7 +80,7 @@ export const PageControls = () => {
                 </Button>
             ))}
             <Button circle disabled={!hasMore} onClick={nextPage}>
-                <FontAwesomeIcon icon="arrow-right"/>
+                <FontAwesomeIcon icon={faArrowRight}/>
             </Button>
         </div>
     );

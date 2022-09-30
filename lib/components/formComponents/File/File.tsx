@@ -1,3 +1,4 @@
+import {faHistory} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import type {InputHTMLAttributes} from 'react';
@@ -36,7 +37,7 @@ const File = (props: FileProps) => {
     return (
         <div className={classnames([styles.root, props.className])}>
             <Button circle className={styles.reset} onClick={handleReset}>
-                <FontAwesomeIcon icon="history"/>
+                <FontAwesomeIcon icon={faHistory}/>
             </Button>
             {files.length > 0 && <FileCarousel name={props.name}/>}
             {(props.multiple || files.length === 0) && <FileDropbox multiple={props.multiple} name={props.name}/>}

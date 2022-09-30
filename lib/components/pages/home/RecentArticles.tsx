@@ -1,8 +1,9 @@
+import {faChevronLeft, faChevronRight} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useState} from 'react';
-import type { default as SwiperType} from 'swiper';
+import type {default as SwiperType} from 'swiper';
 import {Mousewheel, Navigation, Keyboard} from 'swiper';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
 import useSWRInfinite from 'swr/infinite';
@@ -13,7 +14,6 @@ import useImage from '@/hooks/useFile';
 
 import type {ArticleModel} from '@/types/ModelTypes';
 import type {CursorPaginationResponse} from '@/types/ResponseTypes';
-
 
 import styles from '@/styles/pages/Home.module.scss';
 
@@ -27,7 +27,7 @@ const Previous = () => {
     });
     return (
         <button className={styles.prevButton} disabled={isBeginning} type="button" onClick={() => swiper.slidePrev()}>
-            <FontAwesomeIcon icon="chevron-left"/>
+            <FontAwesomeIcon icon={faChevronLeft}/>
         </button>
     );
 };
@@ -41,7 +41,7 @@ const Next = () => {
     });
     return (
         <button className={styles.nextButton} disabled={isEnd} type="button" onClick={() => swiper.slideNext()}>
-            <FontAwesomeIcon icon="chevron-right"/>
+            <FontAwesomeIcon icon={faChevronRight}/>
         </button>
     );
 };
@@ -124,6 +124,5 @@ const RecentArticles = (props: RecentArticlesProps) => {
         </div>
     );
 };
-
 
 export default RecentArticles;

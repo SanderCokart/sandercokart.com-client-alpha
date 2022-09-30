@@ -1,3 +1,4 @@
+import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import type {ReactNode} from 'react';
 
@@ -6,7 +7,7 @@ import type {FontAwesomeIconType} from '@/types/CustomTypes';
 
 interface MobileMenuProps {
     children?: ReactNode;
-    icon: FontAwesomeIconType;
+    icon: IconLookup;
     id?: string;
     name: string;
     onClick: () => void;

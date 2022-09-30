@@ -1,3 +1,4 @@
+import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import type {InputHTMLAttributes, MutableRefObject, HTMLAttributes, LabelHTMLAttributes} from 'react';
@@ -8,10 +9,7 @@ import Skeleton from 'react-loading-skeleton';
 import ConditionalButtonWrapper from '@/components/formComponents/ConditionalButtonWrapper/ConditionalButtonWrapper';
 import LabelErrorAccessory from '@/components/formComponents/LabelErrorAccessory/LabelErrorAccessory';
 
-import type {FontAwesomeIconType} from '@/types/CustomTypes';
-
 import styles from './Input.module.scss';
-
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     loading?: boolean;
@@ -19,8 +17,8 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
     type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'datetime-local' | 'week' | 'time';
     registerFormHook?: UseFormRegisterReturn;
-    prependIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
-    appendIcon?: { icon: FontAwesomeIconType, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    prependIcon?: { icon: IconLookup, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
+    appendIcon?: { icon: IconLookup, onClick?: (ref: MutableRefObject<HTMLInputElement | null>) => void },
     containerProps?: HTMLAttributes<HTMLDivElement>;
     labelProps?: LabelHTMLAttributes<HTMLLabelElement>;
     centered?: boolean;
@@ -64,7 +62,6 @@ const Input = (props: InputProps) => {
             inputRef.current?.stepDown();
             dispatchOnChange();
         }
-
 
     }, []);
 
