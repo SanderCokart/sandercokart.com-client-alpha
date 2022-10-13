@@ -13,33 +13,6 @@
   text-align: center;
 }
 
-/*TODO NEEDS MOBILE VERSION*/
-.nextButton, .prevButton {
-  @include utils.defaultButton;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: 0;
-  bottom: 0;
-  width: 50px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--acc-trans);
-  z-index: 10;
-  cursor: pointer;
-
-  @include utils.down(utils.$sm) {
-    height: 50px;
-    border-radius: 50%;
-    right: 16px;
-  }
-
-  &:disabled {
-    background-color: black;
-  }
-}
 
 .prevButton {
   right: auto;
@@ -53,9 +26,54 @@
 .swiper {
   height: 300px;
   width: 100%;
-  padding: 0 50px;
   @include utils.down(utils.$sm) {
     padding: 0;
+  }
+
+  &:hover {
+    .nextButton, .prevButton {
+      opacity: 1;
+    }
+  }
+}
+
+/*TODO NEEDS MOBILE VERSION*/
+.nextButton, .prevButton {
+  @include utils.defaultButton;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  bottom: 0;
+
+  width: 50px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--acc-trans);
+  color: #ffffff;
+
+  z-index: 10;
+  cursor: pointer;
+
+  font-size: 1.5rem;
+
+  transition: opacity 300ms ease, background-color 150ms ease;
+
+  @include utils.down(utils.$sm) {
+    opacity: .3;
+    height: 50px;
+    border-radius: 50%;
+    right: 16px;
+  }
+
+  &:disabled {
+    pointer-events: all;
+    cursor: not-allowed;
   }
 }
 

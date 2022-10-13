@@ -18,14 +18,13 @@ interface HomeProps {
 }
 
 const HomePage = (props: HomeProps) => {
-    console.log(props.fallbacks);
     return (
         <div className={styles.home}>
-            <RecentArticles fallback={props.fallbacks.posts}
+            <RecentArticles fallback={props.fallbacks.posts} title="Posts"
                             url={ApiGetArticlesRecentRoute('posts')}/>
-            <RecentArticles fallback={props.fallbacks.courses}
+            <RecentArticles fallback={props.fallbacks.courses} title="Courses"
                             url={ApiGetArticlesRecentRoute('courses')}/>
-            <RecentArticles fallback={props.fallbacks.tipsAndTutorials}
+            <RecentArticles fallback={props.fallbacks.tipsAndTutorials} title="Tips & Tutorials"
                             url={ApiGetArticlesRecentRoute('tips-&-tutorials')}/>
         </div>
     );

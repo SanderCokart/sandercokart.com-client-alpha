@@ -18,13 +18,9 @@ import type {CursorPaginationResponse} from '@/types/ResponseTypes';
 import styles from '@/styles/pages/Home.module.scss';
 
 //<editor-fold desc="Swiper Navigation Buttons">
-const Previous = () => {
+const Previous = ({ isBeginning }: { isBeginning: boolean }) => {
     const swiper = useSwiper();
-    const [isBeginning, setIsBeginning] = useState(true);
-    swiper.on('slideChange', (swiper) => {
-        if (swiper.isBeginning === isBeginning) return;
-        setIsBeginning(swiper.isBeginning);
-    });
+
     return (
         <button className={styles.prevButton} disabled={isBeginning} type="button" onClick={() => swiper.slidePrev()}>
             <FontAwesomeIcon icon={faChevronLeft}/>
@@ -32,13 +28,9 @@ const Previous = () => {
     );
 };
 
-const Next = () => {
+const Next = ({ isEnd }: { isEnd: boolean }) => {
     const swiper = useSwiper();
-    const [isEnd, setIsEnd] = useState(false);
-    swiper.on('slideChange', (swiper) => {
-        if (swiper.isEnd === isEnd) return;
-        setIsEnd(swiper.isEnd);
-    });
+
     return (
         <button className={styles.nextButton} disabled={isEnd} type="button" onClick={() => swiper.slideNext()}>
             <FontAwesomeIcon icon={faChevronRight}/>
@@ -78,37 +70,64 @@ const Post = ({ post }: PostProps) => {
 interface RecentArticlesProps {
     url: string;
     fallback: { [key: string]: any };
+    title: string;
 }
 
+const slidesPerView = 4;
+const perPage = 10;
+const offset = 1;
+
 const RecentArticles = (props: RecentArticlesProps) => {
+    const [isEnd, setIsEnd] = useState(false);
+    const [isBeginning, setIsBeginning] = useState(true);
     const getKey = (pageIndex: any, previousPageData: any) => {
-        return previousPageData ? previousPageData.links.next ? previousPageData.links.next : null : props.url;
+        if (pageIndex === 0)
+            return props.url;
+        return previousPageData?.links?.next;
     };
 
     const {
         data: responses,
-        setSize,
-        size
+        size,
+        setSize
     } = useSWRInfinite<CursorPaginationResponse<ArticleModel[]>>(getKey, { fallback: props.fallback });
 
     const onSlideChange = (swiper: SwiperType) => {
-        const amountOfArticles = size * 10;
-        if (swiper.activeIndex > amountOfArticles - 5) {
+        const indexToLoadAt = (size * perPage) - breakpoints[swiper.currentBreakpoint].slidesPerView - offset;
+
+        if (swiper.activeIndex === indexToLoadAt)
             setSize(size => size + 1);
-        }
+
+        setIsBeginning(swiper.isBeginning);
+        setIsEnd(swiper.isEnd);
+    };
+
+    const breakpoints = {
+        0: { slidesPerView: 1 },
+        600: { slidesPerView: 2 },
+        900: { slidesPerView: 3 },
+        1200: { slidesPerView: 4 }
     };
 
     return (
         <div className={styles.container}>
             <Swiper keyboard
                     mousewheel
+                    breakpoints={breakpoints}
                     className={styles.swiper}
                     modules={[Navigation, Mousewheel, Keyboard]}
-                    navigation={{ nextEl: String(styles.nextButton), prevEl: String(styles.prevButton) }}
-                    slidesPerView="auto"
-                    spaceBetween={8}
-                    onSlideChange={onSlideChange}>
-                <Previous/>
+                    navigation={{ prevEl: String(styles.prevButton), nextEl: String(styles.nextButton) }}
+                    slidesPerView={slidesPerView}
+                    spaceBetween={0}
+                    onBeforeInit={(swiper: SwiperType) => {
+                        setIsBeginning(swiper.isBeginning);
+                        setIsEnd(swiper.isEnd);
+                    }}
+                    onSlideChange={onSlideChange}
+                    onSlidesLengthChange={() => {
+                        setIsEnd(false);
+                    }}>
+                <Previous isBeginning={isBeginning}/>
 
                 {responses?.map(response => {
                     return response.articles.map((article) => (
@@ -118,7 +137,7 @@ const RecentArticles = (props: RecentArticlesProps) => {
                     ));
                 })}
 
-                <Next/>
+                <Next isEnd={isEnd}/>
 
             </Swiper>
         </div>
