@@ -1,9 +1,13 @@
 import type {GetStaticPaths, GetStaticProps} from 'next';
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote';
+import {MDXRemote} from 'next-mdx-remote';
 import {serialize} from 'next-mdx-remote/serialize';
 import type {ParsedUrlQuery} from 'querystring';
 import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 import remarkToc from 'remark-toc';
+
+import MDXComponents, {Title} from '@/components/MDXComponents/MDXComponents';
 
 import {ApiGetArticlesSlugsRoute, ApiGetArticlesShowRoute} from '@/constants/api-routes';
 
@@ -15,10 +19,11 @@ import type {PostsSlugsResponse} from '@/types/ResponseTypes';
 import styles from '@/styles/pages/blog/posts/BlogPost.module.scss';
 
 const PostPage = ({ post }: BlogPostProps) => {
+    const components = MDXComponents();
     return (
         <div className={styles.container}>
-            {/*<Title>{post.title}</Title>*/}
-            {/*<MDXRemote components={MDXComponents} {...post.markdown}/>*/}
+            <Title>{post.title}</Title>
+            <MDXRemote components={components} {...post.markdown}/>
         </div>
     );
 };
@@ -58,15 +63,14 @@ export const getStaticProps: GetStaticProps<Props, Params> = async (context) => 
     const { data: post } = await axios.simpleGet(ApiGetArticlesShowRoute('posts', context.params.slug));
     post.markdown = await serialize(post.markdown, {
         mdxOptions: {
-            remarkPlugins: [remarkToc],
+            remarkPlugins: [remarkToc, remarkGfm],
             rehypePlugins: [rehypeSlug]
         }
     });
 
-
     return {
         props: { post },
-        revalidate: 60
+        revalidate: 1
     };
 };
 

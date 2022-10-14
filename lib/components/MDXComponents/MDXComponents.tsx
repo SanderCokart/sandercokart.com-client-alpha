@@ -31,7 +31,7 @@ interface ImageProps extends NextImageProps {
     src: string;
 }
 
-const MDXComponents = (isEditor: boolean) => {
+const MDXComponents = (isEditor = false) => {
     return {
         Grid,
 
