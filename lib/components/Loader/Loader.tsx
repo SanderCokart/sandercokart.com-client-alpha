@@ -8,12 +8,14 @@ interface DummyLoaderProps {
     transparent?: boolean;
     isVisible: boolean;
     text?: string;
+    className?: string;
 }
 
-export const DummyLoader = ({ isVisible, transparent, text }: DummyLoaderProps) => {
+export const DummyLoader = ({ isVisible, transparent, text, className }: DummyLoaderProps) => {
     const classNames = classnames([
         styles.root,
-        (transparent && styles.transparent)
+        (transparent && styles.transparent),
+        className
     ]);
 
     return isVisible ? (

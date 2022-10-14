@@ -5,7 +5,20 @@ module.exports = {
     images: {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-        domains: ['api.sandercokart.com', '192.168.2.160', '192.168.2.15', 'localhost'],
+        remotePatterns: [
+            {
+                protocol: 'http',
+                hostname: '192.168.**'
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost'
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.sandercokart.com'
+            }
+        ],
         formats: ['image/webp', 'image/avif']
 
     },

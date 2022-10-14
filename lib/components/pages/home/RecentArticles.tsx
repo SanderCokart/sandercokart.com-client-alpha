@@ -8,6 +8,8 @@ import {Mousewheel, Navigation, Keyboard} from 'swiper';
 import {Swiper, useSwiper, SwiperSlide} from 'swiper/react';
 import useSWRInfinite from 'swr/infinite';
 
+import {DummyLoader} from '@/components/Loader';
+
 import {LocalArticlePageRoute} from '@/constants/local-routes';
 
 import useImage from '@/hooks/useFile';
@@ -15,14 +17,25 @@ import useImage from '@/hooks/useFile';
 import type {ArticleModel} from '@/types/ModelTypes';
 import type {CursorPaginationResponse} from '@/types/ResponseTypes';
 
-import styles from '@/styles/pages/Home.module.scss';
+import styles from './RecentArticles.module.scss';
+
+const slidesPerView = 4;
+const perPage = 10;
+const offset = 1;
+const breakpoints = {
+    0: { slidesPerView: 1 },
+    600: { slidesPerView: 2 },
+    900: { slidesPerView: 3 },
+    1200: { slidesPerView: 4 }
+};
 
 //<editor-fold desc="Swiper Navigation Buttons">
 const Previous = ({ isBeginning }: { isBeginning: boolean }) => {
     const swiper = useSwiper();
 
     return (
-        <button className={styles.prevButton} disabled={isBeginning} type="button" onClick={() => swiper.slidePrev()}>
+        <button className={styles.prevButton} disabled={isBeginning} type="button"
+                onClick={() => swiper.slideTo(swiper.activeIndex - breakpoints[swiper.currentBreakpoint].slidesPerView + 1)}>
             <FontAwesomeIcon icon={faChevronLeft}/>
         </button>
     );
@@ -32,7 +45,8 @@ const Next = ({ isEnd }: { isEnd: boolean }) => {
     const swiper = useSwiper();
 
     return (
-        <button className={styles.nextButton} disabled={isEnd} type="button" onClick={() => swiper.slideNext()}>
+        <button className={styles.nextButton} disabled={isEnd} type="button"
+                onClick={() => swiper.slideTo(swiper.activeIndex + breakpoints[swiper.currentBreakpoint].slidesPerView - 1)}>
             <FontAwesomeIcon icon={faChevronRight}/>
         </button>
     );
@@ -71,11 +85,8 @@ interface RecentArticlesProps {
     url: string;
     fallback: { [key: string]: any };
     title: string;
+    comingSoon: boolean;
 }
-
-const slidesPerView = 4;
-const perPage = 10;
-const offset = 1;
 
 const RecentArticles = (props: RecentArticlesProps) => {
     const [isEnd, setIsEnd] = useState(false);
@@ -89,58 +100,65 @@ const RecentArticles = (props: RecentArticlesProps) => {
     const {
         data: responses,
         size,
-        setSize
+        setSize,
+        isValidating
     } = useSWRInfinite<CursorPaginationResponse<ArticleModel[]>>(getKey, { fallback: props.fallback });
 
-    const onSlideChange = (swiper: SwiperType) => {
+    const onSlideChange = async (swiper: SwiperType) => {
         const indexToLoadAt = (size * perPage) - breakpoints[swiper.currentBreakpoint].slidesPerView - offset;
 
-        if (swiper.activeIndex === indexToLoadAt)
-            setSize(size => size + 1);
+        if (swiper.activeIndex >= indexToLoadAt)
+            await setSize(size => size + 1);
 
         setIsBeginning(swiper.isBeginning);
         setIsEnd(swiper.isEnd);
     };
 
-    const breakpoints = {
-        0: { slidesPerView: 1 },
-        600: { slidesPerView: 2 },
-        900: { slidesPerView: 3 },
-        1200: { slidesPerView: 4 }
-    };
+    if (props.comingSoon)
+        return (
+            <div className={styles.comingSoon}>
+                <h1>Coming soon...</h1>
+            </div>
+        );
 
     return (
-        <div className={styles.container}>
-            <Swiper keyboard
-                    mousewheel
-                    breakpoints={breakpoints}
-                    className={styles.swiper}
-                    modules={[Navigation, Mousewheel, Keyboard]}
-                    navigation={{ prevEl: String(styles.prevButton), nextEl: String(styles.nextButton) }}
-                    slidesPerView={slidesPerView}
-                    spaceBetween={0}
-                    onBeforeInit={(swiper: SwiperType) => {
-                        setIsBeginning(swiper.isBeginning);
-                        setIsEnd(swiper.isEnd);
-                    }}
-                    onSlideChange={onSlideChange}
-                    onSlidesLengthChange={() => {
-                        setIsEnd(false);
-                    }}>
-                <Previous isBeginning={isBeginning}/>
+        <Swiper
+            centerInsufficientSlides
+            keyboard
+            mousewheel
+            breakpoints={breakpoints}
+            className={styles.swiper}
+            modules={[Navigation, Mousewheel, Keyboard]}
+            navigation={{ prevEl: String(styles.prevButton), nextEl: String(styles.nextButton) }}
+            slidesPerView={slidesPerView}
+            spaceBetween={0}
+            onBeforeInit={(swiper: SwiperType) => {
+                setIsBeginning(swiper.isBeginning);
+                setIsEnd(swiper.isEnd);
+            }}
+            onSlideChange={onSlideChange}
+            onSlidesLengthChange={() => {
+                setIsEnd(false);
+            }}>
+            <Previous isBeginning={isBeginning}/>
 
-                {responses?.map(response => {
-                    return response.articles.map((article) => (
-                        <SwiperSlide key={article.id} className={styles.slide}>
-                            <Post post={article}/>
-                        </SwiperSlide>
-                    ));
-                })}
+            {responses?.map(response => {
+                return response.articles.map((article) => (
+                    <SwiperSlide key={article.id} className={styles.slide}>
+                        <Post post={article}/>
+                    </SwiperSlide>
+                ));
+            })}
 
-                <Next isEnd={isEnd}/>
+            {isValidating && (
+                <SwiperSlide className={styles.slide}>
+                    <DummyLoader className={styles.loading} isVisible={true}/>
+                </SwiperSlide>
+            )}
 
-            </Swiper>
-        </div>
+            <Next isEnd={isEnd}/>
+
+        </Swiper>
     );
 };
 

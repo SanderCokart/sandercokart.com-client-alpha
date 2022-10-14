@@ -1,5 +1,4 @@
 import type {GetStaticProps} from 'next';
-import courses from 'pages/library/courses';
 
 import RecentArticles from '@/components/pages/home/RecentArticles';
 
@@ -7,9 +6,17 @@ import {ApiGetArticlesRecentRoute} from '@/constants/api-routes';
 
 import axios from '@/functions/shared/axios';
 
+import type {ArticleModel} from '@/types/ModelTypes';
+import type {CursorPaginationResponse} from '@/types/ResponseTypes';
+
 import styles from '@/styles/pages/Home.module.scss';
 
 interface HomeProps {
+    comingSoon: {
+        posts: boolean,
+        tipsAndTutorials: boolean,
+        courses: boolean
+    };
     fallbacks: {
         posts: any;
         courses: any;
@@ -20,11 +27,12 @@ interface HomeProps {
 const HomePage = (props: HomeProps) => {
     return (
         <div className={styles.home}>
-            <RecentArticles fallback={props.fallbacks.posts} title="Posts"
+            <RecentArticles comingSoon={props.comingSoon.posts} fallback={props.fallbacks.posts} title="Posts"
                             url={ApiGetArticlesRecentRoute('posts')}/>
-            <RecentArticles fallback={props.fallbacks.courses} title="Courses"
+            <RecentArticles comingSoon={props.comingSoon.courses} fallback={props.fallbacks.courses} title="Courses"
                             url={ApiGetArticlesRecentRoute('courses')}/>
-            <RecentArticles fallback={props.fallbacks.tipsAndTutorials} title="Tips & Tutorials"
+            <RecentArticles comingSoon={props.comingSoon.tipsAndTutorials} fallback={props.fallbacks.tipsAndTutorials}
+                            title="Tips & Tutorials"
                             url={ApiGetArticlesRecentRoute('tips-&-tutorials')}/>
         </div>
     );
@@ -32,11 +40,11 @@ const HomePage = (props: HomeProps) => {
 
 export const getStaticProps: GetStaticProps = async () => {
     const { data: postsData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('posts'));
+        await axios.simpleGet<CursorPaginationResponse<ArticleModel[]>>(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('posts'));
     const { data: tipsAndTutorialsData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('tips-&-tutorials'));
+        await axios.simpleGet<CursorPaginationResponse<ArticleModel[]>>(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('tips-&-tutorials'));
     const { data: coursesData } =
-        await axios.simpleGet(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('courses'));
+        await axios.simpleGet<CursorPaginationResponse<ArticleModel[]>>(process.env.NEXT_PUBLIC_API_URL + ApiGetArticlesRecentRoute('courses'));
 
     return {
         props: {
@@ -50,6 +58,11 @@ export const getStaticProps: GetStaticProps = async () => {
                 courses: {
                     [ApiGetArticlesRecentRoute('courses')]: coursesData
                 }
+            },
+            comingSoon: {
+                posts: postsData?.articles.length === 0,
+                tipsAndTutorials: tipsAndTutorialsData?.articles.length === 0,
+                courses: coursesData?.articles.length === 0
             }
         },
         revalidate: 60

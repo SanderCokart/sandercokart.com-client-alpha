@@ -1,0 +1,132 @@
+@use '/styles/utils';
+
+.container {
+
+}
+
+.prevButton {
+  right: auto;
+  left: 0;
+
+  @include utils.down(utils.$sm) {
+    left: 16px;
+  }
+}
+
+.swiper {
+  height: 100%;
+  width: 100%;
+  @include utils.down(utils.$sm) {
+    padding: 0;
+  }
+
+  &:hover {
+    .nextButton:not(:disabled), .prevButton:not(:disabled) {
+      opacity: 1;
+    }
+  }
+}
+
+/*TODO NEEDS MOBILE VERSION*/
+.nextButton, .prevButton {
+  @include utils.defaultButton;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  bottom: 0;
+
+  width: 50px;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: var(--acc-trans);
+  color: #ffffff;
+
+  z-index: 10;
+  cursor: pointer;
+
+  font-size: 1.5rem;
+
+  transition: opacity 300ms ease, background-color 150ms ease;
+
+  @include utils.down(utils.$sm) {
+    opacity: .3;
+    height: 50px;
+    border-radius: 50%;
+    right: 16px;
+  }
+
+  &:disabled {
+    background-color: inherit;
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+.loading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.comingSoon {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  background-color: var(--acc-trans);
+}
+
+.slide {
+  position: relative;
+  width: 500px;
+  @include utils.down(utils.$sm) {
+    width: 100%;
+  }
+}
+
+.post {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.figure {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: var(--bg-trans);
+  height: 60%;
+  width: 100%;
+  padding: 8px;
+}
+
+.captionTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 36px;
+}
+
+.captionExcerpt {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 24px;
+}
