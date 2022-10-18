@@ -1,14 +1,12 @@
-import type { RefObject} from 'react';
+import type {RefObject} from 'react';
 import {useRef, createContext, useContext} from 'react';
 import type {UseFormRegisterReturn} from 'react-hook-form';
 
 import Editor from '@/components/formComponents/MarkdownEditor/Editor';
 import type {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
-import type {ToolbarProps} from '@/components/formComponents/MarkdownEditor/NewToolbar';
 import NewToolbar from '@/components/formComponents/MarkdownEditor/NewToolbar';
 import Preview from '@/components/formComponents/MarkdownEditor/Preview';
 import type {PreviewProps} from '@/components/formComponents/MarkdownEditor/Preview/Preview';
-
 
 import styles from './NewMarkdownEditor.module.scss';
 
@@ -17,7 +15,6 @@ interface MarkdownEditorProps {
     registerFormHook?: UseFormRegisterReturn;
     editorProps?: Partial<EditorProps>;
     previewProps?: Partial<PreviewProps>;
-    toolbarProps?: Partial<ToolbarProps>;
 }
 
 const EditorContext = createContext({});
@@ -47,7 +44,7 @@ const NewMarkdownEditor = (props: MarkdownEditorProps) => {
         <EditorContext.Provider
             value={{ editorRef, setEditorRef, previewRef, setPreviewRef, nameAndId }}>
             <div className={styles.root}>
-                <NewToolbar {...props.toolbarProps}/>
+                <NewToolbar/>
                 <div className={styles.editorArea}>
                     <Editor registerFormHook={props.registerFormHook} {...props.editorProps}/>
                     <Preview {...props.previewProps}/>

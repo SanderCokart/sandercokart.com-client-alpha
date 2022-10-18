@@ -1,4 +1,4 @@
-@use 'utils';
+@use "utils";
 
 :root {
   /*haf = hover,active,focus*/
@@ -21,10 +21,11 @@
 
   --highlight-trans: hsla(0, 100%, 100%, 30%);
 
-  --error: hsl(0, 100%, 42%);
-  --success: hsl(145, 100%, 39%);
-  --info: hsl(203, 100%, 46%);
-  --warning: hsl(40, 100%, 50%);
+  --error: hsl(6, 78%, 57%);
+  --success: hsl(122, 93%, 38%);
+  --info: hsl(204, 70%, 53%);
+  --warning: hsl(48, 89%, 50%);
+
   --scrollbar: hsl(0, 0%, 93%);
 
   &[data-theme="light"] {
@@ -71,46 +72,7 @@ html.modalOpen {
 }
 
 /*OVERRIDES*/
-.react-responsive-modal-modal {
-  max-width: 800px;
-  text-align: left;
-  vertical-align: middle;
-  background: var(--bg);
-  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
-  padding: 32px 32px 16px 32px;
-  position: relative;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
 
-.react-responsive-modal-container {
-  height: 100%;
-  outline: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+@import "/styles/overrides/react-responsive-modal";
 
-.react-responsive-modal-closeButton {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  border: none;
-  outline: none;
-  padding: 0;
-  cursor: pointer;
-  background-color: transparent;
-  display: flex;
-  color: var(--bg-contrast-text);
-  font-size: 1rem;
-  transition: color 150ms ease;
-
-  &:hover, &:active, &:focus {
-    color: var(--acc);
-    transform: scale(1.1);
-  }
-}
+@import "/styles/overrides/toastify";

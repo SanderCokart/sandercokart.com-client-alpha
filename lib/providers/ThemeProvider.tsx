@@ -3,7 +3,7 @@ import {createContext, useContext, useEffect, useState} from 'react';
 
 const ThemeContext = createContext({});
 export const useTheme = () => useContext(ThemeContext) as {
-    theme: string;
+    theme: 'dark' | 'light' | 'device';
     setTheme: (theme: string) => void;
 };
 
@@ -12,7 +12,7 @@ interface ThemeProviderProps {
 }
 
 const ThemeProvider = (props: ThemeProviderProps) => {
-    const [theme, setTheme] = useState('');
+    const [theme, setTheme] = useState('dark');
 
     useEffect(() => {
         const theme = localStorage.getItem('theme') || 'device';

@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import {useEffect} from 'react';
 import {useForm, FormProvider} from 'react-hook-form';
 import useSWR from 'swr';
@@ -55,6 +56,7 @@ export default function CreateUserPage() {
     });
 
     return (
+        <>
         <BoxContainer className={styles.root}>
             <FormProvider {...createUserForm}>
                 <CenteredFormLayout title="Create user">
@@ -73,6 +75,7 @@ export default function CreateUserPage() {
                 </CenteredFormLayout>
             </FormProvider>
         </BoxContainer>
+        </>
     );
 }
 

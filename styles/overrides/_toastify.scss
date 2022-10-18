@@ -1,0 +1,53 @@
+@use "/styles/utils";
+
+:root {
+  --toastify-color-light: var(--bg-nav);
+  --toastify-color-dark: var(--bg-nav);
+  --toastify-color-info: var(--info);
+  --toastify-color-success: var(--success);
+  --toastify-color-warning: var(--warning);
+  --toastify-color-error: var(--error);
+  --toastify-color-transparent: rgba(255, 255, 255, 0.7);
+
+  --toastify-icon-color-info: var(--toastify-color-info);
+  --toastify-icon-color-success: var(--toastify-color-success);
+  --toastify-icon-color-warning: var(--toastify-color-warning);
+  --toastify-icon-color-error: var(--toastify-color-error);
+
+  --toastify-toast-width: 320px;
+  --toastify-toast-background: #ffffff;
+  --toastify-toast-min-height: 64px;
+  --toastify-toast-max-height: 800px;
+  --toastify-font-family: sans-serif;
+  --toastify-z-index: map-get(utils.$z-indexes, "toasts");
+
+  --toastify-text-color-light: var(--bg-contrast-text);
+  --toastify-text-color-dark: var(--bg-contrast-text);
+
+  //Used only for colored theme
+  --toastify-text-color-info: #ffffff;
+  --toastify-text-color-success: #ffffff;
+  --toastify-text-color-warning: #ffffff;
+  --toastify-text-color-error: #ffffff;
+
+  --toastify-spinner-color: #616161;
+  --toastify-spinner-color-empty-area: #e0e0e0;
+
+  // Used when no type is provided
+  // toast("**hello**")
+  --toastify-color-progress-light: linear-gradient(
+                  to right,
+                  #4cd964,
+                  #5ac8fa,
+                  #007aff,
+                  #34aadc,
+                  #5856d6,
+                  #ff2d55
+  );
+  // Used when no type is provided
+  --toastify-color-progress-dark: #bb86fc;
+  --toastify-color-progress-info: var(--toastify-color-info);
+  --toastify-color-progress-success: var(--toastify-color-success);
+  --toastify-color-progress-warning: var(--toastify-color-warning);
+  --toastify-color-progress-error: var(--toastify-color-error);
+}

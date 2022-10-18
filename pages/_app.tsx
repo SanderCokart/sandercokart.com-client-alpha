@@ -23,7 +23,7 @@ import AuthGuard from '@/components/AuthGuard';
 import Navigation from '@/components/Navigation';
 
 import AuthProviderV2 from '@/providers/AuthProviderV2';
-import ThemeProvider from '@/providers/ThemeProvider';
+import ThemeProvider, {useTheme} from '@/providers/ThemeProvider';
 
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
@@ -35,10 +35,10 @@ const Providers = ({ children }: PropsWithChildren) => {
             <AuthProviderV2>
                 <ThemeProvider>
                     {children}
+                    <ToastContainerWithTheme/>
                 </ThemeProvider>
             </AuthProviderV2>
         </SkeletonTheme>
-        <ToastContainer autoClose={false}/>
     </SWRConfig>;
 };
 
@@ -48,27 +48,37 @@ export type NextApplicationPage<P = unknown, IP = P> = NextPage<P, IP> & {
     disableLoader: boolean;
 }
 
-function MyApp({ Component, pageProps }: AppProps & { Component: NextApplicationPage; pageProps: unknown }) {
-    return (
-        <>
-            <Head>
-                <title>SanderCokart.com</title>
-                <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-            </Head>
-            <Providers>
-                <Navigation/>
-                {/*<Debugger/>*/}
-                {Component.requireAuth ? (
-                    <AuthGuard disableLoader={Component.disableLoader} timeout={Component.redirectTimeout}>
-                        <Component {...pageProps} />
-                    </AuthGuard>
-                ) : (
-                     // public page
-                     <Component {...pageProps} />
-                 )}
-            </Providers>
-        </>
-    );
-}
+const ToastContainerWithTheme = () => {
+    const { theme } = useTheme();
+
+    if (theme === 'device') {
+        const deviceTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return <ToastContainer autoClose={false} theme={deviceTheme}/>;
+    }
+
+    console.log(theme);
+    return <ToastContainer autoClose={false} theme={theme}/>;
+};
+
+const MyApp = ({ Component, pageProps }: AppProps & { Component: NextApplicationPage; pageProps: unknown }) => (
+    <>
+        <Head>
+            <title>SanderCokart.com</title>
+            <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        </Head>
+        <Providers>
+            <Navigation/>
+            {/*<Debugger/>*/}
+            {Component.requireAuth ? (
+                <AuthGuard disableLoader={Component.disableLoader} timeout={Component.redirectTimeout}>
+                    <Component {...pageProps} />
+                </AuthGuard>
+            ) : (
+                 // public page
+                 <Component {...pageProps} />
+             )}
+        </Providers>
+    </>
+);
 
 export default MyApp;

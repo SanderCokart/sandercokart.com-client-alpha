@@ -1,6 +1,5 @@
-import type {ImageProps as NextImageProps} from 'next/image';
-import NextImage from 'next/image';
-import type {CSSProperties, ReactNode} from 'react';
+import Image from 'next/image';
+import type {CSSProperties, ReactNode, ImgHTMLAttributes} from 'react';
 
 import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
@@ -9,7 +8,6 @@ import Code from '@/components/MDXComponents/Code';
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
 import styles from './MDXComponents.module.scss';
-
 
 export const Title = (props: PropsWithChildren) => <h1 className={styles.title} {...props}/>;
 
@@ -27,9 +25,33 @@ const Align = (props: AlignProps) => {
     );
 };
 
-interface ImageProps extends NextImageProps {
-    src: string;
-}
+const HtmlImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
+    return (
+        <img {...props} alt={props.alt} className={styles.img} title={props.alt}/>
+    );
+};
+
+const NextImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
+    const determineOptimization = () => {
+        if (props.src === 'string') return props.src.includes('/files') || !props.src.includes(process.env.NEXT_PUBLIC_API_URL);
+        return false;
+    };
+
+    if (props.src)
+        return (
+            <span className={styles.imageWrapper}>
+            <Image layout="fill" objectFit="contain"
+                   src={props.src}
+                   unoptimized={determineOptimization()}/>
+        </span>
+        );
+
+    return null;
+};
+
+const extractHrefId = (props: PropsWithChildren) => {
+    return String('heading-' + props.children).toLowerCase();
+};
 
 const MDXComponents = (isEditor = false) => {
     return {
@@ -43,22 +65,17 @@ const MDXComponents = (isEditor = false) => {
 
         a: (props: PropsWithChildren) => <a className={styles.a} {...props}/>,
 
-        code: Code,
+        code: isEditor ? Code : 'code',
 
-        h1: (props: PropsWithChildren) => <h1 className={styles.h1} {...props}/>,
+        h1: (props: PropsWithChildren) => <h1 className={styles.h1} id={extractHrefId(props)} {...props}/>,
 
-        h2: (props: PropsWithChildren) => <h2 className={styles.h2} {...props}/>,
+        h2: (props: PropsWithChildren) => <h2 className={styles.h2} id={extractHrefId(props)} {...props}/>,
 
-        h3: (props: PropsWithChildren) => <h3 className={styles.h3} {...props}/>,
+        h3: (props: PropsWithChildren) => <h3 className={styles.h3} id={extractHrefId(props)} {...props}/>,
 
-        h4: (props: PropsWithChildren) => <h4 className={styles.h4} {...props}/>,
+        h4: (props: PropsWithChildren) => <h4 className={styles.h4} id={extractHrefId(props)} {...props}/>,
 
-        img: (props: ImageProps) => isEditor ?
-                                    <img {...props} alt={props.alt} className={styles.img} title={props.alt}/>
-                                             :
-                                    <NextImage layout="fill" objectFit="contain"
-                                               src={props.src}
-                                               unoptimized={props.src.includes('/files') || !props.src.includes(process.env.NEXT_PUBLIC_API_URL)}/>,
+        img: isEditor ? HtmlImage : NextImage,
 
         li: (props: PropsWithChildren) => <li className={styles.li} {...props}/>,
 
