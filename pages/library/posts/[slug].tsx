@@ -1,3 +1,4 @@
+import {remarkCodeHike} from '@code-hike/mdx';
 import type {GetStaticPaths, GetStaticProps} from 'next';
 import type {MDXRemoteSerializeResult} from 'next-mdx-remote';
 import {MDXRemote} from 'next-mdx-remote';
@@ -56,12 +57,18 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props, Params> = async (context) => {
+    const { remarkCodeHike } = require('@code-hike/mdx');
+    const theme = require('shiki/themes/one-dark-pro.json');
+
     if (!context.params?.slug) throw new Error('No params');
 
     const { data: post } = await axios.simpleGet(ApiGetArticlesShowRoute('posts', context.params.slug));
-    const mdxSource = await serialize(post.markdown, {
+    const mdxSource = await serialize('# hello', {
         mdxOptions: {
-            remarkPlugins: [remarkGfm],
+            remarkPlugins: [
+                remarkGfm,
+                [remarkCodeHike, { theme, lineNumbers: true, showCopyButton: true }]
+            ],
             rehypePlugins: []
         }
     });

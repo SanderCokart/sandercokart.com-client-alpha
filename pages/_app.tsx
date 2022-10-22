@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-responsive-modal/styles.css';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
+import "@code-hike/mdx/styles"
+
+
 //CSS AFTER PACKAGES
 import '@/styles/globals.after.scss';
 //----------------------------------------------------------------------------------------------------------------------
@@ -56,7 +59,6 @@ const ToastContainerWithTheme = () => {
         return <ToastContainer autoClose={false} theme={deviceTheme}/>;
     }
 
-    console.log(theme);
     return <ToastContainer autoClose={false} theme={theme}/>;
 };
 

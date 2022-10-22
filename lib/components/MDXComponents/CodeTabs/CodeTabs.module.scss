@@ -1,0 +1,43 @@
+@use "/styles/utils";
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.codeTabsContainer {
+  min-width: utils.$sm;
+  max-width: utils.$md;
+  width: 100%;
+  height: auto;
+  background-color: #111111;
+}
+
+.codeTabs {
+  display: flex;
+}
+
+.codeTab {
+  cursor: pointer;
+  flex: 1;
+
+  width: min-content;
+  padding: 0 8px;
+  height: 30px;
+
+  background-color: var(--bg-nav);
+  color: var(--bg-nav-contrast-text);
+  outline: none;
+  border: none;
+  border-bottom: var(--acc-inactive) 4px solid;
+
+  font-size: 1rem;
+  font-weight: bold;
+
+  transition: border 250ms ease;
+
+  &.active {
+    border-bottom: var(--acc) 4px solid;
+    box-shadow: inset var(--bg) 0 0 8px 2px;
+  }
+}

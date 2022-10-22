@@ -1,6 +1,8 @@
 const path = require('path');
 
+/** @type {import('next').NextConfig} */
 module.exports = {
+    pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     reactStrictMode: false,
     images: {
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -36,6 +38,7 @@ module.exports = {
             issuer: /\.[jt]sx?$/,
             use: ['@svgr/webpack']
         });
+
 
         return config;
     },

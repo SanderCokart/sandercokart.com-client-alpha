@@ -5,8 +5,8 @@ import type {UseFormRegisterReturn} from 'react-hook-form';
 import Editor from '@/components/formComponents/MarkdownEditor/Editor';
 import type {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
 import NewToolbar from '@/components/formComponents/MarkdownEditor/NewToolbar';
-import Preview from '@/components/formComponents/MarkdownEditor/Preview';
 import type {PreviewProps} from '@/components/formComponents/MarkdownEditor/Preview/Preview';
+import MDXPreview from '@/components/MDXPreview';
 
 import styles from './NewMarkdownEditor.module.scss';
 
@@ -47,7 +47,8 @@ const NewMarkdownEditor = (props: MarkdownEditorProps) => {
                 <NewToolbar/>
                 <div className={styles.editorArea}>
                     <Editor registerFormHook={props.registerFormHook} {...props.editorProps}/>
-                    <Preview {...props.previewProps}/>
+                    <MDXPreview {...props.previewProps}/>
+                    {/*<Preview {...props.previewProps}/>*/}
                 </div>
             </div>
         </EditorContext.Provider>

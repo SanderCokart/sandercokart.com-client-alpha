@@ -1,9 +1,9 @@
+import {CH} from '@code-hike/mdx/components';
 import Image from 'next/image';
 import type {CSSProperties, ReactNode, ImgHTMLAttributes} from 'react';
 
 import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
-import Code from '@/components/MDXComponents/Code';
 
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
@@ -53,40 +53,39 @@ const extractHrefId = (props: PropsWithChildren) => {
     return String('heading-' + props.children).toLowerCase();
 };
 
-const MDXComponents = (isEditor = false) => {
-    return {
-        Grid,
+export const MDXComponents = {
+    Grid,
 
-        Flex,
+    Flex,
 
-        Align,
+    Align,
 
-        Title,
+    Title,
 
-        a: (props: PropsWithChildren) => <a className={styles.a} {...props}/>,
+    CH,
 
-        code: isEditor ? Code : 'code',
+    a: (props: PropsWithChildren) => <a className={styles.a} {...props}/>,
 
-        h1: (props: PropsWithChildren) => <h1 className={styles.h1} id={extractHrefId(props)} {...props}/>,
+    h1: (props: PropsWithChildren) => <h1 className={styles.h1} id={extractHrefId(props)} {...props}/>,
 
-        h2: (props: PropsWithChildren) => <h2 className={styles.h2} id={extractHrefId(props)} {...props}/>,
+    h2: (props: PropsWithChildren) => <h2 className={styles.h2} id={extractHrefId(props)} {...props}/>,
 
-        h3: (props: PropsWithChildren) => <h3 className={styles.h3} id={extractHrefId(props)} {...props}/>,
+    h3: (props: PropsWithChildren) => <h3 className={styles.h3} id={extractHrefId(props)} {...props}/>,
 
-        h4: (props: PropsWithChildren) => <h4 className={styles.h4} id={extractHrefId(props)} {...props}/>,
+    h4: (props: PropsWithChildren) => <h4 className={styles.h4} id={extractHrefId(props)} {...props}/>,
 
-        img: isEditor ? HtmlImage : NextImage,
+    img: NextImage,
 
-        li: (props: PropsWithChildren) => <li className={styles.li} {...props}/>,
+    li: (props: PropsWithChildren) => <li className={styles.li} {...props}/>,
 
-        ol: (props: PropsWithChildren) => <ol className={styles.ol} {...props}/>,
+    ol: (props: PropsWithChildren) => <ol className={styles.ol} {...props}/>,
 
-        p: (props: PropsWithChildren) => <p className={styles.p} {...props}/>,
+    p: (props: PropsWithChildren) => <p className={styles.p} {...props}/>,
 
-        table: (props: PropsWithChildren) => <table className={styles.table} {...props}/>,
+    table: (props: PropsWithChildren) => <table className={styles.table} {...props}/>,
 
-        ul: (props: PropsWithChildren) => <ul className={styles.ul} {...props}/>
-    };
+    ul: (props: PropsWithChildren) => <ul className={styles.ul} {...props}/>
 };
 
-export default MDXComponents;
+export const EditorMDXComponents = { ...MDXComponents, img: HtmlImage };
+

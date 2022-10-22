@@ -1,0 +1,57 @@
+@use "/styles/utils";
+
+.root {
+  width: 100%;
+  height: 100%;
+  background-color: #aa0000;
+}
+
+.previewContainer {
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  direction: rtl;
+  position: relative;
+}
+
+.preview {
+  white-space: pre;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  color: var(--bg-contrast-text);
+  background-color: var(--bg);
+  gap: 20px;
+  direction: ltr;
+}
+
+.compileError {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Cascadia Code", Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  background-color: var(--bg-nav);
+  border: solid 2px var(--acc);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+
+  width: 80%;
+  height: 300px;
+
+  padding: 8px;
+  direction: ltr;
+  overflow: auto;
+
+  pre {
+    white-space: pre-wrap;
+    color: var(--error);
+    font-size: 1rem;
+  }
+}
