@@ -1,9 +1,9 @@
-import {CH} from '@code-hike/mdx/components';
 import Image from 'next/image';
 import type {CSSProperties, ReactNode, ImgHTMLAttributes} from 'react';
 
 import Flex from '@/components/Flex';
 import Grid from '@/components/Grid';
+import {Pre, Code, CodeTabs} from '@/components/MDXComponents/CodeTabs';
 
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
@@ -62,7 +62,11 @@ export const MDXComponents = {
 
     Title,
 
-    CH,
+    CodeTabs,
+
+    code: Code,
+
+    pre: Pre,
 
     a: (props: PropsWithChildren) => <a className={styles.a} {...props}/>,
 

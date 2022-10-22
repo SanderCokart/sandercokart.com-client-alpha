@@ -1,1 +1,1 @@
-export {CodeTabs, CodeTab} from './CodeTabs';
+export {CodeTabs, Code, Pre} from './CodeTabs';

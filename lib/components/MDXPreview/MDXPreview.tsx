@@ -1,4 +1,3 @@
-import {remarkCodeHike} from '@code-hike/mdx';
 import {compile, run} from '@mdx-js/mdx';
 import type {MDXContent} from 'mdx/types';
 import {useEffect, useState} from 'react';
@@ -7,9 +6,8 @@ import {useFormContext} from 'react-hook-form';
 import * as runtime from 'react/jsx-runtime';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 import remarkToc from 'remark-toc';
-import theme from 'shiki/themes/dark-plus.json';
-import type {VFile} from 'vfile';
 
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import {EditorMDXComponents} from '@/components/MDXComponents/MDXComponents';
@@ -27,7 +25,7 @@ const MDXPreview = () => {
     return (
         <>
             <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[markdown, title, excerpt]}>
-                <InnerPreview input={markdown}/>
+                <InnerPreview input={input}/>
             </ErrorBoundary>
         </>
     );
@@ -48,12 +46,11 @@ const InnerPreview = (props: { input: string }) => {
             remarkPlugins: [
                 remarkGfm,
                 remarkToc,
-                [remarkCodeHike, { autoImport: false, showCopyButton: true, lineNumbers: true, theme: theme }]
+                remarkMdxCodeMeta
             ]
-        }).then((c: VFile) => {
+        }).then((c) => {
             return run(String(c), runtime);
         }).then((x) => {
-            console.log(x);
             setContent(() => x.default);
             setError(null);
         }).catch((e) => {

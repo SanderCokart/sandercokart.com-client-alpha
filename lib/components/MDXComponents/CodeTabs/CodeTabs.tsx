@@ -1,38 +1,31 @@
+// import classnames from 'classnames';
+// import type {ReactElement, Dispatch, SetStateAction} from 'react';
+// import {createContext, useState, useContext, useEffect} from 'react';
+//
 import classnames from 'classnames';
-import type {ReactElement} from 'react';
-import {createContext, useState, useContext, useEffect} from 'react';
+import hljs from 'highlight.js';
+import {createContext, useContext, useState, useEffect} from 'react';
 
 import styles from './CodeTabs.module.scss';
-
+//
 const CodeTabsContext = createContext({});
 
 interface ContextProps {
+    activeTab: string | null;
     tabNames: string[];
-    activeTab: null | string;
-    addNameToTabsList: (tabName: string) => void;
+    addTabName: (tabName: string) => void;
 }
 
 const useCodeTabs = () => {
     return useContext(CodeTabsContext) as ContextProps;
 };
 
-interface CodeTabsProps {
-    children: ReactElement<CodeTabProps> | Array<ReactElement<CodeTabProps>>;
-}
+export const CodeTabs = (props) => {
+    const [tabNames, setTabNames] = useState<string[]>([]);
+    const [activeTab, setActiveTab] = useState<null | string>(null);
 
-export const CodeTabs = (props: CodeTabsProps) => {
-    const [tabNames, setTabNames] = useState<ContextProps['tabNames']>([]);
-    const [activeTab, setActiveTab] = useState<ContextProps['activeTab']>(null);
-
-    const addNameToTabsList = (tabName: string) => {
-        if (tabNames.includes(tabName)) throw Error('Tab name already taken');
-        setTabNames(prev => [...prev, tabName]);
-    };
-
-    const value = {
-        tabNames,
-        activeTab,
-        addNameToTabsList
+    const addTabName = (tabName: string) => {
+        setTabNames(prev => ([...prev, tabName]));
     };
 
     useEffect(() => {
@@ -40,44 +33,76 @@ export const CodeTabs = (props: CodeTabsProps) => {
     }, [tabNames]);
 
     return (
-        <CodeTabsContext.Provider value={value}>
+        <CodeTabsContext.Provider value={{
+            activeTab,
+            tabNames,
+            addTabName
+        }}>
             <div className={styles.container}>
                 <div className={styles.codeTabsContainer}>
 
                     <div className={styles.codeTabs}>
                         {tabNames.map((tabName) => (
-                            <button key={tabName}
-                                    className={classnames([
-                                        styles.codeTab,
-                                        (tabName === activeTab) && styles.active
-                                    ])}
-                                    type="button"
-                                    onClick={() => setActiveTab(tabName)}>
+                            <button
+                                key={tabName}
+                                className={classnames([
+                                    styles.codeTab,
+                                    (tabName === activeTab) && styles.active
+                                ])}
+                                type="button"
+                                onClick={() => setActiveTab(tabName)}>
                                 {tabName}
                             </button>
                         ))}
                     </div>
-
-                    {props.children}
-
                 </div>
+                {props.children}
             </div>
         </CodeTabsContext.Provider>
     );
 };
 
-interface CodeTabProps {
-    children: string;
-    name: string;
-}
-
-export const CodeTab = (props: CodeTabProps) => {
-    const { addNameToTabsList, activeTab } = useCodeTabs();
+export const Pre = (props) => {
+    const { tabNames, activeTab, addTabName } = useCodeTabs();
 
     useEffect(() => {
-        addNameToTabsList(props.name);
+        addTabName?.(props.filename);
     }, []);
 
-    if (activeTab === props.name)
-        return props.children;
+    const className = classnames([props.className, styles.pre, (!!props.inline && styles.inline)]);
+
+    if (tabNames === undefined && activeTab === undefined) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.codeTabsContainer}>
+
+                    {props.filename && (
+                        <div className={styles.codeTabs}>
+                            <button
+                                className={classnames([
+                                    styles.codeTab,
+                                    styles.active
+                                ])}
+                                type="button">
+                                {props.filename}
+                            </button>
+                        </div>
+                    )}
+                    <pre {...props} className={className}/>
+                </div>
+            </div>
+        );
+    }
+
+    if (activeTab !== props.filename) return null;
+
+    return <pre {...props} className={className}/>;
+};
+
+export const Code = (props) => {
+    useEffect(() => {
+        hljs.configure({ cssSelector: 'code' });
+        hljs.highlightAll();
+    });
+    return <code {...props} className={classnames([props.className, styles.code])}/>;
 };

@@ -20,6 +20,7 @@
   --acc-inactive: hsl(0, 96%, 18%);
 
   --highlight-trans: hsla(0, 100%, 100%, 30%);
+  --code: hsl(0, 0%, 7%);
 
   --error: hsl(6, 78%, 57%);
   --success: hsl(122, 93%, 38%);
@@ -40,6 +41,7 @@
     --bg-trans-contrast-text: hsl(0, 0%, 0%);
 
     --highlight-trans: hsla(0, 100%, 0%, 30%);
+    --code: hsl(0, 0%, 93%);
 
     --scrollbar: hsl(0, 0%, 7%);
   }
@@ -76,3 +78,11 @@ html.modalOpen {
 @import "/styles/overrides/react-responsive-modal";
 
 @import "/styles/overrides/toastify";
+
+:root {
+  @import "/styles/themes/atom-one-dark";
+
+  &[data-theme="light"] {
+    @import "/styles/themes/atom-one-light";
+  }
+}

@@ -1,8 +1,7 @@
 @use "/styles/utils";
 
 .container {
-  display: flex;
-  justify-content: center;
+  background-color: var(--code);
 }
 
 .codeTabsContainer {
@@ -10,7 +9,7 @@
   max-width: utils.$md;
   width: 100%;
   height: auto;
-  background-color: #111111;
+  background-color: var(--bg);
 }
 
 .codeTabs {
@@ -19,11 +18,9 @@
 
 .codeTab {
   cursor: pointer;
-  flex: 1;
 
   width: min-content;
-  padding: 0 8px;
-  height: 30px;
+  padding: 8px 16px;
 
   background-color: var(--bg-nav);
   color: var(--bg-nav-contrast-text);
@@ -40,4 +37,19 @@
     border-bottom: var(--acc) 4px solid;
     box-shadow: inset var(--bg) 0 0 8px 2px;
   }
+}
+
+.pre {
+  &.inline code {
+    padding: 3px 5px !important;
+    width: min-content;
+    height: min-content;
+  }
+}
+
+.code {
+  padding: 16px;
+  background-color: #aa0000;
+
+
 }

@@ -5,9 +5,9 @@ export default function Document() {
         <Html data-theme="dark">
             <Head/>
             <body>
-            <Main />
-            <NextScript />
+            <Main/>
+            <NextScript/>
             </body>
         </Html>
-    )
+    );
 }
