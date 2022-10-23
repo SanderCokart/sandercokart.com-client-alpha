@@ -40,6 +40,10 @@
 }
 
 .pre {
+  position: relative;
+  border-bottom: solid var(--acc) 4px;
+  border-left: solid var(--acc) 4px;
+
   &.inline code {
     padding: 3px 5px !important;
     width: min-content;
@@ -49,7 +53,16 @@
 
 .code {
   padding: 16px;
-  background-color: #aa0000;
+}
 
+.copy {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  background-color: transparent;
 
+  &:hover, &:active, &:focus {
+    background-color: transparent;
+    color: var(--acc);
+  }
 }

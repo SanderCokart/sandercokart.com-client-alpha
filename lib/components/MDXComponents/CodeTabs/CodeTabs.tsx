@@ -1,13 +1,13 @@
-// import classnames from 'classnames';
-// import type {ReactElement, Dispatch, SetStateAction} from 'react';
-// import {createContext, useState, useContext, useEffect} from 'react';
-//
+import {faCopy} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import hljs from 'highlight.js';
-import {createContext, useContext, useState, useEffect} from 'react';
+import {createContext, useContext, useState, useEffect, useRef} from 'react';
+
+import {Button} from '@/components/Button';
 
 import styles from './CodeTabs.module.scss';
-//
+
 const CodeTabsContext = createContext({});
 
 interface ContextProps {
@@ -64,12 +64,24 @@ export const CodeTabs = (props) => {
 
 export const Pre = (props) => {
     const { tabNames, activeTab, addTabName } = useCodeTabs();
+    const preRef = useRef<HTMLPreElement>(null);
+    const className = classnames([props.className, styles.pre, (!!props.inline && styles.inline)]);
 
     useEffect(() => {
         addTabName?.(props.filename);
     }, []);
 
-    const className = classnames([props.className, styles.pre, (!!props.inline && styles.inline)]);
+    function copy() {
+        if (navigator.clipboard === undefined) {
+            const textArea = document.createElement('textarea');
+            textArea.textContent = preRef.current?.textContent ?? '';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+        } else navigator.clipboard?.writeText(props.children);
+    }
 
     if (tabNames === undefined && activeTab === undefined) {
         return (
@@ -88,7 +100,10 @@ export const Pre = (props) => {
                             </button>
                         </div>
                     )}
-                    <pre {...props} className={className}/>
+                    <pre ref={preRef} {...props} className={className}>
+                        <Button className={styles.copy} onClick={copy}><FontAwesomeIcon icon={faCopy}/></Button>
+                        {props.children}
+                    </pre>
                 </div>
             </div>
         );
@@ -101,7 +116,7 @@ export const Pre = (props) => {
 
 export const Code = (props) => {
     useEffect(() => {
-        hljs.configure({ cssSelector: 'code' });
+        hljs.configure({ cssSelector: 'code', ignoreUnescapedHTML: true });
         hljs.highlightAll();
     });
     return <code {...props} className={classnames([props.className, styles.code])}/>;
