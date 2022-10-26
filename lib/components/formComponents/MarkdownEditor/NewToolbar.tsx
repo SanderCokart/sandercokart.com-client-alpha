@@ -1,3 +1,4 @@
+import languages from '@/data/languages';
 import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {
     faImages,
@@ -8,17 +9,29 @@ import {
     faTextHeight,
     faChain,
     faTableList,
-    faBold, faItalic, faUnderline, faStrikethrough, faAlignLeft, faAlignRight, faAlignCenter, faUndo
+    faBold,
+    faItalic,
+    faUnderline,
+    faStrikethrough,
+    faAlignLeft,
+    faAlignRight,
+    faAlignCenter,
+    faUndo,
+    faCode,
+    faPlus,
+    faMinus,
+    faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler, MouseEvent, KeyboardEvent} from 'react';
 import {useState} from 'react';
 
 import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
 import Color from '@/components/formComponents/Color';
 import Input from '@/components/formComponents/Input';
+import MultiSelect from '@/components/formComponents/MultiSelect';
 import Select from '@/components/formComponents/Select';
 import Grid from '@/components/Grid';
 
@@ -49,10 +62,11 @@ interface DropdownProps {
     icon: IconLookup;
     title?: string;
     align?: 'left' | 'right' | 'center';
+    onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 const Dropdown = (props: DropdownProps) => {
-    const { align = 'right' } = props;
+    const { align = 'right', title, icon, children, onClick } = props;
 
     const className = classnames([
         styles.toolbarDropdown,
@@ -60,10 +74,11 @@ const Dropdown = (props: DropdownProps) => {
     ]);
     return (
         <div className={styles.dropdownContainer}>
-            <Button className={styles.toolbarDropdownButton} title={props.title}><FontAwesomeIcon fixedWidth
-                                                                                                  icon={props.icon}/></Button>
+            <Button className={styles.toolbarDropdownButton} title={title} onClick={onClick}>
+                <FontAwesomeIcon fixedWidth icon={icon}/>
+            </Button>
             <div className={className}>
-                {props.children}
+                {children}
             </div>
         </div>
     );
@@ -217,6 +232,72 @@ const InsertComponent = () => {
     );
 };
 
+const InsertCodeBlock = () => {
+    const { insertComponent, autoFocus, insert } = useEditorToolbar();
+    const [fileNames, setFileNames] = useState<string[]>([]);
+    const [inputValue, setInputValue] = useState('');
+    const [selectedLanguage, setSelectedLanguage] = useState([]);
+
+    const addFileName = (e) => {
+        e.preventDefault();
+        setFileNames(prev => [...prev, inputValue]);
+        setInputValue('');
+    };
+
+    const removeFileName = (e: MouseEvent<HTMLButtonElement>, fileNameToRemove: string) => {
+        e.preventDefault();
+        setFileNames(prev => prev.filter(fileName => fileName !== fileNameToRemove));
+    };
+
+    const clearFileNames = () => {
+        setFileNames([]);
+    };
+
+    const onKeyDownInput = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') addFileName(e);
+        e.currentTarget.focus();
+    };
+
+    const insertCodeBlocks = () => {
+        if (fileNames.length > 1) {
+            insertComponent({ componentName: 'CodeTabs' });
+
+        } else insert('```\n\n```');
+    };
+
+    console.log(selectedLanguage);
+
+    return (
+        <Dropdown align="center" icon={faCode} title="Insert Codeblocks">
+            <MultiSelect displayValue="language"
+                         options={languages}
+                         placeholder="Language"
+                         selectedValues={selectedLanguage}
+                         selectionLimit={1}
+            />
+            <Flex>
+                <Input placeholder="filename or path" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
+                       onKeyDown={onKeyDownInput}
+                       onMouseEnter={autoFocus}/>
+                <Button onClick={addFileName}><FontAwesomeIcon fixedWidth icon={faPlus}/></Button>
+                <Button onClick={clearFileNames}><FontAwesomeIcon icon={faTrash}/></Button>
+            </Flex>
+            <Button fullWidth
+                    onClick={insertCodeBlocks}>{fileNames.length > 1 ? 'Insert Codeblocks' : 'Insert Codeblock'}</Button>
+            <ul className={styles.fileNamesList}>
+                {fileNames.map((fileName) => (
+                    <li key={fileName} className={styles.fileNamesListItem}>
+                        {fileName}
+                        <Button onClick={(e) => removeFileName(e, fileName)}><FontAwesomeIcon icon={faMinus}/></Button>
+                    </li>
+                ))}
+            </ul>
+            {/*<Button onClick={() => insertComponent({ componentName: 'CodeTabs' })}>Insert</Button>*/}
+
+        </Dropdown>
+    );
+};
+
 const Left = () => {
     const { wrap, insertComponent, insert } = useEditorToolbar();
 
@@ -237,6 +318,7 @@ const Left = () => {
             <InsertImage/>
             <InsertTable/>
             <InsertLink/>
+            <InsertCodeBlock/>
             <InsertComponent/>
             <Divider/>
             <ToolbarButton icon={faAlignLeft} title="Align Left"
@@ -278,8 +360,6 @@ function Right() {
         </div>
     );
 }
-
-
 
 const NewToolbar = () => {
     return (

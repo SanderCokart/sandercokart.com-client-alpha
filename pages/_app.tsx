@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-responsive-modal/styles.css';
 import 'swiper/scss';
 import 'swiper/scss/navigation';
-import "@code-hike/mdx/styles"
 
 
 //CSS AFTER PACKAGES

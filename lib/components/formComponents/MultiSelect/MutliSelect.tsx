@@ -1,7 +1,7 @@
 import {Multiselect} from 'multiselect-react-dropdown';
 import type {IMultiselectProps} from 'multiselect-react-dropdown/dist/multiselect/interface';
 import type {CSSProperties, InputHTMLAttributes} from 'react';
-import { useRef, useEffect} from 'react';
+import {useRef, useEffect} from 'react';
 import type {UseFormSetValue} from 'react-hook-form/dist/types/form';
 
 import styles from './MultiSelect.module.scss';
@@ -47,8 +47,6 @@ interface MultiSelectProps extends InputHTMLAttributes<HTMLInputElement> {
 export default function MultiSelect(props: MultiSelectProps & IMultiselectProps) {
     const {
         name = '',
-        onChange = undefined,
-        onBlur = undefined,
         setValue,
         ...restOfProps
     } = props;
@@ -66,7 +64,6 @@ export default function MultiSelect(props: MultiSelectProps & IMultiselectProps)
     return <div className={styles.multiSelectContainer}>
         <Multiselect onRemove={handleChange} onSelect={handleChange} {...restOfProps}
                      ref={ref}
-                     className={styles.multiSelect}
                      style={style}/>
         <div className={styles.whiteLine}/>
         <div className={styles.line}/>

@@ -1,6 +1,11 @@
-const Test = (props) => {
+
+import SearchSelect from '@/components/formComponents/SearchSelect';
+
+const Test = () => {
     return (
-        <></>
+        <>
+            <SearchSelect/>
+        </>
     );
 };
 

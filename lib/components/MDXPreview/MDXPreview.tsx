@@ -8,7 +8,6 @@ import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 import remarkToc from 'remark-toc';
-import visit from 'unist-util-visit';
 
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
 import {EditorMDXComponents} from '@/components/MDXComponents/MDXComponents';
@@ -42,8 +41,7 @@ const InnerPreview = (props: { input: string }) => {
         compile(props.input, {
             outputFormat: 'function-body',
             rehypePlugins: [
-                rehypeSlug,
-                rehypeCodeLines
+                rehypeSlug
             ],
             remarkPlugins: [
                 remarkGfm,
@@ -85,11 +83,3 @@ const ErrorFallback = ({ error }) => {
 };
 
 export default MDXPreview;
-
-const rehypeCodeLines = () => {
-    return (tree) => {
-        visit(tree, 'element', (node) => {
-            console.log(node.data);
-        });
-    };
-};

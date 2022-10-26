@@ -40,7 +40,7 @@ export interface EditorToolbarContextType {
     setTableRows: (rows: number) => void;
 }
 
-type  InsertableComponents = Grid | Align | Mark | Color;
+type  InsertableComponents = Grid | Align | Mark | Color | CodeTabs;
 
 interface Mark {
     componentName: 'Mark';
@@ -61,7 +61,11 @@ interface Align {
     align?: CSSProperties['textAlign'];
 }
 
-const componentsWithChildren = ['Grid', 'Align', 'Mark', 'Color'];
+interface CodeTabs {
+    componentName: 'CodeTabs';
+}
+
+const componentsWithChildren = ['Grid', 'Align', 'Mark', 'Color', 'CodeTabs'];
 
 export const useEditorToolbar = () => useContext(EditorToolbarContext) as EditorToolbarContextType;
 

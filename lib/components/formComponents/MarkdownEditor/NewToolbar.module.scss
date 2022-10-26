@@ -144,3 +144,18 @@
   border: var(--acc) solid 1px;
   background-color: var(--bg-nav);
 }
+
+.fileNamesList {
+  list-style: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.fileNamesListItem {
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px var(--acc) solid;
+}
