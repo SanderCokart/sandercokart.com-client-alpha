@@ -1,1 +1,11 @@
 @use "/styles/utils";
+
+.root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+}

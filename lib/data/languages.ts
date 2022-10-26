@@ -9,7 +9,7 @@ const languages = [
     },
     {
         'language': 'ABAP',
-        'extensions': 'sap-abap, abap'
+        'extensions': 'sap-abap'
     },
     {
         'language': 'ABNF',
@@ -29,11 +29,11 @@ const languages = [
     },
     {
         'language': 'Arduino (C++ w/Arduino libs)',
-        'extensions': 'arduino, ino'
+        'extensions': 'arduino'
     },
     {
         'language': 'ARM assembler',
-        'extensions': 'armasm, arm'
+        'extensions': 'armasm'
     },
     {
         'language': 'AVR assembler',
@@ -41,11 +41,11 @@ const languages = [
     },
     {
         'language': 'ActionScript',
-        'extensions': 'actionscript, as'
+        'extensions': 'actionscript'
     },
     {
         'language': 'Alan IF',
-        'extensions': 'alan, i'
+        'extensions': 'alan'
     },
     {
         'language': 'Alan',
@@ -53,15 +53,15 @@ const languages = [
     },
     {
         'language': 'AngelScript',
-        'extensions': 'angelscript, asc'
+        'extensions': 'angelscript'
     },
     {
         'language': 'Apache',
-        'extensions': 'apache, apacheconf'
+        'extensions': 'apache'
     },
     {
         'language': 'AppleScript',
-        'extensions': 'applescript, osascript'
+        'extensions': 'applescript'
     },
     {
         'language': 'Arcade',
@@ -69,7 +69,7 @@ const languages = [
     },
     {
         'language': 'AsciiDoc',
-        'extensions': 'asciidoc, adoc'
+        'extensions': 'asciidoc'
     },
     {
         'language': 'AspectJ',
@@ -85,11 +85,11 @@ const languages = [
     },
     {
         'language': 'Awk',
-        'extensions': 'awk, mawk, nawk, gawk'
+        'extensions': 'awk'
     },
     {
         'language': 'Bash',
-        'extensions': 'bash, sh, zsh'
+        'extensions': 'bash'
     },
     {
         'language': 'Basic',
@@ -109,19 +109,19 @@ const languages = [
     },
     {
         'language': 'Brainfuck',
-        'extensions': 'brainfuck, bf'
+        'extensions': 'brainfuck'
     },
     {
         'language': 'C#',
-        'extensions': 'csharp, cs'
+        'extensions': 'csharp'
     },
     {
         'language': 'C',
-        'extensions': 'c, h'
+        'extensions': 'c'
     },
     {
         'language': 'C++',
-        'extensions': 'cpp, hpp, cc, hh, c++, h++, cxx, hxx'
+        'extensions': 'cpp'
     },
     {
         'language': 'C/AL',
@@ -129,15 +129,15 @@ const languages = [
     },
     {
         'language': 'Cache Object Script',
-        'extensions': 'cos, cls'
+        'extensions': 'cos'
     },
     {
         'language': 'CMake',
-        'extensions': 'cmake, cmake.in'
+        'extensions': 'cmake'
     },
     {
         'language': 'COBOL',
-        'extensions': 'cobol, standard-cobol'
+        'extensions': 'cobol'
     },
     {
         'language': 'Coq',
@@ -153,15 +153,15 @@ const languages = [
     },
     {
         'language': 'Cap’n Proto',
-        'extensions': 'capnproto, capnp'
+        'extensions': 'capnproto'
     },
     {
         'language': 'Chaos',
-        'extensions': 'chaos, kaos'
+        'extensions': 'chaos'
     },
     {
         'language': 'Chapel',
-        'extensions': 'chapel, chpl'
+        'extensions': 'chapel'
     },
     {
         'language': 'Cisco CLI',
@@ -169,11 +169,11 @@ const languages = [
     },
     {
         'language': 'Clojure',
-        'extensions': 'clojure, clj'
+        'extensions': 'clojure'
     },
     {
         'language': 'CoffeeScript',
-        'extensions': 'coffeescript, coffee, cson, iced'
+        'extensions': 'coffeescript'
     },
     {
         'language': 'CpcdosC+',
@@ -181,11 +181,11 @@ const languages = [
     },
     {
         'language': 'Crmsh',
-        'extensions': 'crmsh, crm, pcmk'
+        'extensions': 'crmsh'
     },
     {
         'language': 'Crystal',
-        'extensions': 'crystal, cr'
+        'extensions': 'crystal'
     },
     {
         'language': 'cURL',
@@ -209,27 +209,27 @@ const languages = [
     },
     {
         'language': 'Delphi',
-        'extensions': 'dpr, dfm, pas, pascal'
+        'extensions': 'dpr'
     },
     {
         'language': 'Diff',
-        'extensions': 'diff, patch'
+        'extensions': 'diff'
     },
     {
         'language': 'Django',
-        'extensions': 'django, jinja'
+        'extensions': 'django'
     },
     {
         'language': 'DNS Zone file',
-        'extensions': 'dns, zone, bind'
+        'extensions': 'dns'
     },
     {
         'language': 'Dockerfile',
-        'extensions': 'dockerfile, docker'
+        'extensions': 'dockerfile'
     },
     {
         'language': 'DOS',
-        'extensions': 'dos, bat, cmd'
+        'extensions': 'dos'
     },
     {
         'language': 'dsconfig',
@@ -241,7 +241,7 @@ const languages = [
     },
     {
         'language': 'Dust',
-        'extensions': 'dust, dst'
+        'extensions': 'dust'
     },
     {
         'language': 'Dylan',
@@ -261,19 +261,19 @@ const languages = [
     },
     {
         'language': 'Erlang',
-        'extensions': 'erlang, erl'
+        'extensions': 'erlang'
     },
     {
         'language': 'Excel',
-        'extensions': 'excel, xls, xlsx'
+        'extensions': 'excel'
     },
     {
         'language': 'Extempore',
-        'extensions': 'extempore, xtlang, xtm'
+        'extensions': 'extempore'
     },
     {
         'language': 'F#',
-        'extensions': 'fsharp, fs'
+        'extensions': 'fsharp'
     },
     {
         'language': 'FIX',
@@ -281,7 +281,7 @@ const languages = [
     },
     {
         'language': 'Fortran',
-        'extensions': 'fortran, f90, f95'
+        'extensions': 'fortran'
     },
     {
         'language': 'FunC',
@@ -289,19 +289,19 @@ const languages = [
     },
     {
         'language': 'G-Code',
-        'extensions': 'gcode, nc'
+        'extensions': 'gcode'
     },
     {
         'language': 'Gams',
-        'extensions': 'gams, gms'
+        'extensions': 'gams'
     },
     {
         'language': 'GAUSS',
-        'extensions': 'gauss, gss'
+        'extensions': 'gauss'
     },
     {
         'language': 'GDScript',
-        'extensions': 'godot, gdscript'
+        'extensions': 'godot'
     },
     {
         'language': 'Gherkin',
@@ -309,15 +309,15 @@ const languages = [
     },
     {
         'language': 'Glimmer and EmberJS',
-        'extensions': 'hbs, glimmer, html.hbs, html.handlebars, htmlbars'
+        'extensions': 'hbs'
     },
     {
         'language': 'GN for Ninja',
-        'extensions': 'gn, gni'
+        'extensions': 'gn'
     },
     {
         'language': 'Go',
-        'extensions': 'go, golang'
+        'extensions': 'go'
     },
     {
         'language': 'Grammatical Framework',
@@ -325,7 +325,7 @@ const languages = [
     },
     {
         'language': 'Golo',
-        'extensions': 'golo, gololang'
+        'extensions': 'golo'
     },
     {
         'language': 'Gradle',
@@ -345,11 +345,11 @@ const languages = [
     },
     {
         'language': 'HTML, XML',
-        'extensions': 'xml, html, xhtml, rss, atom, xjb, xsd, xsl, plist, svg'
+        'extensions': 'xml'
     },
     {
         'language': 'HTTP',
-        'extensions': 'http, https'
+        'extensions': 'http'
     },
     {
         'language': 'Haml',
@@ -357,15 +357,15 @@ const languages = [
     },
     {
         'language': 'Handlebars',
-        'extensions': 'handlebars, hbs, html.hbs, html.handlebars'
+        'extensions': 'handlebars'
     },
     {
         'language': 'Haskell',
-        'extensions': 'haskell, hs'
+        'extensions': 'haskell'
     },
     {
         'language': 'Haxe',
-        'extensions': 'haxe, hx'
+        'extensions': 'haxe'
     },
     {
         'language': 'High-level shader language',
@@ -373,15 +373,15 @@ const languages = [
     },
     {
         'language': 'Hy',
-        'extensions': 'hy, hylang'
+        'extensions': 'hy'
     },
     {
         'language': 'Ini, TOML',
-        'extensions': 'ini, toml'
+        'extensions': 'ini'
     },
     {
         'language': 'Inform7',
-        'extensions': 'inform7, i7'
+        'extensions': 'inform7'
     },
     {
         'language': 'IRPF90',
@@ -393,23 +393,23 @@ const languages = [
     },
     {
         'language': 'Java',
-        'extensions': 'java, jsp'
+        'extensions': 'java'
     },
     {
         'language': 'JavaScript',
-        'extensions': 'javascript, js, jsx'
+        'extensions': 'javascript'
     },
     {
         'language': 'Jolie',
-        'extensions': 'jolie, iol, ol'
+        'extensions': 'jolie'
     },
     {
         'language': 'Julia',
-        'extensions': 'julia, julia-repl'
+        'extensions': 'julia'
     },
     {
         'language': 'Kotlin',
-        'extensions': 'kotlin, kt'
+        'extensions': 'kotlin'
     },
     {
         'language': 'LaTeX',
@@ -425,7 +425,7 @@ const languages = [
     },
     {
         'language': 'Lasso',
-        'extensions': 'lasso, ls, lassoscript'
+        'extensions': 'lasso'
     },
     {
         'language': 'Less',
@@ -445,7 +445,7 @@ const languages = [
     },
     {
         'language': 'LiveScript',
-        'extensions': 'livescript, ls'
+        'extensions': 'livescript'
     },
     {
         'language': 'LookML',
@@ -461,15 +461,15 @@ const languages = [
     },
     {
         'language': 'Makefile',
-        'extensions': 'makefile, mk, mak, make'
+        'extensions': 'makefile'
     },
     {
         'language': 'Markdown',
-        'extensions': 'markdown, md, mkdown, mkd'
+        'extensions': 'markdown'
     },
     {
         'language': 'Mathematica',
-        'extensions': 'mathematica, mma, wl'
+        'extensions': 'mathematica'
     },
     {
         'language': 'Matlab',
@@ -489,7 +489,7 @@ const languages = [
     },
     {
         'language': 'mIRC Scripting Language',
-        'extensions': 'mirc, mrc'
+        'extensions': 'mirc'
     },
     {
         'language': 'Mizar',
@@ -513,7 +513,7 @@ const languages = [
     },
     {
         'language': 'Moonscript',
-        'extensions': 'moonscript, moon'
+        'extensions': 'moonscript'
     },
     {
         'language': 'N1QL',
@@ -529,11 +529,11 @@ const languages = [
     },
     {
         'language': 'Nginx',
-        'extensions': 'nginx, nginxconf'
+        'extensions': 'nginx'
     },
     {
         'language': 'Nim',
-        'extensions': 'nim, nimrod'
+        'extensions': 'nim'
     },
     {
         'language': 'Nix',
@@ -549,11 +549,11 @@ const languages = [
     },
     {
         'language': 'OCaml',
-        'extensions': 'ocaml, ml'
+        'extensions': 'ocaml'
     },
     {
         'language': 'Objective C',
-        'extensions': 'objectivec, mm, objc, obj-c, obj-c++, objective-c++'
+        'extensions': 'objectivec'
     },
     {
         'language': 'OpenGL Shading Language',
@@ -561,7 +561,7 @@ const languages = [
     },
     {
         'language': 'OpenSCAD',
-        'extensions': 'openscad, scad'
+        'extensions': 'openscad'
     },
     {
         'language': 'Oracle Rules Language',
@@ -573,7 +573,7 @@ const languages = [
     },
     {
         'language': 'PF',
-        'extensions': 'pf, pf.conf'
+        'extensions': 'pf'
     },
     {
         'language': 'PHP',
@@ -581,7 +581,7 @@ const languages = [
     },
     {
         'language': 'Papyrus',
-        'extensions': 'papyrus, psc'
+        'extensions': 'papyrus'
     },
     {
         'language': 'Parser3',
@@ -589,15 +589,15 @@ const languages = [
     },
     {
         'language': 'Perl',
-        'extensions': 'perl, pl, pm'
+        'extensions': 'perl'
     },
     {
         'language': 'Pine Script',
-        'extensions': 'pine, pinescript'
+        'extensions': 'pine'
     },
     {
         'language': 'Plaintext',
-        'extensions': 'plaintext, txt, text'
+        'extensions': 'plaintext'
     },
     {
         'language': 'Pony',
@@ -605,11 +605,11 @@ const languages = [
     },
     {
         'language': 'PostgreSQL & PL/pgSQL',
-        'extensions': 'pgsql, postgres, postgresql'
+        'extensions': 'pgsql'
     },
     {
         'language': 'PowerShell',
-        'extensions': 'powershell, ps, ps1'
+        'extensions': 'powershell'
     },
     {
         'language': 'Processing',
@@ -629,11 +629,11 @@ const languages = [
     },
     {
         'language': 'Puppet',
-        'extensions': 'puppet, pp'
+        'extensions': 'puppet'
     },
     {
         'language': 'Python',
-        'extensions': 'python, py, gyp'
+        'extensions': 'python'
     },
     {
         'language': 'Python profiler results',
@@ -641,7 +641,7 @@ const languages = [
     },
     {
         'language': 'Python REPL',
-        'extensions': 'python-repl, pycon'
+        'extensions': 'python-repl'
     },
     {
         'language': 'Q#',
@@ -649,7 +649,7 @@ const languages = [
     },
     {
         'language': 'Q',
-        'extensions': 'k, kdb'
+        'extensions': 'k'
     },
     {
         'language': 'QML',
@@ -661,15 +661,15 @@ const languages = [
     },
     {
         'language': 'Razor CSHTML',
-        'extensions': 'cshtml, razor, razor-cshtml'
+        'extensions': 'cshtml'
     },
     {
         'language': 'ReasonML',
-        'extensions': 'reasonml, re'
+        'extensions': 'reasonml'
     },
     {
         'language': 'Rebol & Red',
-        'extensions': 'redbol, rebol, red, red-system'
+        'extensions': 'redbol'
     },
     {
         'language': 'RenderMan RIB',
@@ -681,31 +681,31 @@ const languages = [
     },
     {
         'language': 'RiScript',
-        'extensions': 'risc, riscript'
+        'extensions': 'risc'
     },
     {
         'language': 'Roboconf',
-        'extensions': 'graph, instances'
+        'extensions': 'graph'
     },
     {
         'language': 'Robot Framework',
-        'extensions': 'robot, rf'
+        'extensions': 'robot'
     },
     {
         'language': 'RPM spec files',
-        'extensions': 'rpm-specfile, rpm, spec, rpm-spec, specfile'
+        'extensions': 'rpm-specfile'
     },
     {
         'language': 'Ruby',
-        'extensions': 'ruby, rb, gemspec, podspec, thor, irb'
+        'extensions': 'ruby'
     },
     {
         'language': 'Rust',
-        'extensions': 'rust, rs'
+        'extensions': 'rust'
     },
     {
         'language': 'SAS',
-        'extensions': 'SAS, sas'
+        'extensions': 'SAS'
     },
     {
         'language': 'SCSS',
@@ -717,7 +717,7 @@ const languages = [
     },
     {
         'language': 'STEP Part 21',
-        'extensions': 'p21, step, stp'
+        'extensions': 'p21'
     },
     {
         'language': 'Scala',
@@ -729,7 +729,7 @@ const languages = [
     },
     {
         'language': 'Scilab',
-        'extensions': 'scilab, sci'
+        'extensions': 'scilab'
     },
     {
         'language': 'Shape Expressions',
@@ -737,7 +737,7 @@ const languages = [
     },
     {
         'language': 'Shell',
-        'extensions': 'shell, console'
+        'extensions': 'shell'
     },
     {
         'language': 'Smali',
@@ -745,15 +745,15 @@ const languages = [
     },
     {
         'language': 'Smalltalk',
-        'extensions': 'smalltalk, st'
+        'extensions': 'smalltalk'
     },
     {
         'language': 'SML',
-        'extensions': 'sml, ml'
+        'extensions': 'sml'
     },
     {
         'language': 'Solidity',
-        'extensions': 'solidity, sol'
+        'extensions': 'solidity'
     },
     {
         'language': 'Splunk SPL',
@@ -761,7 +761,7 @@ const languages = [
     },
     {
         'language': 'Stan',
-        'extensions': 'stan, stanfuncs'
+        'extensions': 'stan'
     },
     {
         'language': 'Stata',
@@ -769,11 +769,11 @@ const languages = [
     },
     {
         'language': 'Structured Text',
-        'extensions': 'iecst, scl, stl, structured-text'
+        'extensions': 'iecst'
     },
     {
         'language': 'Stylus',
-        'extensions': 'stylus, styl'
+        'extensions': 'stylus'
     },
     {
         'language': 'SubUnit',
@@ -781,7 +781,7 @@ const languages = [
     },
     {
         'language': 'Supercollider',
-        'extensions': 'supercollider, sc'
+        'extensions': 'supercollider'
     },
     {
         'language': 'Svelte',
@@ -793,11 +793,11 @@ const languages = [
     },
     {
         'language': 'Tcl',
-        'extensions': 'tcl, tk'
+        'extensions': 'tcl'
     },
     {
         'language': 'Terraform (HCL)',
-        'extensions': 'terraform, tf, hcl'
+        'extensions': 'terraform'
     },
     {
         'language': 'Test Anything Protocol',
@@ -821,11 +821,11 @@ const languages = [
     },
     {
         'language': 'Twig',
-        'extensions': 'twig, craftcms'
+        'extensions': 'twig'
     },
     {
         'language': 'TypeScript',
-        'extensions': 'typescript, ts'
+        'extensions': 'typescript'
     },
     {
         'language': 'Unicorn Rails log',
@@ -833,7 +833,7 @@ const languages = [
     },
     {
         'language': 'VB.Net',
-        'extensions': 'vbnet, vb'
+        'extensions': 'vbnet'
     },
     {
         'language': 'VBA',
@@ -841,7 +841,7 @@ const languages = [
     },
     {
         'language': 'VBScript',
-        'extensions': 'vbscript, vbs'
+        'extensions': 'vbscript'
     },
     {
         'language': 'VHDL',
@@ -853,7 +853,7 @@ const languages = [
     },
     {
         'language': 'Verilog',
-        'extensions': 'verilog, v'
+        'extensions': 'verilog'
     },
     {
         'language': 'Vim Script',
@@ -861,11 +861,11 @@ const languages = [
     },
     {
         'language': 'X#',
-        'extensions': 'xsharp, xs, prg'
+        'extensions': 'xsharp'
     },
     {
         'language': 'X++',
-        'extensions': 'axapta, x++'
+        'extensions': 'axapta'
     },
     {
         'language': 'x86 Assembly',
@@ -873,23 +873,23 @@ const languages = [
     },
     {
         'language': 'XL',
-        'extensions': 'xl, tao'
+        'extensions': 'xl'
     },
     {
         'language': 'XQuery',
-        'extensions': 'xquery, xpath, xq'
+        'extensions': 'xquery'
     },
     {
         'language': 'YAML',
-        'extensions': 'yml, yaml'
+        'extensions': 'yml'
     },
     {
         'language': 'ZenScript',
-        'extensions': 'zenscript, zs'
+        'extensions': 'zenscript'
     },
     {
         'language': 'Zephir',
-        'extensions': 'zephir, zep'
+        'extensions': 'zephir'
     },
     {
         'language': 'SML',

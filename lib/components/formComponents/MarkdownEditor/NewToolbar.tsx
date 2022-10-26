@@ -31,7 +31,7 @@ import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
 import Color from '@/components/formComponents/Color';
 import Input from '@/components/formComponents/Input';
-import MultiSelect from '@/components/formComponents/MultiSelect';
+import SearchSelect from '@/components/formComponents/SearchSelect';
 import Select from '@/components/formComponents/Select';
 import Grid from '@/components/Grid';
 
@@ -63,10 +63,11 @@ interface DropdownProps {
     title?: string;
     align?: 'left' | 'right' | 'center';
     onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+    maxWidth?: CSSProperties['maxWidth'];
 }
 
 const Dropdown = (props: DropdownProps) => {
-    const { align = 'right', title, icon, children, onClick } = props;
+    const { align = 'right', title, icon, children, onClick, maxWidth = '250px' } = props;
 
     const className = classnames([
         styles.toolbarDropdown,
@@ -77,7 +78,7 @@ const Dropdown = (props: DropdownProps) => {
             <Button className={styles.toolbarDropdownButton} title={title} onClick={onClick}>
                 <FontAwesomeIcon fixedWidth icon={icon}/>
             </Button>
-            <div className={className}>
+            <div className={className} style={{ maxWidth }}>
                 {children}
             </div>
         </div>
@@ -265,16 +266,8 @@ const InsertCodeBlock = () => {
         } else insert('```\n\n```');
     };
 
-    console.log(selectedLanguage);
-
     return (
-        <Dropdown align="center" icon={faCode} title="Insert Codeblocks">
-            <MultiSelect displayValue="language"
-                         options={languages}
-                         placeholder="Language"
-                         selectedValues={selectedLanguage}
-                         selectionLimit={1}
-            />
+        <Dropdown align="center" icon={faCode} maxWidth={500} title="Insert Codeblocks">
             <Flex>
                 <Input placeholder="filename or path" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
                        onKeyDown={onKeyDownInput}
@@ -289,11 +282,11 @@ const InsertCodeBlock = () => {
                     <li key={fileName} className={styles.fileNamesListItem}>
                         {fileName}
                         <Button onClick={(e) => removeFileName(e, fileName)}><FontAwesomeIcon icon={faMinus}/></Button>
+                        <SearchSelect className={styles.searchLanguage} displayValue="language" options={languages}
+                                      placeholder="language"/>
                     </li>
                 ))}
             </ul>
-            {/*<Button onClick={() => insertComponent({ componentName: 'CodeTabs' })}>Insert</Button>*/}
-
         </Dropdown>
     );
 };
