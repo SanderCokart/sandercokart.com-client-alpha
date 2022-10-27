@@ -156,9 +156,5 @@
   align-items: center;
   border: 2px var(--acc) solid;
   gap: 8px;
-}
-
-.searchLanguage {
-  flex: 1;
-  width: 100px;
+  justify-content: space-between;
 }

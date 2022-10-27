@@ -1,6 +1,5 @@
 import {faClose} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import classnames from 'classnames';
 import type {KeyboardEvent} from 'react';
 import {useState} from 'react';
 
@@ -11,42 +10,67 @@ import {useClickOutside} from '@/hooks/useClickOutside';
 
 import styles from './SearchSelect.module.scss';
 
-export interface SearchSelectProps extends InputProps {
-    options: Array<{ [key: string]: string }>;
+export interface SelectOption {
+    [key: string]: any;
+}
+
+export interface SearchSelectProps {
+    options: SelectOption[];
     displayValue: string;
+    onChange?: (value: SelectOption) => void;
+    defaultValue?: SelectOption;
+    inputProps?: InputProps;
 }
 
 const SearchSelect = (props: SearchSelectProps) => {
     const {
         options = [{ label: 'none', value: '' }],
         displayValue = 'label',
-        className,
-        ...restOfProps
+        defaultValue = null,
+        inputProps = undefined
     } = props;
 
     const clickOutsideRef = useClickOutside(() => setShowOptions(false));
+    const [selectedValue, setSelectedValue] = useState<null | SelectOption>(defaultValue);
     const [search, setSearch] = useState('');
-    const [value, setValue] = useState<any>(props.value);
     const [showOptions, setShowOptions] = useState(false);
 
     const filteredOptions = options.filter(option => option[displayValue].toLowerCase().includes(search.toLowerCase()));
 
     const onEnter = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            setValue(filteredOptions[0]);
+            setSelectedValue(filteredOptions[0]);
             setSearch('');
+            props.onChange?.(filteredOptions[0]);
         }
     };
 
+    const onOptionClick = (option: SelectOption) => {
+        setSelectedValue(option);
+        setShowOptions(false);
+        setSearch('');
+        props.onChange?.(option);
+    };
+
+    const handleRemove = () => {
+        setSelectedValue(null);
+    };
+
+    const handleSearchChange = (e) => {
+        setSearch(e.target.value);
+    };
+
+    const onInputFocus = () => {
+        setShowOptions(true);
+    };
+
     return (
-        <div ref={clickOutsideRef} className={classnames([styles.root, className])}>
-            {!!value ? (
+        <div ref={clickOutsideRef} className={styles.root}>
+            {!!selectedValue ? (
                 <>
                     <div className={styles.valueContainer}>
-                        <span className={styles.value} onClick={() => {
-                            setValue(null);
-                        }}>
-                            {value[displayValue]}
+                        <span className={styles.value} onClick={handleRemove}>
+                            {selectedValue?.[displayValue]}
                             <FontAwesomeIcon fixedWidth className={styles.valueRemoveIcon} icon={faClose}/>
                         </span>
                     </div>
@@ -55,21 +79,17 @@ const SearchSelect = (props: SearchSelectProps) => {
                  <>
                      <Input name="search"
                             value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                            onFocus={() => setShowOptions(true)}
+                            onChange={handleSearchChange}
+                            onFocus={onInputFocus}
                             onKeyDown={onEnter}
-                            {...restOfProps}
+                            {...inputProps}
                      />
                      {showOptions && (
                          <ul className={styles.list}>
                              {filteredOptions.map((option) => (
                                  <li key={option[displayValue]}
                                      className={styles.listItem}
-                                     onClick={() => {
-                                         setValue(option);
-                                         setShowOptions(false);
-                                         setSearch('');
-                                     }}>
+                                     onClick={() => onOptionClick(option)}>
                                      {option[displayValue]}
                                  </li>
                              ))}

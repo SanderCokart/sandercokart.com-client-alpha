@@ -1,4 +1,3 @@
-import languages from '@/data/languages';
 import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {
     faImages,
@@ -24,14 +23,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler, MouseEvent, KeyboardEvent} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler, KeyboardEvent} from 'react';
 import {useState} from 'react';
 
 import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
 import Color from '@/components/formComponents/Color';
 import Input from '@/components/formComponents/Input';
-import SearchSelect from '@/components/formComponents/SearchSelect';
+import type {SelectOption} from '@/components/formComponents/SearchSelect/SearchSelect';
 import Select from '@/components/formComponents/Select';
 import Grid from '@/components/Grid';
 
@@ -233,25 +232,33 @@ const InsertComponent = () => {
     );
 };
 
+interface LanguageSelect extends SelectOption {
+    path: string;
+    extension: string;
+}
+
 const InsertCodeBlock = () => {
     const { insertComponent, autoFocus, insert } = useEditorToolbar();
-    const [fileNames, setFileNames] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState('');
-    const [selectedLanguage, setSelectedLanguage] = useState([]);
+    const [codeBlocks, setCodeBlocks] = useState<LanguageSelect[]>([]);
+    const [pathInput, setPathInput] = useState('');
 
     const addFileName = (e) => {
         e.preventDefault();
-        setFileNames(prev => [...prev, inputValue]);
-        setInputValue('');
+        const extension = pathInput.substring(pathInput.lastIndexOf('.') + 1);
+        console.log(extension);
+        setCodeBlocks(prev => [...prev, {
+            path: pathInput,
+            extension
+        }]);
+        setPathInput('');
     };
 
-    const removeFileName = (e: MouseEvent<HTMLButtonElement>, fileNameToRemove: string) => {
-        e.preventDefault();
-        setFileNames(prev => prev.filter(fileName => fileName !== fileNameToRemove));
+    const removeFileName = (codeBlockToRemove) => {
+        setCodeBlocks(prev => prev.filter(codeBlock => codeBlock !== codeBlockToRemove));
     };
 
     const clearFileNames = () => {
-        setFileNames([]);
+        setCodeBlocks([]);
     };
 
     const onKeyDownInput = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -260,30 +267,36 @@ const InsertCodeBlock = () => {
     };
 
     const insertCodeBlocks = () => {
-        if (fileNames.length > 1) {
+        if (codeBlocks.length > 1) {
             insertComponent({ componentName: 'CodeTabs' });
 
-        } else insert('```\n\n```');
+        } else {
+            console.log(codeBlocks);
+            const string = codeBlocks.map((codeBlock) => (
+                `${'```'}${codeBlock?.extension} filename="${codeBlock.path}"\n\n${'```'}`
+            ));
+            insert(string.join('\n\n'));
+        }
     };
 
     return (
         <Dropdown align="center" icon={faCode} maxWidth={500} title="Insert Codeblocks">
             <Flex>
-                <Input placeholder="filename or path" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
+                <Input placeholder="filename or path" value={pathInput}
+                       onChange={(e) => setPathInput(e.target.value)}
                        onKeyDown={onKeyDownInput}
                        onMouseEnter={autoFocus}/>
                 <Button onClick={addFileName}><FontAwesomeIcon fixedWidth icon={faPlus}/></Button>
                 <Button onClick={clearFileNames}><FontAwesomeIcon icon={faTrash}/></Button>
             </Flex>
             <Button fullWidth
-                    onClick={insertCodeBlocks}>{fileNames.length > 1 ? 'Insert Codeblocks' : 'Insert Codeblock'}</Button>
+                    onClick={insertCodeBlocks}>{codeBlocks.length > 1 ? 'Insert Codeblocks' : 'Insert Codeblock'}</Button>
             <ul className={styles.fileNamesList}>
-                {fileNames.map((fileName) => (
-                    <li key={fileName} className={styles.fileNamesListItem}>
-                        {fileName}
-                        <Button onClick={(e) => removeFileName(e, fileName)}><FontAwesomeIcon icon={faMinus}/></Button>
-                        <SearchSelect className={styles.searchLanguage} displayValue="language" options={languages}
-                                      placeholder="language"/>
+                {codeBlocks.map((fileName) => (
+                    <li key={fileName.path} className={styles.fileNamesListItem}>
+                        <span>{fileName.path}</span>
+                        <Button className={styles.removeCodeBlockIcon}
+                                onClick={() => removeFileName(fileName)}><FontAwesomeIcon icon={faMinus}/></Button>
                     </li>
                 ))}
             </ul>
