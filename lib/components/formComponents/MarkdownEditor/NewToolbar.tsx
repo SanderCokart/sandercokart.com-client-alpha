@@ -21,9 +21,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties} from 'react';
 import {useState, useEffect} from 'react';
 import {useForm, FormProvider, useFieldArray} from 'react-hook-form';
+import {CSSTransition} from 'react-transition-group';
 
 import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
@@ -32,6 +33,7 @@ import Input from '@/components/formComponents/Input';
 import Select from '@/components/formComponents/Select';
 import Grid from '@/components/Grid';
 
+import {useClickOutside} from '@/hooks/useClickOutside';
 import useColorDebounce from '@/hooks/useColorDebounce';
 
 import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/EditorToolbarContextProvider';
@@ -59,25 +61,43 @@ interface DropdownProps {
     icon: IconLookup;
     title?: string;
     align?: 'left' | 'right' | 'center';
-    onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
     maxWidth?: CSSProperties['maxWidth'];
 }
 
 const Dropdown = (props: DropdownProps) => {
-    const { align = 'right', title, icon, children, onClick, maxWidth = '250px' } = props;
+    const [open, setOpen] = useState(false);
+    const ref = useClickOutside(() => {
+        setOpen(false);
+        console.log('clicked outside', props.title);
+    });
+
+    const toggleOpen = () => {
+        setOpen(open => !open);
+    };
+
+    const { align = 'right', title, icon, children, maxWidth = '250px' } = props;
 
     const className = classnames([
         styles.toolbarDropdown,
         styles[align]
     ]);
+
     return (
-        <div className={styles.dropdownContainer}>
-            <Button className={styles.toolbarDropdownButton} title={title} onClick={onClick}>
+        <div ref={ref} className={styles.dropdownContainer}>
+            <Button className={classnames([styles.toolbarDropdownButton, (open) && styles.open])} title={title}
+                    onClick={toggleOpen}>
                 <FontAwesomeIcon fixedWidth icon={icon}/>
             </Button>
-            <div className={className} style={{ maxWidth }}>
-                {children}
-            </div>
+            <CSSTransition unmountOnExit classNames={{
+                enter: styles.enter,
+                enterActive: styles.enterActive,
+                exit: styles.exit,
+                exitActive: styles.exitActive
+            }} in={open} timeout={500}>
+                <div className={className} style={{ maxWidth }}>
+                    {children}
+                </div>
+            </CSSTransition>
         </div>
     );
 };
@@ -328,7 +348,7 @@ function FontSize() {
     const { autoFocus, setFontSize, fontSize } = useEditorToolbar();
 
     return (
-        <Dropdown align="right" icon={faTextHeight}>
+        <Dropdown align="right" icon={faTextHeight} title="Font Size">
             <Input
                 appendIcon={{
                     icon: faUndo,

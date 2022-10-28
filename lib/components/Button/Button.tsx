@@ -64,7 +64,7 @@ export const LinkButton = (props: LinkButtonProps) => {
     );
 
     return (
-        <Link href={props.href}>
+        <Link href={href}>
             <a className={classNames} {...restOfProps}/>
         </Link>
     );
