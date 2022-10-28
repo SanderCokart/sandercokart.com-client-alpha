@@ -1,6 +1,6 @@
-import type {HTMLAttributes, ReactElement} from 'react';
+import type {ReactElement, ButtonHTMLAttributes} from 'react';
 
-interface ConditionalWrapperButtonProps extends HTMLAttributes<HTMLButtonElement> {
+interface ConditionalWrapperButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     condition: boolean;
 }
 

@@ -1,4 +1,3 @@
-import languages from '@/data/languages';
 import type {IconLookup} from '@fortawesome/fontawesome-svg-core';
 import {
     faImages,
@@ -18,20 +17,18 @@ import {
     faAlignCenter,
     faUndo,
     faCode,
-    faPlus,
-    faMinus,
-    faTrash
+    faClose
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler, MouseEvent, KeyboardEvent} from 'react';
-import {useState} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties, MouseEventHandler} from 'react';
+import {useState, useEffect} from 'react';
+import {useForm, FormProvider, useFieldArray} from 'react-hook-form';
 
 import {Button} from '@/components/Button';
 import Flex from '@/components/Flex';
 import Color from '@/components/formComponents/Color';
 import Input from '@/components/formComponents/Input';
-import SearchSelect from '@/components/formComponents/SearchSelect';
 import Select from '@/components/formComponents/Select';
 import Grid from '@/components/Grid';
 
@@ -233,60 +230,63 @@ const InsertComponent = () => {
     );
 };
 
+interface CodeBlock {
+    filename: string;
+}
+
 const InsertCodeBlock = () => {
-    const { insertComponent, autoFocus, insert } = useEditorToolbar();
-    const [fileNames, setFileNames] = useState<string[]>([]);
-    const [inputValue, setInputValue] = useState('');
-    const [selectedLanguage, setSelectedLanguage] = useState([]);
+    const { insertComponent, insert } = useEditorToolbar();
+    const form = useForm<{ codeBlocks: CodeBlock[] }>({
+        defaultValues: {
+            codeBlocks: []
+        }
+    });
+    const { register, control, getValues } = form;
 
-    const addFileName = (e) => {
-        e.preventDefault();
-        setFileNames(prev => [...prev, inputValue]);
-        setInputValue('');
-    };
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'codeBlocks'
+    });
 
-    const removeFileName = (e: MouseEvent<HTMLButtonElement>, fileNameToRemove: string) => {
-        e.preventDefault();
-        setFileNames(prev => prev.filter(fileName => fileName !== fileNameToRemove));
-    };
+    useEffect(() => {
+        append({ filename: 'index.js' });
+    }, []);
 
-    const clearFileNames = () => {
-        setFileNames([]);
-    };
-
-    const onKeyDownInput = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') addFileName(e);
-        e.currentTarget.focus();
+    const getExtension = (codeBlock: { filename: string }) => {
+        return codeBlock.filename.substring(codeBlock.filename.lastIndexOf('.') + 1);
     };
 
     const insertCodeBlocks = () => {
-        if (fileNames.length > 1) {
+        const codeBlocks = getValues('codeBlocks');
+        if (codeBlocks.length > 1) {
             insertComponent({ componentName: 'CodeTabs' });
-
-        } else insert('```\n\n```');
+            codeBlocks.forEach((codeBlock, index) => {
+                const extension = getExtension(codeBlock);
+                const string = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}${(index < codeBlocks.length - 1) ? `\n\n` : ``}`;
+                insert(string);
+                remove(index);
+            });
+            return;
+        } else {
+            const codeBlock = codeBlocks[0];
+            const extension = getExtension(codeBlock);
+            const string = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}`;
+            insert(string);
+        }
     };
 
     return (
         <Dropdown align="center" icon={faCode} maxWidth={500} title="Insert Codeblocks">
-            <Flex>
-                <Input placeholder="filename or path" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
-                       onKeyDown={onKeyDownInput}
-                       onMouseEnter={autoFocus}/>
-                <Button onClick={addFileName}><FontAwesomeIcon fixedWidth icon={faPlus}/></Button>
-                <Button onClick={clearFileNames}><FontAwesomeIcon icon={faTrash}/></Button>
-            </Flex>
-            <Button fullWidth
-                    onClick={insertCodeBlocks}>{fileNames.length > 1 ? 'Insert Codeblocks' : 'Insert Codeblock'}</Button>
-            <ul className={styles.fileNamesList}>
-                {fileNames.map((fileName) => (
-                    <li key={fileName} className={styles.fileNamesListItem}>
-                        {fileName}
-                        <Button onClick={(e) => removeFileName(e, fileName)}><FontAwesomeIcon icon={faMinus}/></Button>
-                        <SearchSelect className={styles.searchLanguage} displayValue="language" options={languages}
-                                      placeholder="language"/>
-                    </li>
+            <Button fullWidth onClick={() => append({ filename: '' })}>Append</Button>
+            <FormProvider {...form}>
+                {fields.map((field, index) => (
+                    <Flex key={field.id}>
+                        <Input autoFocus appendIcon={{ icon: faClose, onClick: () => remove(index) }}
+                               registerFormHook={register(`codeBlocks.${index}.filename`)}/>
+                    </Flex>
                 ))}
-            </ul>
+            </FormProvider>
+            <Button fullWidth onClick={insertCodeBlocks}>Insert Codeblocks</Button>
         </Dropdown>
     );
 };

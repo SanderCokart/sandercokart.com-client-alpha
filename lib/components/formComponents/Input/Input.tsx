@@ -106,6 +106,7 @@ const Input = (props: InputProps) => {
                             }
                         }}>
                         <FontAwesomeIcon
+                            fixedWidth
                             className={!!prependIcon.onClick ? undefined : styles.iconPrepend}
                             icon={prependIcon.icon}
                         />

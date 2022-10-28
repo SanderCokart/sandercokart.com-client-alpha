@@ -141,24 +141,3 @@
   border: var(--acc) solid 1px;
   background-color: var(--bg-nav);
 }
-
-.fileNamesList {
-  list-style: none;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.fileNamesListItem {
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  border: 2px var(--acc) solid;
-  gap: 8px;
-}
-
-.searchLanguage {
-  flex: 1;
-  width: 100px;
-}
