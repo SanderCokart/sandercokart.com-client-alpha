@@ -122,8 +122,7 @@ const InsertImage = () => {
                 Upload Image
                 <input className={styles.uploadInput}
                        id="uploadCustomImage"
-                       type="file" onChange={handleImageUpload}
-                       onFocus={() => console.log(1)}/>
+                       type="file" onChange={handleImageUpload}/>
             </label>
         </Dropdown>
     );
