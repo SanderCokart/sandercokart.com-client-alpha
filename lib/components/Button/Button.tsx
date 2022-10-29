@@ -11,6 +11,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     circle?: boolean;
     backgroundColor?: string;
     textColor?: string;
+    setRef?: (el: HTMLButtonElement | null) => void;
 }
 
 interface LinkButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -29,9 +30,9 @@ export const Button = (props: ButtonProps) => {
         className,
         navigationButton = false,
         circle = false,
+        setRef,
         ...restOfProps
     } = props;
-
 
     const classNames = classnames(
         styles.button,
@@ -41,7 +42,12 @@ export const Button = (props: ButtonProps) => {
         (circle && styles.circularButton)
     );
 
-    return <button className={classNames} type={type} {...restOfProps} />;
+    return <button
+        ref={(el) => {
+            setRef?.(el);
+        }}
+        className={classNames}
+        type={type} {...restOfProps} />;
 
 };
 

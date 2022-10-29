@@ -17,12 +17,13 @@ import {
     faAlignCenter,
     faUndo,
     faCode,
-    faClose
+    faClose,
+    faPlus
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties} from 'react';
-import {useState, useEffect} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties, KeyboardEvent} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useForm, FormProvider, useFieldArray} from 'react-hook-form';
 import {CSSTransition} from 'react-transition-group';
 
@@ -254,6 +255,8 @@ interface CodeBlock {
 
 const InsertCodeBlock = () => {
     const { insertComponent, insert } = useEditorToolbar();
+    const buttonRef = useRef<null | HTMLButtonElement>(null);
+
     const form = useForm<{ codeBlocks: CodeBlock[] }>({
         defaultValues: {
             codeBlocks: []
@@ -293,18 +296,40 @@ const InsertCodeBlock = () => {
         }
     };
 
+    const onKeyDown = (e: KeyboardEvent<HTMLInputElement> | undefined, index: number) => {
+        if (e?.key === 'Enter') {
+            e.preventDefault();
+            buttonRef.current?.focus();
+        }
+        if (e?.key === 'Backspace' && e.currentTarget.value.length === 0) {
+            e.preventDefault();
+            //focus previous input
+            e.currentTarget.parentElement?.parentElement?.parentElement?.previousElementSibling?.querySelector('input')?.focus();
+            remove(index);
+        }
+    };
+
+    const setRef = (el: HTMLButtonElement | null) => {
+        buttonRef.current = el;
+    };
+
     return (
         <Dropdown align="center" icon={faCode} maxWidth={500} title="Insert Codeblocks">
-            <Button fullWidth onClick={() => append({ filename: '' })}>Append</Button>
             <FormProvider {...form}>
                 {fields.map((field, index) => (
                     <Flex key={field.id}>
-                        <Input autoFocus appendIcon={{ icon: faClose, onClick: () => remove(index) }}
-                               registerFormHook={register(`codeBlocks.${index}.filename`)}/>
+                        <Input appendIcon={{ icon: faClose, onClick: () => remove(index) }}
+                               registerFormHook={register(`codeBlocks.${index}.filename`)}
+                               onBlur={(e) => e.preventDefault()}
+                               onKeyDown={(e) => onKeyDown(e, index)}/>
                     </Flex>
                 ))}
             </FormProvider>
-            <Button fullWidth onClick={insertCodeBlocks}>Insert Codeblocks</Button>
+            <Button fullWidth setRef={setRef} onClick={() => append({ filename: '' })}><FontAwesomeIcon icon={faPlus}/></Button>
+            <Button fullWidth
+                    onClick={insertCodeBlocks}>
+                Insert {(fields.length > 1) ? 'Codeblocks' : 'Codeblock'}
+            </Button>
         </Dropdown>
     );
 };
