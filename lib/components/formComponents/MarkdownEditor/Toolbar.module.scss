@@ -1,113 +1,93 @@
 @use "/styles/utils";
+@use "./toolbarDropdownAnimation";
 
-@mixin toolbarItemDropdown() {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%) scaleY(0);
-  pointer-events: none;
-  background: var(--bg-nav);
-  padding: 16px;
-  transform-origin: top;
-  transition: transform 150ms ease;
-}
-
-.toolbar {
+//<editor-fold desc="Toolbar Base">
+.root {
   position: sticky;
-  top: 0;
+  top: 40px;
   display: flex;
-  justify-content: space-between;
   width: 100%;
   height: 40px;
+  color: var(--bg-nav-contrast-text);
   background-color: var(--bg-nav);
 }
 
-.left {
+.leftToolbar {
   display: flex;
+  width: 100%;
 }
 
-.right {
+.rightToolbar {
   display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
-.toolbarItem {
-  @include utils.defaultButton;
+.divider {
+  width: 1px;
+  height: 40px;
+  border: none;
+  background-color: var(--bg-contrast-text);
+}
+
+//</editor-fold>
+
+//<editor-fold desc="Dropdown">
+.toolbarButton {
+  color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
+}
+
+.dropdownContainer {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
   width: 40px;
   height: 40px;
-  transition: width 150ms ease 150ms;
+  place-items: center;
+}
+
+.toolbarDropdown {
+  position: absolute;
+  top: 100%;
+  width: max-content;
+  color: var(--bg-nav-contrast-text);
+
+  border: var(--acc) solid 1px;
   background-color: var(--bg-nav);
 
-
-  &:hover {
-    background-color: var(--acc);
-
-    &[data-name="fontSize"] {
-      width: 100px;
-      transition: width 150ms ease 0ms;
-    }
-
-    > .toolbarItemTableDropdown,
-    > .toolbarItemImageDropdown,
-    > .toolbarComponentDropDown {
-      cursor: auto;
-      transform: translateX(-50%) scaleY(1);
-      pointer-events: auto;
-    }
-
-    > .toolbarItemFontSizeDropdown {
-      cursor: auto;
-      transform: scaleY(1);
-      pointer-events: auto;
-    }
+  &.left {
+    left: 0;
   }
+
+  &.right {
+    right: 0;
+  }
+
+  &.center {
+    left: 50%;
+    transform: translateX(-50%);
+    @include toolbarDropdownAnimation.animationForCenter;
+  }
+
+  @include toolbarDropdownAnimation.defaultAnimation;
 }
 
 .toolbarDropdownButton {
-  @include utils.defaultButton;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  background-color: var(--acc-inactive);
-  grid-row: 2;
+  width: 100%;
+  height: 100%;
+  color: var(--bg-nav-contrast-text);
+  background-color: var(--bg-nav);
 
-  &:hover, &:active, &:focus {
+  &.open {
     background-color: var(--acc);
   }
 }
 
+//</editor-fold>
 
-.toolbarItemTableDropdown {
-  @include toolbarItemDropdown;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 120px 120px;
-  grid-template-rows: 1fr auto;
-}
-
-.toolbarItemImageDropdown {
-  @include toolbarItemDropdown;
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  gap: 10px;
-
-  .toolbarDropdownButton {
-    width: 100%;
-  }
-}
-
-.toolbarItemFontSizeDropdown {
-  @include toolbarItemDropdown;
-  right: 0;
-  left: revert;
-  width: 100px;
-  transform: scaleY(0);
+//<editor-fold desc="File Upload">
+.uploadLabel {
+  @include utils.defaultButton;
 }
 
 .uploadInput,
@@ -119,66 +99,39 @@
   }
 }
 
-.uploadLabel {
-  @include utils.defaultButton;
+//</editor-fold>
 
-  &:active, &:focus {
-    background-color: var(--acc);
-  }
+//<editor-fold desc="Insert Component">
+.componentList {
+  overflow-y: auto;
+  width: 185px;
 }
 
-.uploadCSVLabel {
-  @include utils.defaultButton;
+.componentItemContainer {
+  width: 185px;
 
-  &:active, &:focus {
-    background-color: var(--acc);
-  }
-}
-
-.toolbarComponentDropDown {
-  @include toolbarItemDropdown;
-  display: flex;
-  padding: 0;
-}
-
-.componentSelection {
-  @include utils.defaultButton;
-  font-size: 1.2rem;
-  font-weight: bold;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  height: auto;
-  padding: 16px;
-  background-color: var(bg-nav);
-
-  &:hover {
-    background-color: var(--acc);
-
-    .componentSelectionItem {
+  &:hover, &:focus-within {
+    .componentItem {
       transform: scaleX(1);
     }
   }
 }
 
-.componentSelectionItem {
+.componentItemButton {
+
+}
+
+.componentItem {
   position: absolute;
   top: 0;
-
   left: 100%;
-  display: flex;
-  flex-direction: column;
-
-  width: 150px;
-  padding: 16px;
+  width: 185px;
   transition: transform 150ms ease;
-
   transform: scaleX(0);
   transform-origin: left;
-
-  border: var(--acc) solid 2px;
+  color: var(--bg-nav-contrast-text);
+  border: var(--acc) solid 1px;
   background-color: var(--bg-nav);
-  gap: 8px;
 }
+
+//</editor-fold>

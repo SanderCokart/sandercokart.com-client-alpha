@@ -1,7 +1,7 @@
 import type {FocusEventHandler, ChangeEventHandler} from 'react';
 import type {UseFormRegisterReturn} from 'react-hook-form';
 
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 
 import syncScroll from '@/functions/client/syncScroll';
 

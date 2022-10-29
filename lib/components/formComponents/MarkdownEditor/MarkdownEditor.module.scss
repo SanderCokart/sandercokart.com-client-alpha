@@ -1,68 +1,10 @@
 @use "/styles/utils";
 
-.container {
-  //position: relative;
-  display: flex;
-  overflow-y: hidden;
-  flex-direction: column;
-  height: utils.$navHeightCalc;
-  margin: 0 -16px -16px -16px;
+.root {
+  height: calc(100vh - 80px);
 }
 
-.editorContainer {
+.editorArea {
   display: flex;
-  overflow-y: hidden;
-  width: 100%;
   height: 100%;
-}
-
-.editor {
-  font-size: 1.25rem;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
-  padding: 8px;
-  resize: none;
-  color: var(--bg-contrast-text);
-  border: none;
-  outline: none;
-  background-color: var(--bg);
-}
-
-.preview {
-  display: flex;
-  overflow-y: auto;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  color: var(--bg-contrast-text);
-  background-color: var(--bg);
-  gap: 20px;
-
-  &::-webkit-scrollbar {
-    width: 0;
-  }
-}
-
-.error {
-  display: flex;
-  overflow-y: auto;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  animation: error-animation 1s infinite;
-  color: var(--bg-contrast-text);
-  background-color: var(--bg);
-  gap: 20px;
-  @keyframes error-animation {
-    0% {
-      background-color: var(--bg);
-    }
-    50% {
-      background-color: var(--acc-disabled);
-    }
-    100% {
-      background-color: var(--bg);
-    }
-  }
 }

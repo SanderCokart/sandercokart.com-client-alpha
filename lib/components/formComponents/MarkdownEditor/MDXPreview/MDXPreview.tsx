@@ -9,12 +9,12 @@ import remarkGfm from 'remark-gfm';
 import remarkMdxCodeMeta from 'remark-mdx-code-meta';
 import remarkToc from 'remark-toc';
 
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import {EditorMDXComponents} from '@/components/MDXComponents/MDXComponents';
 
 import syncScroll from '@/functions/client/syncScroll';
 
-import styles from './MDXPreview.module.scss';
+import styles from 'lib/components/formComponents/MarkdownEditor/MDXPreview/MDXPreview.module.scss';
 
 const MDXPreview = () => {
     const { watch } = useFormContext();

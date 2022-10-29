@@ -1,0 +1,47 @@
+@mixin defaultAnimation {
+  &.enter {
+    position: absolute;
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+
+  &.enterActive {
+    transform: scaleY(1);
+    transition: transform 250ms ease;
+  }
+
+  &.exit {
+    transform: scaleY(1);
+    position: absolute;
+    transform-origin: top;
+  }
+
+  &.exitActive {
+    transition: transform 250ms ease;
+    transform: scaleY(0);
+  }
+}
+
+@mixin animationForCenter {
+  &.enter {
+    position: absolute;
+    transform-origin: top;
+    transform: scaleY(0) translateX(-50%);
+  }
+
+  &.enterActive {
+    transform: scaleY(1) translateX(-50%);
+    transition: transform 250ms ease;
+  }
+
+  &.exit {
+    transform: scaleY(1) translateX(-50%);
+    position: absolute;
+    transform-origin: top;
+  }
+
+  &.exitActive {
+    transition: transform 250ms ease;
+    transform: scaleY(0) translateX(-50%);
+  }
+}

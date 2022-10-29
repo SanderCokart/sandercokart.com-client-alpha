@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 import FAB from '@/components/FAB';
 import File from '@/components/formComponents/File';
 import Input from '@/components/formComponents/Input';
-import NewMarkdownEditor from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import MarkdownEditor from '@/components/formComponents/MarkdownEditor';
 import Switch from '@/components/formComponents/Switch';
 import Textarea from '@/components/formComponents/Textarea';
 import PortalContainer from '@/components/PortalContainer/PortalContainer';
@@ -66,7 +66,7 @@ const CreatePostPage = () => {
                             </div>
                             <File className={styles.filesContainer} name="banner"/>
                         </div>
-                        <NewMarkdownEditor registerFormHook={register('markdown')}/>
+                        <MarkdownEditor registerFormHook={register('markdown')}/>
                         <FAB bottom={16}
                              icon={<FontAwesomeIcon fixedWidth icon={faPaperPlane}/>}
                              right={16}

@@ -3,7 +3,7 @@ import type {ReactNode, SetStateAction, Dispatch, CSSProperties, MouseEvent, Cha
 import {createContext, useContext, useState, useCallback} from 'react';
 import {useFormContext} from 'react-hook-form';
 
-import {useEditorContext} from '@/components/formComponents/MarkdownEditor/NewMarkdownEditor';
+import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
 import type {GridProps} from '@/components/Grid/Grid';
 
 import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
@@ -27,7 +27,7 @@ export interface EditorToolbarContextType {
     handleTableInsertion: () => void;
     insertComponent: (params: InsertableComponents) => void;
     wrap: (wrapWith: string) => void;
-    insert: (toInsert: string) => void;
+    insert: (toInsert: string, wraps?: boolean) => void;
 
     handleLinkInsertion: () => void;
 
@@ -84,9 +84,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
     };
 
     const autoBlur = () => {
-        if (editor) {
-            editor.focus({ preventScroll: true });
-        }
+        if (editor) editor.focus({ preventScroll: true });
     };
 
     const nothingSelected = () => {
@@ -128,10 +126,16 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
 
             setValue(name, pre + center + post);
+
+            if (nothingSelected()) {
+                const index = selectionStart + wrapWith.length;
+                editor.selectionStart = index;
+                editor.selectionEnd = index;
+            }
         }
     }, [editor]);
 
-    const insert = useCallback((toInsert: string) => {
+    const insert = useCallback((toInsert: string, wraps?: boolean) => {
         if (editor) {
             const { value, selectionStart, selectionEnd } = editor;
             const pre = value.substring(0, selectionStart);
@@ -139,8 +143,14 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
 
             setValue(name, pre + toInsert + post);
 
-            editor.selectionStart = selectionStart + toInsert.length;
-            editor.selectionEnd = selectionEnd + toInsert.length;
+            if (!wraps) {
+                editor.selectionStart = selectionStart + toInsert.length;
+                editor.selectionEnd = selectionEnd + toInsert.length;
+            } else {
+                const index = toInsert.lastIndexOf('\n');
+                editor.selectionStart = index;
+                editor.selectionEnd = index;
+            }
             editor.focus();
         }
     }, [editor]);
