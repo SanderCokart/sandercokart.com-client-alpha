@@ -44,11 +44,12 @@
   border-bottom: solid var(--acc) 4px;
   border-left: solid var(--acc) 4px;
 
-  &.inline code {
-    padding: 3px 5px !important;
-    width: min-content;
-    height: min-content;
-  }
+}
+
+.inline code {
+  padding: 3px 5px !important;
+  width: min-content;
+  height: min-content;
 }
 
 .code {

@@ -92,7 +92,9 @@
 
 .uploadInput,
 .uploadCSVInput {
-  display: none;
+  pointer-events: none;
+  position: absolute;
+  opacity: 0;
 
   &::-webkit-file-upload-button {
     display: none;

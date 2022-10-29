@@ -118,10 +118,13 @@ const InsertImage = () => {
             <Button fullWidth onClick={handleMarkdownImage}>
                 External image
             </Button>
-            <label className={styles.uploadLabel}
-                   htmlFor="uploadCustomImage">Upload Image</label>
-            <input className={styles.uploadInput} id="uploadCustomImage" type="file"
-                   onChange={handleImageUpload}/>
+            <label className={styles.uploadLabel} htmlFor="uploadCustomImage">
+                Upload Image
+                <input className={styles.uploadInput}
+                       id="uploadCustomImage"
+                       type="file" onChange={handleImageUpload}
+                       onFocus={() => console.log(1)}/>
+            </label>
         </Dropdown>
     );
 };
@@ -160,8 +163,10 @@ const InsertTable = () => {
                     onMouseEnter={autoFocus}/>
                 <Button fullWidth onClick={handleTableInsertion}>Insert Table</Button>
                 <label className={styles.uploadLabel}
-                       htmlFor="uploadCSV">Upload CSV</label>
-                <input className={styles.uploadInput} id="uploadCSV" type="file" onChange={handleCSVImport}/>
+                       htmlFor="uploadCSV">
+                    Upload CSV
+                    <input className={styles.uploadInput} id="uploadCSV" type="file" onChange={handleCSVImport}/>
+                </label>
             </Grid>
         </Dropdown>
     );
@@ -335,7 +340,7 @@ const InsertCodeBlock = () => {
 };
 
 const Left = () => {
-    const { wrap, insertComponent, insert } = useEditorToolbar();
+    const { wrap, insertComponent, insert, wrapWithHTMLTag } = useEditorToolbar();
 
     return (
         <div className={styles.leftToolbar}>
@@ -345,7 +350,7 @@ const Left = () => {
             <Divider/>
             <ToolbarButton icon={faBold} title="Bold" onClick={() => wrap('**')}/>
             <ToolbarButton icon={faItalic} title="Italic" onClick={() => wrap('*')}/>
-            <ToolbarButton icon={faUnderline} title="Underline" onClick={() => wrap('__')}/>
+            <ToolbarButton icon={faUnderline} title="Underline" onClick={() => wrapWithHTMLTag('u')}/>
             <ToolbarButton icon={faStrikethrough} title="Strikethrough" onClick={() => wrap('~~')}/>
             <Divider/>
             <TextColor/>

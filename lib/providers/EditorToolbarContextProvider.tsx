@@ -26,6 +26,7 @@ export interface EditorToolbarContextType {
     handleMarkdownImage: () => void;
     handleTableInsertion: () => void;
     insertComponent: (params: InsertableComponents) => void;
+    wrapWithHTMLTag: (tagName: keyof HTMLElementTagNameMap) => void;
     wrap: (wrapWith: string) => void;
     insert: (toInsert: string, wraps?: boolean) => void;
 
@@ -318,6 +319,25 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
+    const wrapWithHTMLTag = useCallback((tagName: keyof HTMLElementTagNameMap) => {
+        if (editor) {
+            if (nothingSelected()) selectWordUnderCursor();
+            const { value, selectionStart, selectionEnd } = editor;
+
+            const pre = value.substring(0, selectionStart);
+            const center = `<${tagName}>` + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + `</${tagName}>`;
+            const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
+
+            setValue(name, pre + center + post);
+
+            if (nothingSelected()) {
+                const index = selectionStart + `<${tagName}>`.length;
+                editor.selectionStart = index;
+                editor.selectionEnd = index;
+            }
+        }
+    }, [editor]);
+
     return (
         <EditorToolbarContext.Provider value={{
             autoBlur,
@@ -337,7 +357,8 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             setTableRows,
             tableColumns,
             tableRows,
-            wrap
+            wrap,
+            wrapWithHTMLTag
         }}>
             {props.children}
         </EditorToolbarContext.Provider>

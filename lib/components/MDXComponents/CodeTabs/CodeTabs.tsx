@@ -65,7 +65,7 @@ export const CodeTabs = (props) => {
 export const Pre = (props) => {
     const { tabNames, activeTab, addTabName } = useCodeTabs();
     const preRef = useRef<HTMLPreElement>(null);
-    const className = classnames([props.className, styles.pre, (!!props.inline && styles.inline)]);
+    const className = classnames([props.className, (!props.inline && styles.pre), (!!props.inline && styles.inline)]);
 
     useEffect(() => {
         addTabName?.(props.filename);
@@ -116,7 +116,7 @@ export const Pre = (props) => {
 
 export const Code = (props) => {
     useEffect(() => {
-        hljs.configure({ cssSelector: 'code', ignoreUnescapedHTML: true });
+        hljs.configure({ cssSelector: 'pre code, code', ignoreUnescapedHTML: true });
         hljs.highlightAll();
     });
     return <code {...props} className={classnames([props.className, styles.code])}/>;
