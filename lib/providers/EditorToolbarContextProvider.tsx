@@ -17,6 +17,28 @@ import type {FileModel} from '@/types/ModelTypes';
 
 export const EditorToolbarContext = createContext({});
 
+interface AdvancedWrapOptionBase {
+    wrap?: boolean;
+    additionalSpace?: boolean;
+}
+
+interface AdvancedWrapStringOption extends AdvancedWrapOptionBase {
+    type: 'string';
+}
+
+interface AdvancedWrapComponentOption extends AdvancedWrapOptionBase {
+    type: 'component';
+
+    [key: string]: any;
+}
+
+interface AdvancedWrapHtmlOption extends AdvancedWrapOptionBase {
+    type: 'html';
+    style: CSSProperties;
+}
+
+type AdvancedWrapOptions = AdvancedWrapStringOption | AdvancedWrapHtmlOption | AdvancedWrapComponentOption;
+
 export interface EditorToolbarContextType {
     autoBlur: (e: MouseEvent<HTMLInputElement>) => void;
     autoFocus: (e: MouseEvent<HTMLInputElement>) => void,
@@ -29,6 +51,7 @@ export interface EditorToolbarContextType {
     wrapWithHTMLTag: (tagName: keyof HTMLElementTagNameMap) => void;
     wrap: (wrapWith: string) => void;
     insert: (toInsert: string, wraps?: boolean) => void;
+    advancedInsert: (toInsert: string, options: AdvancedWrapOptions) => void;
 
     handleLinkInsertion: () => void;
 
@@ -121,55 +144,65 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
-    interface AdvancedWrapOptionBase {
-        centerCursor?: boolean;
-        wrap?: boolean;
-        additionalSpace?: boolean;
-    }
-
-    interface AdvancedWrapStringOption extends AdvancedWrapOptionBase {
-        type: 'string';
-    }
-
-    interface AdvancedWrapComponentOption extends AdvancedWrapOptionBase {
-        type: 'component';
-        props: { [key: string]: number | string };
-    }
-
-    interface AdvancedWrapHtmlOption extends AdvancedWrapOptionBase {
-        type: 'html';
-    }
-
-    type AdvancedWrapOptions = AdvancedWrapStringOption | AdvancedWrapHtmlOption | AdvancedWrapComponentOption;
-
     /*TODO make a better insert for components, html and strings*/
-    const advancedInsert = useCallback(
-        (
-            wrapWith: string,
-            options: AdvancedWrapOptions = {
-                wrap: false,
-                additionalSpace: false,
-                centerCursor: false,
-                type: 'string'
+    const advancedInsert = useCallback((toInsert: string, options: AdvancedWrapOptions) => {
+        const {
+            wrap = false,
+            additionalSpace = false,
+            type = 'component',
+            ...restOfProps
+        } = options;
+
+        if (editor) {
+            const { value, selectionStart, selectionEnd } = editor;
+            if (wrap && nothingSelected()) selectWordUnderCursor();
+            const pre = value.substring(0, selectionStart);
+            const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
+            const propsString = convertObjectToPropsString(restOfProps);
+
+            const generateOutput = (closing = false) => {
+                if (['html', 'component'].includes(type)) {
+                    return closing ? `</${toInsert}>` : `<${toInsert} ${propsString}>`;
+                } else
+                    return toInsert;
+            };
+
+            const center = wrap ?
+                           (generateOutput()
+                               + (value.substring(selectionStart, (hasLeadingSpace() ? selectionEnd - 1 : selectionEnd)))
+                               + generateOutput(true))
+                                :
+                           (toInsert);
+
+            setValue(name, pre + center + post);
+
+            let index = selectionStart + toInsert.length;
+            if (type === 'html')
+                index += 2;
+            if (type === 'component') {
+                index += 2;
+                if (propsString)
+                    index += propsString.length + 1;
             }
-        ) => {
-            if (editor) {
-                if (nothingSelected()) selectWordUnderCursor();
-                const { value, selectionStart, selectionEnd } = editor;
+            editor.selectionStart = index;
+            editor.selectionEnd = index;
 
-                const pre = value.substring(0, selectionStart);
-                const center = wrapWith + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + wrapWith;
-                const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
-
-                setValue(name, pre + center + post);
-
-                if (nothingSelected()) {
-                    const index = selectionStart + wrapWith.length;
-                    editor.selectionStart = index;
-                    editor.selectionEnd = index;
-                }
-            }
-        }, [editor]);
+            // if (nothingSelected()) selectWordUnderCursor();
+            // const { value, selectionStart, selectionEnd } = editor;
+            //
+            // const pre = value.substring(0, selectionStart);
+            // const center = wrapWith + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + wrapWith;
+            // const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
+            //
+            // setValue(name, pre + center + post);
+            //
+            // if (nothingSelected()) {
+            //     const index = selectionStart + wrapWith.length;
+            //     editor.selectionStart = index;
+            //     editor.selectionEnd = index;
+            // }
+        }
+    }, [editor]);
 
     const wrap = useCallback((wrapWith: string) => {
         if (editor) {
@@ -420,7 +453,8 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             tableColumns,
             tableRows,
             wrap,
-            wrapWithHTMLTag
+            wrapWithHTMLTag,
+            advancedInsert
         }}>
             {props.children}
         </EditorToolbarContext.Provider>

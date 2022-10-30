@@ -237,11 +237,12 @@ const TextColor = () => {
 };
 
 const HighlightColor = () => {
-    const { insertComponent } = useEditorToolbar();
+    const { advancedInsert } = useEditorToolbar();
     const { color, onChange } = useColorDebounce();
 
     const onClick = () => {
-        insertComponent({ componentName: 'Mark', color });
+        // insertComponent({ componentName: 'Mark', color });
+        advancedInsert('Mark', { type: 'component', wrap: true, color });
     };
 
     return (
