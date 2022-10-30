@@ -18,7 +18,8 @@ import {
     faUndo,
     faCode,
     faClose,
-    faPlus
+    faPlus,
+    faArrowRightArrowLeft
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
@@ -38,6 +39,8 @@ import {useClickOutside} from '@/hooks/useClickOutside';
 import useColorDebounce from '@/hooks/useColorDebounce';
 
 import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/EditorToolbarContextProvider';
+
+import type {PropsWithChildren} from '@/types/CustomTypes';
 
 import styles from './Toolbar.module.scss';
 
@@ -83,17 +86,21 @@ const Dropdown = (props: DropdownProps) => {
                     onClick={toggleOpen}>
                 <FontAwesomeIcon fixedWidth icon={icon}/>
             </Button>
-            <CSSTransition unmountOnExit classNames={{
-                enter: styles.enter,
-                enterActive: styles.enterActive,
-                exit: styles.exit,
-                exitActive: styles.exitActive
-            }} in={open} timeout={250}>
+            <CSSTransition unmountOnExit
+                           classNames={{
+                               enter: styles.enter,
+                               enterActive: styles.enterActive,
+                               exit: styles.exit,
+                               exitActive: styles.exitActive
+                           }}
+                           in={open}
+                           timeout={150}>
                 <div
                     className={
                         classnames([styles.toolbarDropdown, styles[align]])
                     }
-                    style={{ maxWidth }}>
+                    style={{ maxWidth }}
+                    onMouseLeave={() => setOpen(false)}>
                     {children}
                 </div>
             </CSSTransition>
@@ -101,15 +108,34 @@ const Dropdown = (props: DropdownProps) => {
     );
 };
 
-const ComponentItem = (props: { text: string, children: ReactNode }) => (
-    <div className={styles.componentItemContainer}>
-        <Button fullWidth className={styles.componentItemButton} title={props.text}
-                onMouseEnter={(e) => e.currentTarget.focus()}>{props.text}</Button>
-        <div className={styles.componentItem}>
-            {props.children}
+const ComponentItem = (props: { text: string, children: ReactNode }) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <div className={styles.componentItemContainer}>
+            <Button fullWidth
+                    className={classnames([
+                        styles.componentItemButton,
+                        (open) && styles.open
+                    ])}
+                    title={props.text}
+                    onMouseEnter={() => setOpen(true)}>{props.text}</Button>
+            <CSSTransition unmountOnExit
+                           classNames={{
+                               enter: styles.enter,
+                               enterActive: styles.enterActive,
+                               exit: styles.exit,
+                               exitActive: styles.exitActive
+                           }}
+                           in={open}
+                           timeout={150}>
+                <div className={styles.componentItem}>
+                    {props.children}
+                </div>
+            </CSSTransition>
         </div>
-    </div>
-);
+    );
+};
 
 const InsertImage = () => {
     const { handleImageUpload, handleMarkdownImage } = useEditorToolbar();
@@ -215,7 +241,7 @@ const HighlightColor = () => {
     );
 };
 
-function InsertGrid() {
+const InsertGrid = () => {
     const { autoFocus, insertComponent } = useEditorToolbar();
     const [gap, setGap] = useState(0);
     const [columns, setColumns] = useState(2);
@@ -239,7 +265,7 @@ function InsertGrid() {
             </Button>
         </>
     );
-}
+};
 
 const InsertComponent = () => {
     return (
@@ -371,43 +397,62 @@ const Left = () => {
     );
 };
 
-function FontSize() {
-    const { autoFocus, setFontSize, fontSize } = useEditorToolbar();
+const EditorNumberParameter = ({ value, onUndo, onChange, label, max, min, step, icon }) => {
+    const { autoFocus } = useEditorToolbar();
 
     return (
-        <Dropdown align="right" icon={faTextHeight} title="Font Size">
+        <Dropdown align="right" icon={icon} title="Font Size">
             <Input
                 appendIcon={{
                     icon: faUndo,
-                    onClick: () => setFontSize(20)
+                    onClick: onUndo
                 }}
-                label="Font size"
-                max={72}
-                min={16}
-                step={4}
+                label={label}
+                max={/*72*/max}
+                min={/*16*/min}
+                step={/*4*/step}
                 type="number"
-                value={fontSize}
-                onChange={(e) => setFontSize(Number(e.target.value))}
+                value={value}
+                onChange={onChange}
                 onMouseEnter={autoFocus}/>
         </Dropdown>
     );
-}
+};
 
 function Right() {
+    const { fontSize, setFontSize, tabSize, setTabSize } = useEditorToolbar();
+
     return (
         <div className={styles.rightToolbar}>
-            <FontSize/>
+            <EditorNumberParameter icon={faTextHeight}
+                                   label="Font Size"
+                                   max={72}
+                                   min={16}
+                                   step={4}
+                                   value={fontSize}
+                                   onChange={(e) => setFontSize(Number(e.target.value))}
+                                   onUndo={() => setFontSize(20)}
+            />
+            <EditorNumberParameter icon={faArrowRightArrowLeft}
+                                   label="Tab Size"
+                                   max={16}
+                                   min={3}
+                                   step={1}
+                                   value={tabSize}
+                                   onChange={(e) => setTabSize(Number(e.target.value))}
+                                   onUndo={() => setTabSize(3)}/>
         </div>
     );
 }
 
-const Toolbar = () => {
+const Toolbar = ({ children }: PropsWithChildren) => {
     return (
         <EditorToolbarContextProvider>
             <div className={styles.root}>
                 <Left/>
                 <Right/>
             </div>
+            {children}
         </EditorToolbarContextProvider>
     );
 };

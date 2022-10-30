@@ -35,6 +35,9 @@ export interface EditorToolbarContextType {
     fontSize: number;
     setFontSize: (fontSize: number) => void;
 
+    tabSize: number;
+    setTabSize
+
     tableColumns: number;
     setTableColumns: Dispatch<SetStateAction<number>>;
     tableRows: number;
@@ -79,6 +82,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
     const [tableColumns, setTableColumns] = useState(1);
     const [gridColumns, setGridColumns] = useState(1);
     const [fontSize, setFontSize] = useState(20);
+    const [tabSize, setTabSize] = useState(3);
 
     const autoFocus = (e: MouseEvent<HTMLInputElement>) => {
         e.currentTarget.focus({ preventScroll: true });
@@ -301,6 +305,12 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
+    const changeTabSize = useCallback((tabSize: number) => {
+        if (editor) {
+            setTabSize(tabSize);
+        }
+    }, [editor]);
+
     const handleLinkInsertion = useCallback(() => {
         if (editor) {
             const url = prompt('Enter the link URL or leave empty:') ?? '';
@@ -353,8 +363,10 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             insertComponent,
             setFontSize: changeFontSize,
             setGridColumns,
+            setTabSize: changeTabSize,
             setTableColumns,
             setTableRows,
+            tabSize,
             tableColumns,
             tableRows,
             wrap,

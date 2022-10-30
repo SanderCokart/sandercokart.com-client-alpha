@@ -1,8 +1,10 @@
 @use "/styles/utils";
 @use "./toolbarDropdownAnimation";
+@use "./componentItemAnimation";
 
 //<editor-fold desc="Toolbar Base">
 .root {
+  z-index: 1;
   position: sticky;
   top: 40px;
   display: flex;
@@ -111,16 +113,13 @@
 
 .componentItemContainer {
   width: 185px;
-
-  &:hover, &:focus-within {
-    .componentItem {
-      transform: scaleX(1);
-    }
-  }
 }
 
 .componentItemButton {
 
+  &.open {
+    background-color: var(--acc);
+  }
 }
 
 .componentItem {
@@ -128,12 +127,10 @@
   top: 0;
   left: 100%;
   width: 185px;
-  transition: transform 150ms ease;
-  transform: scaleX(0);
-  transform-origin: left;
   color: var(--bg-nav-contrast-text);
   border: var(--acc) solid 1px;
   background-color: var(--bg-nav);
+  @include componentItemAnimation.animationForComponentItem;
 }
 
 //</editor-fold>

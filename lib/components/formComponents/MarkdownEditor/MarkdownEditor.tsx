@@ -44,12 +44,12 @@ const MarkdownEditor = (props: MarkdownEditorProps) => {
         <EditorContext.Provider
             value={{ editorRef, setEditorRef, previewRef, setPreviewRef, nameAndId }}>
             <div className={styles.root}>
-                <Toolbar/>
-                <div className={styles.editorArea}>
-                    <Editor registerFormHook={props.registerFormHook} {...props.editorProps}/>
-                    <MDXPreview/>
-                    {/*<Preview {...props.previewProps}/>*/}
-                </div>
+                <Toolbar>
+                    <div className={styles.editorArea}>
+                        <Editor registerFormHook={props.registerFormHook} {...props.editorProps}/>
+                        <MDXPreview/>
+                    </div>
+                </Toolbar>
             </div>
         </EditorContext.Provider>
     );

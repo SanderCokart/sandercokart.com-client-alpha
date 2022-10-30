@@ -1,0 +1,23 @@
+@mixin animationForComponentItem {
+  &.enter {
+    position: absolute;
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+
+  &.enterActive {
+    transform: scaleX(1);
+    transition: transform 150ms ease;
+  }
+
+  &.exit {
+    transform: scaleX(1);
+    position: absolute;
+    transform-origin: left;
+  }
+
+  &.exitActive {
+    transition: transform 150ms ease;
+    transform: scaleX(0);
+  }
+}

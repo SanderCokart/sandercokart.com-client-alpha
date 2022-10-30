@@ -7,7 +7,7 @@
 
   &.enterActive {
     transform: scaleY(1);
-    transition: transform 250ms ease;
+    transition: transform 150ms ease;
   }
 
   &.exit {
@@ -17,7 +17,7 @@
   }
 
   &.exitActive {
-    transition: transform 250ms ease;
+    transition: transform 150ms ease;
     transform: scaleY(0);
   }
 }
@@ -31,7 +31,7 @@
 
   &.enterActive {
     transform: scaleY(1) translateX(-50%);
-    transition: transform 250ms ease;
+    transition: transform 150ms ease;
   }
 
   &.exit {
@@ -41,7 +41,7 @@
   }
 
   &.exitActive {
-    transition: transform 250ms ease;
+    transition: transform 150ms ease;
     transform: scaleY(0) translateX(-50%);
   }
 }
