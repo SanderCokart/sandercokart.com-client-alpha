@@ -121,6 +121,56 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
+    interface AdvancedWrapOptionBase {
+        centerCursor?: boolean;
+        wrap?: boolean;
+        additionalSpace?: boolean;
+    }
+
+    interface AdvancedWrapStringOption extends AdvancedWrapOptionBase {
+        type: 'string';
+    }
+
+    interface AdvancedWrapComponentOption extends AdvancedWrapOptionBase {
+        type: 'component';
+        props: { [key: string]: number | string };
+    }
+
+    interface AdvancedWrapHtmlOption extends AdvancedWrapOptionBase {
+        type: 'html';
+    }
+
+    type AdvancedWrapOptions = AdvancedWrapStringOption | AdvancedWrapHtmlOption | AdvancedWrapComponentOption;
+
+    /*TODO make a better insert for components, html and strings*/
+    const advancedInsert = useCallback(
+        (
+            wrapWith: string,
+            options: AdvancedWrapOptions = {
+                wrap: false,
+                additionalSpace: false,
+                centerCursor: false,
+                type: 'string'
+            }
+        ) => {
+            if (editor) {
+                if (nothingSelected()) selectWordUnderCursor();
+                const { value, selectionStart, selectionEnd } = editor;
+
+                const pre = value.substring(0, selectionStart);
+                const center = wrapWith + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + wrapWith;
+                const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
+
+                setValue(name, pre + center + post);
+
+                if (nothingSelected()) {
+                    const index = selectionStart + wrapWith.length;
+                    editor.selectionStart = index;
+                    editor.selectionEnd = index;
+                }
+            }
+        }, [editor]);
+
     const wrap = useCallback((wrapWith: string) => {
         if (editor) {
             if (nothingSelected()) selectWordUnderCursor();

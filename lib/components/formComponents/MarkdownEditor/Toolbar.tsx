@@ -23,7 +23,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
-import type {ButtonHTMLAttributes, ReactNode, CSSProperties, KeyboardEvent} from 'react';
+import type {ButtonHTMLAttributes, ReactNode, CSSProperties, KeyboardEvent, ChangeEventHandler} from 'react';
 import {useState, useEffect, useRef} from 'react';
 import {useForm, FormProvider, useFieldArray} from 'react-hook-form';
 import {CSSTransition} from 'react-transition-group';
@@ -216,26 +216,39 @@ const InsertLink = () => {
     );
 };
 
-const TextColor = () => (
-    <Dropdown align="center" icon={faFont} title="Text Color">
-        <Flex>
-            <Color/>
-            <Button>Insert</Button>
-        </Flex>
-    </Dropdown>
-);
+const TextColor = () => {
+    const { insertComponent } = useEditorToolbar();
+    const { color, onChange } = useColorDebounce();
+
+    const onClick = () => {
+        insertComponent({ componentName: 'Color', color });
+    };
+
+    return (
+        <Dropdown align="center" icon={faFont} title="Text Color">
+            <Flex>
+                <Color value={color} onChange={onChange}/>
+                <Button onClick={onClick}>
+                    Insert
+                </Button>
+            </Flex>
+        </Dropdown>
+    );
+};
 
 const HighlightColor = () => {
     const { insertComponent } = useEditorToolbar();
     const { color, onChange } = useColorDebounce();
 
+    const onClick = () => {
+        insertComponent({ componentName: 'Mark', color });
+    };
+
     return (
         <Dropdown align="center" icon={faPaintBrush} title="Highlight Color">
             <Flex>
                 <Color value={color} onChange={onChange}/>
-                <Button onClick={() => {
-                    insertComponent({ componentName: 'Mark', color });
-                }}>Insert</Button>
+                <Button onClick={onClick}>Insert</Button>
             </Flex>
         </Dropdown>
     );
@@ -397,24 +410,32 @@ const Left = () => {
     );
 };
 
-const EditorNumberParameter = ({ value, onUndo, onChange, label, max, min, step, icon }) => {
+interface EditorNumberParameterProps {
+    value: number;
+    onChange: ChangeEventHandler<HTMLInputElement>;
+    onUndo: () => void;
+    label: string;
+    max: number;
+    min: number;
+    step: number;
+    icon: IconLookup;
+}
+
+const EditorNumberParameter = (props: EditorNumberParameterProps) => {
+    const { value, onUndo, onChange, label, max, min, step, icon } = props;
     const { autoFocus } = useEditorToolbar();
 
     return (
-        <Dropdown align="right" icon={icon} title="Font Size">
-            <Input
-                appendIcon={{
-                    icon: faUndo,
-                    onClick: onUndo
-                }}
-                label={label}
-                max={/*72*/max}
-                min={/*16*/min}
-                step={/*4*/step}
-                type="number"
-                value={value}
-                onChange={onChange}
-                onMouseEnter={autoFocus}/>
+        <Dropdown align="right" icon={icon} title={label}>
+            <Input appendIcon={{ icon: faUndo, onClick: onUndo }}
+                   label={label}
+                   max={max}
+                   min={min}
+                   step={step}
+                   type="number"
+                   value={value}
+                   onChange={onChange}
+                   onMouseEnter={autoFocus}/>
         </Dropdown>
     );
 };

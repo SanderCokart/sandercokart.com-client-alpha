@@ -49,9 +49,17 @@ const NextImage = (props: ImgHTMLAttributes<HTMLImageElement>) => {
     return null;
 };
 
-const extractHrefId = (props: PropsWithChildren) => {
-    return String('heading-' + props.children).toLowerCase();
+const extractHrefId = ({ children }: PropsWithChildren) => {
+    return String('heading-' + children).toLowerCase();
 };
+
+const Mark = ({ color, children }: PropsWithChildren<{ color: CSSProperties['color'] }>) => (
+    <span style={{ backgroundColor: color }}>{children}</span>
+);
+
+const Color = ({ color, children }: PropsWithChildren<{ color: CSSProperties['color'] }>) => (
+    <span style={{ color }}>{children}</span>
+);
 
 export const MDXComponents = {
     Grid,
@@ -63,6 +71,10 @@ export const MDXComponents = {
     Title,
 
     CodeTabs,
+
+    Mark,
+
+    Color,
 
     code: Code,
 
