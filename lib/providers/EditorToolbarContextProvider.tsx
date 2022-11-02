@@ -144,16 +144,18 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
                     return toInsert;
             };
 
+            const content = (value.substring(selectionStart, (hasLeadingSpace() ? selectionEnd - 1 : selectionEnd)));
+
             const center = wrap ?
                            (generateOutput()
-                               + (value.substring(selectionStart, (hasLeadingSpace() ? selectionEnd - 1 : selectionEnd)))
+                               + content
                                + generateOutput(true))
                                 :
                            (isHtmlOrJsx() ? `<${toInsert}${propsString}/>` : toInsert);
 
             setValue(name, pre + center + post);
 
-            let index = selectionStart + toInsert.length;
+            let index = selectionStart + toInsert.length + content.length;
             if (type === 'html')
                 index += 2;
             if (type === 'component') {

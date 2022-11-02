@@ -78,7 +78,8 @@ const Color = (props: ColorProps) => {
                          {...restOfProps}
                          id={nameAndId}
                          name={nameAndId}
-                         type="color"/>
+                         type="color"
+                         value={value}/>
                  )}
 
                 {icon && <FontAwesomeIcon fixedWidth className={styles.icon} icon={icon}/>}
