@@ -1,10 +1,9 @@
 import Papa from 'papaparse';
-import type {ReactNode, SetStateAction, Dispatch, CSSProperties, MouseEvent, ChangeEvent} from 'react';
+import type {ReactNode, SetStateAction, Dispatch, MouseEvent, ChangeEvent, HTMLAttributes} from 'react';
 import {createContext, useContext, useState, useCallback} from 'react';
 import {useFormContext} from 'react-hook-form';
 
 import {useEditorContext} from '@/components/formComponents/MarkdownEditor';
-import type {GridProps} from '@/components/Grid/Grid';
 
 import {ApiPostFilesStoreRoute} from '@/constants/api-routes';
 
@@ -15,84 +14,57 @@ import useFile from '@/hooks/useFile';
 
 import type {FileModel} from '@/types/ModelTypes';
 
-export const EditorToolbarContext = createContext({});
+export const EditorToolbarContext = createContext<EditorToolbarContextType | null>(null);
 
-interface AdvancedWrapOptionBase {
+interface AdvancedWrapStringOption {
+    type: 'string';
+    toInsert: string;
     wrap?: boolean;
     additionalSpace?: boolean;
 }
 
-interface AdvancedWrapStringOption extends AdvancedWrapOptionBase {
-    type: 'string';
-}
-
-interface AdvancedWrapComponentOption extends AdvancedWrapOptionBase {
+interface AdvancedWrapComponentOption {
     type: 'component';
+    toInsert: 'Grid' | 'Align' | 'Mark' | 'Color' | 'CodeTabs';
+    wrap?: boolean;
+    additionalSpace?: boolean;
 
     [key: string]: any;
 }
 
-interface AdvancedWrapHtmlOption extends AdvancedWrapOptionBase {
+interface AdvancedWrapHtmlOption {
+    toInsert: keyof HTMLElementTagNameMap;
     type: 'html';
-    style: CSSProperties;
+    wrap?: boolean;
+    additionalSpace?: boolean;
+    props?: HTMLAttributes<HTMLElement>;
 }
 
-type AdvancedWrapOptions = AdvancedWrapStringOption | AdvancedWrapHtmlOption | AdvancedWrapComponentOption;
+type AdvancedWrapOptions =
+    AdvancedWrapStringOption
+    | AdvancedWrapHtmlOption
+    | AdvancedWrapComponentOption;
 
 export interface EditorToolbarContextType {
+    advancedInsert: (options: AdvancedWrapOptions) => void;
     autoBlur: (e: MouseEvent<HTMLInputElement>) => void;
     autoFocus: (e: MouseEvent<HTMLInputElement>) => void,
-
-    handleCSVImport: () => void;
+    fontSize: number;
+    gridColumns: number;
+    handleCSVImport: (e: ChangeEvent<HTMLInputElement>) => void;
     handleImageUpload: (e: ChangeEvent<HTMLInputElement>) => Promise<void>;
+    handleLinkInsertion: () => void;
     handleMarkdownImage: () => void;
     handleTableInsertion: () => void;
-    insertComponent: (params: InsertableComponents) => void;
-    wrapWithHTMLTag: (tagName: keyof HTMLElementTagNameMap) => void;
-    wrap: (wrapWith: string) => void;
-    insert: (toInsert: string, wraps?: boolean) => void;
-    advancedInsert: (toInsert: string, options: AdvancedWrapOptions) => void;
-
-    handleLinkInsertion: () => void;
-
-    fontSize: number;
     setFontSize: (fontSize: number) => void;
-
-    tabSize: number;
-    setTabSize
-
-    tableColumns: number;
+    setGridColumns: Dispatch<SetStateAction<number>>;
+    setTabSize: (tabSize: number) => void;
     setTableColumns: Dispatch<SetStateAction<number>>;
-    tableRows: number;
     setTableRows: (rows: number) => void;
+    tabSize: number;
+    tableColumns: number;
+    tableRows: number;
 }
-
-type  InsertableComponents = Grid | Align | Mark | Color | CodeTabs;
-
-interface Mark {
-    componentName: 'Mark';
-    color: string;
-}
-
-interface Color {
-    componentName: 'Color';
-    color: string;
-}
-
-interface Grid extends Omit<GridProps, 'children'> {
-    componentName: 'Grid';
-}
-
-interface Align {
-    componentName: 'Align';
-    align?: CSSProperties['textAlign'];
-}
-
-interface CodeTabs {
-    componentName: 'CodeTabs';
-}
-
-const componentsWithChildren = ['Grid', 'Align', 'Mark', 'Color', 'CodeTabs'];
 
 export const useEditorToolbar = () => useContext(EditorToolbarContext) as EditorToolbarContextType;
 
@@ -145,8 +117,9 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
     }, [editor]);
 
     /*TODO make a better insert for components, html and strings*/
-    const advancedInsert = useCallback((toInsert: string, options: AdvancedWrapOptions) => {
+    const advancedInsert = useCallback<EditorToolbarContextType['advancedInsert']>((options) => {
         const {
+            toInsert,
             wrap = false,
             additionalSpace = false,
             type = 'component',
@@ -154,15 +127,19 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         } = options;
 
         if (editor) {
-            const { value, selectionStart, selectionEnd } = editor;
             if (wrap && nothingSelected()) selectWordUnderCursor();
+            const { value, selectionStart, selectionEnd } = editor;
             const pre = value.substring(0, selectionStart);
             const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
-            const propsString = convertObjectToPropsString(restOfProps);
+            const propsString = (!!Object.keys(restOfProps).length) ? ` ${convertObjectToPropsString(restOfProps)}` : '';
+
+            const isHtmlOrJsx = () => {
+                return ['html', 'component'].includes(type);
+            };
 
             const generateOutput = (closing = false) => {
-                if (['html', 'component'].includes(type)) {
-                    return closing ? `</${toInsert}>` : `<${toInsert} ${propsString}>`;
+                if (isHtmlOrJsx()) {
+                    return closing ? `</${toInsert}>` : `<${toInsert}${propsString}>${additionalSpace ? '\n\n' : ''}`;
                 } else
                     return toInsert;
             };
@@ -172,7 +149,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
                                + (value.substring(selectionStart, (hasLeadingSpace() ? selectionEnd - 1 : selectionEnd)))
                                + generateOutput(true))
                                 :
-                           (toInsert);
+                           (isHtmlOrJsx() ? `<${toInsert}${propsString}/>` : toInsert);
 
             setValue(name, pre + center + post);
 
@@ -182,64 +159,13 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             if (type === 'component') {
                 index += 2;
                 if (propsString)
-                    index += propsString.length + 1;
+                    index += propsString.length;
             }
+            if (additionalSpace)
+                index += 1;
+            editor.focus();
             editor.selectionStart = index;
             editor.selectionEnd = index;
-
-            // if (nothingSelected()) selectWordUnderCursor();
-            // const { value, selectionStart, selectionEnd } = editor;
-            //
-            // const pre = value.substring(0, selectionStart);
-            // const center = wrapWith + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + wrapWith;
-            // const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
-            //
-            // setValue(name, pre + center + post);
-            //
-            // if (nothingSelected()) {
-            //     const index = selectionStart + wrapWith.length;
-            //     editor.selectionStart = index;
-            //     editor.selectionEnd = index;
-            // }
-        }
-    }, [editor]);
-
-    const wrap = useCallback((wrapWith: string) => {
-        if (editor) {
-            if (nothingSelected()) selectWordUnderCursor();
-            const { value, selectionStart, selectionEnd } = editor;
-
-            const pre = value.substring(0, selectionStart);
-            const center = wrapWith + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + wrapWith;
-            const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
-
-            setValue(name, pre + center + post);
-
-            if (nothingSelected()) {
-                const index = selectionStart + wrapWith.length;
-                editor.selectionStart = index;
-                editor.selectionEnd = index;
-            }
-        }
-    }, [editor]);
-
-    const insert = useCallback((toInsert: string, wraps?: boolean) => {
-        if (editor) {
-            const { value, selectionStart, selectionEnd } = editor;
-            const pre = value.substring(0, selectionStart);
-            const post = value.substring(selectionEnd);
-
-            setValue(name, pre + toInsert + post);
-
-            if (!wraps) {
-                editor.selectionStart = selectionStart + toInsert.length;
-                editor.selectionEnd = selectionEnd + toInsert.length;
-            } else {
-                const index = toInsert.lastIndexOf('\n');
-                editor.selectionStart = index;
-                editor.selectionEnd = index;
-            }
-            editor.focus();
         }
     }, [editor]);
 
@@ -278,7 +204,7 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
 
     const handleTableInsertion = useCallback(() => {
         if (editor) {
-            let tableMd = '\n\n';
+            let tableMd = '';
             for (let i = 0; i < tableColumns; i++) {
                 tableMd += '| head ';
             }
@@ -294,8 +220,6 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
                 }
                 tableMd += '|\n';
             }
-
-            tableMd += '\n';
 
             const pre = editor.value.substring(0, editor.selectionEnd);
             const post = editor.value.substring(editor.selectionEnd);
@@ -342,45 +266,6 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             });
     };
 
-    const insertComponent = useCallback((params: InsertableComponents) => {
-        const { componentName, ...props } = params;
-        const propsString = convertObjectToPropsString(props);
-        const shouldHaveChildren = componentsWithChildren.includes(componentName);
-
-        if (editor) {
-
-            if (shouldHaveChildren) {
-
-                if (nothingSelected()) selectWordUnderCursor();
-
-                const { value, selectionStart, selectionEnd } = editor;
-                const pre = value.substring(0, selectionStart);
-                const post = value.substring(selectionEnd);
-                const selection = value.substring(selectionStart, selectionEnd);
-                const calculatedLength = selectionEnd + componentName.length + propsString.length + 3 + 2;
-
-                const newValue = pre + `<${componentName} ${propsString}>${selection}\n\n\n\n</${componentName}>` + post;
-                setValue(name, newValue);
-
-                editor.selectionStart = calculatedLength;
-                editor.selectionEnd = calculatedLength;
-                editor.focus();
-            } else {
-                const { value, selectionStart, selectionEnd } = editor;
-                const pre = value.substring(0, selectionStart);
-                const post = value.substring(selectionEnd);
-                const calculatedLength = selectionEnd + componentName.length + propsString.length + 3;
-
-                const newValue = pre + `<${componentName} ${propsString}/>` + post;
-                setValue(name, newValue);
-
-                editor.selectionStart = calculatedLength;
-                editor.selectionEnd = calculatedLength;
-                editor.focus();
-            }
-        }
-    }, [editor]);
-
     const changeFontSize = useCallback((fontSize: number) => {
         if (editor) {
             setFontSize(Number(fontSize));
@@ -412,25 +297,6 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
         }
     }, [editor]);
 
-    const wrapWithHTMLTag = useCallback((tagName: keyof HTMLElementTagNameMap) => {
-        if (editor) {
-            if (nothingSelected()) selectWordUnderCursor();
-            const { value, selectionStart, selectionEnd } = editor;
-
-            const pre = value.substring(0, selectionStart);
-            const center = `<${tagName}>` + value.substring(selectionStart, hasLeadingSpace() ? selectionEnd - 1 : selectionEnd) + `</${tagName}>`;
-            const post = hasLeadingSpace() ? ' ' : '' + value.substring(selectionEnd);
-
-            setValue(name, pre + center + post);
-
-            if (nothingSelected()) {
-                const index = selectionStart + `<${tagName}>`.length;
-                editor.selectionStart = index;
-                editor.selectionEnd = index;
-            }
-        }
-    }, [editor]);
-
     return (
         <EditorToolbarContext.Provider value={{
             autoBlur,
@@ -442,8 +308,6 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             handleLinkInsertion,
             handleMarkdownImage,
             handleTableInsertion,
-            insert,
-            insertComponent,
             setFontSize: changeFontSize,
             setGridColumns,
             setTabSize: changeTabSize,
@@ -452,8 +316,6 @@ const EditorToolbarContextProvider = (props: { children: ReactNode }) => {
             tabSize,
             tableColumns,
             tableRows,
-            wrap,
-            wrapWithHTMLTag,
             advancedInsert
         }}>
             {props.children}

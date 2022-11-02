@@ -5,7 +5,7 @@ import type {UseFormRegisterReturn} from 'react-hook-form';
 import Editor from '@/components/formComponents/MarkdownEditor/Editor';
 import type {EditorProps} from '@/components/formComponents/MarkdownEditor/Editor/Editor';
 import MDXPreview from '@/components/formComponents/MarkdownEditor/MDXPreview';
-import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar';
+import Toolbar from '@/components/formComponents/MarkdownEditor/Toolbar/Toolbar';
 
 import styles from './MarkdownEditor.module.scss';
 

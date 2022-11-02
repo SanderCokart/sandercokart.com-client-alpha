@@ -54,11 +54,11 @@ const extractHrefId = ({ children }: PropsWithChildren) => {
 };
 
 const Mark = ({ color, children }: PropsWithChildren<{ color: CSSProperties['color'] }>) => (
-    <span style={{ backgroundColor: color }}>{children}</span>
+    <span style={{ backgroundColor: color, alignSelf:'flex-start' }}>{children}</span>
 );
 
 const Color = ({ color, children }: PropsWithChildren<{ color: CSSProperties['color'] }>) => (
-    <span style={{ color }}>{children}</span>
+    <span style={{ color,alignSelf:'flex-start' }}>{children}</span>
 );
 
 export const MDXComponents = {

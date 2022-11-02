@@ -42,7 +42,7 @@ import EditorToolbarContextProvider, {useEditorToolbar} from '@/providers/Editor
 
 import type {PropsWithChildren} from '@/types/CustomTypes';
 
-import styles from './Toolbar.module.scss';
+import styles from 'lib/components/formComponents/MarkdownEditor/Toolbar/Toolbar.module.scss';
 
 interface ToolbarButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children?: ReactNode;
@@ -198,7 +198,12 @@ const InsertTable = () => {
 };
 
 const Headers = () => {
-    const { insert } = useEditorToolbar();
+    const { advancedInsert } = useEditorToolbar();
+
+    const insert = (toInsert: string) => {
+        advancedInsert({ type: 'string', toInsert });
+    };
+
     return (
         <>
             <ToolbarButton onClick={() => insert('# ')}>H1</ToolbarButton>
@@ -217,11 +222,11 @@ const InsertLink = () => {
 };
 
 const TextColor = () => {
-    const { insertComponent } = useEditorToolbar();
+    const { advancedInsert } = useEditorToolbar();
     const { color, onChange } = useColorDebounce();
 
     const onClick = () => {
-        insertComponent({ componentName: 'Color', color });
+        advancedInsert({ type: 'component', toInsert: 'Color', wrap: true, color });
     };
 
     return (
@@ -241,8 +246,7 @@ const HighlightColor = () => {
     const { color, onChange } = useColorDebounce();
 
     const onClick = () => {
-        // insertComponent({ componentName: 'Mark', color });
-        advancedInsert('Mark', { type: 'component', wrap: true, color });
+        advancedInsert({ type: 'component', toInsert: 'Mark', wrap: true, color });
     };
 
     return (
@@ -256,7 +260,7 @@ const HighlightColor = () => {
 };
 
 const InsertGrid = () => {
-    const { autoFocus, insertComponent } = useEditorToolbar();
+    const { autoFocus, advancedInsert } = useEditorToolbar();
     const [gap, setGap] = useState(0);
     const [columns, setColumns] = useState(2);
     const [alignment, setAlignment] = useState<CSSProperties['placeItems']>('center');
@@ -274,7 +278,16 @@ const InsertGrid = () => {
                     <option key={item} value={item}>{item}</option>
                 ))}
             </Select>
-            <Button fullWidth onClick={() => insertComponent({ componentName: 'Grid', columns, gap, alignment })}>
+            <Button fullWidth
+                    onClick={() => advancedInsert({
+                        type: 'component',
+                        additionalSpace: true,
+                        toInsert: 'Grid',
+                        wrap: true,
+                        columns,
+                        gap,
+                        alignment
+                    })}>
                 Insert Grid
             </Button>
         </>
@@ -298,7 +311,7 @@ interface CodeBlock {
 }
 
 const InsertCodeBlock = () => {
-    const { insertComponent, insert } = useEditorToolbar();
+    const { advancedInsert } = useEditorToolbar();
     const buttonRef = useRef<null | HTMLButtonElement>(null);
 
     const form = useForm<{ codeBlocks: CodeBlock[] }>({
@@ -324,19 +337,19 @@ const InsertCodeBlock = () => {
     const insertCodeBlocks = () => {
         const codeBlocks = getValues('codeBlocks');
         if (codeBlocks.length > 1) {
-            insertComponent({ componentName: 'CodeTabs' });
+            advancedInsert({ type: 'component', toInsert: 'CodeTabs', wrap: true, additionalSpace: true });
             codeBlocks.forEach((codeBlock, index) => {
                 const extension = getExtension(codeBlock);
-                const string = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}${(index < codeBlocks.length - 1) ? `\n\n` : ``}`;
-                insert(string);
+                const toInsert = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}${(index < codeBlocks.length - 1) ? `\n\n` : ``}`;
+                advancedInsert({ type: 'string', toInsert });
                 remove(index);
             });
             return;
         } else {
             const codeBlock = codeBlocks[0];
             const extension = getExtension(codeBlock);
-            const string = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}`;
-            insert(string, true);
+            const toInsert = `${'```'}${extension} filename="${codeBlock.filename}"\n\n${'```'}`;
+            advancedInsert({ type: 'string', toInsert });
         }
     };
 
@@ -379,18 +392,23 @@ const InsertCodeBlock = () => {
 };
 
 const Left = () => {
-    const { wrap, insertComponent, insert, wrapWithHTMLTag } = useEditorToolbar();
+    const { advancedInsert } = useEditorToolbar();
 
     return (
         <div className={styles.leftToolbar}>
-            <ToolbarButton icon={faTableList} title="Table Of Contents" onClick={() => insert('## Table Of Contents')}/>
+            <ToolbarButton icon={faTableList} title="Table Of Contents"
+                           onClick={() => advancedInsert({ type: 'string', toInsert: '## Table Of Contents' })}/>
             <Divider/>
             <Headers/>
             <Divider/>
-            <ToolbarButton icon={faBold} title="Bold" onClick={() => wrap('**')}/>
-            <ToolbarButton icon={faItalic} title="Italic" onClick={() => wrap('*')}/>
-            <ToolbarButton icon={faUnderline} title="Underline" onClick={() => wrapWithHTMLTag('u')}/>
-            <ToolbarButton icon={faStrikethrough} title="Strikethrough" onClick={() => wrap('~~')}/>
+            <ToolbarButton icon={faBold} title="Bold"
+                           onClick={() => advancedInsert({ type: 'string', toInsert: '**', wrap: true })}/>
+            <ToolbarButton icon={faItalic} title="Italic"
+                           onClick={() => advancedInsert({ type: 'string', toInsert: '*', wrap: true })}/>
+            <ToolbarButton icon={faUnderline} title="Underline"
+                           onClick={() => advancedInsert({ type: 'html', toInsert: 'u', wrap: true })}/>
+            <ToolbarButton icon={faStrikethrough} title="Strikethrough"
+                           onClick={() => advancedInsert({ type: 'string', toInsert: '~~', wrap: true })}/>
             <Divider/>
             <TextColor/>
             <HighlightColor/>
@@ -402,11 +420,26 @@ const Left = () => {
             <InsertComponent/>
             <Divider/>
             <ToolbarButton icon={faAlignLeft} title="Align Left"
-                           onClick={() => insertComponent({ componentName: 'Align', align: 'left' })}/>
+                           onClick={() => advancedInsert({
+                               type: 'component',
+                               toInsert: 'Align',
+                               wrap: true,
+                               align: 'left'
+                           })}/>
             <ToolbarButton icon={faAlignCenter} title="Align Center"
-                           onClick={() => insertComponent({ componentName: 'Align', align: 'center' })}/>
+                           onClick={() => advancedInsert({
+                               type: 'component',
+                               toInsert: 'Align',
+                               wrap: true,
+                               align: 'center'
+                           })}/>
             <ToolbarButton icon={faAlignRight} title="Align Right"
-                           onClick={() => insertComponent({ componentName: 'Align', align: 'right' })}/>
+                           onClick={() => advancedInsert({
+                               type: 'component',
+                               toInsert: 'Align',
+                               wrap: true,
+                               align: 'right'
+                           })}/>
         </div>
     );
 };
